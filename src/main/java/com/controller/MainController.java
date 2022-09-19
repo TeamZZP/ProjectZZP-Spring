@@ -11,7 +11,6 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/")
 	public String main() {
-		System.out.println("main");
 		return "main";
 	}
 	

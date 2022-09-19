@@ -6,13 +6,13 @@
 	<select id="pointNotice" resultType="NoticeDTO">
 		select * from notice where NOTICE_CATEGORY = 'main' order by notice_id desc
 	</select>
-	<select id="noticeList" resultType="NoticeDTO">
+	<select id="noticePage" resultType="NoticeDTO">
 		select * from notice where NOT NOTICE_CATEGORY = 'main' order by notice_id desc
 	</select>
-	<select id="totalCount" resultType="int">
+	<select id="noticeListCount" resultType="int">
 		select count(*) from notice where NOT NOTICE_CATEGORY = 'main'
 	</select>
-	<select id="noticeOneSelect" resultType="NoticeDTO" parameterType="int">
+	<!-- <select id="noticeOneSelect" resultType="NoticeDTO" parameterType="int">
 		select NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, to_char(NOTICE_CREATED, 'YYYY/MM/DD') NOTICE_CREATED, 
 			USERID, NOTICE_CATEGORY, NOTICE_HITS from notice where NOTICE_ID = #{noticeID}
 	</select>
@@ -34,5 +34,5 @@
 	<insert id="NoticeInsert" parameterType="NoticeDTO">
 		insert into notice (NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, NOTICE_CREATED, NOTICE_HITS, NOTICE_CATEGORY, USERID)
 			values (NOTICE_NOTICE_ID_SEQ.nextval, #{notice_tittle}, #{notice_content}, sysdate, 0, #{notice_category}, #{userid})
-	</insert>
+	</insert> -->
 </mapper>

@@ -13,16 +13,3 @@
 	color: green;
 	font-weight: bold;
 }
-.headerStyle{
-	margin-right: 13px;
-}
-.search{
-	margin-top: 5px;
-}
-.searchForm{
-	float: right; 
-	display: inline-block;
-}
-#search{
-	width:200px;
-}

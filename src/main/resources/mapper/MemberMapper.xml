@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemberMapper">
+
+	<!-- 로그인 ID 확인 -->
+	<select id="loginIDCheck" parameterType="hashmap" resultType="MemberDTO">
+		select * from member where userid = #{userid}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="hashmap" resultType="MemberDTO">
+		select * from member where userid = #{userid} and passwd = #{passwd}
+	</select>
+	
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NoticeMapper">
+	<select id="pointNotice" resultType="NoticeDTO">
+		select * from notice where NOTICE_CATEGORY = 'main' order by notice_id desc
+	</select>
+	<select id="noticeList" resultType="NoticeDTO">
+		select * from notice where NOT NOTICE_CATEGORY = 'main' order by notice_id desc
+	</select>
+	<select id="totalCount" resultType="int">
+		select count(*) from notice where NOT NOTICE_CATEGORY = 'main'
+	</select>
+	<select id="noticeOneSelect" resultType="NoticeDTO" parameterType="int">
+		select NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, to_char(NOTICE_CREATED, 'YYYY/MM/DD') NOTICE_CREATED, 
+			USERID, NOTICE_CATEGORY, NOTICE_HITS from notice where NOTICE_ID = #{noticeID}
+	</select>
+	<select id="nextNoticeID" parameterType="map" resultType="int">
+		select max(notice_id) from notice where notice_id
+    		in (select max(notice_id) from question where #{noticeID} &gt; notice_id and NOTICE_CATEGORY = #{category}) 
+    		order by notice_id desc
+	</select>
+	<update id="noticeUpdate" parameterType="NoticeDTO">
+		update notice set NOTICE_TITTLE = #{notice_tittle}, NOTICE_CONTENT = #{notice_content}
+			where NOTICE_ID = #{notice_id}
+	</update>
+	<delete id="NoticeDelete" parameterType="string">
+		delete from notice where NOTICE_ID = #{NOTICE_ID}
+	</delete>
+	<update id="noticeHite" parameterType="map">
+		update notice set NOTICE_HITS = #{noticeHite} where NOTICE_ID = #{noticeID}
+	</update>
+	<insert id="NoticeInsert" parameterType="NoticeDTO">
+		insert into notice (NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, NOTICE_CREATED, NOTICE_HITS, NOTICE_CATEGORY, USERID)
+			values (NOTICE_NOTICE_ID_SEQ.nextval, #{notice_tittle}, #{notice_content}, sysdate, 0, #{notice_category}, #{userid})
+	</insert>
+</mapper>

@@ -1,0 +1,28 @@
+@charset "UTF-8";
+#main {
+	color: green;
+	font-family: 'Bebas Neue', cursive;
+}
+#headerColor{
+	background-color: white;
+}
+#header_login_bar{
+	background-color: white;
+}
+ .headercss:hover {
+	color: green;
+	font-weight: bold;
+}
+.headerStyle{
+	margin-right: 13px;
+}
+.search{
+	margin-top: 5px;
+}
+.searchForm{
+	float: right; 
+	display: inline-block;
+}
+#search{
+	width:200px;
+}

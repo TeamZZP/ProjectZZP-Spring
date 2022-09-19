@@ -11,7 +11,16 @@ public class MainController {
 	 */
 	@RequestMapping(value = "/")
 	public String main() {
+		System.out.println("main");
 		return "main";
+	}
+	
+	/**
+	 * 메인 화면 redirect
+	 */
+	@RequestMapping(value = "/home")
+	public String mainRedirect() {
+		return "redirect:/";
 	}
 	
 }

@@ -9,6 +9,16 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
+	<!-- Interceptor 등록 -->
+	<beans:bean id="loginInterceptor" class="com.interceptor.LoginInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/mypage/**"/>
+			<mapping path="/cart/**"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+	</interceptors>
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 

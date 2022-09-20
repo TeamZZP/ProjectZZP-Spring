@@ -12,7 +12,7 @@
 	<select id="noticeListCount" resultType="int">
 		select count(*) from notice where NOT NOTICE_CATEGORY = 'main'
 	</select>
-	<select id="noticeDelite" parameterType="String" resultType="NoticeDTO">
+	<select id="noticeDelite" parameterType="int" resultType="NoticeDTO">
 		select * from notice where NOTICE_ID = #{notice_id}
 	</select>
 	<select id="nextNoticeID" parameterType="map" resultType="int">
@@ -23,6 +23,10 @@
 	<update id="noticeHite" parameterType="map">
 		update notice set NOTICE_HITS = #{noticeHite} where NOTICE_ID = #{noticeID}
 	</update>
+	<insert id="noticeInsert" parameterType="NoticeDTO">
+		insert into notice (NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, NOTICE_CREATED, NOTICE_HITS, NOTICE_CATEGORY, USERID)
+			values (NOTICE_NOTICE_ID_SEQ.nextval, #{notice_tittle}, #{notice_content}, sysdate, 0, #{notice_category}, #{userid})
+	</insert>
 	<!-- <update id="noticeUpdate" parameterType="NoticeDTO">
 		update notice set NOTICE_TITTLE = #{notice_tittle}, NOTICE_CONTENT = #{notice_content}
 			where NOTICE_ID = #{notice_id}
@@ -30,8 +34,5 @@
 	<delete id="NoticeDelete" parameterType="string">
 		delete from notice where NOTICE_ID = #{NOTICE_ID}
 	</delete>
-	<insert id="NoticeInsert" parameterType="NoticeDTO">
-		insert into notice (NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, NOTICE_CREATED, NOTICE_HITS, NOTICE_CATEGORY, USERID)
-			values (NOTICE_NOTICE_ID_SEQ.nextval, #{notice_tittle}, #{notice_content}, sysdate, 0, #{notice_category}, #{userid})
-	</insert> -->
+	 -->
 </mapper>

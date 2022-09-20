@@ -2,6 +2,9 @@ package com.dto;
 
 import java.util.List;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("PageDTO")
 public class PageDTO {
 	private List list;   // 현재페이지에 들어갈 레코드를 perPage만큼만 저장 
 	private int curPage;    //현재 볼 페이지 번호 

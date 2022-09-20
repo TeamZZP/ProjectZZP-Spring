@@ -38,10 +38,10 @@
 					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					      </div>
 					      <div class="modal-body text-center">
-					        정말 로그아웃 하시겠습니까?
+					        	정말 로그아웃 하시겠습니까?
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="location.href='LogoutServlet';">확인</button>
+					        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="location.href='logout';">확인</button>
 					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 					      </div>
 					    </div>
@@ -73,7 +73,7 @@
 			</c:when>
 			<c:otherwise>
 				<button type="button" onclick="location.href='login';"  class="btn btn-success" id="button_login">로그인</button>
-		      	<button type="button" onclick="location.href='#';"  class="btn btn-success" id="button_signin">회원가입</button>
+		      	<button type="button" onclick="location.href='join';"  class="btn btn-success" id="button_signin">회원가입</button>
 		      	<button type="button" onclick="location.href='#';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
 			</c:otherwise>
 		</c:choose>

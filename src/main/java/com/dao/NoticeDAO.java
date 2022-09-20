@@ -1,6 +1,7 @@
 package com.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -37,6 +38,21 @@ public class NoticeDAO {
 	}
 	private int noticeListCount() {
 		return session.selectOne("NoticeMapper.noticeListCount");
+	}
+
+	public NoticeDTO noticeDelite(String notice_id) {
+		NoticeDTO dto = session.selectOne("NoticeMapper.noticeDelite", notice_id);
+		return dto;
+	}
+
+	public int nextNoticeID(Map<String, String> map) {
+		int num = session.selectOne("NoticeMapper.nextNoticeID", map);
+		return num;
+	}
+
+	public int noticeHite(Map<String, Integer> hiteMap) {
+		int num = session.update("NoticeMapper.noticeHite", hiteMap);
+		return num;
 	}
 
 }

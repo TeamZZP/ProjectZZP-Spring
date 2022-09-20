@@ -59,7 +59,7 @@
     	<tr style="background: #DCDCDC">
     		<td> <b> ${point.notice_id} </b> </td>
     		<td> 
-    			<a href="NoticeOneSelectServlet?NOTICE_ID=${point.notice_id}"> 
+    			<a href="${point.notice_id}?category=${point.notice_category}"> 
     				<b> ${point.notice_tittle} </b> 
     			</a> 
     		</td>
@@ -77,7 +77,7 @@
 		%>
     	<tr>
     		<td> <%= nDTO.getNotice_id() %> </td>
-    		<td><a href="NoticeOneSelectServlet?NOTICE_ID=<%= nDTO.getNotice_id() %>"> <%= nDTO.getNotice_tittle() %> </a> </td>
+    		<td><a href="<%=nDTO.getNotice_id()%>?category=<%=nDTO.getNotice_category() %>"> <%= nDTO.getNotice_tittle() %> </a> </td>
     		<td> <%= day %> </td>
     		<td> <%= nDTO.getNotice_hits() %> </td>
     	</tr>

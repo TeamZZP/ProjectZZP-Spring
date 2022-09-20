@@ -40,7 +40,7 @@ public class NoticeDAO {
 		return session.selectOne("NoticeMapper.noticeListCount");
 	}
 
-	public NoticeDTO noticeDelite(String notice_id) {
+	public NoticeDTO noticeDelite(int notice_id) {
 		NoticeDTO dto = session.selectOne("NoticeMapper.noticeDelite", notice_id);
 		return dto;
 	}
@@ -53,6 +53,11 @@ public class NoticeDAO {
 	public int noticeHite(Map<String, Integer> hiteMap) {
 		int num = session.update("NoticeMapper.noticeHite", hiteMap);
 		return num;
+	}
+
+	public void noticeInsert(NoticeDTO dto) {
+		int num = session.insert("noticeInsert", dto);
+		System.out.println("공지 추가 갯수 " + num);
 	}
 
 }

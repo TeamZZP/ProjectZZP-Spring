@@ -26,7 +26,7 @@ public class NoticeService {
 		return dto;
 	}
 
-	public NoticeDTO noticeDelite(String notice_id) {
+	public NoticeDTO noticeDelite(int notice_id) {
 		NoticeDTO dto = dao.noticeDelite(notice_id);
 		return dto;
 	}
@@ -39,6 +39,10 @@ public class NoticeService {
 	public int noticeHite(Map<String, Integer> hiteMap) {
 		int num = dao.noticeHite(hiteMap);
 		return num;
+	}
+
+	public void noticeInsert(NoticeDTO dto) {
+		dao.noticeInsert(dto);
 	}
 
 }

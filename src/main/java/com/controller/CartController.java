@@ -22,9 +22,8 @@ public class CartController {
 	 * 장바구니 리스트화면
 	 */
 	@RequestMapping(value = "/cart/{userid}", method = RequestMethod.GET)
-	@ResponseBody
 	public String cartList(@PathVariable("userid") String userid) {
 		List<CartDTO> list = service.cartList(); 
-		return "m";
+		return "cart";
 	}
 }

@@ -12,7 +12,7 @@
       <button type="submit">로그인</button><br>
       <br>
       <button type="reset" id="resetBtn">취소</button>
-      <p class="message">Not registered? <a href="MemberUIServlet">Create an account</a></p>
+      <p class="message">Not registered? <a href="join">Create an account</a></p>
       <p class="message" id="link">
      	<a href="IdFindUIServlet">아이디찾기</a>
       	<a href="PwFindUIServlet">비밀번호찾기</a>

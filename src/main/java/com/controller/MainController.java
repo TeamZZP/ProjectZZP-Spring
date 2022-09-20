@@ -13,7 +13,6 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
-	
 	/**
 	 * 메인 화면 redirect
 	 */

@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.MemberDAO;
 import com.dto.MemberDTO;
@@ -21,6 +22,12 @@ public class MemberService {
 	//로그인
 	public MemberDTO login(Map<String, String> map) {
 		return dao.login(map);
+	}
+	
+	//회원가입
+	public int joinMember(Map<String, String> map) throws Exception {
+		int num = dao.joinMember(map);
+		return num;
 	}
 	
 	

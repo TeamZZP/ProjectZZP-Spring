@@ -14,7 +14,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dto.MemberDTO;
 import com.service.MemberService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Controller
+@Slf4j
 public class LoginController {
 	@Autowired
 	private MemberService service;
@@ -26,7 +29,6 @@ public class LoginController {
 	public String loginView() {
 		return "loginForm";
 	}
-	
 	/**
 	 * 로그인 처리
 	 */
@@ -37,10 +39,10 @@ public class LoginController {
 		//비밀번호 확인
 		if (idDTO!=null) {
 			MemberDTO dto = service.login(map);
-			System.out.println(dto);
 			//로그인
 			if (dto!=null) {
 				session.setAttribute("login", dto);
+				session.setMaxInactiveInterval(60*60);
 				return "redirect:/home";
 			} else {
 			//비밀번호 틀림
@@ -52,6 +54,15 @@ public class LoginController {
 			m.addFlashAttribute("mesg", "일치하는 회원이 없습니다:(");
 			return "redirect:/login";
 		}
+	}
+	/**
+	 * 로그아웃
+	 */
+	@RequestMapping(value = "/logout" , method = RequestMethod.GET)
+	public String logout(HttpSession session, RedirectAttributes m) {
+		session.invalidate();
+		m.addFlashAttribute("mesg", "다음에 또 만나요!");
+		return "redirect:/";
 	}
 
 }

@@ -23,7 +23,7 @@
 	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">소개</span></a></li>
 	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">스토어</span></a></li>
 	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">챌린지</span></a></li>
-	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">공지사항</span></a></li>
+	      <li><a href="notice" class="nav-link px-2 link-dark"><span class="headercss">공지사항</span></a></li>
 	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">문의</span></a></li>
 	    </ul>
 	<div class="col-md-3 text-end" id="header_login_bar" style="background-color: white;">

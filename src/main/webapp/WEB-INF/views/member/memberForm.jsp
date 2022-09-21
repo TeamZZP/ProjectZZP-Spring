@@ -17,6 +17,8 @@
 	var sample4_postcode = $("#sample4_postcode").val();
 	var sample4_roadAddress = $("#sample4_roadAddress").val();
 	var sample4_jibunAddress = $("#sample4_jibunAddress").val();
+	var mesg = $("#result4").text();
+	var mesg2 = $("#result3").text();
 	
 	var idChk = /^(?=.*[a-zA-Z])(?=.*[0-9]).{4,12}$/; 
 	var pwChk = /^(?=.*[a-zA-Z])(?=.*[!@#$%^&*+=-_])(?=.*[0-9]).{8,25}$/;
@@ -26,37 +28,30 @@
 	if (userid.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("아이디를 입력해주세요 :)");
-		$("#userid").focus();
 		event.preventDefault();
 	} else if (passwd.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("비밀번호를 입력해주세요 :)");
-		$("#passwd").focus();
 		event.preventDefault();
 	} else if (passwd2.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("비밀번호를 확인해주세요 :)");
-		$("#passwd2").focus();
 		event.preventDefault();
 	}  else if (username.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("이름을 입력해주세요 :)");
-		$("#username").focus();
 		event.preventDefault();
 	} else if (email1.length==0 || email2.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("이메일을 입력해주세요 :)");
-		$("#email1").focus();
 		event.preventDefault();
 	} else if (phone.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("전화번호를 입력해주세요 :)");
-		$("#phone").focus();
 		event.preventDefault();
 	} else if (sample4_postcode.length==0||sample4_roadAddress.length==0||sample4_jibunAddress.length==0) {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("주소를 입력해주세요 :)");
-		$("#sample4_postcode").focus();
 		event.preventDefault();
 	}
 	//아이디 유효성 검사
@@ -64,7 +59,6 @@
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("아이디를 형식에 맞게 입력해주세요 :)");
 		$("#userid").val("");
-		$("#userid").focus();
 		event.preventDefault();
 	}
 	//비밀번호 유효성 검사
@@ -72,7 +66,6 @@
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("비밀번호를 형식에 맞게 입력해주세요 :)");
 		$("#passwd").val("");
-		$("#passwd").focus();
 		event.preventDefault();
 	}
 	//이름 유효성 검사
@@ -80,7 +73,6 @@
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("이름을 확인해주세요 :)");
 		$("#username").val("");
-		$("#username").focus();
 		event.preventDefault();
 	}
 	//전화번호 유효성 검사
@@ -88,9 +80,28 @@
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("전화번호를 형식에 맞게 입력해주세요 :)");
 		$("#phone").val("");
-		$("#phone").focus();
 		event.preventDefault();
 	}
+	//비밀번호 오류 검사
+	else if (mesg2=="비밀번호 불일치") {
+		$("#modalBtn").trigger("click");
+		$("#mesg").text("비밀번호가 일치하지 않습니다 :(");
+		$("#passwd2").val("");
+		event.preventDefault();
+	}
+	//아이디 중복 검사
+	else if (mesg=="중복된 아이디입니다 :(") {
+		$("#modalBtn").trigger("click");
+		$("#mesg").text("아이디를 확인해주세요 :(");
+		$("#userid").val("");
+		event.preventDefault();
+	}
+	else if (mesg=="해당 아이디를 사용할 수 없습니다:(") {
+		$("#modalBtn").trigger("click");
+		$("#mesg").text("아이디를 확인해주세요 :(");
+		$("#userid").val("");
+		event.preventDefault();
+	};
  });
 	
 //비번확인//키 이벤트 발생시 패스워드 일치여부 검사 
@@ -104,63 +115,54 @@
 
 //이메일 선택 시 값 입력
 $("#emailSel").change(function() {
-	console.log(this.value)
 	$("#email2").val(this.value);
 });
 
 //아이디 중복 검사
-$("#idCheck").click(function() {
-	event.preventDefault();
-});
 $("#useridBtn").click(function() {
-	event.preventDefault();
 	console.log($("#modalUserid").val());
 	$.ajax({
 		type: "get",
-		url: "MemberIdCheckServlet",
+		url: "join/id",
 		dataType: "text",
 		data: {
 			userid: $("#modalUserid").val()
 		},
 		success: function(responseData, status, xhr) {
+			//모달 span태그에 id 중복 여부 출력
 			$("#result4").text(responseData);
+			//사용하기 버튼 data-id 속성 추가
 			$("#useId").attr("data-id",$("#modalUserid").val());
-			console.log($("#useId").attr("data-id"));
 		},
 		error: function(xhr, status, error) {
 			console.log(error);
 		}
 	}); 
 });
+
+//아이디 중복 확인
 $("#useId").click(function() {
 	var mesg = $("#result4").text();
 	if (mesg=="중복된 아이디입니다 :(") {
-		$("#result4").text("아이디를 다시 확인하시기 바랍니다.");
-	} else {
+		$("#result4").text("해당 아이디를 사용할 수 없습니다:(");
+	} else if ($("#result4").text()=="사용 가능한 아이디입니다 :)") {
 		$(this).attr("data-bs-dismiss", "modal");
-		$("#userid").val($(this).attr("data-id"));
-		/* $("#modalUserid").val("");
-		$("#result4").text("");  */
+		$("#userid").val($(this).attr("data-id")); //userid 자동 입력
+		$("#checkIdmodal").modal("hide"); //모달 닫기
+		$("#modalUserid").val(""); //모달 내용 삭제
+		$("#result4").text(""); //모달 내용 삭제
 	}
 });
 
-//아이디 중복 or 비밀번호 불일치 시 로그인 불가
+//아이디 중복  시 로그인 불가
 $("#addMember").click(function() {
 	var mesg = $("#result4").text();
-	var mesg2 = $("#result3").text();
-	if (mesg=="아이디를 다시 확인하시기 바랍니다.") {
+	if (mesg=="중복된 아이디입니다 :(") {
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("아이디를 확인해주세요 :(");
 		$("#userid").focus();
 		event.preventDefault();
 	}
-	if (mesg2=="비밀번호 불일치") {
-		$("#modalBtn").trigger("click");
-		$("#mesg").text("비밀번호가 일치하지 않습니다 :(");
-		$("#passwd2").val("");
-		$("#passwd2").focus();
-		event.preventDefault();
-	};
 });
 	
 });
@@ -191,7 +193,7 @@ HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("ka
                         <div class="card">
                             <div class="card-header" style="text-align: center; font-weight: bold; font-size: x-large;">ZZP 회원가입</div>
                             <div class="card-body">
-                                <form class="form-horizontal" method="post" action="join">
+                                <form class="form-horizontal" method="post" action="join" id="memberForm">
                                 	<!-- 아이디 -->
                                     <div class="form-group">
                                         <label for="userid" class="cols-sm-2 control-label" style="font-weight: bold;">아이디</label>
@@ -199,32 +201,11 @@ HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("ka
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                                                 <input type="text" class="form-control" name="userid" id="userid" placeholder="영문자와 숫자로 이루어진 4~12자리를 입력하세요" />
-                                                <button id="idCheck" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#checkId">중복확인</button>
+                                               <!-- <button id="idCheck" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#checkId">중복확인</button> -->
+                                                <a id="idCheck" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#checkIdmodal">중복확인</a>
                                             </div>
                                         </div>
                                     </div>
-	                                   	<!-- Modal -->
-										<div class="modal fade modal-first" id="checkId" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-										  <div class="modal-dialog">
-										    <div class="modal-content">
-										      <div class="modal-header">
-										        <h5 class="modal-title" id="staticBackdropLabel">아이디 중복 확인</h5>
-										        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-										      </div>
-										      <div class="modal-body">
-										      	<div class="form-group">
-											        <input type="text" class="form-control" id="modalUserid" style="width: 200px; display: inline;" placeholder="아이디 입력" >
-									      			<button type="submit" class="btn btn-outline-success" style="display: inline;" id="useridBtn">중복확인</button>
-										      		<span style="display: block;" id="result4"></span>
-										      	</div>
-										      </div>
-										      <div class="modal-footer">
-										        <button type="button" name="useId" id="useId" data-id="" class="btn btn-success">사용하기</button>
-										        <button type="button" id="closeWin" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-										      </div>
-										    </div> 
-										  </div>
-										</div>
                                     <!-- 비밀번호 -->
                                      <div class="form-group">
                                         <label for="passwd" class="cols-sm-2 control-label" style="font-weight: bold;">비밀번호</label>
@@ -325,6 +306,29 @@ HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("ka
                     </div>
                 </div>
 </div>
+<!-- 아이디 중복 확인 Modal -->
+<div class="modal fade modal-first" id="checkIdmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">아이디 중복 확인</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      	<div class="form-group">
+	        <input type="text" class="form-control" id="modalUserid" style="width: 200px; display: inline;" placeholder="아이디 입력" >
+     			<button type="submit" class="btn btn-outline-success" style="display: inline;" id="useridBtn">중복확인</button>
+      		<span style="display: block;" id="result4"></span>
+      	</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" name="useId" id="useId" data-id="" class="btn btn-success">사용하기</button>
+        <button type="button" id="closeWin" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+      </div>
+    </div> 
+  </div>
+</div>
+
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script>
     //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.

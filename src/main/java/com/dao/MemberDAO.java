@@ -29,6 +29,9 @@ public class MemberDAO {
 		return session.insert("joinMember",map);
 	}
 	
-	
+	//회원가입 아이디 중복 확인
+	public MemberDTO checkID(String userid) {
+		return session.selectOne("checkID", userid);
+	}
 	
 }

@@ -56,8 +56,18 @@ public class NoticeDAO {
 	}
 
 	public void noticeInsert(NoticeDTO dto) {
-		int num = session.insert("noticeInsert", dto);
+		int num = session.insert("NoticeMapper.noticeInsert", dto);
 		System.out.println("공지 추가 갯수 " + num);
+	}
+
+	public void noticeUpdate(NoticeDTO dto) {
+		int num = session.update("NoticeMapper.noticeUpdate", dto);
+		System.out.println("공지 수정 갯수 " + num);
+	}
+
+	public void noticeDelete(String notice_id) {
+		int num = session.delete("NoticeMapper.noticeDelete", notice_id);
+		System.out.println("공지 삭제 갯수 " + num);
 	}
 
 }

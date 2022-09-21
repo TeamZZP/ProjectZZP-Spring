@@ -27,12 +27,11 @@
 		insert into notice (NOTICE_ID, NOTICE_TITTLE, NOTICE_CONTENT, NOTICE_CREATED, NOTICE_HITS, NOTICE_CATEGORY, USERID)
 			values (NOTICE_NOTICE_ID_SEQ.nextval, #{notice_tittle}, #{notice_content}, sysdate, 0, #{notice_category}, #{userid})
 	</insert>
-	<!-- <update id="noticeUpdate" parameterType="NoticeDTO">
+	<update id="noticeUpdate" parameterType="NoticeDTO">
 		update notice set NOTICE_TITTLE = #{notice_tittle}, NOTICE_CONTENT = #{notice_content}
 			where NOTICE_ID = #{notice_id}
 	</update>
-	<delete id="NoticeDelete" parameterType="string">
+	<delete id="noticeDelete" parameterType="string">
 		delete from notice where NOTICE_ID = #{NOTICE_ID}
 	</delete>
-	 -->
 </mapper>

@@ -4,11 +4,12 @@ import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import com.dto.MemberDTO;
 
-@Service
+@Repository
 public class MemberDAO {
 	@Autowired
 	private SqlSessionTemplate session;
@@ -21,6 +22,11 @@ public class MemberDAO {
 	//로그인
 	public MemberDTO login(Map<String, String> map) {
 		return session.selectOne("login", map);
+	}
+	
+	//회원가입
+	public int joinMember (Map<String, String> map) throws Exception {
+		return session.insert("joinMember",map);
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.MemberDTO;
 import com.dto.NoticeDTO;
 import com.dto.PageDTO;
 import com.service.NoticeService;
@@ -30,7 +32,7 @@ public class NoticeController {
 	 * 공지 출력
 	 */
 	@RequestMapping(value = "/notice", method = RequestMethod.GET)
-	public String noticeList(HttpServletRequest request, Model m) {
+	public String noticeList(HttpServletRequest request, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
 		String curPage = request.getParameter("curPage"); //현재 페이지
 		if (curPage == null) {
@@ -42,6 +44,7 @@ public class NoticeController {
 		System.out.println("pDTO " + pDTO);
 		
 		m.addAttribute("NoticePointList", NoticePointList);
+		m.addAttribute("mDTO", session.getAttribute("login"));
 		m.addAttribute("pDTO", pDTO);
 		
 		return "noticeList";
@@ -50,16 +53,16 @@ public class NoticeController {
 	 * 공지 상세보기
 	 */
 	@RequestMapping(value = "/notice/{notice_id}", method = RequestMethod.GET)
-	public ModelAndView noticeDelite (@PathVariable String notice_id, @RequestParam String category) {
-		System.out.println(notice_id + category);
+	public ModelAndView noticeDelite (@PathVariable String notice_id, @RequestParam String category, HttpSession session) {
+		System.out.println("파씽 값 " + notice_id + "\t" + category);
 		ModelAndView mav = new ModelAndView();
 		
-		NoticeDTO nDTO = service.noticeDelite(notice_id); 
+		NoticeDTO nDTO = service.noticeDelite(Integer.parseInt(notice_id)); 
 		System.out.println("상세보기 " + nDTO);
 		
 		Map<String, String> map = new HashMap<String, String>();
 		map.put("noticeID", notice_id);
-		map.put("notice_category", category);
+		map.put("category", category);
 
 		int nextID = 0;
 		try {
@@ -68,11 +71,14 @@ public class NoticeController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		NoticeDTO nextDTO = service.noticeDelite(notice_id);
-		System.out.println("nextDTO " + nextDTO); // 다음 게시물
+		if (nextID != 0) {
+			NoticeDTO nextDTO = service.noticeDelite(nextID);
+			System.out.println("nextDTO " + nextDTO); // 다음 게시물
 
-		mav.addObject("nextDTO", nextDTO); // 다음글 보기
-
+			mav.addObject("nextDTO", nextDTO); // 다음글 보기
+		} else {
+			mav.addObject("nextDTO", null); // 다음글 보기
+		}
 		Map<String, Integer> hiteMap = new HashMap<String, Integer>();
 		hiteMap.put("noticeID", nDTO.getNotice_id());
 		hiteMap.put("noticeHite", nDTO.getNotice_hits() + 1);
@@ -81,8 +87,43 @@ public class NoticeController {
 		System.out.println("hiteUpdateNum " + hiteUpdateNum); //조회수		
 		
 		mav.addObject("nDTO", nDTO); //상세보기
+		mav.addObject("mDTO", session.getAttribute("login")); //로그인 정보
 		mav.setViewName("noticeDetail");
 		return mav;
+	}
+	/**
+	 * 공지 글쓰로 가기
+	 */
+	@RequestMapping("/notice/write")
+	public String noticeInsert() {
+		return "noticeInsert";
+	}
+	/**
+	 * 공지 추가
+	 */
+	@RequestMapping(value = "/notice", method = RequestMethod.POST)
+	public String noticeInsert(NoticeDTO dto, HttpSession session) {
+		System.out.println("공지 입력 내용 " + dto);
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		String userid = mDTO.getUserid();
+		dto.setUserid(userid);
+		
+		service.noticeInsert(dto);
+		
+		return "redirect:notice";
+	}
+	/**
+	 * 공지 수정
+	 */
+	@RequestMapping(value = "/notice/{notice_id}/write", method = RequestMethod.GET)
+	public String noticeUpdate(@PathVariable String notice_id, Model m) {
+		System.out.println("공지 수정할 ID " + notice_id);
+		NoticeDTO dto = service.noticeDelite(Integer.parseInt(notice_id));
+		System.out.println("수정할 내용 가져오기 " + dto);
+		
+		m.addAttribute("dto", dto);
+		
+		return "noticeUpdate";
 	}
 
 }

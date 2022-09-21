@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <style>
 	a{
 		text-decoration: none;
@@ -12,7 +13,7 @@
 	}
 </style>
 	<%
-	String mesg = (String)session.getAttribute("mesg");
+		String mesg = (String)session.getAttribute("mesg");
 		if(mesg != null){
 	%>
 	<script>
@@ -28,26 +29,16 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(function () {
-			$("#NoticeInsert").click(function () {
-				$("#NoticeInsertFrom").attr("action", "noticeInsert.jsp");
-			});
+			
 		});
 	</script>
-<%-- 	<%
-		MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
-		if(mDTO != null){
-			int admin = mDTO.getRole();
-			if (admin == 1){
-	%>
-	<form method="post" action="noticeInsert.jsp" id="NoticeInsertFrom">
-		<div style="text-align: right; padding-right: 10px;">
-			<button id="NoticeInsert" type="submit" class="btn btn-outline-success">공지 글쓰기</button> 
-		</div>
-	</form>
-	<%
-			}
-		}
-	%> --%> 
+	<c:if test="${mDTO.role == 1}">
+		<form method="get" action="notice/write">
+			<div style="text-align: right; padding-right: 10px;">
+				<button type="submit" class="btn btn-outline-success">공지 글쓰기</button> 
+			</div>
+		</form>
+	</c:if>
    <table border="1" style="text-align: center; border-collapse: collapse;" class="table table-hover">
 		<tr style="background-color: #8FBC8F">
 			<td>번호</td>
@@ -59,7 +50,7 @@
     	<tr style="background: #DCDCDC">
     		<td> <b> ${point.notice_id} </b> </td>
     		<td> 
-    			<a href="${point.notice_id}?category=${point.notice_category}"> 
+    			<a href="notice/${point.notice_id}?category=${point.notice_category}"> 
     				<b> ${point.notice_tittle} </b> 
     			</a> 
     		</td>
@@ -77,7 +68,7 @@
 		%>
     	<tr>
     		<td> <%= nDTO.getNotice_id() %> </td>
-    		<td><a href="<%=nDTO.getNotice_id()%>?category=<%=nDTO.getNotice_category() %>"> <%= nDTO.getNotice_tittle() %> </a> </td>
+    		<td><a href="notice/<%=nDTO.getNotice_id()%>?category=<%=nDTO.getNotice_category() %>"> <%= nDTO.getNotice_tittle() %> </a> </td>
     		<td> <%= day %> </td>
     		<td> <%= nDTO.getNotice_hits() %> </td>
     	</tr>

@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ZZP</title>
-<link rel="stylesheet" type="text/css" href="resources/css/loginForm.css">
+<link rel="stylesheet" type="text/css" href="resources/css/memberForm.css">
 <c:if test="${not empty mesg}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -20,7 +20,8 @@
 </head>
 <body>
 <jsp:include page="common/header.jsp"></jsp:include><br>
-<jsp:include page="login/loginForm.jsp"></jsp:include>
+<jsp:include page="member/memberForm.jsp"></jsp:include><br>
+<jsp:include page="common/footer.jsp"></jsp:include>
 
 <!-- modal -->
 <div class="modal" id="checkVal" data-bs-backdrop="static">

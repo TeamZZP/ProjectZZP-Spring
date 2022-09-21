@@ -14,4 +14,20 @@
 		select * from member where userid = #{userid} and passwd = #{passwd}
 	</select>
 	
+	<!-- 회원가입 -->
+	<insert id="joinMember" parameterType="hashMap">
+		insert all
+			<!-- member -->
+			into member
+			values (#{userid}, #{passwd}, #{username}, #{email1}, #{email2}, #{phone}, sysdate, 0)
+			<!-- address -->
+			into address
+			values (address_address_id_seq.nextval, #{userid}, #{username}, #{username}, #{phone}, 
+					#{post_num}, #{addr1}, #{addr2}, 1)
+			<!-- profile -->
+			into profile 
+			values (#{userid}, 'user.png', ' ')
+			select * from dual
+	</insert>
+	
 </mapper>

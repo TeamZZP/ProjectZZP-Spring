@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.dao.StoreDAO;
 import com.dto.CategoryDTO;
+import com.dto.ProductByCategoryDTO;
+import com.dto.ProductDTO;
 
 @Service
 public class StoreService {
@@ -18,6 +20,16 @@ public class StoreService {
 	public List<CategoryDTO> category() {
 		List<CategoryDTO> cList = dao.category();
 		return cList;
+	}
+
+	 public List<ProductByCategoryDTO> bestProduct() {
+		 List<ProductByCategoryDTO> list = dao.bestProduct();
+		return list;
+	}
+
+	public List<ProductByCategoryDTO> productByCategory(int c_id) {
+		List<ProductByCategoryDTO> prodByCateList = dao.productByCategory(c_id);
+		return prodByCateList;
 	}
 
 }

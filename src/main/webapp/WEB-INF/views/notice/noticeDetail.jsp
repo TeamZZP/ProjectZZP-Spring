@@ -2,34 +2,33 @@
 <%@page import="com.dto.NoticeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
-    <%
-		String mesg = (String)session.getAttribute("mesg");
-		if(mesg != null){
-	%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
+   <c:if test="${!empty mesg}">
 		<script>
-			alert("<%=mesg%>");
+			alert("${mesg}");
 		</script>
-	<%
-		}
-		session.removeAttribute("mesg");
-	%>
+	</c:if>
+	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
-				function NoticeList() {
-					location.href = "../notice";
-				}
-				function NoticeDelete(id) {
-					location.href = "../notice?notice_id="+id;
-				}
-				function NoticeUpdate(id) {
-					location.href = "../notice/{notice_id}/write"
-				}
+			$(document).ready(function () {
+				$("#noticeUpdate").click(function () {
+					$("form").attr("method", "get").attr("action", "../notice/write/${nDTO.notice_id}");
+				});
+				$("#noticeDelete").click(function () {
+					$("form").attr("action", "../notice/${nDTO.notice_id}");
+				});
+			});//end ready
 	</script>
+	
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="../resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
-	<form action="../notice/${nDTO.notice_id}" method="get">
+	
+	<form action="" method="post">
+	<input type="hidden" name="_method" value="delete">
+	
 	<div class="container justify-content-center">
 	<div class="row">
 		<input type="hidden" name="notice_id" value="${nDTO.notice_id}">
@@ -72,7 +71,7 @@
 			<tr>
 				<td colspan="2">
 					<div class="input-group col-mb-3">
-						 <button class="btn btn-outline-success col-md-2" onclick="NoticeList()">목록</button>
+						 <a class="btn btn-outline-success col-md-2" href="../notice" style="text-decoration: none;"> 목록 </a>
 						 <c:if test="${!empty nextDTO}">
 							  <button class="btn btn-outline-success col-md-2" type="button" 
 							  	onclick="location.href='../notice/${nextDTO.notice_id}?category=${nextDTO.notice_category}'">
@@ -90,8 +89,8 @@
 			<tr>
 				<c:if test="${mDTO.role == 1}">
 					<td colspan="2" style="text-align: right;">
-						<button type="submit" onclick="NoticeUpdate(${nDTO.notice_id})" class="btn btn-outline-success" >수정</button>
-						<button onclick="NoticeDelete(${nDTO.notice_id})" class="btn btn-outline-success" >글 삭제</button>				
+						<button class="btn btn-outline-success" id="noticeUpdate"> 수정 </button>
+						<button class="btn btn-outline-success" id="noticeDelete"> 삭제 </button>
 					</td>
 				</c:if>
 			</tr>

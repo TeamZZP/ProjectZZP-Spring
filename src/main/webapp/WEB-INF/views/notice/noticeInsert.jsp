@@ -25,6 +25,11 @@
 		});
 	});;//end ready
 </script>
+
+	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
+		<img src="../resources/images/notice/notice3.png" alt="..." style="width: auto;">
+	</div>
+
 	<form method="post" action="">
 	<div class="container justify-content-center">
 	<div class="row">

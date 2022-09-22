@@ -1,5 +1,6 @@
 package com.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,30 @@ public class MemberService {
 		return dao.checkID(userid);
 	}
 	
+	//회원가입 전화번호 중복 확인
+	public MemberDTO checkPhone(String phone) {
+		return dao.checkPhone(phone);
+	}
+	
+	//아이디 찾기 
+	public MemberDTO findId(HashMap<String, String> map) {
+		return dao.findId(map);
+	}
+	
+	//비밀번호 찾기
+	public MemberDTO findPw(HashMap<String, String> map) {
+		return dao.findPw(map);
+	}
+	
+	//새 비밀번호 중복 확인
+	public MemberDTO pwcheck(HashMap<String, String> map) {
+		return dao.pwcheck(map);
+	}
+	
+	//새 비밀번호 변경
+	public int changePw(HashMap<String, String> map) {
+		return dao.changePw(map);
+	}
+	
+
 }

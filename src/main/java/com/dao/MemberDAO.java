@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,5 +34,31 @@ public class MemberDAO {
 	public MemberDTO checkID(String userid) {
 		return session.selectOne("checkID", userid);
 	}
+	
+	//회원가입 전화번호 중복 확인
+	public MemberDTO checkPhone(String phone) {
+		return session.selectOne("checkPhone", phone);
+	}
+	
+	//아이디 찾기
+	public MemberDTO findId(HashMap<String, String> map) {
+		return session.selectOne("findId", map);
+	}
+	
+	//비밀번호 찾기
+	public MemberDTO findPw(HashMap<String, String> map) {
+		return session.selectOne("findPw", map);
+	}
+	
+	//새 비밀번호 중복 확인
+	public MemberDTO pwcheck(HashMap<String, String> map) {
+		return session.selectOne("pwcheck", map);
+	}
+	
+	//새 비밀번호 변경
+	public int changePw(HashMap<String, String> map) {
+		return session.update("changePw",map);
+	}
+
 	
 }

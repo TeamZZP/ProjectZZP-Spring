@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="resources/js/loginForm.js"></script>
+<script type="text/javascript" src="resources/js/member/loginForm.js"></script>
 
 <div class="login-page">
   <div class="form">
@@ -14,8 +14,8 @@
       <button type="reset" id="resetBtn">취소</button>
       <p class="message">Not registered? <a href="join">Create an account</a></p>
       <p class="message" id="link">
-     	<a href="IdFindUIServlet">아이디찾기</a>
-      	<a href="PwFindUIServlet">비밀번호찾기</a>
+     	<a href="loginid">아이디찾기</a>
+      	<a href="loginpw">비밀번호찾기</a>
       </p>
     </form>
       <div id="kko">

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.MemberDTO;
 import com.dto.NoticeDTO;
@@ -102,7 +103,7 @@ public class NoticeController {
 	 * 공지 추가
 	 */
 	@RequestMapping(value = "/notice", method = RequestMethod.POST)
-	public String noticeInsert(NoticeDTO dto, HttpSession session) {
+	public String noticeInsert(NoticeDTO dto, HttpSession session, RedirectAttributes attr) {
 		System.out.println("공지 입력 내용 " + dto);
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
 		String userid = mDTO.getUserid();
@@ -110,13 +111,15 @@ public class NoticeController {
 		
 		service.noticeInsert(dto);
 		
+		attr.addFlashAttribute("mesg", "게시글 작성이 완료되었습니다.");
+		
 		return "redirect:notice";
 	}
 	/**
-	 * 공지 수정
+	 * 공지 수정 페이지 가기
 	 */
-	@RequestMapping(value = "/notice/{notice_id}/write", method = RequestMethod.GET)
-	public String noticeUpdate(@PathVariable String notice_id, Model m) {
+	@RequestMapping(value = "/notice/write/{notice_id}", method = RequestMethod.GET)
+	public String noticeSelect(@PathVariable String notice_id, Model m) {
 		System.out.println("공지 수정할 ID " + notice_id);
 		NoticeDTO dto = service.noticeDelite(Integer.parseInt(notice_id));
 		System.out.println("수정할 내용 가져오기 " + dto);
@@ -125,5 +128,25 @@ public class NoticeController {
 		
 		return "noticeUpdate";
 	}
-
+	/**
+	 * 공지 수정
+	 */
+	@RequestMapping(value = "/notice/{notice_id}", method = RequestMethod.PUT)
+	public String noticeUpdate(@PathVariable String notice_id, NoticeDTO dto, RedirectAttributes attr) {
+		System.out.println("공지 수정할 내용" + dto);
+		service.noticeUpdate(dto);
+		attr.addFlashAttribute("mesg", "게시글 수정이 완료되었습니다.");
+		return "redirect:../notice";
+	}
+	/**
+	 * 공지 삭제
+	 */
+	@RequestMapping(value = "/notice/{notice_id}", method = RequestMethod.DELETE)
+	public String noticeDelete(@PathVariable String notice_id, RedirectAttributes attr) {
+		System.out.println("삭제할 공지 " + notice_id);
+		service.noticeDelete(notice_id);
+		attr.addFlashAttribute("mesg", "게시글 삭제가 완료되었습니다.");
+		return "redirect:../notice";
+	}
+	
 }

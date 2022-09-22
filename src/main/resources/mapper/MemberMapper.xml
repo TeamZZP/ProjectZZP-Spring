@@ -30,4 +30,9 @@
 			select * from dual
 	</insert>
 	
+	<!-- 회원가입 아이디 중복 확인 -->
+	<select id="checkID" parameterType="String" resultType="MemberDTO">
+		select * from member where userid = #{userid}
+	</select>
+	
 </mapper>

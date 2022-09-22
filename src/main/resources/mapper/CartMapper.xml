@@ -3,9 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="CartMapper">
-
-<select id="cartList" resultType="CartDTO">
-	select * from cart
-</select>
-
+	
+	<!-- 장바구니 리스트 -->
+	<select id="cartList" parameterType="string" resultType="CartDTO">
+		select c.cart_id,p.p_name,c.p_amount,p.p_selling_price,p.p_id,c.userid, p_selling_price*p_amount money,
+		(select IMAGE_ROUTE from images where p_id = c.p_id and IMAGE_RNK = 1) as p_image 
+      	from cart c join product p 
+      	on c.p_id = p.p_id
+		where c.userid = #{userid} 
+		order by cart_id desc
+	</select>
+	
+	<!-- 장바구니 갯수 -->
+	<select id="cartCount" parameterType="String" resultType="int">
+		select count(*) from cart where userid = #{userid}
+	</select>
 </mapper>

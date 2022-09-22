@@ -30,6 +30,9 @@ public class MemberService {
 		return num;
 	}
 	
-	
+	//회원가입 아이디 중복 확인
+	public MemberDTO checkID(String userid) {
+		return dao.checkID(userid);
+	}
 	
 }

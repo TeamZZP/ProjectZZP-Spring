@@ -14,9 +14,14 @@ public class CartDAO {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public List<CartDTO> cartList() {
-		List<CartDTO> list = session.selectList("CartMapper.cartList");
+	public List<CartDTO> cartList(String userid) {
+		List<CartDTO> list = session.selectList("CartMapper.cartList",userid);
 		return list;
+	}
+
+	public int cartCount(String userid) {
+		int n = session.selectOne("CartMapper.cartCount",userid);
+		return n;
 	}
 	
 	

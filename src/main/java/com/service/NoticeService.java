@@ -45,4 +45,12 @@ public class NoticeService {
 		dao.noticeInsert(dto);
 	}
 
+	public void noticeUpdate(NoticeDTO dto) {
+		dao.noticeUpdate(dto);
+	}
+
+	public void noticeDelete(String notice_id) {
+		dao.noticeDelete(notice_id);
+	}
+
 }

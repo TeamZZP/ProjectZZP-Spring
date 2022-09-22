@@ -23,4 +23,12 @@ public class ChallengeService {
 		return dao.selectAllChallenge(map);
 	}
 
+	public ChallengeDTO selectChallThisMonth() {
+		return dao.selectChallThisMonth();
+	}
+
+	public List<Integer> selectLikedChall(String userid) {
+		return dao.selectLikedChall(userid);
+	}
+
 }

@@ -13,8 +13,13 @@ public class CartService {
 	@Autowired
 	private CartDAO dao;
 
-	public List<CartDTO> cartList() {
-		List<CartDTO> list = dao.cartList();
+	public List<CartDTO> cartList(String userid) {
+		List<CartDTO> list = dao.cartList(userid);
 		return list;
+	}
+
+	public int cartCount(String userid) {
+		int n = dao.cartCount(userid);
+		return n;
 	}
 }

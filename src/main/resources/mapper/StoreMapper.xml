@@ -4,9 +4,44 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="StoreMapper">
   
+  <!-- 전체 카테고리 select-->
   <select id="category" resultType="CategoryDTO">
   select * from category
   </select>
+  
+  <!-- 베스트상품들 (스토어 메인용)-->
+  <select id="bestProduct" resultType="ProductByCategoryDTO">
+   select * 
+   from ( select p.P_ID ,
+   (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   (select count(*) from Orders where p_id = p.p_id ) as p_order ,
+   p.P_NAME ,
+   p.P_CONTENT ,
+   p.C_ID ,
+   p.P_COST_PRICE ,
+   p.P_SELLING_PRICE ,
+   p.P_DISCOUNT ,
+   p.P_CREATED ,
+   p.P_STOCK 
+   from product p ) 
+   order by p_order desc 
+  </select>
+  
+  <select id="productByCategory" parameterType="int" resultType="ProductByCategoryDTO">
+   select p.P_ID ,
+   (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   p.P_NAME ,
+   p.P_CONTENT ,
+   p.C_ID ,
+   p.P_COST_PRICE ,
+   p.P_SELLING_PRICE ,
+   p.P_DISCOUNT ,
+   p.P_CREATED ,
+   p.P_STOCK 
+   from product p 
+   where p.c_id = #{c_id} 
+  </select>
+  
   
   </mapper>
   

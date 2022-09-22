@@ -12,26 +12,16 @@
 		color: black;
 	}
 </style>
-	<%
-		String mesg = (String)session.getAttribute("mesg");
-		if(mesg != null){
-	%>
-	<script>
-		alert("<%=mesg%>");
-	</script>
-	<%
-		}
-		session.removeAttribute("mesg");
-	%>
+	<c:if test="${!empty mesg}">
+		<script>
+			alert("${mesg}");
+		</script>
+	</c:if>
+	
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-		$(function () {
-			
-		});
-	</script>
+
 	<c:if test="${mDTO.role == 1}">
 		<form method="get" action="notice/write">
 			<div style="text-align: right; padding-right: 10px;">

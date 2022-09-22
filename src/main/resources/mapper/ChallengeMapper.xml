@@ -5,26 +5,42 @@
 <mapper namespace="ChallengeMapper">
 
 <select id="selectAllChallenge" parameterType="hashmap" resultType="ChallengeDTO">
-	select * from challenge
+	select * 
+	from challenge c 
+	LEFT OUTER JOIN profile p on c.userid=p.userid
+	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
 	<where>
-	  <if test='searchName!=null and !searchName.equals("null")'>
-	 	${searchName} like '%${searchValue}%'
+	  <if test='searchName!=null and !searchName.equals("")'>
+	 	and ${searchName} like '%${searchValue}%'
 	  </if>
-	</where> 
+	</where>
 	order by 
-	<if test="sortBy!=null">
+	<if test='sortBy!=null and !sortBy.equals("")'>
 		${sortBy} desc,
 	</if>
-	chall_id desc
+	c.chall_id desc
 </select>
 
 <select id="countTotalChall" parameterType="hashmap" resultType="int">
-	select count(*) from challenge
- 	<where>
- 	  <if test='searchName!=null and !searchName.equals("null")'>
-	 	${searchName} like '%${searchValue}%'
+	select count(*) 
+	from challenge c 
+	LEFT OUTER JOIN profile p on c.userid=p.userid
+	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	<where>
+	  <if test='searchName!=null and !searchName.equals("")'>
+	 	and ${searchName} like '%${searchValue}%'
 	  </if>
-	</where> 
+	</where>
+</select>
+
+<select id="selectChallThisMonth" resultType="ChallengeDTO">
+	select * from challenge
+	where chall_this_month=1
+</select>
+
+<select id="selectLikedChall">
+	select chall_id from chall_liked 
+	where userid=#{userid}
 </select>
 
 </mapper>

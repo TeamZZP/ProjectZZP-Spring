@@ -13,6 +13,7 @@
 	<beans:bean id="loginInterceptor" class="com.interceptor.LoginInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
+			<mapping path="/logout/**"/>
 			<mapping path="/mypage/**"/>
 			<mapping path="/cart/**"/>
 			<beans:ref bean="loginInterceptor"/>

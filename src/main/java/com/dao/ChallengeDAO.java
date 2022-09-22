@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,10 @@ public class ChallengeDAO {
 	}
 
 	public PageDTO selectAllChallenge(HashMap<String, String> map) {
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("curPage")).orElse(("1")));
+		int curPage = Integer.parseInt(
+				Optional.ofNullable(map.get("curPage"))
+				.orElse(("1"))
+				);
 		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(8);
@@ -40,6 +44,14 @@ public class ChallengeDAO {
 
 	private int countTotalChall(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.countTotalChall", map);
+	}
+
+	public ChallengeDTO selectChallThisMonth() {
+		return session.selectOne("ChallengeMapper.selectChallThisMonth");
+	}
+
+	public List<Integer> selectLikedChall(String userid) {
+		return session.selectList("ChallengeMapper.selectLikedChall", userid);
 	}
 	
 

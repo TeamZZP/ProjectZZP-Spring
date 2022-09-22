@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,17 +52,17 @@ a {
 </head>
 <body>
 <p>main.jsp</p>
-<form action="StoreServlet" id="prodForm">    
+<form action="StoreServlet" id="prodForm" >    
     <div id="categoryProductContainer" class="container ">
-  
-      <c:forEach var="pList" items="${Productlist}">
+ 
+      <c:forEach var="pList" items="${Productlist}" varStatus="status">
       
   
       <div class="col-lg-3 col-md-4 col-sm-6">
       
          <div class="hover-zoomin">
             <a href="ProductRetrieve?p_id=${pList.p_id}"> 
-            <img src="../images/p_image/${pList.p_image}">
+            <img src="resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
@@ -72,12 +73,16 @@ a {
          </div>
          
          <div>
-            <p style="color: green; font-size: 20px;">${pList.p_price}원
-            </p>
+            <p style="color: green; font-size: 20px;"><fmt:formatNumber pattern="###,###,###" >${pList.p_selling_price}</fmt:formatNumber>원</p>
          </div> 
              
             </div> 
-            
+            		    <!-- 한 줄에4개씩 -->
+						<c:if test="${status.count%4==0}">
+						<div>
+							<span style=" height: 10 "></span>
+						</div>	
+						</c:if>
             
           </c:forEach>
              

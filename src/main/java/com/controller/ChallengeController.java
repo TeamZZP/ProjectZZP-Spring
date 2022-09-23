@@ -9,11 +9,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
@@ -96,8 +96,18 @@ public class ChallengeController {
 	 */
 	@RequestMapping(value = "/challenge/write", method = RequestMethod.GET)
 	public String challengeWrite() {
-		return "challeneWrite";
+		return "challengeWrite";
 	}
-	
+	/**
+	 * 챌린지 업로드
+	 */
+	@RequestMapping(value = "/challenge", method = RequestMethod.POST)
+	public String challengeUpload(ChallengeDTO dto) {
+		System.out.println("challengeUpload>> "+dto);
+		
+		//service.insertChallenge(map, uploadFile);
+		
+		return "redirect:/challenge";
+	}
 
 }

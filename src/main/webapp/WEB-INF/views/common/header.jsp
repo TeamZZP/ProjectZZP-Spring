@@ -21,11 +21,11 @@
 		</a>
 	<!-- 메인 카테고리 -->
 	    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">소개</span></a></li>
-	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">스토어</span></a></li>
-	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">챌린지</span></a></li>
+	      <li><a href="about" class="nav-link px-2 link-dark"><span class="headercss">소개</span></a></li>
+	      <li><a href="store" class="nav-link px-2 link-dark"><span class="headercss">스토어</span></a></li>
+	      <li><a href="challenge" class="nav-link px-2 link-dark"><span class="headercss">챌린지</span></a></li>
 	      <li><a href="notice" class="nav-link px-2 link-dark"><span class="headercss">공지사항</span></a></li>
-	      <li><a href="#" class="nav-link px-2 link-dark"><span class="headercss">문의</span></a></li>
+	      <li><a href="qna" class="nav-link px-2 link-dark"><span class="headercss">문의</span></a></li>
 	    </ul>
 	<div class="col-md-3 text-end" id="header_login_bar" style="background-color: white;">
 		<c:choose>
@@ -49,7 +49,7 @@
 					  </div>
 					</div>
 				<button type="button" onclick="location.href='mypage/${login.userid}';"  class="btn btn-success" id="button_mypage">마이페이지</button>
-				<button type="button" onclick="location.href='#';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
+				<button type="button" onclick="location.href='cart/${login.userid}';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
 			</c:when>
 			<c:when test="${not empty login && login.role==1}">
 				<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">로그아웃</button>
@@ -70,18 +70,18 @@
 					    </div>
 					  </div>
 					</div>
-				<button type="button" onclick="location.href='#';"  class="btn btn-success" id="button_adminpage" style="margin-right: 13px;">관리자페이지</button>
+				<button type="button" onclick="location.href='admin';"  class="btn btn-success" id="button_adminpage" style="margin-right: 13px;">관리자페이지</button>
 			</c:when>
 			<c:otherwise>
 				<button type="button" onclick="location.href='login';"  class="btn btn-success" id="button_login">로그인</button>
 		      	<button type="button" onclick="location.href='join';"  class="btn btn-success" id="button_signin">회원가입</button>
-		      	<button type="button" onclick="location.href='#';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
+		      	<button type="button" onclick="location.href='cart/${login.userid}';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
 			</c:otherwise>
 		</c:choose>
 	</div>
 		<!-- 검색창 -->
 		<div class="container-fluid" style="margin-top: 5px;">
-			<form class="d-flex" style="float: right; display: inline-block;" action="ProductSearchServlet">
+			<form class="d-flex" style="float: right; display: inline-block;" action="#">
 				<input class="form-control me-2" type="search" placeholder="상품 검색" aria-label="Search"  style="width:200px;" name="searchValue">
 				<button class="btn btn-outline-success" type="submit">검색</button>
 			</form>

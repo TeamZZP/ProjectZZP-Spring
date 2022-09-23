@@ -2,6 +2,9 @@
 <%@page import="com.dto.ChallengeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <style>
 #challDetailContent {
 	width: 700px;
@@ -62,7 +65,9 @@
 	$(document).ready(function () {
 		//글쓰기 버튼
 		$("input[type='submit']").on('click', function () {
-			
+			let url = '../challenge';
+			if ('${!empty cDTO}' == 'true') url = '../challenge/${cDTO.chall_id}';
+			$('form').attr('action', url).submit();
 		})
 		//글쓰기 취소
 		$(".cancelBtn").on("click", function () {
@@ -140,43 +145,49 @@
 	}
 </script>
 
+<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
+
 <div class="container">
 <div id="challDetailContent">
 
-<form action="UploadServlet?userid=<%= currUserid %>&operate=<%= operate %>" method="post" enctype="multipart/form-data">
-<input type="hidden" name="chall_id" value="<%= chall_id %>">
-<input type="hidden" name="userid" value="<%= currUserid %>">
-<input type="hidden" name="old_file" id="old_file" value="<%= chall_img %>">
+<form method="post" enctype="multipart/form-data">
+<c:if test="${!empty cDTO}">
+	<input type="hidden" name="chall_id" value="${cDTO.chall_id}">
+	<input type="hidden" name="old_file" id="old_file" value="${cDTO.chall_img}">
+</c:if>
 
   <div class="row">
 	<div class="d-flex w-25">
 		<select name="chall_category" id="chall_category" class="form-select">
 		  <option value="none">분류 선택하기</option>
-	 	  <option <% if("이 달의 챌린지".equals(chall_category)) {%>selected<%} %>>이 달의 챌린지</option>
-	 	  <option <% if("쓰레기 줄이기".equals(chall_category)) {%>selected<%} %>>쓰레기 줄이기</option>
-	 	  <option <% if("소비 줄이기".equals(chall_category)) {%>selected<%} %>>소비 줄이기</option>
-	 	  <option <% if("아껴쓰기".equals(chall_category)) {%>selected<%} %>>아껴쓰기</option>
-	 	  <option <% if("기부하기".equals(chall_category)) {%>selected<%} %>>기부하기</option>
+	 	  <option <c:if test="${!empty cDTO && cDTO.chall_category=='이 달의 챌린지'}">selected</c:if>>이 달의 챌린지</option>
+	 	  <option <c:if test="${!empty cDTO && cDTO.chall_category=='쓰레기 줄이기'}">selected</c:if>>쓰레기 줄이기</option>
+	 	  <option <c:if test="${!empty cDTO && cDTO.chall_category=='소비 줄이기'}">selected</c:if>>소비 줄이기</option>
+	 	  <option <c:if test="${!empty cDTO && cDTO.chall_category=='아껴쓰기'}">selected</c:if>>아껴쓰기</option>
+	 	  <option <c:if test="${!empty cDTO && cDTO.chall_category=='기부하기'}">selected</c:if>>기부하기</option>
 		</select>
 	</div>
 	<div class="w-75">
 		<input type="text" name="chall_title" id="chall_title" class="form-control" placeholder="제목"
-			<% if(chall_title!=null) {%>value="<%=chall_title%>"<%} %>>
+			<c:if test="${!empty cDTO}">value="${cDTO.chall_title}"</c:if>>
 	</div>
   </div>
   <div class="row">
     <div class="p-4 text-center">
-	  <% if(chall_img==null) {%>
+      <c:choose>
+        <c:when test="${empty cDTO}">
 	  		<img src="images/uploadarea.png" class="thumb uploadBtn" id="uploadarea" width="600" height="600" />
 	  		<img src="images/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기" style="display: none;">
 	 		<img src="images/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
 	  	    <input type="file" accept="image/*" name="chall_img" id="chall_img" style="display: none;">
-	  <%} else { %>
-	 		<img src="/eclipse/upload/<%= chall_img %>" class="thumb" id="uploadarea" width="600" height="600">
+	    </c:when>
+	    <c:otherwise>
+	 		<img src="/eclipse/upload/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
 	 		<img src="images/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
 	 		<img src="images/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
-	 		<input type="file" accept="image/*" name="chall_img" id="chall_img" value="<%= chall_img %>" style="display: none;">
-	  <%} %>
+	 		<input type="file" accept="image/*" name="chall_img" id="chall_img" value="${cDTO.chall_img}" style="display: none;">
+	    </c:otherwise>
+	  </c:choose>
 	</div>
   </div>
   <div>

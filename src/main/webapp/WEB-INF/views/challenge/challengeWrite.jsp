@@ -33,10 +33,10 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		//글쓰기 버튼
-		$("input[type='submit']").on('click', function () {
+		$("#uploadForm input[type='submit']").on('click', function () {
 			let url = '../challenge';
 			if ('${!empty cDTO}' == 'true') url = '../challenge/${cDTO.chall_id}';
-			$('form').attr('action', url).submit();
+			$('#uploadForm').attr('action', url).submit();
 		})
 		//글쓰기 취소
 		$(".cancelBtn").on("click", function () {
@@ -119,7 +119,8 @@
 <div class="container">
 <div id="challDetailContent">
 
-<form method="post" enctype="multipart/form-data">
+<form id="uploadForm" method="post" enctype="multipart/form-data">
+<input type="hidden" name="userid" value="${login.userid}">
 <c:if test="${!empty cDTO}">
 	<input type="hidden" name="chall_id" value="${cDTO.chall_id}">
 	<input type="hidden" name="old_file" id="old_file" value="${cDTO.chall_img}">

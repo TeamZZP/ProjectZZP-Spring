@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,10 +103,31 @@ public class ChallengeController {
 	 * 챌린지 업로드
 	 */
 	@RequestMapping(value = "/challenge", method = RequestMethod.POST)
-	public String challengeUpload(ChallengeDTO dto) {
-		System.out.println("challengeUpload>> "+dto);
+	public String challengeUpload(
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
 		
-		//service.insertChallenge(map, uploadFile);
+		long size = uploadFile.getSize();
+		String name= uploadFile.getName();
+		String originalFileName= uploadFile.getOriginalFilename();
+		String contentType= uploadFile.getContentType();
+		System.out.println("size:  "+ size);
+		System.out.println("name:  "+ name);
+		System.out.println("originalFileName:  "+ originalFileName);
+		System.out.println("contentType:  "+ contentType);
+		
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		
+		File f= new File(location, originalFileName);
+		try {
+			uploadFile.transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("chall_img", originalFileName);
+		
+		int n = service.insertChallenge(map);
+		System.out.println("insert 개수 : "+n);
 		
 		return "redirect:/challenge";
 	}

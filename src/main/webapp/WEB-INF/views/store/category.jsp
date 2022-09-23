@@ -1,11 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>  
@@ -37,8 +32,7 @@ $(function() {
 
 </script>  
  
-</head>
-<body>
+
 <a>카테고리jsp</a> <br>
 <a href="store">베스트</a><br>
 <c:forEach var="cList" items="${categoryList}">
@@ -46,5 +40,3 @@ $(function() {
 <a href="productByCategory?c_id=${cList.c_id}">${cList.c_name}</a><br>
 </c:forEach> 
 
-</body>
-</html>

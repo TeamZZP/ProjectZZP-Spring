@@ -28,37 +28,6 @@
 }
 
 </style>
-<%
-/* 
-	request에 저장된 dto가 있을 경우: 글 수정 페이지
-	저장된 dto가 없을 경우: 글쓰기 페이지
- */
-	ChallengeDTO dto = (ChallengeDTO) request.getAttribute("dto");
-	int chall_id = 0;
-	String chall_category = null;
-	String chall_title = null;
-	String chall_img = null;
-	String chall_content = null;
-	
-	//dto의 존재 유무에 따라 어떤 동작을 할 것인지 전송해 준다.
-	String operate = "upload";
-	
-	if (dto != null) {
-		chall_id = dto.getChall_id();
-		chall_category = dto.getChall_category();
-		chall_title = dto.getChall_title();
-		chall_img = dto.getChall_img();
-		chall_content = dto.getChall_content();
-		operate = "update";
-	}
-	
-	//session에 저장된 userid 읽어오기 
-	MemberDTO member = (MemberDTO) session.getAttribute("login"); 
-	String currUserid = null;
-	if (member != null) {
-		currUserid = member.getUserid();
-	}
-%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -192,7 +161,7 @@
   </div>
   <div>
   	<textarea class="form-control" rows="10" name="chall_content" id="chall_content" placeholder="본문 입력">
-<% if(chall_content!=null) {%><%=chall_content%><%} %></textarea>
+<c:if test="${!empty cDTO}">${cDTO.chall_content}</c:if></textarea>
   </div>
 	  
   <div class="row p-4">
@@ -201,11 +170,14 @@
 	</div>
 	<div class="col">
 	  <div class="float-end">
-	  <% if(dto==null) {%>
-	 	<input type="submit" class="btn btn-success" value="글쓰기">
-	  <%} else { %>
-	  	<input type="submit" class="btn btn-success" value="수정하기">
-	  <%} %>
+	    <c:choose>
+          <c:when test="${empty cDTO}">
+	 	    <input type="submit" class="btn btn-success" value="글쓰기">
+	      </c:when>
+	      <c:otherwise>
+	  	    <input type="submit" class="btn btn-success" value="수정하기">
+	      </c:otherwise>
+	  </c:choose>
 	  </div>
 	</div>
   </div>

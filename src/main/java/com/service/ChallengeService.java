@@ -30,5 +30,10 @@ public class ChallengeService {
 	public List<Integer> selectLikedChall(String userid) {
 		return dao.selectLikedChall(userid);
 	}
+	
+	//메인 - 뉴 챌린지
+	public List<ChallengeDTO> selectNewChallenge() {
+		return dao.selectNewChallenge();
+	}
 
 }

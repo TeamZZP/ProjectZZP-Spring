@@ -83,6 +83,7 @@
 	where userid=#{userid}
 </select>
 
+
 <!-- 메인 : 뉴 챌린지 -->
 <select id="selectNewChallenge" resultType="ChallengeDTO">
 	select * from challenge order by chall_id desc
@@ -127,5 +128,12 @@
 	select profile_img from profile
 	where userid=#{userid}
 </select>
+
+
+<!-- 메인 : 뉴 챌린지 -->
+<select id="selectNewChallenge" resultType="ChallengeDTO">
+	select * from challenge order by chall_id desc
+</select>
+
 
 </mapper>

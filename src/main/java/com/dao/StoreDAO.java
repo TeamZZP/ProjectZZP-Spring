@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -28,8 +29,16 @@ public class StoreDAO {
 		List<ProductByCategoryDTO> productByCategory = template.selectList("StoreMapper.productByCategory", c_id);
 		return productByCategory;
 	}
+
+	public ProductByCategoryDTO productRetrieve(int p_id) {
+		ProductByCategoryDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);
+		return dto;
+	}
 	
-	
+	public int zzimCheck(HashMap<String, String> map) {
+		int n = template.selectOne("StoreMapper.zzimCheck", map);
+		return n;
+	}
 
 
 }

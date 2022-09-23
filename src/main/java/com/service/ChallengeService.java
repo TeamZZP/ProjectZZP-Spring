@@ -57,6 +57,10 @@ public class ChallengeService {
 		return dao.countLikedByMap(map);
 	}
 
+	public int insertChallenge(HashMap<String, String> map) {
+		return dao.insertChallenge(map);
+	}
+
 
 
 }

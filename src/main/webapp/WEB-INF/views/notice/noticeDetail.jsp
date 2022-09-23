@@ -11,17 +11,8 @@
 	</c:if>
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script type="text/javascript">
-			$(document).ready(function () {
-				$("#noticeUpdate").click(function () {
-					$("form").attr("method", "get").attr("action", "../notice/write/${nDTO.notice_id}");
-				});
-				$("#noticeDelete").click(function () {
-					$("form").attr("action", "../notice/${nDTO.notice_id}");
-				});
-			});//end ready
-	</script>
-	
+	<script src="resources/js/notice/noticeDetail.js"></script>
+
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="../resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>

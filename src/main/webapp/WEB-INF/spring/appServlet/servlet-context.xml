@@ -16,6 +16,7 @@
 			<mapping path="/logout/**"/>
 			<mapping path="/mypage/**"/>
 			<mapping path="/cart/**"/>
+			<mapping path="/qna/*"/>
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 	</interceptors>

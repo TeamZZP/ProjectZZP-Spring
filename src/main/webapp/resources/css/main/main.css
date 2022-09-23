@@ -9,3 +9,11 @@
 #mesg{
 	margin: 0;
 }
+.retrieve{
+ 	cursor: pointer;
+}
+ 
+#card{
+	height: 25;
+	width: 15;
+}

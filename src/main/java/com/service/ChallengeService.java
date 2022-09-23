@@ -31,6 +31,11 @@ public class ChallengeService {
 	public List<Integer> selectLikedChall(String userid) {
 		return dao.selectLikedChall(userid);
 	}
+	
+	//메인 - 뉴 챌린지
+	public List<ChallengeDTO> selectNewChallenge() {
+		return dao.selectNewChallenge();
+	}
 
 	public void updateChallHits(String chall_id) {
 		dao.updateChallHits(chall_id);
@@ -51,5 +56,7 @@ public class ChallengeService {
 	public int countLikedByMap(HashMap<String, String> map) {
 		return dao.countLikedByMap(map);
 	}
+
+
 
 }

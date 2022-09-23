@@ -42,6 +42,12 @@
 	where userid=#{userid}
 </select>
 
+<!-- 메인 : 뉴 챌린지 -->
+<select id="selectNewChallenge" resultType="ChallengeDTO">
+	select * from challenge order by chall_id desc
+</select>
+
+
 <update id="updateChallHits">
 	update challenge
 	set chall_hits=chall_hits+1

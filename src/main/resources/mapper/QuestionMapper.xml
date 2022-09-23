@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QuestionMapper">
+	<select id="questionList" resultType="QuestionProductDTO">
+		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
+			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) order by Q_ID desc
+	</select>
+	<select id="questionListCount" resultType="int">
+		select count(*) from question
+	</select>
+	<select id="prodSelect" parameterType="map" resultType="ProductImagesDTO">
+		select * from PRODUCT full outer join images using(p_id)
+		<choose> 
+			<when test="category == 'p_name' and searchValue != null"> 
+				where (p_name like '%${searchValue}%' or p_content like '%${searchValue}%') and IMAGE_RNK = 1
+			</when>
+			<when test="category == 'p_id' and  searchValue != null"> 
+				where (p_id like '%${searchValue}%' or p_content like '%${searchValue}%') and IMAGE_RNK = 1
+			</when>
+			<otherwise>
+			</otherwise> 
+		</choose>
+	</select>
+	<select id="prodSelectCount" resultType="int" parameterType="map">
+		select count(*) from PRODUCT full outer join images using(p_id)
+		<choose> 
+			<when test="category == 'p_name' and searchValue != null"> 
+				where (p_name like '%${searchValue}%' or p_content like '%${searchValue}%') and IMAGE_RNK = 1
+			</when>
+			<when test="category == 'p_id' and  searchValue != null"> 
+				where (p_id like '%${searchValue}%' or p_content like '%${searchValue}%') and IMAGE_RNK = 1
+			</when>
+			<otherwise>
+			</otherwise> 
+		</choose>
+	</select>
+	<!-- <select id="questionOneSelect" resultType="QuestionProductDTO" parameterType="string">
+		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
+			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) where Q_ID = #{Q_ID}
+	</select>
+	<insert id="questionInsert" parameterType="map">
+		insert into QUESTION (Q_BOARD_CATEGORY, Q_CATEGORY, Q_TITLE, Q_CONTENT, Q_CREATED, Q_IMG, Q_STATUS, Q_ID, P_ID, USERID)
+			values (#{Q_BOARD_CATEGORY}, #{Q_CATEGORY}, #{Q_TITLE}, #{Q_CONTENT}, sysdate, #{question_img}, '답변대기', QUESTION_Q_ID_SEQ.nextval, 
+			#{P_ID}, #{USERID})
+	</insert>
+	<update id="questionUpdate" parameterType="map">
+		update QUESTION set Q_BOARD_CATEGORY = #{Q_BOARD_CATEGORY}, Q_CATEGORY = #{Q_CATEGORY}, Q_TITLE = #{Q_TITLE}, Q_CONTENT = #{Q_CONTENT},
+			Q_IMG = #{question_img}, P_ID = #{P_ID}  where Q_ID = #{Q_ID} 
+	</update>
+	<delete id="questionDelete" parameterType="string">
+		delete from QUESTION where Q_ID = #{qID} 
+	</delete>
+	
+	
+	
+	<select id="prodQuestion" parameterType="string" resultType="QuestionDTO">
+		select * from QUESTION where P_ID = #{P_ID}
+	</select>
+	<update id="ImgUpdate" parameterType="string">
+		update QUESTION set Q_IMG = 'null' where Q_IMG = #{img}
+	</update>
+	<select id="MyQeustionList" parameterType="string" resultType="QuestionProductDTO">
+		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
+			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) where q.userid = #{userid} order by Q_ID desc 
+	</select>
+	<select id="myQuestionNum" resultType="int">
+		select count(*) from QUESTION where userid = #{userid}
+	</select> -->
+</mapper>

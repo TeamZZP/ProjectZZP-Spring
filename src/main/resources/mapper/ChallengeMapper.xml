@@ -9,6 +9,7 @@
 	from challenge c 
 	LEFT OUTER JOIN profile p on c.userid=p.userid
 	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	LEFT OUTER JOIN stamp s on m.stamp_id=s.stamp_id
 	<where>
 	  <if test='searchName!=null and !searchName.equals("")'>
 	 	and ${searchName} like '%${searchValue}%'
@@ -24,8 +25,6 @@
 <select id="countTotalChall" parameterType="hashmap" resultType="int">
 	select count(*) 
 	from challenge c 
-	LEFT OUTER JOIN profile p on c.userid=p.userid
-	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
 	<where>
 	  <if test='searchName!=null and !searchName.equals("")'>
 	 	and ${searchName} like '%${searchValue}%'
@@ -40,6 +39,45 @@
 
 <select id="selectLikedChall">
 	select chall_id from chall_liked 
+	where userid=#{userid}
+</select>
+
+<update id="updateChallHits">
+	update challenge
+	set chall_hits=chall_hits+1
+	where chall_id=#{chall_id}
+</update>
+
+<select id="selectOneChallenge" resultType="ChallengeDTO">
+	select * 
+	from challenge c 
+	LEFT OUTER JOIN profile p on c.userid=p.userid
+	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	LEFT OUTER JOIN stamp s on m.stamp_id=s.stamp_id
+	where c.chall_id = #{chall_id}
+</select>
+
+
+
+<select id="selectAllComments" resultType="CommentsDTO">
+	select * from comments join profile using(userid) 
+	where chall_id=#{chall_id}
+	order by group_order desc, step
+</select>
+
+
+
+<select id="countLikedByMap" resultType="int">
+	select count(*) from chall_liked
+	where chall_id=#{chall_id} and userid=#{userid}
+</select>
+
+
+
+
+
+<select id="selectProfileImg" resultType="string">
+	select profile_img from profile
 	where userid=#{userid}
 </select>
 

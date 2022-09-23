@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.ChallengeDTO;
@@ -28,7 +29,7 @@ public class ChallengeController {
 	/**
 	 * 챌린지 메인 화면
 	 */
-	@RequestMapping(value = "/challenge")
+	@RequestMapping(value = "/challenge", method = RequestMethod.GET)
 	public String challengeMain(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		System.out.println(map);
 		model.addAttribute("searchName", map.get("searchName"));
@@ -56,7 +57,7 @@ public class ChallengeController {
 	/**
 	 * 챌린지 상세 보기
 	 */
-	@RequestMapping(value = "/challenge/{chall_id}")
+	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.GET)
 	public String challengeDetail(@PathVariable String chall_id, Model model, HttpSession session) {
 		//조회수 +1 한 후 dto 가져오기
 		service.updateChallHits(chall_id); 
@@ -90,5 +91,13 @@ public class ChallengeController {
 		
 		return "challengeDetail";
 	}
+	/**
+	 * 챌린지 작성 페이지
+	 */
+	@RequestMapping(value = "/challenge/write", method = RequestMethod.GET)
+	public String challengeWrite() {
+		return "challeneWrite";
+	}
+	
 
 }

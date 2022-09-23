@@ -5,16 +5,16 @@
 		});
 		//좋아요 추가/삭제
 		$(".liked_area").on("click", ".liked", function () {
-			if ("<%= currUserid %>" == "null") {
+			if ("${empty login}" == "true") {
 				alert("로그인이 필요합니다.");
 			} else {
 				let cid = $(this).attr("data-cid");
 				$.ajax({
 					type:"post",
-					url:"LikeServlet",
+					url:"challenge/"+cid+"/like",
 					data: {
 						chall_id:cid,
-						userid:"<%= currUserid %>"
+						userid:"${login.userid}"
 					},
 					dataType:"text",
 					success: function (data) {

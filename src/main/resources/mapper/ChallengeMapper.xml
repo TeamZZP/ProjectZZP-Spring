@@ -37,7 +37,7 @@
 	where chall_this_month=1
 </select>
 
-<select id="selectLikedChall">
+<select id="selectLikedChall" resultType="int">
 	select chall_id from chall_liked 
 	where userid=#{userid}
 </select>

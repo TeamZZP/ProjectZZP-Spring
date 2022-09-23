@@ -1,6 +1,5 @@
 package com.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -73,6 +72,11 @@ public class ChallengeDAO {
 
 	public int countLikedByMap(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.countLikedByMap", map);
+	}
+	
+	//메인 - 뉴 챌린지
+	public List<ChallengeDTO> selectNewChallenge() {
+		return session.selectList("ChallengeMapper.selectNewChallenge");
 	}
 	
 

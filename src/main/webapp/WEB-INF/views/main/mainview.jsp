@@ -3,21 +3,13 @@
 <%@page import="com.dto.ChallengeDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-<style type="text/css">
- .retrieve{
-  cursor: pointer;
- }
- 
- #card{
- height: 25;
- width: 15;
- }
-</style>
 </head>
 <body>
 <!-- 배너 -->
@@ -30,18 +22,15 @@
      </div>
   <div class="carousel-inner">
   	<!-- ZZP소개 -->
-    <div class="carousel-item active" data-bs-interval="3000" onclick="javascrip:location.href='IntroductionUIServlet';">
+    <div class="carousel-item active" data-bs-interval="3000" onclick="javascrip:location.href='about';">
       <img src="resources/images/main/banner_zzp.png" class="d-block w-100" alt="ZZP소개">
     </div>
-    <!-- 타임세일 -->
-    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='ProductSearchServlet?c_id=6';">
-      <img src="resources/images/main/banner_sale.png" class="d-block w-100" alt="타임세일">
-    </div>
-   <%--  <%
-    	ChallengeDTO challThisMonth = (ChallengeDTO) request.getAttribute("challThisMonth");
-    %> --%>
-    <!-- 이달의챌린지 -->
+    <!-- 세일 -->
     <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='#';">
+      <img src="resources/images/main/banner_sale.png" class="d-block w-100" alt="세일">
+    </div>
+    <!-- 이달의챌린지 -->
+    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='challenge/${challThisMonth}';">
       <img src="resources/images/main/banner_monthchall.png" class="d-block w-100" alt="이달의챌린지">
     </div>
   </div>
@@ -73,7 +62,36 @@
 
 
 <!-- 뉴챌린지 -->
-<!-- 추가해야함 -->
+<div class="container" style="margin-top: 60px;">
+	<ul class="nav justify-content-center" style="margin-bottom: 20px;">
+	  <li class="nav-item">
+	    <b style="font-size: xx-large; color: green;">NEW CHALLENGE</b>
+	  </li>
+	</ul>
+
+	<div class="row" style="float: none; margin:100 auto;">
+	<%
+		int idx3 = 8;
+		List<ChallengeDTO> callenge_list = (List<ChallengeDTO>)request.getAttribute("newchall");
+		if(callenge_list.size()<8){
+			idx3 = callenge_list.size();
+		}
+			for(int i=0; i<idx3; i++){
+				ChallengeDTO dto = callenge_list.get(i);
+				int chall_id = dto.getChall_id();
+				String chall_img = dto.getChall_img();
+				System.out.println(chall_id);
+	%>
+		<div class="col-lg-3 col-md-6" style="margin-bottom: 5px;">
+			<a href="ChallengeDetailServlet?chall_id=<%=chall_id%>">
+				<img src="/eclipse/upload/<%=chall_img%>" width="250" height="250" class=" mx-auto d-block" alt="챌린지" onerror="this.src='images/uploadarea.png'">
+			</a>
+		</div>
+	<%
+		}
+	%>
+	</div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </body>

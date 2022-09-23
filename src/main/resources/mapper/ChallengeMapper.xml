@@ -4,6 +4,47 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ChallengeMapper">
 
+<insert id="insertChallenge" parameterType="hashmap">
+	insert all
+	into challenge 
+		(chall_id, 
+		userid, 
+		chall_title, 
+		chall_content, 
+		chall_category, 
+		chall_hits, 
+		chall_liked, 
+		chall_created, 
+		chall_img,
+		chall_comments,
+		chall_this_month) 
+	values 
+		(challenge_chall_id_seq.NEXTVAL, 
+		#{userid}, 
+		#{chall_title}, 
+		#{chall_content}, 
+		#{chall_category}, 
+		0, 
+		0, 
+		CURRENT_TIMESTAMP, 
+		#{chall_img},
+		0,
+		0)
+	<if test='chall_category=="이 달의 챌린지"'>
+	into member_stamp
+		(userid,
+		stamp_id,
+		chall_id,
+		stamp_created)
+	values
+		(#{userid},
+		(select stamp_id from stamp join challenge using(chall_id) where chall_this_month=1),
+		challenge_chall_id_seq.NEXTVAL,
+		CURRENT_TIMESTAMP)
+	</if>
+	select * from dual
+</insert>
+
 <select id="selectAllChallenge" parameterType="hashmap" resultType="ChallengeDTO">
 	select * 
 	from challenge c 
@@ -40,6 +81,12 @@
 <select id="selectLikedChall" resultType="int">
 	select chall_id from chall_liked 
 	where userid=#{userid}
+</select>
+
+
+<!-- 메인 : 뉴 챌린지 -->
+<select id="selectNewChallenge" resultType="ChallengeDTO">
+	select * from challenge order by chall_id desc
 </select>
 
 

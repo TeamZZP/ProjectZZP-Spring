@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dto.PageDTO;
 import com.dto.ProductImagesDTO;
+import com.dto.QuestionDTO;
 import com.dto.QuestionProductDTO;
 
 @Repository
@@ -52,6 +53,14 @@ public class QuestionDAO {
 	}
 	public int prodSelectCount(Map<String, String> map) {
 		return session.selectOne("QuestionMapper.prodSelectCount", map);
+	}
+	public QuestionProductDTO questionDetail(String q_id) {
+		QuestionProductDTO dto = session.selectOne("QuestionMapper.questionDetail", q_id);
+		return dto;
+	}
+	public void questionDelete(String q_id) {
+		int num = session.delete("QuestionMapper.questionDelete", q_id);
+		System.out.println("삭제된 게시글 갯수 " + num);
 	}
 
 }

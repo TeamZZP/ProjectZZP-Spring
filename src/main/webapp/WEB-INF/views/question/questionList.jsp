@@ -37,7 +37,7 @@
     		</c:if>
     		<td>  ${list.q_category} </td>
     		<td> <a style="text-decoration: none; color: black;" 
-    			href="QuestionOneSelect?Q_ID=${list.q_id}&USERID=${list.userid}&before=QuesrionList"> ${list.q_title} </a> </td>
+    			href="qna/${list.q_id}?userid=${list.userid}&before=quesrionList"> ${list.q_title} </a> </td>
     		<td> ${list.q_created.substring(0,10)} </td>
     		<td> 
     			${list.userid.substring(0,2)}****${list.userid.substring(6)}

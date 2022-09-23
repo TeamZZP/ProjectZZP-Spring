@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.dao.QuestionDAO;
 import com.dto.PageDTO;
+import com.dto.QuestionDTO;
+import com.dto.QuestionProductDTO;
 
 @Service
 public class QuestionService {
@@ -27,6 +29,15 @@ public class QuestionService {
 	public int prodSelectCount(Map<String, String> map) {
 		int num = dao.prodSelectCount(map);
 		return num;
+	}
+
+	public QuestionProductDTO questionDetail(String q_id) {
+		QuestionProductDTO dto = dao.questionDetail(q_id);
+		return dto;
+	}
+
+	public void questionDelete(String q_id) {
+		dao.questionDelete(q_id);
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,24 +9,28 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dto.AnswerDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
-import com.dto.QuestionDTO;
-import com.dto.UploadDTO;
+import com.dto.QuestionProductDTO;
+import com.service.AnswerService;
 import com.service.QuestionService;
 
 @Controller
 public class QuestionController {
 	
 	@Autowired
-	QuestionService service; 
+	QuestionService qService; 
+	@Autowired
+	AnswerService aService;
+	
 	/**
 	 * 큐엔에이 리스트 출력
 	 */
@@ -38,7 +41,7 @@ public class QuestionController {
 		if (curPage == null) {  
 			curPage = "1";
 		}
-		pDTO = service.questionPage(Integer.parseInt(curPage));
+		pDTO = qService.questionPage(Integer.parseInt(curPage));
 		System.out.println("pDTO " + pDTO);
 		
 		m.addAttribute("pDTO", pDTO);
@@ -77,10 +80,10 @@ public class QuestionController {
 		map.put("category", category);
 		map.put("searchValue", searchValue);
 		
-		PageDTO page = service.prodSelect(map, Integer.parseInt(curPage), Integer.parseInt(prodNum));
+		PageDTO page = qService.prodSelect(map, Integer.parseInt(curPage), Integer.parseInt(prodNum));
 		System.out.println("검색된 항목 " + page); //검색된 항목
 		
-		int num = service.prodSelectCount(map); //검색된 갯수
+		int num = qService.prodSelectCount(map); //검색된 갯수
 		System.out.println("검색된 항목 갯수 " + num);
 		
 		ModelAndView mav = new ModelAndView();
@@ -93,7 +96,7 @@ public class QuestionController {
 		
 		return mav;
 	}
-	@RequestMapping(value = "/qna", method = RequestMethod.POST)
+/*	@RequestMapping(value = "/qna", method = RequestMethod.POST)
 	public @ResponseBody String xxx2(UploadDTO dto, QuestionDTO qDTO) {//자동 주입 생성
 		System.out.println("문의 등록 내용 " + qDTO);
 		System.out.println("파일 업로드 " + dto);
@@ -118,6 +121,46 @@ public class QuestionController {
 		}
 		
 		return "redirect:qna";
+	} */
+	/**
+	 * 큐엔에이 상세보기
+	 */
+	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.GET)
+	public String questionDetail(@PathVariable String q_id, String userid, String before, HttpSession session,
+			RedirectAttributes attr, Model m) {
+		System.out.println("상세보기할 정보 " + q_id + "\t" + userid + "\t" + before);
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		String loginUser = mDTO.getUserid();
+		
+		String url = "";
+		if (userid.equals(loginUser) || mDTO.getRole() == 1) {
+			QuestionProductDTO qDTO = qService.questionDetail(q_id);
+			AnswerDTO aDTO = aService.answerSelect(q_id);
+			System.out.println("상세보기할 게시글 " + qDTO);
+			System.out.println("게시글 답변 " + aDTO);
+			
+			m.addAttribute("qDTO", qDTO);
+			m.addAttribute("aDTO", aDTO);
+			m.addAttribute("mDTO", mDTO);
+			m.addAttribute("before", before);
+			
+			url = "questionDetail";
+		} else {
+			attr.addFlashAttribute("mesg", "로그인이 필요합니다.");
+			url = "redirect:../qna";
+		}
+		attr.addFlashAttribute("before", before);
+		return url;
+	}
+	/**
+	 * 큐엔에이 삭제
+	 */
+	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.DELETE)
+	public String questionDelete(@PathVariable String q_id, RedirectAttributes attr) {
+		System.out.println("삭제할 게시글 번호 " + q_id);
+		qService.questionDelete(q_id);
+		attr.addFlashAttribute("mesg", "게시글이 삭제 되었습니다.");
+		return "redirect:../qna";
 	}
 	
 }

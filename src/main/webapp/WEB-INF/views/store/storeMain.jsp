@@ -84,7 +84,7 @@ a {
           <c:forEach var="zzim" items="${zzimList}" varStatus="status">
           
           ${zzim}
-          <c:choose>
+            <c:choose>
 			<c:when test="${zzim}==0">
 			<img id="like_img${p_id}" src="resources/images/emptyHeart.png" width="30" height="30" class="liked"> 
 			</c:when>
@@ -98,13 +98,7 @@ a {
             </a>
              
             </div> 
-            		    <!-- 한 줄에4개씩 -->
-						<c:if test="${status.count%4==0}">
-						<div>
-							<span style=" height: 10 "></span>
-						</div>	
-						</c:if>
-            
+            		   
            
           </c:forEach>
        </div>

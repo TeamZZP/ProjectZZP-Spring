@@ -14,7 +14,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		System.out.println("preHandle ========== "+handler);
 		HttpSession session = request.getSession();
 		if (session.getAttribute("login") == null) {
-			response.sendRedirect("login"); 
+			response.sendRedirect("/zzp/login"); 
+			return false;
 		}
 		return true;
 	}

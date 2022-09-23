@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style>
 	a {
 		text-decoration: none;
@@ -108,15 +109,19 @@
 		   </a>
 	   </div>
 	   <div class="p-2 text-center liked_area" id="liked_area${c.chall_id}">
-	   	   <!-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 -->
-	   	   <%-- <c:set var="likedList" value="${likedList}" /> --%>
-	   	   <%-- <c:if test="${fn:contains(likedList, '${c.chall_id}')}"></c:if>
-	   	   <% if (resultLikedMap.containsKey(chall_id)) { %>
-	   	   <img src="images/liked.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
-	   	   <!-- 그외의 경우 -->
-	   	   <% } else { %>
-	       <img src="images/like.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
-		   <% } %> --%>
+	   	   <c:if test="${!empty likedList}">
+	   	 	 <spring:eval var="likedIt" expression="likedList.contains(${c.chall_id})" />
+	   	   </c:if>
+	   	   <c:choose>
+	   	     <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
+	   	     <c:when test="${likedIt}">
+	   	     	<img src="resources/images/challenge/liked.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
+	   	     </c:when>
+	   	     <%-- 그외의 경우 --%>
+	   	     <c:otherwise>
+	   	     	<img src="resources/images/challenge/like.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
+	   	     </c:otherwise>
+	   	   </c:choose>
 		   <span id="likeNum${c.chall_id}">${c.chall_liked}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		   <img src="resources/images/challenge/bubble.png" width="30" height="25"> ${c.chall_comments}
 	   </div>

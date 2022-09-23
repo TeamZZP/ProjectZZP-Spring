@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
-a {
+	a {
 		text-decoration: none;
 		color: black;
 	}
@@ -62,6 +62,9 @@ a {
   		max-width: 430px;
 	}
 </style>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="resources/js/challenge/challengeMain.js"></script>
 <c:set value="${pDTO.list}" var="challList" />
 
 <form action="">
@@ -72,7 +75,7 @@ a {
         <span class="challThisMonth">참여하러가기</span> </a> 
         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
         		title="매달 바뀌는 챌린지 도전 과제에 참여해 보세요! '이 달의 챌린지' 카테고리를 선택해 챌린지 인증 사진을 올려주세요. 참여시 받을 수 있는 예쁜 도장을 모아보세요!">
-        	<img src="images/help.png" width="25" style="margin-top: -5px;">
+        	<img src="resources/images/challenge/help.png" width="25" style="margin-top: -5px;">
         </a>
      </div>
      <div class="col-sm-6">
@@ -83,7 +86,7 @@ a {
 			<option value="chall_liked" <c:if test="${sortBy=='chall_liked'}">selected</c:if>>인기순</option>
 			<option value="chall_comments" <c:if test="${sortBy=='chall_comments'}">selected</c:if>>댓글 많은순</option>
 		</select> 
-		<a href="ChallengeUIServlet" class="btn btn-outline-success" style="margin-bottom: 5px;">글쓰기</a>
+		<a href="challenge/write" class="btn btn-outline-success" style="margin-bottom: 5px;">글쓰기</a>
 	   </div>
 	 </div>
 	 <div style="height: 10px"></div>
@@ -93,14 +96,14 @@ a {
 					
      <div class="col-lg-3 col-md-4 col-sm-6">
        <div class="p-3">
-	       <a href="profile/${c.userid}"><img src="resources/upload/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
+	       <a href="profile/${c.userid}"><img src="resources/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
 	       <a href="profile/${c.userid}">${c.userid}</a><br>
        </div>
        <div class="hover-zoomin">
 	       <a href="challenge/${c.chall_id}"> 
-			<img src="/eclipse/upload/${c.chall_img}" border="0" onerror="this.src='resources/images/uploadarea.png'">
+			<img src="resources/upload/challenge/${c.chall_img}" border="0" onerror="this.src='resources/images/challenge/uploadarea.png'">
 			<c:if test="${!empty c.stamp_img}">
-				<img src="/eclipse/upload/${c.stamp_img}" class="stamp">
+				<img src="resources/upload/challenge/${c.stamp_img}" class="stamp">
 			</c:if>
 		   </a>
 	   </div>
@@ -115,7 +118,7 @@ a {
 	       <img src="images/like.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
 		   <% } %> --%>
 		   <span id="likeNum${c.chall_id}">${c.chall_liked}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		   <img src="resources/images/bubble.png" width="30" height="25"> ${c.chall_comments}
+		   <img src="resources/images/challenge/bubble.png" width="30" height="25"> ${c.chall_comments}
 	   </div>
 	   <div class="pb-5 text-center">
 	   		<a href="ChallengeDetailServlet?chall_id=${c.chall_id}">${c.chall_title}</a>
@@ -179,7 +182,7 @@ a {
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body text-center">
-	      <img src="/eclipse/upload/${challThisMonth.stamp_img}" width="400">
+	      <img src="resources/upload/${challThisMonth.stamp_img}" width="400">
 	      </div>
 	      <div class="modal-footer mb-3 text-center">
 	       ${challThisMonth.stamp_content}

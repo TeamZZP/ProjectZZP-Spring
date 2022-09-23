@@ -10,10 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.ChallengeDTO;
+import com.dto.CommentsDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.service.ChallengeService;
@@ -50,6 +52,43 @@ public class ChallengeController {
 		model.addAttribute("challThisMonth", challThisMonth);
 		
 		return "challengeMain";
+	}
+	/**
+	 * 챌린지 상세 보기
+	 */
+	@RequestMapping(value = "/challenge/{chall_id}")
+	public String challengeDetail(@PathVariable String chall_id, Model model, HttpSession session) {
+		//조회수 +1 한 후 dto 가져오기
+		service.updateChallHits(chall_id); 
+		ChallengeDTO cDTO = service.selectOneChallenge(chall_id);
+		model.addAttribute("cDTO", cDTO);
+		System.out.println(cDTO);
+		
+		//해당 게시글의 전체 댓글 목록 가져오기
+		List<CommentsDTO> commentsList = service.selectAllComments(chall_id);
+		model.addAttribute("commentsList", commentsList);
+		//대댓글 위해 Map으로 따로 저장
+		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
+		for (CommentsDTO c : commentsList) {
+			parentMap.put(c.getComment_id(), c.getUserid());
+		}
+		model.addAttribute("parentMap", parentMap);
+		
+		//현재 로그인한 회원의 프로필 이미지 가져오기
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		String userid = "";
+		if (mDTO != null) { userid = mDTO.getUserid(); }
+		String currProfile = service.selectProfileImg(userid);
+		model.addAttribute("currProfile", currProfile);
+		
+		//현재 로그인한 회원이 해당 게시글에 좋아요를 눌렀는지 판단하기
+		HashMap<String, String> likedMap = new HashMap<String, String>();
+		likedMap.put("chall_id", chall_id);
+		likedMap.put("userid", userid);
+		int likedIt = service.countLikedByMap(likedMap);
+		model.addAttribute("likedIt", likedIt);
+		
+		return "challengeDetail";
 	}
 
 }

@@ -57,4 +57,6 @@ public class ChallengeService {
 		return dao.countLikedByMap(map);
 	}
 
+
+
 }

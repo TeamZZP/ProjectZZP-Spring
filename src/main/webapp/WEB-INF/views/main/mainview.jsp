@@ -26,7 +26,7 @@
       <img src="resources/images/main/banner_zzp.png" class="d-block w-100" alt="ZZP소개">
     </div>
     <!-- 세일 -->
-    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='#';">
+    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='productByCategory?c_id=6';">
       <img src="resources/images/main/banner_sale.png" class="d-block w-100" alt="세일">
     </div>
     <!-- 이달의챌린지 -->
@@ -54,7 +54,86 @@
 	</nav>
 </div>
 <!-- 베스트상품_carousel -->
-<!-- 추가해야함 -->
+<div id="carouselExampleInterval2" class="carousel slide" style="margin-top: -130px;">
+  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+  <div class="carousel-inner">
+  	<!-- carousel_1 -->
+    <div class="carousel-item active" data-bs-interval="false">
+      <div class="container px-4 py-5" id="custom-cards">
+	    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+	    <c:set var="idx" value="2"></c:set>
+	    <c:if test="${fn:length(bestProdudctlist)<2}">
+	    	<c:set var="idx" value="${fn:length(bestProdudctlist)}"></c:set>
+	    </c:if>
+	    <c:forEach var="p" items="${bestProdudctlist}" begin="0" end="${idx}">
+	      <div class="col retrieve" onclick="javascrip:location.href='productRetrieve?p_id=${p.p_id}';">
+	        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
+	        	style="background-image: url('resources/images/product/p_image/${p.p_image}'); background-size:cover;">
+	          <div class="d-flex flex-column h-100 p-5 pb-3 text-white fw-bold text-shadow-1">
+	            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-shadow-1">${p.p_content}</h2>
+	            <ul class="d-flex list-unstyled mt-auto">
+	              <li class="me-auto">
+	              </li>
+	              <li class="d-flex align-items-center me-3">
+	                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
+	                <small>${p.p_name}</small>
+	              </li>
+	              <li class="d-flex align-items-center">
+	                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
+	                <small>${p.p_selling_price}</small>
+	              </li>
+	            </ul>
+	          </div>
+	        </div>
+	      </div>
+	      </c:forEach>
+	    </div>
+  	  </div>
+    </div>
+    <!-- carousel_2 -->
+    <div class="carousel-item" data-bs-interval="false">
+      <div class="container px-4 py-5" id="custom-cards">
+	    <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+	    <c:set var="idx2" value="5"></c:set>
+	    <c:if test="${fn:length(bestProdudctlist)<5}">
+	    	<c:set var="idx2" value="${fn:length(bestProdudctlist)}"></c:set>
+	    </c:if>
+	    <c:forEach var="p" items="${bestProdudctlist}" begin="3" end="${idx2}">
+	   	<div class="col retrieve" onclick="javascrip:location.href='productRetrieve?p_id=${p.p_id}';">
+	        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
+	        	style="background-image: url('resources/images/product/p_image/${p.p_image}'); background-size:cover;">
+	          <div class="d-flex flex-column h-100 p-5 pb-3 text-white fw-bold text-shadow-1">
+	            <h2 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold text-shadow-1">${p.p_content}</h2>
+	            <ul class="d-flex list-unstyled mt-auto">
+	              <li class="me-auto">
+	              </li>
+	              <li class="d-flex align-items-center me-3">
+	                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#geo-fill"></use></svg>
+	                <small>${p.p_name}</small>
+	              </li>
+	              <li class="d-flex align-items-center">
+	                <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"></use></svg>
+	                <small>${p.p_selling_price}</small>
+	              </li>
+	            </ul>
+	          </div>
+	        </div>
+	      </div>
+        </c:forEach>
+	    </div>
+  	  </div>
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval2" data-bs-slide="next">
+    <span class="carousel-control-next-icon"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+</div>
 
 
 <!-- middle banner -->
@@ -68,28 +147,18 @@
 	    <b style="font-size: xx-large; color: green;">NEW CHALLENGE</b>
 	  </li>
 	</ul>
-
 	<div class="row" style="float: none; margin:100 auto;">
-	<%
-		int idx3 = 8;
-		List<ChallengeDTO> callenge_list = (List<ChallengeDTO>)request.getAttribute("newchall");
-		if(callenge_list.size()<8){
-			idx3 = callenge_list.size();
-		}
-			for(int i=0; i<idx3; i++){
-				ChallengeDTO dto = callenge_list.get(i);
-				int chall_id = dto.getChall_id();
-				String chall_img = dto.getChall_img();
-				System.out.println(chall_id);
-	%>
-		<div class="col-lg-3 col-md-6" style="margin-bottom: 5px;">
-			<a href="ChallengeDetailServlet?chall_id=<%=chall_id%>">
-				<img src="/eclipse/upload/<%=chall_img%>" width="250" height="250" class=" mx-auto d-block" alt="챌린지" onerror="this.src='images/uploadarea.png'">
-			</a>
-		</div>
-	<%
-		}
-	%>
+		<c:set var="idx" value="7"></c:set> 
+		<c:if test="${fn:length(callenge_list)<7}">
+			<c:set var="idx" value="${fn:length(callenge_list)}"></c:set>
+		</c:if>
+		<c:forEach var="c" items="${callenge_list}" begin="0" end="${idx}" >
+			<div class="col-lg-3 col-md-6" style="margin-bottom: 5px;">
+				<a href="challenge/${c.chall_id}">
+					<img src="resources/upload/challenge/${c.chall_img}" width="250" height="250" class=" mx-auto d-block" alt="챌린지" onerror="this.src='resources/images/challenge/uploadarea.png'">
+				</a>
+			</div>
+		</c:forEach>
 	</div>
 </div>
 

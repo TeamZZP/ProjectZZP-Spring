@@ -59,6 +59,11 @@ public class MemberDAO {
 	public int changePw(HashMap<String, String> map) {
 		return session.update("changePw",map);
 	}
+	
+	//카카오 로그인
+	public MemberDTO selectMemberBySocial(HashMap<String, String> map) {
+		return session.selectOne("selectMemberBySocial", map);
+	}
 
 	
 }

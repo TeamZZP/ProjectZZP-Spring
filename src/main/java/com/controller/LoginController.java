@@ -147,12 +147,59 @@ public class LoginController {
 		}
 	}
 	/**
-	 * 비밀번호 변경
+	 * 카카오 로그인
 	 */
-//	@RequestMapping(value = "/pwchange" , method = RequestMethod.GET)
-//	public void changePw(@RequestParam String userid, @RequestParam String changedPasswd, RedirectAttributes m) {
-//		System.out.println("changePw : "+userid+" "+changedPasswd);
-//		
-//		
-//	}
+	@RequestMapping(value = "/kakaoLogin" , method = RequestMethod.POST)
+	public String kakaoLogin(@RequestParam HashMap<String, String> map, HttpSession session) {
+		System.out.println("kakaoLogin map : "+map);
+		MemberDTO dto = service.selectMemberBySocial(map);
+	    System.out.println("kakaoLogin dto : "+dto);
+	    //기존 회원인 경우 로그인 처리
+		if (dto!=null) {
+			session.setAttribute("login", dto);
+	        session.setMaxInactiveInterval(60*60);
+	        return "redirect:/home";
+		} 
+		//새로운 회원인 경우 회원가입
+		else {
+			session.setAttribute("kakaoInfo", map);
+			return "redirect:/join";
+		}
+	}
+	/**
+	 * 네이버 로그인
+	 */
+	@RequestMapping(value = "/naverLogin" , method = RequestMethod.POST)
+	public String naverLogin(String email, String username, String phone, HttpSession session) {
+		System.out.println("naverLogin : "+email+" "+username+" "+phone);
+		
+		//이메일 나누기
+		int emailSplit = email.indexOf("@");
+		String email1 = email.substring(0, emailSplit);
+		String email2 = email.substring(emailSplit+1,email.length());
+		System.out.println(email1+" "+email2);
+		
+		//네이버 데이터로 기존 회원 여부 확인
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("email", email);
+		map.put("username", username);
+		
+		MemberDTO dto = service.selectMemberBySocial(map);
+	    System.out.println("naverLogin dto : "+dto);
+	    //기존 회원인 경우 로그인 처리
+		if (dto!=null) {
+			session.setAttribute("login", dto);
+	        session.setMaxInactiveInterval(60*60);
+	        return "redirect:/home";
+		} 
+		//새로운 회원인 경우 회원가입
+		else {
+			session.setAttribute("kakaoInfo", map);
+			return "redirect:/join";
+		}
+	}
+	
+	
+	
+	
 }

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,7 +29,6 @@ public class StoreController {
 	@RequestMapping(value = "/store")
 	public ModelAndView storeMain(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		List<ProductByCategoryDTO> bestProdudctlist = service.bestProduct();  //베스트상품리스트
@@ -52,7 +50,6 @@ public class StoreController {
 	//카테고리 변경시
 	@RequestMapping(value = "/store/{c_id}")
 	public ModelAndView productByCategory(HttpSession session ,@PathVariable("c_id") int c_id) {
-		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		ModelAndView mav = new ModelAndView();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
@@ -97,18 +94,15 @@ public class StoreController {
 	public @ResponseBody int zzim(@RequestParam("p_id") int p_id , HttpSession session) {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		HashMap<String,String> map = new HashMap<String,String>();
-		List<Integer> zzimList = new ArrayList<Integer>();
 		map.put("userid", mdto.getUserid());
 		map.put("p_id", String.valueOf(p_id));
 		int zzimCheck = service.zzimCheck(map); //찜 검사(찜했는지안했는지)
 		int zzimData = 0;
 		if(zzimCheck==0) {    //찜 안했을때 
 			service.addZzim(map);  //찜 추가
-			zzimList=(service.zzimAllCheck(mdto.getUserid()));
 			zzimData = 1;
 		}else {   //찜 했을때
 			service.deleteZzim(map);  //찜 제거
-			zzimList=(service.zzimAllCheck(mdto.getUserid()));
 			zzimData=0;
 		}
 		

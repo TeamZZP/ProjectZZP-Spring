@@ -61,6 +61,14 @@ public class ChallengeService {
 		return dao.insertChallenge(map);
 	}
 
+	public int deleteChallenge(String chall_id) {
+		return dao.deleteChallenge(chall_id);
+	}
+
+	public int updateChallenge(HashMap<String, String> map) {
+		return dao.updateChallenge(map);
+	}
+
 
 
 }

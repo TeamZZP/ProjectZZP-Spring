@@ -1,6 +1,10 @@
 package com.controller;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,12 +12,16 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dto.ChallengeDTO;
@@ -31,7 +39,7 @@ public class ChallengeController {
 	 * 챌린지 메인 화면
 	 */
 	@RequestMapping(value = "/challenge", method = RequestMethod.GET)
-	public String challengeMain(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
+	public String main(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		System.out.println(map);
 		model.addAttribute("searchName", map.get("searchName"));
 		model.addAttribute("searchValue", map.get("searchValue"));
@@ -61,7 +69,7 @@ public class ChallengeController {
 	 * 챌린지 상세 보기
 	 */
 	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.GET)
-	public String challengeDetail(@PathVariable String chall_id, Model model, HttpSession session) {
+	public String detail(@PathVariable String chall_id, Model model, HttpSession session) {
 		//조회수 +1 한 후 dto 가져오기
 		service.updateChallHits(chall_id); 
 		ChallengeDTO cDTO = service.selectOneChallenge(chall_id);
@@ -98,17 +106,28 @@ public class ChallengeController {
 	 * 챌린지 작성 페이지
 	 */
 	@RequestMapping(value = "/challenge/write", method = RequestMethod.GET)
-	public String challengeWrite() {
+	public String write() {
 		return "challengeWrite";
 	}
 	/**
 	 * 챌린지 업로드
 	 */
 	@RequestMapping(value = "/challenge", method = RequestMethod.POST)
-	public String challengeUpload(
+	public String upload(
 			@RequestParam HashMap<String, String> map, 
 			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
+		String originalFileName= uploadFile.getOriginalFilename();
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
 		
+		uploadFile(location, uploadFile);
+		
+		map.put("chall_img", originalFileName);
+		int n = service.insertChallenge(map);
+		System.out.println("insert 개수 : "+n);
+		
+		return "redirect:/challenge";
+	}
+	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
 		long size = uploadFile.getSize();
 		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
@@ -118,20 +137,70 @@ public class ChallengeController {
 		System.out.println("originalFileName:  "+ originalFileName);
 		System.out.println("contentType:  "+ contentType);
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
-		
 		File f= new File(location, originalFileName);
 		try {
 			uploadFile.transferTo(f);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		map.put("chall_img", originalFileName);
+	}
+	/**
+	 * 챌린지 삭제
+	 */
+	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void delete(@PathVariable String chall_id) {
+		String chall_img = service.selectOneChallenge(chall_id).getChall_img();
+		int n = service.deleteChallenge(chall_id);
+		System.out.println("delete 개수 : "+n);
 		
-		int n = service.insertChallenge(map);
-		System.out.println("insert 개수 : "+n);
+		if (n > 0) {
+			String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+			deleteFile(location, chall_img);
+		}
+	}
+	private void deleteFile(String location, String fileName) {
+		Path file = Paths.get(location+"//"+fileName);
+		try {
+			Files.deleteIfExists(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 챌린지 수정 페이지
+	 */
+	@RequestMapping(value = "/challenge/write/{chall_id}", method = RequestMethod.GET)
+	public String update(@PathVariable String chall_id, Model model) {
+		ChallengeDTO cDTO = service.selectOneChallenge(chall_id);
+		model.addAttribute("cDTO", cDTO);
+		return "challengeWrite";
+	}
+	/**
+	 * 챌린지 수정 업로드
+	 */
+	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.PUT)
+	public String update(
+			@PathVariable String chall_id,
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
+		String originalFileName= uploadFile.getOriginalFilename();
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		String old_file = map.get("old_file");
+		String chall_img = old_file;
+		
+		//사진이 바뀐 경우
+		if (old_file == null) {
+			deleteFile(location, old_file);
+			uploadFile(location, uploadFile);
+			
+			chall_img = originalFileName;
+		}
+		
+		map.put("chall_img", chall_img);
+		int n = service.updateChallenge(map);
+		System.out.println("update 개수 : "+n);
 		
 		return "redirect:/challenge";
 	}
-
 }

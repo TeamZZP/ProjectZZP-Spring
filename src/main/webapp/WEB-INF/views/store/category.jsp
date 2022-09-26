@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>  
 $(function() {
@@ -34,9 +36,9 @@ $(function() {
  
 
 <a>카테고리jsp</a> <br>
-<a href="store">베스트</a><br>
+<a href="${contextPath}/store">베스트</a><br>
 <c:forEach var="cList" items="${categoryList}">
 <%-- <a onClick="categoryChange('${cList.c_id}')">${cList.c_name}</a><br> --%> <!-- ajax로할경우 -->
-<a href="productByCategory?c_id=${cList.c_id}">${cList.c_name}</a><br>
+<a href="${contextPath}/store/${cList.c_id}">${cList.c_name}</a><br>
 </c:forEach> 
 

@@ -37,9 +37,24 @@ public class StoreService {
 		return dto;
 	}
 	
+	public List<Integer> zzimAllCheck(String userid) {
+		List<Integer> list = dao.zzimAllCheck(userid);
+		return list;
+	}
+
 	public int zzimCheck(HashMap<String, String> map) {
 		int n = dao.zzimCheck(map);
 		return n;
+	}
+
+	public void addZzim(HashMap<String, String> map) {
+		dao.addZzim(map);
+		
+	}
+
+	public void deleteZzim(HashMap<String, String> map) {
+		dao.deleteZzim(map);
+		
 	}
 
 }

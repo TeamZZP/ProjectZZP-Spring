@@ -35,9 +35,25 @@ public class StoreDAO {
 		return dto;
 	}
 	
+	public List<Integer> zzimAllCheck(String userid) {
+		List<Integer> list = template.selectList("StoreMapper.zzimAllCheck", userid);
+		return list;
+	}
+
 	public int zzimCheck(HashMap<String, String> map) {
 		int n = template.selectOne("StoreMapper.zzimCheck", map);
 		return n;
+	}
+
+	public void addZzim(HashMap<String, String> map) {
+	int n =	template.insert("StoreMapper.addZzim", map);
+		System.out.println(map+"찜성공");
+	}
+
+	public void deleteZzim(HashMap<String, String> map) {
+		int n = template.delete("StoreMapper.deleteZzim", map);
+		System.out.println(map+"찜삭제");
+		
 	}
 
 

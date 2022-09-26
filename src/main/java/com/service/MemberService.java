@@ -61,5 +61,10 @@ public class MemberService {
 		return dao.changePw(map);
 	}
 	
+	//카카오 로그인
+	public MemberDTO selectMemberBySocial(HashMap<String, String> map) {
+		return dao.selectMemberBySocial(map);
+	}
+	
 
 }

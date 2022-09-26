@@ -93,11 +93,20 @@ a {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
-		//글 삭제시 컨펌창 띄우기 
-		$("#deleteChallenge").on("click", function () {
-			let mesg = "정말 삭제하시겠습니까? 한번 삭제한 글은 되돌릴 수 없습니다.";
-			if (!confirm(mesg)) {
-				event.preventDefault();
+		//글 삭제
+		$('#deleteChallenge').on('click', function () {
+			let mesg = '정말 삭제하시겠습니까? 한번 삭제한 글은 되돌릴 수 없습니다.';
+			if (confirm(mesg)) {
+				$.ajax({
+					url: '/zzp/challenge/${cDTO.chall_id}',
+					type: 'DELETE',
+					success: function () {
+						location.href = '/zzp/challenge';
+					},
+					error: function () {
+						alert('문제가 발생했습니다. 다시 시도해 주세요.');
+					}
+				})
 			}
 		});
 		//댓글 입력
@@ -423,7 +432,7 @@ function displayedAt(createdAt) {
 				<c:choose>
 				<%-- 해당 게시글의 글쓴이인 경우 --%>
 					<c:when test="${!empty login && login.userid==cDTO.userid}">
-						<a href="/challenge/write/${cDTO.chall_id}" class="btn btn-outline-success">수정</a> 
+						<a href="/zzp/challenge/write/${cDTO.chall_id}" class="btn btn-outline-success">수정</a> 
 						<a href="#" id="deleteChallenge" class="btn btn-outline-success">삭제</a>
 					</c:when>
 				<%-- 관리자인 경우 --%>

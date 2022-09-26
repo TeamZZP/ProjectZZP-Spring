@@ -76,4 +76,10 @@
 		update member set passwd = #{changedPasswd} where userid = #{userid}
 	</update>
 	
+	<!-- 카카오 로그인 -->
+	<select id="selectMemberBySocial" resultType="MemberDTO" parameterType="hashmap">
+		select * from member
+		where concat(concat(email1,'@'),email2)=#{email} and username=#{nickname}
+	</select>
+	
 </mapper>

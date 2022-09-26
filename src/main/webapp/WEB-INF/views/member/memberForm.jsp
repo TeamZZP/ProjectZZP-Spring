@@ -2,28 +2,22 @@
 <%@page import="com.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript" src="resources/js/member/memberForm.js"></script>
 
-<%
-HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("kakaoInfo");
-	String email = null;
-	String username = null;
-	String [] arr = null;
-	String email1 = null;
-	String email2 = null;
-	int emailSplit = 0;
+<!-- kakaoInfo -->
+<c:if test="${not empty kakaoInfo}">
+	<c:set var="email" value="${kakaoInfo.email}"></c:set>
+	<c:set var="username" value="${kakaoInfo.nickname}"></c:set>
 
-	if(map!=null){
-		email = map.get("email");
-		username = map.get("username");
-		
-		emailSplit = email.indexOf("@");
-		email1 = email.substring(0, emailSplit);
-		email2 = email.substring(emailSplit+1,email.length());
-		System.out.println(email1+" "+email2);
-	}
-%>  
+	<c:set var="emailSplit" value="${fn:indexOf(email,'@')}"></c:set>
+	<c:set var="email1" value="${fn:substring(email,0,emailSplit)}"></c:set>
+	<c:set var="email2" value="${fn:substring(email,emailSplit+1,fn:length(email))}"></c:set>
+</c:if>
+
 <div class="container">
 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -70,7 +64,8 @@ HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("ka
                                         <div class="cols-sm-10">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                                                <input type="text" class="form-control" name="username" id="username" <%if(username!=null){%> readonly="readonly" value="<%=username%>" <%}%> placeholder="이름을 입력하세요"  />
+                                                <input type="text" class="form-control" name="username" id="username" 
+                                                <c:if test="${!empty username}">readonly="readonly" value="${username}"</c:if> placeholder="이름을 입력하세요"  />
                                             </div>
                                         </div>
                                     </div>
@@ -79,20 +74,23 @@ HashMap<String, String> map = (HashMap<String, String>) session.getAttribute("ka
                    					   <label for="type" class="col-sm-3 control-label" style="font-weight: bold;">이메일</label>
                    					  <div class="row g-3">
 									  <div class="col-sm-4">
-									    <input type="text" name="email1" id="email1" <%if(email1!=null){%>readonly="readonly" value="<%=email1%>" <%}%> class="form-control">
+									    <input type="text" name="email1" id="email1" 
+									    <c:if test="${!empty email1}">readonly="readonly" value="${email1}"</c:if> class="form-control">
 									  </div>
 									  <div class="col-sm-4">
 									    <div class="input-group">
 									      <div class="input-group-text">@</div>
-									      <input type="text" name="email2"  placeholder="직접입력" <%if(email2!=null){%>readonly="readonly" value="<%=email2%>" <%}%> id="email2" class="form-control">
+									      <input type="text" name="email2"  placeholder="직접입력" 
+									      <c:if test="${!empty email2}">readonly="readonly" value="${email2}"</c:if> id="email2" class="form-control">
 									    </div>
 									  </div>
 									  <div class="col-sm-4">
 									   <div class="col-sm">
 									    <label class="visually-hidden" for="autoSizingSelect">email</label>
 									    <select id="emailSel" class="form-select" aria-label="Default select example" 
-									    	<%if(email2!=null){%> onfocus="this.initialSelct=this.seletedIndex;" onchange="this.selectedIndex=this.initialSelect;" <%}%>>
-                            				<option value="<%if(email2!=null){%><%=email2%><%}%>" selected disabled hidden><%if(email2==null){%> 이메일선택 <%}if(email2!=null){%><%=email2%><%}%></option>
+									    	<c:if test="${!empty email2}">onfocus="this.initialSelct=this.seletedIndex;" onchange="this.selectedIndex=this.initialSelect;"</c:if>>
+                            				<option value="<c:if test="${!empty email2}">${email2}</c:if>" selected disabled hidden>
+                            				<c:if test="${empty email2}">이메일선택</c:if><c:if test="${!empty email2}">${email2}</c:if></option>
 									        <option value="daum.net">daum.net</option>
 									        <option value="naver.com">naver.com</option>
 									        <option value="google.com">google.com</option>

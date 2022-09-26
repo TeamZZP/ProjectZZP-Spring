@@ -52,7 +52,7 @@ public class ChallengeController {
 		//이달의 챌린지 가져오기
 		ChallengeDTO challThisMonth = service.selectChallThisMonth();
 		model.addAttribute("challThisMonth", challThisMonth);
-		
+		 
 		return "challengeMain";
 	}
 	/**

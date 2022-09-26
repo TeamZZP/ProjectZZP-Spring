@@ -167,6 +167,13 @@ public class LoginController {
 		}
 	}
 	/**
+	 * 네이버 로그인 callback
+	 */
+	@RequestMapping(value = "/naverCallback" , method = RequestMethod.GET)
+	public String naverCallback() {
+		return "naverCallback";
+	}
+	/**
 	 * 네이버 로그인
 	 */
 	@RequestMapping(value = "/naverLogin" , method = RequestMethod.POST)

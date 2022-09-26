@@ -124,13 +124,12 @@
                       								<input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control">
                       						 	</div>
                       						 	<div class="col-md-6">
-													<input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control">
+													<input type="text" name="addr2" id="sample4_jibunAddress" placeholder="상세주소를 입력해주세요" class="form-control">
 												<span id="guide" style="color:#999"></span>    
 												</div>                  
                                             </div>
                                         </div>
                                     </div>
-                                    <!--  -->
                                     <div class="form-group" style="margin-top: 10px; text-align: center;">
                                         <input type="submit" value="회원가입" id="addMember" class="btn btn-success">
 										<input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
@@ -199,7 +198,7 @@
                 // 우편번호와 주소 정보를 해당 필드에 넣는다.
                 document.getElementById('sample4_postcode').value = data.zonecode; //5자리 새우편번호 사용
                 document.getElementById('sample4_roadAddress').value = fullRoadAddr;
-                document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
+                //document.getElementById('sample4_jibunAddress').value = data.jibunAddress;
 
                 // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                 if(data.autoRoadAddress) {
@@ -207,11 +206,11 @@
                     var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
                     document.getElementById('guide').innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
 
-                } else if(data.autoJibunAddress) {
+                }/*  else if(data.autoJibunAddress) {
                     var expJibunAddr = data.autoJibunAddress;
                     document.getElementById('guide').innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
 
-                } else {
+                } */ else {
                     document.getElementById('guide').innerHTML = '';
                 }
             }

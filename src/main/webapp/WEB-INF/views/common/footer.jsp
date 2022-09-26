@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
     
 <!-- 운영 안내 -->
 <div class="container" style="margin-top: 50px; margin-bottom: -20px;">
@@ -27,10 +30,11 @@
 	<footer class="py-5" style="margin-bottom: -30px;">
 	<div class="row" style="margin-top: -30px;">
 		<div class="col-4">
-		<a href="home" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+		<a href="${contextPath}/home" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
 			<svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
 			<use xlink:href="#bootstrap"></use>
-			<img alt="로고" src="resources/images/header/main.png" width="70" height="70">&nbsp;<span id="main" style="font-weight: bold; font-size: x-large;">ZZP</span> 
+			<img alt="로고" src="${contextPath}/resources/images/header/main.png" width="70" height="70">&nbsp;
+			<span id="main" style="font-weight: bold; font-size: x-large; color: green; font-family: 'Bebas Neue', cursive;">ZZP</span> 
 			</svg>
 		</a>
 		</div>
@@ -38,11 +42,11 @@
 			<div class="col-md-6">
 				<h5 style="font-weight: bold; color: green;">지구지키기 프로젝트 ZZP</h5>
 					<ul class="nav flex-column">
-						<li class="nav-item mb-2"><a href="IntroductionUIServlet" class="nav-link p-0 text-muted"><span class="headercss">소개</span></a></li>
-						<li class="nav-item mb-2"><a href="StoreServlet" class="nav-link p-0 text-muted"><span class="headercss">스토어</span></a></li>
-						<li class="nav-item mb-2"><a href="ChallengeListServlet" class="nav-link p-0 text-muted"><span class="headercss">챌린지</span></a></li>
-						<li class="nav-item mb-2"><a href="NoticeListServlet" class="nav-link p-0 text-muted"><span class="headercss">공지사항</span></a></li>
-						<li class="nav-item mb-2"><a href="QuestionListServlet" class="nav-link p-0 text-muted"><span class="headercss">문의</span></a></li>
+						<li class="nav-item mb-2"><a href="${contextPath}/about" class="nav-link p-0 text-muted"><span class="headercss">소개</span></a></li>
+						<li class="nav-item mb-2"><a href="${contextPath}/store" class="nav-link p-0 text-muted"><span class="headercss">스토어</span></a></li>
+						<li class="nav-item mb-2"><a href="${contextPath}/challenge" class="nav-link p-0 text-muted"><span class="headercss">챌린지</span></a></li>
+						<li class="nav-item mb-2"><a href="${contextPath}/notice" class="nav-link p-0 text-muted"><span class="headercss">공지사항</span></a></li>
+						<li class="nav-item mb-2"><a href="${contextPath}/qna" class="nav-link p-0 text-muted"><span class="headercss">문의</span></a></li>
 					</ul>
 			</div>
 		</div>

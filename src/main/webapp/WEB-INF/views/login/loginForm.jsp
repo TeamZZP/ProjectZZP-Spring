@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="resources/js/loginForm.js"></script>
+<script type="text/javascript" src="resources/js/member/loginForm.js"></script>
 
 <div class="login-page">
   <div class="form">
@@ -14,8 +14,8 @@
       <button type="reset" id="resetBtn">취소</button>
       <p class="message">Not registered? <a href="join">Create an account</a></p>
       <p class="message" id="link">
-     	<a href="IdFindUIServlet">아이디찾기</a>
-      	<a href="PwFindUIServlet">비밀번호찾기</a>
+     	<a href="loginid">아이디찾기</a>
+      	<a href="loginpw">비밀번호찾기</a>
       </p>
     </form>
       <div id="kko">
@@ -23,7 +23,7 @@
 			<img src="//k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
 				width="222" alt="카카오 로그인 버튼" />
 		</a>
-		<form id="form-kakao-login" method="post" action="KakaoLoginServlet">
+		<form id="form-kakao-login" method="post" action="kakaoLogin">
 		    			<input type="hidden" name="email" id="kakaoEmail"/>
 		    			<input type="hidden" name="nickname" id="kakaoNickname"/>
 		    			<input type="hidden" name="accessToken" id="accessToken"/>
@@ -41,10 +41,10 @@
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-	var naver_id_login = new naver_id_login("_ZZF2h9wjuLwjIB5RUOO","http://localhost:8087/ProjectZZP/member/naverCallback.jsp");
+	var naver_id_login = new naver_id_login("_ZZF2h9wjuLwjIB5RUOO","http://localhost:8087/ProjectZZP/naverCallback");
 	var state = naver_id_login.getUniqState();
 	naver_id_login.setButton("green",3,47);
-	naver_id_login.setDomain("http://localhost:8087/ProjectZZP/loginForm.jsp");
+	naver_id_login.setDomain("http://localhost:8102/zzp/login");
   	naver_id_login.setState(state);
   	naver_id_login.setPopup();
   	naver_id_login.init_naver_id_login();

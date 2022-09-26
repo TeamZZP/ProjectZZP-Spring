@@ -48,39 +48,23 @@
     		<td> <b>  ${point.notice_hits} </b> </td>
     	</tr>
     	</c:forEach>
-    	
-    	<%
-	 		PageDTO pDTO = (PageDTO)request.getAttribute("pDTO");
-	 		List<NoticeDTO> list = pDTO.getList();
-	 		for(int i = 0; i < list.size(); i++){
-	 			NoticeDTO nDTO = list.get(i);
-	 			String day = nDTO.getNotice_created().substring(0,10);
-		%>
+		<c:forEach var="list" items="${pDTO.list}">
     	<tr>
-    		<td> <%= nDTO.getNotice_id() %> </td>
-    		<td><a href="notice/<%=nDTO.getNotice_id()%>?category=<%=nDTO.getNotice_category() %>"> <%= nDTO.getNotice_tittle() %> </a> </td>
-    		<td> <%= day %> </td>
-    		<td> <%= nDTO.getNotice_hits() %> </td>
+    		<td> ${list.notice_id} </td>
+    		<td><a href="notice/${list.notice_id}?category=${list.notice_category}"> ${list.notice_tittle} </a> </td>
+    		<td> ${list.notice_created.substring(0,10)} </td>
+    		<td> ${list.notice_hits} </td>
     	</tr>
-    	<%
-			}
-		%>
+    	</c:forEach>
 		<tr>
 			<td colspan="4">
-			 <%
-		        int curPage = pDTO.getCurPage();
-		        int perPage = pDTO.getPerPage();
-				int totalCount = pDTO.getTotalCount();
-				int totalPage = totalCount/perPage; //페이지수 구하기
-				if(totalCount%perPage!=0) totalPage++; //페이지수 구하기 나머지가 있으면 +1
-		        for(int i=1; i <= totalPage; i++){//1페이지부터 시작함으로 i=1
-		          	if(i== curPage){
-		          		out.print(i+"&nbsp;"); //현재페이지
-		          	}else{
-		          		out.print("<a style='color: green;' href = 'notice?curPage="+i+"'>" + i + " </a>");  
-		          	} //다른 페이지 선택시 링크로 이동
-		        }//end for
-		  	 %>
+			  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
+			  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
+			  	<c:choose>
+			  		<c:when test="${p==pDTO.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+			  		<c:otherwise><a style='color: green; text-decoration: none;' href="notice?curPage=${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+			  	</c:choose>
+			  </c:forEach>
 			</td>
 		</tr>
     </table>

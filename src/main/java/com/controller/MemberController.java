@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 	@Autowired
 	private MemberService service;
-	
 	/**
 	 * 회원가입 화면
 	 */
@@ -29,7 +28,7 @@ public class MemberController {
 		return "memberForm";
 	}
 	/**
-	 * 회원가입 화면
+	 * 회원가입
 	 */
 	@RequestMapping(value = "/join" , method = RequestMethod.POST)
 	public String join(@RequestParam Map<String, String> map, RedirectAttributes m) {
@@ -56,8 +55,8 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/join/id" , method = RequestMethod.GET , produces = "text/plain;charset=UTF-8")
 	public @ResponseBody String join(String userid) {
-		MemberDTO dto = service.checkID(userid);
 		String mesg = "사용 가능한 아이디입니다 :)";
+		MemberDTO dto = service.checkID(userid);
 		if (dto!=null) {
 			mesg = "중복된 아이디입니다 :(";
 		} else if (userid=="") {
@@ -65,5 +64,18 @@ public class MemberController {
 		}
 		return mesg;
 	}
-
+	/**
+	 * 전화번호 중복 확인
+	 */
+	@RequestMapping(value = "/join/phone", method = RequestMethod.GET , produces = "text/plain;charset=UTF-8")
+	public @ResponseBody String join2(String phone) {
+		String mesg = "가입 가능한 번호 :)";
+		MemberDTO dto = service.checkPhone(phone);
+		if (dto!=null) {
+			mesg = "이미 가입된 번호 :(";
+		} else if (phone=="") {
+			mesg = "번호 미입력 :(";
+		}
+		return mesg;
+	}
 }

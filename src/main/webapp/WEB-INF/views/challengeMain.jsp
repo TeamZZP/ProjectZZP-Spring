@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ZZP</title>
-<link rel="stylesheet" type="text/css" href="">
+
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>

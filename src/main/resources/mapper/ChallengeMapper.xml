@@ -4,11 +4,53 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ChallengeMapper">
 
+<insert id="insertChallenge" parameterType="hashmap">
+	insert all
+	into challenge 
+		(chall_id, 
+		userid, 
+		chall_title, 
+		chall_content, 
+		chall_category, 
+		chall_hits, 
+		chall_liked, 
+		chall_created, 
+		chall_img,
+		chall_comments,
+		chall_this_month) 
+	values 
+		(challenge_chall_id_seq.NEXTVAL, 
+		#{userid}, 
+		#{chall_title}, 
+		#{chall_content}, 
+		#{chall_category}, 
+		0, 
+		0, 
+		CURRENT_TIMESTAMP, 
+		#{chall_img},
+		0,
+		0)
+	<if test='chall_category=="이 달의 챌린지"'>
+	into member_stamp
+		(userid,
+		stamp_id,
+		chall_id,
+		stamp_created)
+	values
+		(#{userid},
+		(select stamp_id from stamp join challenge using(chall_id) where chall_this_month=1),
+		challenge_chall_id_seq.NEXTVAL,
+		CURRENT_TIMESTAMP)
+	</if>
+	select * from dual
+</insert>
+
 <select id="selectAllChallenge" parameterType="hashmap" resultType="ChallengeDTO">
 	select * 
 	from challenge c 
 	LEFT OUTER JOIN profile p on c.userid=p.userid
 	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	LEFT OUTER JOIN stamp s on m.stamp_id=s.stamp_id
 	<where>
 	  <if test='searchName!=null and !searchName.equals("")'>
 	 	and ${searchName} like '%${searchValue}%'
@@ -24,8 +66,6 @@
 <select id="countTotalChall" parameterType="hashmap" resultType="int">
 	select count(*) 
 	from challenge c 
-	LEFT OUTER JOIN profile p on c.userid=p.userid
-	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
 	<where>
 	  <if test='searchName!=null and !searchName.equals("")'>
 	 	and ${searchName} like '%${searchValue}%'
@@ -38,9 +78,57 @@
 	where chall_this_month=1
 </select>
 
-<select id="selectLikedChall">
+<select id="selectLikedChall" resultType="int">
 	select chall_id from chall_liked 
 	where userid=#{userid}
 </select>
+
+
+<!-- 메인 : 뉴 챌린지 -->
+<select id="selectNewChallenge" resultType="ChallengeDTO">
+	select * from challenge order by chall_id desc
+</select>
+
+
+<update id="updateChallHits">
+	update challenge
+	set chall_hits=chall_hits+1
+	where chall_id=#{chall_id}
+</update>
+
+<select id="selectOneChallenge" resultType="ChallengeDTO">
+	select * 
+	from challenge c 
+	LEFT OUTER JOIN profile p on c.userid=p.userid
+	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	LEFT OUTER JOIN stamp s on m.stamp_id=s.stamp_id
+	where c.chall_id = #{chall_id}
+</select>
+
+
+
+<select id="selectAllComments" resultType="CommentsDTO">
+	select * from comments join profile using(userid) 
+	where chall_id=#{chall_id}
+	order by group_order desc, step
+</select>
+
+
+
+<select id="countLikedByMap" resultType="int">
+	select count(*) from chall_liked
+	where chall_id=#{chall_id} and userid=#{userid}
+</select>
+
+
+
+
+
+<select id="selectProfileImg" resultType="string">
+	select profile_img from profile
+	where userid=#{userid}
+</select>
+
+
 
 </mapper>

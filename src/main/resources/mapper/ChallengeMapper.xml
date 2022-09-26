@@ -105,6 +105,19 @@
 	where c.chall_id = #{chall_id}
 </select>
 
+<update id="updateChallenge" parameterType="hashmap">
+	update challenge
+	set chall_category=#{chall_category},
+		chall_title=#{chall_title},
+		chall_img=#{chall_img},
+		chall_content=#{chall_content}
+	where chall_id=#{chall_id}
+</update>
+
+<delete id="deleteChallenge">
+	delete from challenge
+	where chall_id=#{chall_id}
+</delete>
 
 
 <select id="selectAllComments" resultType="CommentsDTO">

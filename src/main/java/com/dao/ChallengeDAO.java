@@ -86,6 +86,14 @@ public class ChallengeDAO {
 		return session.insert("ChallengeMapper.insertChallenge", map);
 	}
 
+	public int deleteChallenge(String chall_id) {
+		return session.delete("ChallengeMapper.deleteChallenge", chall_id);
+	}
+
+	public int updateChallenge(HashMap<String, String> map) {
+		return session.update("ChallengeMapper.updateChallenge", map);
+	}
+
 	
 
 }

@@ -33,10 +33,23 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		//글쓰기 버튼
-		$("#uploadForm input[type='submit']").on('click', function () {
-			let url = '../challenge';
-			if ('${!empty cDTO}' == 'true') url = '../challenge/${cDTO.chall_id}';
+		$('#write').on('click', function () {
+			let url = '/zzp/challenge';
 			$('#uploadForm').attr('action', url).submit();
+		})
+		//글수정 버튼
+		$('#update').on('click', function () {
+			$('#uploadForm').appendChild();
+			$.ajax({
+				url: '/zzp/challenge/${cDTO.chall_id}',
+				type: 'PUT',
+				success: function () {
+					location.href = '/zzp/challenge/${cDTO.chall_id}';
+				},
+				error: function () {
+					alert('문제가 발생했습니다. 다시 시도해 주세요.');
+				}
+			})
 		})
 		//글쓰기 취소
 		$(".cancelBtn").on("click", function () {
@@ -73,7 +86,7 @@
 			$("#old_file").val("");
 			
 			let preview = $(".thumb");
-			preview.attr("src", "images/uploadarea.png");
+			preview.attr("src", "/zzp/resources/images/challenge/uploadarea.png");
 			
 			$("#uploadarea").addClass("uploadBtn");
 			$("#updateBtn").css("display", "none");
@@ -146,15 +159,15 @@
     <div class="p-4 text-center">
       <c:choose>
         <c:when test="${empty cDTO}">
-	  		<img src="images/uploadarea.png" class="thumb uploadBtn" id="uploadarea" width="600" height="600" />
-	  		<img src="images/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기" style="display: none;">
-	 		<img src="images/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
+	  		<img src="/zzp/resources/images/challenge/uploadarea.png" class="thumb uploadBtn" id="uploadarea" width="600" height="600" />
+	  		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기" style="display: none;">
+	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
 	  	    <input type="file" accept="image/*" name="chall_img" id="chall_img" style="display: none;">
 	    </c:when>
 	    <c:otherwise>
-	 		<img src="/eclipse/upload/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
-	 		<img src="images/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
-	 		<img src="images/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
+	 		<img src="/zzp/resources/upload/challenge/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
+	 		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
+	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
 	 		<input type="file" accept="image/*" name="chall_img" id="chall_img" value="${cDTO.chall_img}" style="display: none;">
 	    </c:otherwise>
 	  </c:choose>
@@ -173,10 +186,10 @@
 	  <div class="float-end">
 	    <c:choose>
           <c:when test="${empty cDTO}">
-	 	    <input type="submit" class="btn btn-success" value="글쓰기">
+	 	    <input type="submit" class="btn btn-success" id="write" value="글쓰기">
 	      </c:when>
 	      <c:otherwise>
-	  	    <input type="submit" class="btn btn-success" value="수정하기">
+	  	    <input type="submit" class="btn btn-success" id="update" value="수정하기">
 	      </c:otherwise>
 	  </c:choose>
 	  </div>

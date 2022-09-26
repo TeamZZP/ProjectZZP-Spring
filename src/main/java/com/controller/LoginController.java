@@ -7,10 +7,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.MemberDTO;
@@ -166,47 +166,70 @@ public class LoginController {
 			return "redirect:/join";
 		}
 	}
+	
 	/**
 	 * 네이버 로그인 callback
 	 */
-	@RequestMapping(value = "/naverCallback" , method = RequestMethod.GET)
-	public String naverCallback() {
+	@RequestMapping(value = "/naver" , method = RequestMethod.GET)
+	public String naver() {
 		return "naverCallback";
 	}
 	/**
 	 * 네이버 로그인
 	 */
 	@RequestMapping(value = "/naverLogin" , method = RequestMethod.POST)
-	public String naverLogin(String email, String username, String phone, HttpSession session) {
-		System.out.println("naverLogin : "+email+" "+username+" "+phone);
+	@ResponseBody
+	public String naverLogin(String email, String username, HttpSession session) {
+		System.out.println("naverLogin : "+email+" "+username);
+		String mesg = "naver success";
 		
 		//이메일 나누기
 		int emailSplit = email.indexOf("@");
 		String email1 = email.substring(0, emailSplit);
 		String email2 = email.substring(emailSplit+1,email.length());
-		System.out.println(email1+" "+email2);
+		System.out.println("naverLogin email : "+email1+" "+email2);
 		
 		//네이버 데이터로 기존 회원 여부 확인
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("email", email);
-		map.put("username", username);
+		map.put("nickname", username);
 		
 		MemberDTO dto = service.selectMemberBySocial(map);
 	    System.out.println("naverLogin dto : "+dto);
-	    //기존 회원인 경우 로그인 처리
-		if (dto!=null) {
-			session.setAttribute("login", dto);
-	        session.setMaxInactiveInterval(60*60);
-	        return "redirect:/home";
+	    //새로운 회원인 경우 회원가입
+		if (dto==null) {
+			map.put("userid", email);
+			map.put("passwd", "1");
+			map.put("username", username);
+			map.put("email1", email1);
+			map.put("email2", email2);
+			map.put("phone", "01000000000");
+			map.put("post_num", "우편");
+			map.put("addr1", "도로명주소");
+			map.put("addr2", "지번주소");
+			int num = 0;
+			try {
+				num = service.joinMember(map);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				System.out.println(num);
+				//로그인
+				HashMap<String, String> Loginmap = new HashMap<String, String>();
+				Loginmap.put("userid", email);
+				Loginmap.put("passwd", "1");
+				MemberDTO loginedto = service.loginIDCheck(Loginmap);
+				System.out.println(loginedto);
+				session.setAttribute("login", loginedto); 
+			}
 		} 
-		//새로운 회원인 경우 회원가입
+		//기존 회원인 경우 로그인 처리
 		else {
-			session.setAttribute("kakaoInfo", map);
-			return "redirect:/join";
+			mesg = "naver fail";
+			session.setAttribute("login", dto);
 		}
+		session.setMaxInactiveInterval(60*60);
+		return mesg;
 	}
-	
-	
-	
 	
 }

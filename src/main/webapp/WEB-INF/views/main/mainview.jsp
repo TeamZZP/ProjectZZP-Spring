@@ -26,7 +26,7 @@
       <img src="resources/images/main/banner_zzp.png" class="d-block w-100" alt="ZZP소개">
     </div>
     <!-- 세일 -->
-    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='productByCategory?c_id=6';">
+    <div class="carousel-item" data-bs-interval="3000" onclick="javascrip:location.href='store/6';">
       <img src="resources/images/main/banner_sale.png" class="d-block w-100" alt="세일">
     </div>
     <!-- 이달의챌린지 -->

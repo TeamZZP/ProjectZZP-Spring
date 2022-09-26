@@ -1,45 +1,10 @@
 <%@page import="com.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$("#qTittle").focus();
-			$("#questionInsert").click(function() {
-				var qtittle = $("#qTittle").val();
-				var qContent = $("#qContent").val();
-				if (qtittle.length == 0) {
-					alert("제목을 입력하십시오");
-					event.preventDefault();
-				} else if (qContent.length == 0) {
-					alert("내용을 입력하십시오");
-					event.preventDefault();
-				}
-			});
-			
-			$("#questionList").click(function () {
-				$("#questionForm").attr("action", "QuestionListServlet");
-			})
-			$("#questionInsert").click(function () {
-				$("#questionForm").attr("action", "../qna");
-			})
-			$("#pID").click(function () {
-				var url = "/zzp/qna/pop"
-				window.open(url,"","width=400px height=500px");
-			});
-			function checkFileExtension(){ 
-				let fileValue = $("#qFile").val(); 
-				let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
-				if (fileValue.match(reg)) {
-					return true;
-				} else {
-					alert("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
-					return false;
-				}
-			}
-		});//end ready
-	</script>
+ <script src="resources/js/question/questionInsert.js"></script>
+ 
 <div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="${pageContext.request.contextPath}/resources/images/question/question.png" alt="..." style="width: auto;">
 </div>

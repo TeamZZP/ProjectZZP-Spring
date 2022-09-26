@@ -78,6 +78,12 @@ public class ChallengeDAO {
 	public List<ChallengeDTO> selectNewChallenge() {
 		return session.selectList("ChallengeMapper.selectNewChallenge");
 	}
+
+
+	public int insertChallenge(HashMap<String, String> map) {
+		return session.insert("ChallengeMapper.insertChallenge", map);
+	}
+
 	
 
 }

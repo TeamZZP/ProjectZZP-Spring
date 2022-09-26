@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,11 +10,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
@@ -96,8 +97,39 @@ public class ChallengeController {
 	 */
 	@RequestMapping(value = "/challenge/write", method = RequestMethod.GET)
 	public String challengeWrite() {
-		return "challeneWrite";
+		return "challengeWrite";
 	}
-	
+	/**
+	 * 챌린지 업로드
+	 */
+	@RequestMapping(value = "/challenge", method = RequestMethod.POST)
+	public String challengeUpload(
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
+		
+		long size = uploadFile.getSize();
+		String name= uploadFile.getName();
+		String originalFileName= uploadFile.getOriginalFilename();
+		String contentType= uploadFile.getContentType();
+		System.out.println("size:  "+ size);
+		System.out.println("name:  "+ name);
+		System.out.println("originalFileName:  "+ originalFileName);
+		System.out.println("contentType:  "+ contentType);
+		
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		
+		File f= new File(location, originalFileName);
+		try {
+			uploadFile.transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		map.put("chall_img", originalFileName);
+		
+		int n = service.insertChallenge(map);
+		System.out.println("insert 개수 : "+n);
+		
+		return "redirect:/challenge";
+	}
 
 }

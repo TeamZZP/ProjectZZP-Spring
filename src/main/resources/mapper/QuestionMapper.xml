@@ -36,11 +36,14 @@
 			</otherwise> 
 		</choose>
 	</select>
-	<!-- <select id="questionOneSelect" resultType="QuestionProductDTO" parameterType="string">
+	<select id="questionDetail" resultType="QuestionProductDTO" parameterType="string">
 		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
 			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) where Q_ID = #{Q_ID}
 	</select>
-	<insert id="questionInsert" parameterType="map">
+	<delete id="questionDelete" parameterType="string">
+		delete from QUESTION where Q_ID = #{qID} 
+	</delete>
+	<!-- <insert id="questionInsert" parameterType="map">
 		insert into QUESTION (Q_BOARD_CATEGORY, Q_CATEGORY, Q_TITLE, Q_CONTENT, Q_CREATED, Q_IMG, Q_STATUS, Q_ID, P_ID, USERID)
 			values (#{Q_BOARD_CATEGORY}, #{Q_CATEGORY}, #{Q_TITLE}, #{Q_CONTENT}, sysdate, #{question_img}, '답변대기', QUESTION_Q_ID_SEQ.nextval, 
 			#{P_ID}, #{USERID})
@@ -49,11 +52,6 @@
 		update QUESTION set Q_BOARD_CATEGORY = #{Q_BOARD_CATEGORY}, Q_CATEGORY = #{Q_CATEGORY}, Q_TITLE = #{Q_TITLE}, Q_CONTENT = #{Q_CONTENT},
 			Q_IMG = #{question_img}, P_ID = #{P_ID}  where Q_ID = #{Q_ID} 
 	</update>
-	<delete id="questionDelete" parameterType="string">
-		delete from QUESTION where Q_ID = #{qID} 
-	</delete>
-	
-	
 	
 	<select id="prodQuestion" parameterType="string" resultType="QuestionDTO">
 		select * from QUESTION where P_ID = #{P_ID}

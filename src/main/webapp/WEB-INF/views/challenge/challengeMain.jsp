@@ -4,6 +4,9 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style>
+	.paging {
+		cursor: pointer;
+	}
 	a {
 		text-decoration: none;
 		color: black;
@@ -65,10 +68,75 @@
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="resources/js/challenge/challengeMain.js"></script>
+<!-- <script type="text/javascript" src="/zzp/resources/js/challenge/challengeMain.js" defer></script> -->
+<script>
+	$(document).ready(function () {
+ 		//페이징
+ 		$('.paging').on('click', function() {
+			$('#page').val($(this).attr('data-page'));
+			$('form').attr('action', 'challenge').submit();
+		})
+ 		//정렬 기준 선택시 form 제출
+		$("#sortBy").on("change", function () {
+			$("form").attr('action', 'challenge').submit();
+		});
+		//좋아요 추가/삭제
+		$(".liked_area").on("click", ".liked", function () {
+			if ("${empty login}" == "true") {
+				alert("로그인이 필요합니다.");
+			} else {
+				let cid = $(this).attr("data-cid");
+				$.ajax({
+					type:"post",
+					url:"challenge/"+cid+"/like",
+					data: {
+						chall_id:cid,
+						userid:"${login.userid}"
+					},
+					dataType:"text",
+					success: function (data) {
+						$("#liked_area"+cid+" .liked").attr("src", data);
+						countLikes(cid);
+					},
+					error: function () {
+						alert("문제가 발생했습니다. 다시 시도해 주세요.");
+					}
+				}); 
+			}
+		});
+		//좋아요 개수 구해오기
+		function countLikes(cid) {
+			$.ajax({
+				type:"post",
+				url:"LikeCountServlet",
+				data: {
+					chall_id:cid,
+				},
+				dataType:"text",
+				success: function (data) {
+					$("#likeNum"+cid).text(data);
+				},
+				error: function () {
+					alert("문제가 발생했습니다. 다시 시도해 주세요.");
+				}
+			});
+		}
+		
+		//툴팁 활성화
+		let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+		let tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+				  			return new bootstrap.Tooltip(tooltipTriggerEl)
+						})
+		
+	}); 
+</script>
+
+
 <c:set value="${pDTO.list}" var="challList" />
 
 <form action="">
+<input type="hidden" name="page" value="1" id="page">
+ 
 <div class="container">
    <div class="row">
      <div class="col-sm-6">
@@ -134,6 +202,7 @@
 	<!-- 검색기능 -->
 	<div class="d-flex justify-content-center p-2">
 		<select name="searchName" class="form-select p-2">
+			<option selected disabled hidden>검색</option>
 			<option value="c.userid" <c:if test="${searchName=='c.userid'}">selected</c:if>>아이디</option>
 			<option value="chall_title" <c:if test="${searchName=='chall_title'}">selected</c:if>>제목</option>
 			<option value="chall_content" <c:if test="${searchName=='chall_content'}">selected</c:if>>내용</option>
@@ -147,30 +216,21 @@
 		
 	<!-- 페이징 -->
 	  <div class="p-2 text-center">
-	  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
-	  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
-	  	<c:choose>
-	  		<c:when test="${p==pDTO.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-	  		<c:otherwise><a href="challenge?curPage=${p}&searchName=${searchName}&searchValue=${searchValue}&sortBy=${sortBy}">${p}&nbsp;&nbsp;</a></c:otherwise>
-	  	</c:choose>
-	  </c:forEach>
-	<%--   <% 
-		    int curPage = pDTO.getCurPage(); 
-		    int perPage = pDTO.getPerPage(); 
-		    int totalCount = pDTO.getTotalCount();
-		    int totalPage = totalCount/perPage;
-		    if (totalCount%perPage!=0) totalPage++;
-		    for (int p=1; p<=totalPage; p++) {
-		    	if (p==curPage) {
-		    		out.print("<b>"+p+"</b>&nbsp;&nbsp;");
-		    	} else {
-		    		out.print("<a href='ChallengeListServlet?curPage="+p
-		    				+"&searchName="+searchName+"&searchValue="+searchValue
-		    				+"&sortBy="+sortBy+"'>"+p+"</a>&nbsp;&nbsp;");
-		    	} 
-		    }
-	  %> --%>
+		  <c:if test="${pDTO.prev}">
+		  	<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+		  </c:if>
+		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			  <c:choose>
+		  		<c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+		  		<c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+		  	  </c:choose>
+		  </c:forEach>
+		  <c:if test="${pDTO.next}">
+		  	<a class="paging" data-page="${pDTO.endPage+1}">next</a>
+		  </c:if>
 	  </div>
+	  
+	  
    </div>
 </div> 	
 </form>    

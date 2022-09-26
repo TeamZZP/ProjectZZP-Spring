@@ -24,7 +24,7 @@ public class ChallengeDAO {
 
 	public PageDTO selectAllChallenge(HashMap<String, String> map) {
 		int curPage = Integer.parseInt(
-				Optional.ofNullable(map.get("curPage"))
+				Optional.ofNullable(map.get("page"))
 				.orElse(("1"))
 				);
 		
@@ -35,9 +35,11 @@ public class ChallengeDAO {
 		
 		List<ChallengeDTO> list = session.selectList("ChallengeMapper.selectAllChallenge", map, new RowBounds(offset, perPage));
 		
-		pDTO.setCurPage(curPage);
+		pDTO.setPage(curPage);
 		pDTO.setList(list);
 		pDTO.setTotalCount(countTotalChall(map));
+		
+		pDTO.setStartEndPages();
 		
 		return pDTO;
 	}

@@ -1,4 +1,10 @@
  	$(document).ready(function () {
+ 		//페이징
+ 		$('.paging').on('click', function() {
+ 			console.log('click!!!')
+			$('#page').val($(this).attr('data-page'));
+			$('form').attr('action', 'challenge').submit();
+		})
  		//정렬 기준 선택시 form 제출
 		$("#sortBy").on("change", function () {
 			$("form").submit();

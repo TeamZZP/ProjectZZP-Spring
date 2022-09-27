@@ -6,15 +6,11 @@
 	<select id="answerSelect" parameterType="string" resultType="AnswerDTO">
 		select * from ANSWER where Q_ID = #{q_id}
 	</select>
-	<!-- <insert id="answerInsert" parameterType="AnswerDTO">
-		insert into ANSWER (ANSWER_ID, ANSWER_CONTENT, Q_ID, ANSWER_CREATED)
-			values (ANSWER_ANSWER_ID.nextval, #{answer_content}, #{q_id}, sysdate)
-	</insert>
-	
 	<update id="answerUpdate" parameterType="AnswerDTO">
 		update ANSWER set ANSWER_CONTENT = #{answer_content} where Q_ID = #{q_id}
 	</update>
-	<update id="questionStatus" parameterType="string">
-		update QUESTION set Q_STATUS = '답변완료' where Q_ID = #{q_id}
-	</update> -->
+	 <insert id="answerInsert" parameterType="AnswerDTO">
+		insert into ANSWER (ANSWER_ID, ANSWER_CONTENT, Q_ID, ANSWER_CREATED)
+			values (ANSWER_ANSWER_ID.nextval, #{answer_content}, #{q_id}, sysdate)
+	</insert>
 </mapper>

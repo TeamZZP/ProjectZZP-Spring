@@ -10,10 +10,10 @@
 	</c:if>
 	
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
 	
-	<form action="../../notice/${dto.notice_id}" method="post">
+	<form action="/zzp/notice/${dto.notice_id}" method="post">
 	<input type="hidden" name = "_method" value = "put"/>
 	<div class="container justify-content-center">
 	<div class="row">
@@ -41,7 +41,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td><button type="button" onclick="location.href='../../notice'" class="btn btn-success">목록보기</button></td>
+				<td><button type="button" onclick="location.href='/zzp/notice'" class="btn btn-success">목록보기</button></td>
 				<td style="text-align: right;">
 					<button type="submit" class="btn btn-success">수정 완료</button>
 				</td>

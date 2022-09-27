@@ -77,13 +77,13 @@
 			$('form').attr('action', 'challenge').submit();
 		})
  		//정렬 기준 선택시 form 제출
-		$("#sortBy").on("change", function () {
-			$("form").attr('action', 'challenge').submit();
+		$('#sortBy').on('change', function () {
+			$('form').attr('action', 'challenge').submit();
 		});
 		//좋아요 추가/삭제
-		$(".liked_area").on("click", ".liked", function () {
-			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.");
+		$('.liked_area').on('click', '.liked', function () {
+			if ('${empty login}' == 'true') {
+				alert('로그인이 필요합니다.');
 			} else {
 				let cid = $(this).attr("data-cid");
 				$.ajax({
@@ -107,10 +107,10 @@
 		//좋아요 개수 구해오기
 		function countLikes(cid) {
 			$.ajax({
-				type:"post",
-				url:"LikeCountServlet",
+				type:"get",
+				url:"challenge/"+cid+"/like",
 				data: {
-					chall_id:cid,
+					chall_id:cid
 				},
 				dataType:"text",
 				success: function (data) {
@@ -183,15 +183,15 @@
 	   	   <c:choose>
 	   	     <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
 	   	     <c:when test="${likedIt}">
-	   	     	<img src="resources/images/challenge/liked.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
+	   	     	<img src="/zzp/resources/images/challenge/liked.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
 	   	     </c:when>
 	   	     <%-- 그외의 경우 --%>
 	   	     <c:otherwise>
-	   	     	<img src="resources/images/challenge/like.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
+	   	     	<img src="/zzp/resources/images/challenge/like.png" width="30" height="30" class="liked" data-cid="${c.chall_id}">
 	   	     </c:otherwise>
 	   	   </c:choose>
 		   <span id="likeNum${c.chall_id}">${c.chall_liked}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		   <img src="resources/images/challenge/bubble.png" width="30" height="25"> ${c.chall_comments}
+		   <img src="/zzp/resources/images/challenge/bubble.png" width="30" height="25"> ${c.chall_comments}
 	   </div>
 	   <div class="pb-5 text-center">
 	   		<a href="ChallengeDetailServlet?chall_id=${c.chall_id}">${c.chall_title}</a>

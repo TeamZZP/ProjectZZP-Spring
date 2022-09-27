@@ -204,4 +204,25 @@ public class ChallengeController {
 		
 		return "redirect:/challenge/"+chall_id;
 	}
+	/**
+	 * 좋아요 추가/삭제
+	 */
+	@RequestMapping(value = "/challenge/{chall_id}/like", method = RequestMethod.POST)
+	@ResponseBody
+	public String like(
+			@PathVariable String chall_id, 
+			@RequestParam HashMap<String, String> map) {
+		return service.like(map);
+	}
+	/**
+	 * 좋아요 개수 구하기
+	 */
+	@RequestMapping(value = "/challenge/{chall_id}/like", method = RequestMethod.GET)
+	@ResponseBody
+	public int countLiked(@PathVariable String chall_id) {
+		return service.countLiked(chall_id);
+	}
+	
+	
+	
 }

@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- <script src="resources/js/notice/noticeInsert.js"></script> -->
+<!-- <script src="/resources/js/notice/noticeInsert.js"></script> -->
 <script>
 	$(document).ready(function () {
 		$("#nTittle").focus();
@@ -28,7 +28,7 @@
 </script>
 
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
 
 	<form method="post" action="">

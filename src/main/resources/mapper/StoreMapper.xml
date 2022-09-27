@@ -48,19 +48,12 @@
   </select>
   
   <!-- 제품상세 -->
-  <select id="productRetrieve" parameterType="int" resultType="ProductByCategoryDTO">
-   select p.P_ID ,
-   (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
-   p.P_NAME ,
-   p.P_CONTENT ,
-   p.C_ID ,
-   p.P_COST_PRICE ,
-   p.P_SELLING_PRICE ,
-   p.P_DISCOUNT ,
-   p.P_CREATED ,
-   p.P_STOCK 
-   from product p 
-  where p.p_id = #{p_id}
+  <select id="productRetrieve" parameterType="int" resultType="ProductDTO">
+  select * from product where p_id = #{p_id} 
+  </select>
+  <!-- 제품상세이미지 -->
+  <select id="ImagesRetrieve" parameterType="int" resultType="ImagesDTO"> 
+  select * from images where p_id= #{p_id} 
   </select>
   
   <!-- 상품페이지에서 찜 전체 검사 -->

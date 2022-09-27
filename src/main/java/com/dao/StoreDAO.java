@@ -2,7 +2,6 @@ package com.dao;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -10,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.CategoryDTO;
+import com.dto.ImagesDTO;
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
+import com.dto.ProductDTO;
 
 @Repository
 public class StoreDAO {
@@ -58,8 +59,8 @@ public class StoreDAO {
 			return pDTO;
 	}
 
-	public ProductByCategoryDTO productRetrieve(int p_id) {
-		ProductByCategoryDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);
+	public ProductDTO productRetrieve(int p_id) {
+		ProductDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);
 		return dto;
 	}
 	
@@ -82,6 +83,11 @@ public class StoreDAO {
 		int n = template.delete("StoreMapper.deleteZzim", map);
 		System.out.println(map+"찜삭제");
 		
+	}
+
+	public List<ImagesDTO> ImagesRetrieve(int p_id) {
+		List<ImagesDTO> list = template.selectList("StoreMapper.ImagesRetrieve",p_id);
+		return list;
 	}
 
 

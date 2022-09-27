@@ -74,8 +74,28 @@ a {
 			
 			
 		}) //end ajax
+
+	}
+	
+	function pageChange(pageNum) {
 		
-		
+		$.ajax({
+			type : "get",
+			url : "paging",
+			data : {
+				pageNum : pageNum
+			},
+			dataType : "text",
+			success : function(data,status,xhr) {
+			console.log("페이지 바꿈");
+			$("form").attr()
+			},
+			error : function(xhr, status,error) {
+				console.log(error);
+			}
+			
+			
+		})//end ajax
 		
 	}
 
@@ -93,7 +113,7 @@ a {
  ${mdto}<br>
  ${zzimList}<br>
  
-
+<c:set value="${pDTO.list}" var="Productlist" />
 <form action="StoreServlet" id="prodForm" >    
     <div id="categoryProductContainer" class="container ">
  
@@ -119,6 +139,7 @@ a {
             <p style="color: green; font-size: 20px;"><fmt:formatNumber pattern="###,###,###" >${pList.p_selling_price}</fmt:formatNumber>원</p>
          </div> 
          
+         <!-- 찜 -->
          <a id="zzim" href="javascript:zzimFunc(${pList.p_id})"> 
          
          <c:if test="${!empty zzimList}">
@@ -127,11 +148,11 @@ a {
 	   	   <c:choose>
 	   	     <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
 	   	     <c:when test="${zzim}">
-	   	     	<img src="resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
+	   	     	<img src="/zzp/resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
 	   	     </c:when>
 	   	     <%-- 그외의 경우 --%>
 	   	     <c:otherwise>
-	   	     	<img src="resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
+	   	     	<img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
 	   	     </c:otherwise>
 	   	   </c:choose>
         
@@ -142,6 +163,22 @@ a {
             		   
            
           </c:forEach>
+          
+          <!-- 페이징 -->
+	  <div class="p-2 text-center">
+		  <c:if test="${pDTO.prev}">   <!-- boolean타입 변수 prev가 true일 경우 (prev = startPage > 1;) -->
+		  	<a class="paging" data-page="${pDTO.startPage-1}" id="page" href="javascript:pageChange(${pDTO.startPage-1})">prev&nbsp;&nbsp;</a>
+		  </c:if>
+		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			  <c:choose>
+		  		<c:when test="${p==pDTO.page}" ><b>${p}</b>&nbsp;&nbsp;</c:when>
+		  		<c:otherwise><a class="paging" data-page="${p}"  id="page" href="javascript:pageChange(${p})">${p}&nbsp;&nbsp;</a></c:otherwise>
+		  	  </c:choose>
+		  </c:forEach>
+		  <c:if test="${pDTO.next}">
+		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" href="javascript:pageChange(${pDTO.endPage+1})">next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
+		  </c:if>
+</div>
           
        </div>
       </div>

@@ -3,13 +3,50 @@
     pageEncoding="UTF-8"%>
     
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- <script src="resources/js/question/questionInsert.js"></script>
+<!--  <script src="resources/js/question/questionInsert.js"></script> -->
+ <script>
+ 	$(function () {
+ 		$("#qTittle").focus();
+ 		$("#questionInsert").click(function() {
+ 			var qtittle = $("#qTittle").val();
+ 			var qContent = $("#qContent").val();
+ 			if (qtittle.length == 0) {
+ 				alert("제목을 입력하십시오");
+ 				event.preventDefault();
+ 			} else if (qContent.length == 0) {
+ 				alert("내용을 입력하십시오");
+ 				event.preventDefault();
+ 			}
+ 		});
+
+ 		$("#questionList").click(function() {
+ 			$("#questionForm").attr("action", "QuestionListServlet");
+ 		})
+ 		$("#questionInsert").click(function() {
+ 			$("#questionForm").attr("action", "../qna");
+ 		})
+ 		$("#prodSel").click(function() {
+ 			var url = "/zzp/qna/pop"
+ 			window.open(url, "", "width=400px height=500px");
+ 		});
+ 		function checkFileExtension() {
+ 			let fileValue = $("#qFile").val();
+ 			let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
+ 			if (fileValue.match(reg)) {
+ 				return true;
+ 			} else {
+ 				alert("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
+ 				return false;
+ 			}
+ 		}
+	});
+ </script>
  
 <div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="${pageContext.request.contextPath}/resources/images/question/question.png" alt="..." style="width: auto;">
 </div>
 
-<form action="" id="questionForm"  method="post">
+<form action="" id="questionForm"  method="post" encType="multipart/form-data">
 <input type="hidden" name="userid" value="${mDTO.userid}">
 <input type="hidden" name="oldFile" value="">
 <div class="container justify-content-center">
@@ -30,7 +67,7 @@
 						String P_ID = request.getParameter("P_ID");		
 						String P_Name = request.getParameter("P_Name");	
 					%>
-					  <button id="pID" class="btn btn-outline-secondary" type="button">상품 정보</button>
+					  <button id="prodSel" class="btn btn-outline-secondary" type="button">상품 정보</button>
 					  <input type="text" class="form-control shadow-none" name="P_Name" id="p_name" readonly="readonly" <%if(P_Name != null){ %>value="<%=P_Name%>"<%} %>>
 					  <input type="hidden" id="p_id" name="p_id" <%if(P_Name != null){ %>value="<%=P_ID%>"<%} %>>
 					</div>
@@ -71,7 +108,7 @@
 			<tr>
 				<td colspan="2">
 					<div>
-					  <input class="form-control" accept="image/*" type="file" name=theText id="qFile" multiple>
+					  <input class="form-control" accept="image/*" type="file" name="qna_img" id="qFile" multiple>
 					</div>
 				</td>
 			</tr>

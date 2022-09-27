@@ -30,9 +30,11 @@ public class NoticeDAO {
 		
 		List<NoticeDTO> list = session.selectList("NoticeMapper.noticePage", null, new RowBounds(offset, perPage));
 		
-		pDTO.setCurPage(curPage);
+		pDTO.setPage(curPage);
 		pDTO.setList(list);
 		pDTO.setTotalCount(noticeListCount());
+		
+		pDTO.setStartEndPages();
 		
 		return pDTO;
 	}

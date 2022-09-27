@@ -14,7 +14,8 @@
 			$("#detailForm").attr("method", "get").attr("action", "../qna");
 		});//
 		$("#questionUpdate").click(function () {
-			$("#detailForm").attr("action", "");
+			location.href = "/zzp/qna/write/${qDTO.q_id}";
+			event.preventDefault();
 		});//
 		$("#questionDelete").click(function () {
 			$("#detailForm").attr("action", "../qna/${qDTO.q_id}");
@@ -27,37 +28,36 @@
 			$("#pId").val("");
 		}//
 		$("#answerBtn").click(function() {
-			console.log("클릭됨");
-			var answer = $("#answer").val();
-			var qID = $("#answerBtn").attr("data-qid");
+			console.log($("#answer").val());
 			$.ajax({
-				type:"get",
-				url:"QuestionAnswerServlet",
+				type:"post",
+				url:"../qna/${qDTO.q_id}/answer",
 				data:{
-					answer : $("#answer").val(),	
-					qID : qID
+					answer : $("#answer").val()	
 				},
-				datatype:"text",
-				success: function (date, status, xhr) {
-					alert("답변완료");
-					$("#answerCheck").text(date);
-					$("#answer").text(date);
+		        dataType: "text",
+				success: function (data, status, xhr) {
+					console.log(data.answer)
+					$("#answerCheck").text($("#answer").val());
+					$("#answer").text(data.answer);
 				},
 				error: function (xhr, status, error) {
-					alert("에러");
+
 				}
 			});//end ajax
 		});//
 		$("#uploadBtu").click(function () {
-			window.open("showImg.jsp", "", "width=400px height=500px");
+			var upload = $("#upload").attr("src");
+			var url = "../qna/${qDTO.q_id}/showImg"
+			window.open(url, "", "width=400px height=500px");
 		});
 	});//end ready
 </script>
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="${pageContext.request.contextPath}/resources/images/question/question.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/question/question.png" alt="..." style="width: auto;">
 	</div>
 	<form method="post" id="detailForm">
-	<input type="hidden" name="_method" value="delete">
+	<input type="hidden" id="methodChange" name="_method" value="delete">
 	<div class="container justify-content-center">
 	<div class="row">
 		<table>
@@ -93,7 +93,7 @@
 			</tr>
 			<tr>
 				<td colspan="2">
-				  <textarea class="form-control shadow-none" rows="15" cols="50" readonly="readonly"> ${qDTO.p_content} </textarea>
+				  <textarea class="form-control shadow-none" rows="15" cols="50" readonly="readonly"> ${qDTO.q_content} </textarea>
 				</td>
 			</tr>
 			<tr>
@@ -104,7 +104,7 @@
 				<td>
 					<div>
 					  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-					  	<img id="upload" alt="" src="/eclipse/upload/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+					  	<img id="upload" alt="" src="/zzp/resources/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
 					</div>
 				</td>
 			</c:if> 

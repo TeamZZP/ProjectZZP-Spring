@@ -3,6 +3,7 @@ package com.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,15 +34,15 @@ public class NoticeController {
 	 * 공지 출력
 	 */
 	@RequestMapping(value = "/notice", method = RequestMethod.GET)
-	public String noticeList(HttpServletRequest request, Model m, HttpSession session) {
+	public String noticeList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
-		String curPage = request.getParameter("curPage"); //현재 페이지
-		if (curPage == null) {
-			curPage = "1";
-		}
+		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		
+		System.out.println(map);
+		
 		List<NoticeDTO> NoticePointList = service.pointNotice();//고정공지
 		
-		pDTO = service.noticePage(Integer.parseInt(curPage));
+		pDTO = service.noticePage(curPage);
 		System.out.println("pDTO " + pDTO);
 		
 		m.addAttribute("NoticePointList", NoticePointList);

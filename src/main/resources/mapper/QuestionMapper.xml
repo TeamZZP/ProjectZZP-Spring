@@ -43,15 +43,20 @@
 	<delete id="questionDelete" parameterType="string">
 		delete from QUESTION where Q_ID = #{qID} 
 	</delete>
-	<!-- <insert id="questionInsert" parameterType="map">
+	<update id="questionStatus" parameterType="string">
+		update QUESTION set Q_STATUS = '답변완료' where Q_ID = #{q_id}
+	</update>
+	<insert id="questionInsert" parameterType="map">
 		insert into QUESTION (Q_BOARD_CATEGORY, Q_CATEGORY, Q_TITLE, Q_CONTENT, Q_CREATED, Q_IMG, Q_STATUS, Q_ID, P_ID, USERID)
-			values (#{Q_BOARD_CATEGORY}, #{Q_CATEGORY}, #{Q_TITLE}, #{Q_CONTENT}, sysdate, #{question_img}, '답변대기', QUESTION_Q_ID_SEQ.nextval, 
-			#{P_ID}, #{USERID})
+			values (#{q_board_category}, #{q_category}, #{q_title}, #{q_content}, sysdate, #{qna_img}, '답변대기', QUESTION_Q_ID_SEQ.nextval, 
+			#{p_id}, #{userid})
 	</insert>
 	<update id="questionUpdate" parameterType="map">
-		update QUESTION set Q_BOARD_CATEGORY = #{Q_BOARD_CATEGORY}, Q_CATEGORY = #{Q_CATEGORY}, Q_TITLE = #{Q_TITLE}, Q_CONTENT = #{Q_CONTENT},
-			Q_IMG = #{question_img}, P_ID = #{P_ID}  where Q_ID = #{Q_ID} 
+		update QUESTION set Q_BOARD_CATEGORY = #{q_board_category}, Q_CATEGORY = #{q_category}, Q_TITLE = #{q_title}, Q_CONTENT = #{q_content},
+			Q_IMG = #{qna_img}, P_ID = #{p_id}  where Q_ID = #{q_id} 
 	</update>
+	<!--
+	
 	
 	<select id="prodQuestion" parameterType="string" resultType="QuestionDTO">
 		select * from QUESTION where P_ID = #{P_ID}

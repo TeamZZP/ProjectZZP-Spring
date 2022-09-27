@@ -8,7 +8,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<style>
+	a{
+		text-decoration: none;
+		color: green;
+	}
+	.paging {
+   	 	cursor: pointer;
+</style>
 
 <c:if test="${!empty mesg}">
 	<script>
@@ -47,13 +54,21 @@
     </c:forEach>
     <tr>
 		<td colspan="7">
-		  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
-		  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
-		  	<c:choose>
-		  		<c:when test="${p==pDTO.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-		  		<c:otherwise><a style='color: green; text-decoration: none;' href="qna?curPage=${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-		  	</c:choose>
-		  </c:forEach>
+		 <!-- 페이징 -->
+			     <div class="p-2 text-center">
+			        <c:if test="${pDTO.prev}">
+			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+			        </c:if>
+			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			           <c:choose>
+			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+			              <c:otherwise><a class="paging" href="qna?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+			             </c:choose>
+			        </c:forEach>
+			        <c:if test="${pDTO.next}">
+			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
+			        </c:if>
+			     </div>
 		</td>
 	</tr>
     <tr>

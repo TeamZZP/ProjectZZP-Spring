@@ -27,6 +27,11 @@
 			});
 		})//end ready
 	</script>
+	<style type="text/css">
+		.paging {
+		   cursor: pointer;
+		}
+	</style>
 </head>
 <body>
 <%
@@ -35,6 +40,7 @@
 	if(searchValue == null){searchValue = "";}
 %>
 	<form action="/zzp/qna/search" method="post">
+	<input type="hidden" name="page" value="1" id="page">
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 		<table border="1" style="border-collapse: collapse; border: 1px solid green;">
 			<tr>
@@ -78,18 +84,20 @@
 		</c:forEach>
 		<tr>
 			<td colspan="3">
-			  <c:set var="totalPage" value="${prodSelect.totalCount/prodSelect.perPage}" />
-			  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
-			  	<c:choose>
-			  		<c:when test="${p==prodSelect.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			  		<c:otherwise>
-			  			<a style='color: green; text-decoration: none;' id="prodSelect"
-				  		href='search?curPage=${p}&category=${category}&searchValue=${searchValue}&prodNum=${prodNum}'>
-				  			 ${p}&nbsp;&nbsp;
-			  			</a> 
-			  		</c:otherwise>
-			  	</c:choose>
-			</c:forEach>
+			  <div class="p-2 text-center">
+			        <c:if test="${pDTO.prev}">
+			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+			        </c:if>
+			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			           <c:choose>
+			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+			              <c:otherwise><a class="paging" href="zzp/qna/search?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+			             </c:choose>
+			        </c:forEach>
+			        <c:if test="${pDTO.next}">
+			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
+			        </c:if>
+			     </div>
 			</td>
 		</tr>
 	</table>

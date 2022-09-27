@@ -9,7 +9,10 @@
 <style>
 	a{
 		text-decoration: none;
-		color: black;
+		color: green;
+	}
+	.paging {
+    cursor: pointer;
 	}
 </style>
 	<c:if test="${!empty mesg}">
@@ -19,7 +22,7 @@
 	</c:if>
 	
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="resources/images/notice/notice3.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
 
 	<c:if test="${mDTO.role == 1}">
@@ -58,13 +61,28 @@
     	</c:forEach>
 		<tr>
 			<td colspan="4">
-			  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
+			 <%--  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
 			  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
 			  	<c:choose>
 			  		<c:when test="${p==pDTO.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
 			  		<c:otherwise><a style='color: green; text-decoration: none;' href="notice?curPage=${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
 			  	</c:choose>
-			  </c:forEach>
+			  </c:forEach> --%>
+			   <!-- 페이징 -->
+			     <div class="p-2 text-center">
+			        <c:if test="${pDTO.prev}">
+			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+			        </c:if>
+			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			           <c:choose>
+			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+			              <c:otherwise><a class="paging" href="notice?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+			             </c:choose>
+			        </c:forEach>
+			        <c:if test="${pDTO.next}">
+			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
+			        </c:if>
+			     </div>
 			</td>
 		</tr>
     </table>

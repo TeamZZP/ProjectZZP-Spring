@@ -83,6 +83,32 @@ public class StoreDAO {
 		System.out.println(map+"찜삭제");
 		
 	}
+	
+	//관리자페이지 상품관리 : 전체 상품 목록
+	public PageDTO selectAllProduct(HashMap<String, String> map) {
+		int curPage = Integer.parseInt(
+					  Optional.ofNullable(map.get("page")) //현제 페이지 null이면
+					  .orElse(("1"))//1로 설정
+				);
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(10);//한 페이지 당 record 10개 씩
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage-1)*perPage; //페이지 시작 idx
+		
+		List<ProductByCategoryDTO> list = template.selectList("selectAllProduct", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalAdmin(map));
+		
+		pDTO.setStartEndPages();//startPage, endPage, prev, next 생성 함수 호출
+		
+		return pDTO;
+	}
+	//관리자페이지 상품관리 : 전체 상품 목록 페이징 countTotal
+	private int countTotalAdmin(HashMap<String, String> map) {
+		return template.selectOne("countTotalAdmin", map);
+	}
 
 
 }

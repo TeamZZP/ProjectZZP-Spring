@@ -7,7 +7,7 @@
 	<div class="card align-middle" id="div1">
 		<div class="card-title" id="div2">
 			<h2 class="card-title" id="h2tag"><img alt="로고" src="resources/images/header/main.png" width="50" height="50">
-			<span id="main">ZZP</span> </h2>
+			<span id="main" style="color: green;">ZZP</span> </h2>
 		</div>
 	      <form action="loginid" class="find" method="POST">
 	        <div class="checkbox">

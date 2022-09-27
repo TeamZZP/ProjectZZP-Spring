@@ -16,5 +16,13 @@ public class AnswerService {
 		AnswerDTO dto = dao.answerSelect(q_id);
 		return dto;
 	}
+
+	public void answerUpdate(AnswerDTO aDTO) {
+		dao.answerUpdate(aDTO);
+	}
+
+	public void answerInsert(AnswerDTO aDTO) {
+		dao.answerInsert(aDTO);
+	}
 	
 }

@@ -16,5 +16,16 @@ public class AnswerDAO {
 		AnswerDTO dto = session.selectOne("AnswerMapper.answerSelect", q_id);
 		return dto;
 	}
+
+	public void answerUpdate(AnswerDTO aDTO) {
+		int num = session.update("AnswerMapper.answerUpdate", aDTO);
+		System.out.println("답변 수정 갯수 " + num);
+	}
+
+	public void answerInsert(AnswerDTO aDTO) {
+		int num = session.insert("AnswerMapper.answerInsert", aDTO);
+		System.out.println("답변 추가 갯수 " + num);
+			
+	}
 	
 }

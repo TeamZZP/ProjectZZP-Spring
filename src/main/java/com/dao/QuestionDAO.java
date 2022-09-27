@@ -1,7 +1,9 @@
 package com.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -27,9 +29,11 @@ public class QuestionDAO {
 		
 		List<QuestionProductDTO> list = session.selectList("QuestionMapper.questionList", null, new RowBounds(offset, perPage));
 		
-		pDTO.setCurPage(curPage);
+		pDTO.setPage(curPage);
 		pDTO.setList(list);
 		pDTO.setTotalCount(questionListCount());
+		
+		pDTO.setStartEndPages();
 		
 		return pDTO;
 	}
@@ -37,7 +41,8 @@ public class QuestionDAO {
 		return session.selectOne("QuestionMapper.questionListCount");
 	}
 	
-	public PageDTO prodSelect(Map<String, String> map, int curPage, int prodNum) {
+	public PageDTO prodSelect(Map<String, String> map, int prodNum) {
+		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(prodNum);
 		int perPage = pDTO.getPerPage();
@@ -45,9 +50,11 @@ public class QuestionDAO {
 		
 		List<ProductImagesDTO> list = session.selectList("QuestionMapper.prodSelect", map, new RowBounds(offset, perPage));
 		
-		pDTO.setCurPage(curPage);
+		pDTO.setPage(curPage);
 		pDTO.setList(list);
 		pDTO.setTotalCount(prodSelectCount(map));
+		
+		pDTO.setStartEndPages();
 		
 		return pDTO;
 	}
@@ -61,6 +68,18 @@ public class QuestionDAO {
 	public void questionDelete(String q_id) {
 		int num = session.delete("QuestionMapper.questionDelete", q_id);
 		System.out.println("삭제된 게시글 갯수 " + num);
+	}
+	public void questionStatus(String q_id) {
+		int num = session.update("QuestionMapper.questionStatus", q_id);
+		System.out.println("답변 상태 수정 갯수 " + num);
+	}
+	public void questionInsert(HashMap<String, String> map) {
+		int num = session.insert("QuestionMapper.questionInsert", map);
+		System.out.println("게시글 작성 갯수 " + num);
+	}
+	public void questionUpdate(Map<String, String> map) {
+		int num = session.update("QuestionMapper.questionUpdate", map);
+		System.out.println("게시글 수정 갯수 " + num);
 	}
 
 }

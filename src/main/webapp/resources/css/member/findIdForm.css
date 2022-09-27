@@ -58,11 +58,9 @@
 	 margin-right: 70px;
 }
 #h2tag{
-	color:#f58b34; 
-	text-align: center;
-}
-#main{
+	color: green;
 	font-weight: bold;
+	text-align: center;
 }
 #btn{
 	margin-bottom: 30px;

@@ -9,10 +9,11 @@
 <style>
 	a{
 		text-decoration: none;
-		color: green;
+		color: black;
 	}
 	.paging {
-    cursor: pointer;
+	    cursor: pointer;
+	    color: green;
 	}
 </style>
 	<c:if test="${!empty mesg}">

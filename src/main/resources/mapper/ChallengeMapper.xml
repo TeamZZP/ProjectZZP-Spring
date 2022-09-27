@@ -128,13 +128,33 @@
 
 
 
+
 <select id="countLikedByMap" resultType="int">
 	select count(*) from chall_liked
 	where chall_id=#{chall_id} and userid=#{userid}
 </select>
 
+<insert id="insertLike" parameterType="hashmap">
+	insert into chall_liked (chall_id, userid)
+	values (#{chall_id}, #{userid})
+</insert>
 
+<delete id="deleteLike" parameterType="hashmap">
+	delete from chall_liked
+	where chall_id=#{chall_id} and userid=#{userid}
+</delete>
 
+<update id="updateChallLiked">
+	update challenge
+	set chall_liked=(select count(*) from chall_liked 
+					where chall_id=#{chall_id})
+	where chall_id=#{chall_id}
+</update>
+
+<select id="countLiked" resultType="int">
+	select chall_liked from challenge
+	where chall_id=#{chall_id}
+</select>
 
 
 <select id="selectProfileImg" resultType="string">

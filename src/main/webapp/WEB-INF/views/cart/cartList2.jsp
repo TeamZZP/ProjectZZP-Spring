@@ -21,7 +21,7 @@
 		<div class="btn-group" role="group" aria-label="Basic example">
 
 			<button type="button" class="btn btn-outline-success" id="cart">
-				장바구니(${cartCount})
+				장바구니(${cartList.size})
 			</button>
 			<button type="button" class="btn btn-outline-success" id="like"
 				onclick="location.href='ProductLikeListServlet';">

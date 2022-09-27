@@ -11,10 +11,31 @@
 	</c:if>
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script src="resources/js/notice/noticeDetail.js"></script>
+	<!-- <script src="/zzp/resources/js/notice/noticeDetail.js"></script> -->
+	<script>
+		$(document).ready(function () {
+			$("#noticeUpdate").click(function() {
+				$("form").attr("method", "get").attr("action", "/zzp/notice/write/${nDTO.notice_id}");
+			});
+			$("#noticeDelete").click(function() {
+				$("form").attr("action", "/zzp/notice/${nDTO.notice_id}");
+			});
+		});//end ready
+	</script>
+	<!-- <script src="resources/js/notice/noticeDetail.js"></script> -->
+	<scirpt>
+		$(document).ready(function () {
+			$("#noticeUpdate").click(function() {
+				$("form").attr("method", "get").attr("action", "../notice/write/${nDTO.notice_id}");
+			});
+			$("#noticeDelete").click(function() {
+				$("form").attr("action", "../notice/${nDTO.notice_id}");
+			});
+		});//end ready
+	</scirpt>
 
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="../resources/images/notice/notice3.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
 	
 	<form action="" method="post">

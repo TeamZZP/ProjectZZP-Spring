@@ -44,7 +44,7 @@
 $(document).ready(function () {
 	$(".category").click(function() {
 		let category = $(this).attr("data-category");
-		location.href="/zzp/admin/"+category;
+		location.href="/zzp/admin/"+category; 
 	});
 	
 	$('.store').on('click', function () {
@@ -58,8 +58,6 @@ $(document).ready(function () {
 	
 });
 </script>
-
-
 
 <div id="adminNav" class="col-lg-2 float-md-start">
 	<ul class="nav flex-column">

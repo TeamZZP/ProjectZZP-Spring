@@ -179,7 +179,7 @@ public class ChallengeController {
 	/**
 	 * 챌린지 수정 업로드
 	 */
-	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/challenge/{chall_id}", method = RequestMethod.POST)
 	public String update(
 			@PathVariable String chall_id,
 			@RequestParam HashMap<String, String> map, 
@@ -190,7 +190,8 @@ public class ChallengeController {
 		String chall_img = old_file;
 		
 		//사진이 바뀐 경우
-		if (old_file == null) {
+		if (old_file == null || old_file.length() == 0) {
+			old_file = service.selectOneChallenge(chall_id).getChall_img();
 			deleteFile(location, old_file);
 			uploadFile(location, uploadFile);
 			
@@ -201,6 +202,6 @@ public class ChallengeController {
 		int n = service.updateChallenge(map);
 		System.out.println("update 개수 : "+n);
 		
-		return "redirect:/challenge";
+		return "redirect:/challenge/"+chall_id;
 	}
 }

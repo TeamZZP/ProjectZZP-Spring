@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <style>
 	#search {
 		text-decoration: none;
@@ -28,21 +30,72 @@
 		display: none;
 	}
 </style>
-<%	/* 메세지 있는 경우 modal */
-	String mesg = (String)session.getAttribute("mesg");
-	if(mesg != null){
-%>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script type="text/javascript">
-	$(document).ready(function() {
-		$("#modalBtn").trigger("click");
-		$("#mesg").text("<%= mesg %>");
-	});
-	</script>
-<%
-	}
-	session.removeAttribute("mesg");
-%>
+<!-- 메세지 있는 경우 modal 일단 지움* 메세지 안 뜨면 jstl로 바꿔서 추가하기 -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+	$(document).ready(function () {
+		//관리자페이지 카테고리
+		$(".category").click(function() {
+			let category = $(this).attr("data-category");
+			location.href="AdminCategoryServlet?category="+category;
+		});
+		//페이징
+ 		$('.paging').on('click', function() {
+			$('#page').val($(this).attr('data-page'));
+			$('form').attr('action', 'admin/product').submit();
+		})
+		//상품검색
+		$("#searchProd").click(function() {
+			$("#sortForm").submit();
+		});
+		//정렬 기준 선택시 form 제출
+		$("#sortBy").on("change", function () {
+			$("#sortForm").submit();
+		});
+		//상품등록 버튼
+		$("#addProduct").click(function() {
+			location.href="../adminProductAdd.jsp";
+		});
+		//상품 상세페이지
+		$(".productDetail").click(function() {
+			let p_id = $(this).attr("data-p_id");
+			location.href="AdminProdDetailServlet?p_id="+p_id;
+		});
+		//상품보기 버튼
+		$("body").on("click", "#prodDetail", function () {
+			let p_id = $(this).attr("data-id");
+			location.href="ProductRetrieveServlet?p_id="+p_id;
+		});
+		//삭제 모달
+		$("#deleteModal").on("shown.bs.modal", function (e) { //삭제모달 띄우면 발생하는 이벤트
+ 		let button = e.relatedTarget //삭제모달 띄우려고 누른 버튼
+ 		if (button) {
+ 			let id = button.getAttribute("data-bs-id") //삭제모달띄우는 버튼의 data-bs-id값
+ 			$("#delp_id").val(id); //삭제 시 넘어가는 p_id 값으로 설정
+		}
+		});
+		//상품삭제 버튼
+		$(".delProdBtn").on("click", function (e) { //삭제모달 안의 확인버튼
+			$('#prodForm').attr('action', 'ProductDeleteServlet').submit() //form 제출
+		});
+		//체크박스 전체선택
+		$("#checkAll").click(function() {
+			$(".delCheck").prop('checked', $(this).prop('checked'));
+		});
+		//체크박스 선택 삭제
+		$(".delCheckBtn").click(function() {
+			if ($('.delCheck:checked').length == 0) {
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("삭제할 상품을 선택해 주세요.");
+			} else {
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("선택한 상품을 삭제하시겠습니까?"); //확인 클릭 시 prodForm이 submit됨
+			}
+		});
+		
+	});//end ready
+	
+</script>
 <%
 	PageDTO pDTO = (PageDTO) request.getAttribute("pDTO");
 	List<CategoryProductDTO> product_list = pDTO.getList();
@@ -50,6 +103,8 @@
 	String searchValue = (String) request.getAttribute("searchValue");
 	String sortBy = (String) request.getAttribute("sortBy");
 %>
+
+<c:set value="${pDTO.list}" var="product_list" />
 
 <!-- 검색 / 정렬 -->
 <div class="container mt-2 mb-2">
@@ -221,64 +276,3 @@
   </div>
 </div>
 <button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<script>
-	$(document).ready(function () {
-		//관리자페이지 카테고리
-		$(".category").click(function() {
-			let category = $(this).attr("data-category");
-			location.href="AdminCategoryServlet?category="+category;
-		});
-		//상품검색
-		$("#searchProd").click(function() {
-			$("#sortForm").submit();
-		});
-		//정렬 기준 선택시 form 제출
-		$("#sortBy").on("change", function () {
-			$("#sortForm").submit();
-		});
-		//상품등록 버튼
-		$("#addProduct").click(function() {
-			location.href="../adminProductAdd.jsp";
-		});
-		//상품 상세페이지
-		$(".productDetail").click(function() {
-			let p_id = $(this).attr("data-p_id");
-			location.href="AdminProdDetailServlet?p_id="+p_id;
-		});
-		//상품보기 버튼
-		$("body").on("click", "#prodDetail", function () {
-			let p_id = $(this).attr("data-id");
-			location.href="ProductRetrieveServlet?p_id="+p_id;
-		});
-		//삭제 모달
-		$("#deleteModal").on("shown.bs.modal", function (e) { //삭제모달 띄우면 발생하는 이벤트
- 		let button = e.relatedTarget //삭제모달 띄우려고 누른 버튼
- 		if (button) {
- 			let id = button.getAttribute("data-bs-id") //삭제모달띄우는 버튼의 data-bs-id값
- 			$("#delp_id").val(id); //삭제 시 넘어가는 p_id 값으로 설정
-		}
-		});
-		//상품삭제 버튼
-		$(".delProdBtn").on("click", function (e) { //삭제모달 안의 확인버튼
-			$('#prodForm').attr('action', 'ProductDeleteServlet').submit() //form 제출
-		});
-		//체크박스 전체선택
-		$("#checkAll").click(function() {
-			$(".delCheck").prop('checked', $(this).prop('checked'));
-		});
-		//체크박스 선택 삭제
-		$(".delCheckBtn").click(function() {
-			if ($('.delCheck:checked').length == 0) {
-				$("#modalBtn").trigger("click");
-				$("#mesg").text("삭제할 상품을 선택해 주세요.");
-			} else {
-				$("#modalBtn").trigger("click");
-				$("#mesg").text("선택한 상품을 삭제하시겠습니까?"); //확인 클릭 시 prodForm이 submit됨
-			}
-		});
-		
-	});//end ready
-	
-</script>

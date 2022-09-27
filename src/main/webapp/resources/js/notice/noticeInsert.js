@@ -10,7 +10,7 @@ $(document).ready(function () {
 				alert("내용을 입력하십시오");
 				evnet.preventDefault();
 			} else {
-				$("form").attr("action","../notice");
+				$("form").attr("action","/zzp/notice");
 			}
 		});
 		$("#noticeList").click(function () {

@@ -23,14 +23,13 @@ public class StoreService {
 		return cList;
 	}
 
-	 public List<ProductByCategoryDTO> bestProduct() {
-		 List<ProductByCategoryDTO> list = dao.bestProduct();
-		return list;
+	 public PageDTO bestProduct() {
+		 return dao.bestProduct();
 	}
 
-	public List<ProductByCategoryDTO> productByCategory(int c_id) {
-		List<ProductByCategoryDTO> prodByCateList = dao.productByCategory(c_id);
-		return prodByCateList;
+	public PageDTO productByCategory(int c_id) {
+		return  dao.productByCategory(c_id);
+
 	}
 
 	public ProductByCategoryDTO productRetrieve(int p_id) {

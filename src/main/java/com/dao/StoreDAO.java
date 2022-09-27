@@ -22,15 +22,40 @@ public class StoreDAO {
 		List<CategoryDTO> cList = template.selectList("StoreMapper.category");
 		return cList;
 	}
-
-	public List<ProductByCategoryDTO> bestProduct() {
-		 List<ProductByCategoryDTO> list= template.selectList("StoreMapper.bestProduct");
-		return list;
+	
+	public int countAllProduct() {
+		int count = template.selectOne("StoreMapper.countAllProduct");
+	return count;
 	}
 
-	public List<ProductByCategoryDTO> productByCategory(int c_id) {
-		List<ProductByCategoryDTO> productByCategory = template.selectList("StoreMapper.productByCategory", c_id);
-		return productByCategory;
+	public PageDTO bestProduct() {
+		    int curPage = 1;
+		    PageDTO pDTO = new PageDTO();
+			pDTO.setPerPage(12);
+			int perPage = pDTO.getPerPage();
+			int offset = (curPage-1)*perPage;
+			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.bestProduct","",new RowBounds(offset, perPage));
+			pDTO.setPage(curPage);
+			pDTO.setList(list);
+			pDTO.setTotalCount(countAllProduct());
+			pDTO.setStartEndPages();
+			System.out.println("bestDAO list개수"+list.size());
+		 return pDTO;
+	}
+
+	public PageDTO productByCategory(int c_id) {
+			int curPage = 1;
+		    PageDTO pDTO = new PageDTO();
+			pDTO.setPerPage(12);
+			int perPage = pDTO.getPerPage();
+			int offset = (curPage-1)*perPage;
+			List<ProductByCategoryDTO> list = template.selectList("StoreMapper.productByCategory", c_id,new RowBounds(offset, perPage));
+			pDTO.setPage(curPage);
+			pDTO.setList(list);
+			pDTO.setTotalCount(countAllProduct());
+			pDTO.setStartEndPages();
+			System.out.println("DAO list개수"+list.size());
+			return pDTO;
 	}
 
 	public ProductByCategoryDTO productRetrieve(int p_id) {

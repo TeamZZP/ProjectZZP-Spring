@@ -64,14 +64,14 @@ public class QuestionController {
 	/**
 	 * 상품 검색 팝업 띄우기
 	 */
-	@RequestMapping("/qna/pop")
+	@RequestMapping(value = "/qna/pop", method = RequestMethod.GET)
 	public String prodSelectPop() {
 		return "questionproductSelect";
 	}
 	/**
 	 * 상품 검색 팝업
 	 */
-	@RequestMapping(value = "/qna/search")
+	@RequestMapping(value = "/qna/search", method = RequestMethod.GET)
 	public ModelAndView prodselect(@RequestParam Map<String, String> map, 
 			String category, String searchValue, String prodNum, HttpServletRequest request) {
 		System.out.println("검색할 내용 " + category + "\t" + searchValue);

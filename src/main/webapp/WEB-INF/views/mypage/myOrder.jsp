@@ -35,16 +35,16 @@
 	$(document).ready(function () {
 		$(".chk").click(function () {
 			var chk = $(this);
-			var ORDER_ID = $(this).attr("data-orderID");
-			var REVIEW_ID = $(this).attr("data-reviewID");
-			var P_NAME = $(this).attr("data-pNAME");
-			var P_ID = $(this).attr("data-pID");
-		 	$.ajax({
+			var order_id = $(this).attr("data-orderID");
+			var p_name = $(this).attr("data-pNAME");
+			var p_id = $(this).attr("data-pID");
+			console.log(order_id, p_name, p_id);
+		 	/* $.ajax({
 				type:"post",
-				url:"orderIdCheckServlet",
+				url:"/zzp/orders/review",
 				data:{
-					ORDER_ID : ORDER_ID,
-					P_ID : P_ID
+					order_id : order_id,
+					p_id : p_id
 				},
 				dataType:"text",
 				success: function (data, status, xhr) {
@@ -56,7 +56,7 @@
 				},
 				error: function (xhr, status, error) {
 					
-				} 
+				}  */
 			});//end ajax
 		});
 		$('.paging').on('click', function() {

@@ -38,7 +38,7 @@
 	</style>
 </head>
 <body>
-	<form action="/zzp/qna/search" method="post">
+	<form action="/zzp/qna/search" method="get">
 	<input type="hidden" name="page" value="1" id="page">
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 	<table border="1" style="border-collapse: collapse; border: 1px solid green;">

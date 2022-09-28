@@ -35,7 +35,7 @@ $(function() {
 </script>  
  
 
-<a>카테고리jsp</a> <br>
+<!-- <a>카테고리jsp</a> <br> -->
 <a href="${contextPath}/store">베스트</a><br>
 <c:forEach var="cList" items="${categoryList}">
 <%-- <a onClick="categoryChange('${cList.c_id}')">${cList.c_name}</a><br> --%> <!-- ajax로할경우 -->

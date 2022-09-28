@@ -84,7 +84,7 @@
   </delete>
   
   <!-- 관리자페이지 상품관리 : 전체 상품 목록 -->
-  <select id="" parameterType="hashmap" resultType="ProductByCategoryDTO">
+  <select id="selectAllProduct" parameterType="hashmap" resultType="ProductByCategoryDTO">
   	select (select C_NAME from category where c_id = p.c_id) as c_name, p.P_ID,(select IMAGE_ROUTE from images where p_id = p.p_id 
 	and IMAGE_RNK = 1) as p_image,p.P_NAME,p.P_CONTENT,p.C_ID,p.P_COST_PRICE
 	,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p

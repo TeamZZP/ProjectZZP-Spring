@@ -97,6 +97,25 @@ public class ChallengeService {
 		return dao.countLiked(chall_id);
 	}
 
+	@Transactional
+	public void addComment(CommentsDTO dto) {
+		//댓글 추가
+		if (dto.getParent_id() == 0) {
+			dao.insertComment(dto);
+			
+		//답글 추가
+		} else {
+			dao.insertReply(dto);
+		}
+		
+		//해당 게시글의 댓글수 변경
+		dao.updateChallComments(dto.getChall_id());
+	}
+
+	public int countComments(String chall_id) {
+		return dao.countComments(chall_id);
+	}
+
 
 
 }

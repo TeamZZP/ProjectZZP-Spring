@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.CategoryDTO;
+import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
-import com.dto.ProductByCategoryDTO;
+import com.dto.ProductDTO;
 import com.service.StoreService;
 
 @Controller
@@ -57,15 +58,23 @@ public class StoreController {
 		ModelAndView mav = new ModelAndView();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		PageDTO pDTO = new PageDTO();
+		String banner = "";
 		pDTO= service.productByCategory(c_id);  //해당카테고리상품리스트
 		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
+		if(c_id==6) {
+			banner = "<div style='text-align: center;'>\r\n" + 
+					"              <img id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>    \r\n" + 
+					"        </div>";
+		}
+		
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("zzimList", zzimList);
+		mav.addObject("banner", banner);
 		mav.setViewName("storeMain");
 		return mav;
 	}
@@ -86,7 +95,11 @@ public class StoreController {
 		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
-		ProductByCategoryDTO pdto= service.productRetrieve(p_id);  //선택상품상세
+		ProductDTO pdto= service.productRetrieve(p_id);  //선택상품상세
+		System.out.println("productRetrieve Controller 실행 : "+ p_id );
+		System.out.println(pdto);
+		List<ImagesDTO> imageList= service.ImagesRetrieve(p_id);
+		
 		if(mdto!=null) {
 			map.put("userid", mdto.getUserid());
 			map.put("p_id", String.valueOf(pdto.getP_id()));
@@ -95,6 +108,7 @@ public class StoreController {
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("pdto",pdto);
+		mav.addObject("imageList",imageList);
 		mav.addObject("mdto", mdto);
 		mav.addObject("zzim", zzimList);
 		mav.setViewName("productRetrieve");

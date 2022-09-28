@@ -90,5 +90,10 @@ public class StoreDAO {
 		
 	}
 
+	public List<ImagesDTO> ImagesRetrieve(int p_id) {
+		 List<ImagesDTO> list = template.selectList("StoreMapper.ImagesRetrieve", p_id);
+		return list;
+	}
+
 
 }

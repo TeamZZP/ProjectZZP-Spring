@@ -8,14 +8,10 @@ import org.springframework.stereotype.Service;
 
 import com.dao.StoreDAO;
 import com.dto.CategoryDTO;
-<<<<<<< HEAD
 import com.dto.ImagesDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
-=======
-import com.dto.PageDTO;
-import com.dto.ProductByCategoryDTO;
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
+
 
 @Service
 public class StoreService {

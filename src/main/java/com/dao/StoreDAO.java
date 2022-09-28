@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.CategoryDTO;
-<<<<<<< HEAD
 import com.dto.ImagesDTO;
-=======
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
 import com.dto.ProductDTO;
@@ -46,8 +43,7 @@ public class StoreDAO {
 			pDTO.setStartEndPages();
 			System.out.println("bestDAO list개수"+list.size());
 		 return pDTO;
-<<<<<<< HEAD
-=======
+
 	}
 
 	public PageDTO productByCategory(int c_id) {
@@ -63,23 +59,10 @@ public class StoreDAO {
 			pDTO.setStartEndPages();
 			System.out.println("DAO list개수"+list.size());
 			return pDTO;
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
+
 	}
 
-	public PageDTO productByCategory(int c_id) {
-			int curPage = 1;
-		    PageDTO pDTO = new PageDTO();
-			pDTO.setPerPage(12);
-			int perPage = pDTO.getPerPage();
-			int offset = (curPage-1)*perPage;
-			List<ProductByCategoryDTO> list = template.selectList("StoreMapper.productByCategory", c_id,new RowBounds(offset, perPage));
-			pDTO.setPage(curPage);
-			pDTO.setList(list);
-			pDTO.setTotalCount(countAllProduct());
-			pDTO.setStartEndPages();
-			System.out.println("DAO list개수"+list.size());
-			return pDTO;
-	}
+
 
 	public ProductDTO productRetrieve(int p_id) {
 		ProductDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);

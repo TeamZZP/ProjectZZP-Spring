@@ -58,11 +58,6 @@ public class StoreService {
 		dao.deleteZzim(map);
 		
 	}
-	
-	//관리자페이지 상품관리 : 전체 상품 목록
-	public PageDTO selectAllProduct(HashMap<String, String> map) {
-		return dao.selectAllProduct(map);
-	}
 
 	public List<ImagesDTO> ImagesRetrieve(int p_id) {
 		List<ImagesDTO> list = dao.ImagesRetrieve(p_id);

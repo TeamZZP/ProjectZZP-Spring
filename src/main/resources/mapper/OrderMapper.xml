@@ -7,25 +7,25 @@
 		select * 
 			from orders o full outer join  product p using(p_id)
   			left outer join images using(p_id)
-  			where o.userid = #{userid}
+  			where o.userid = #{userid} and IMAGE_RNK = 1
 	    <if test="searchCategory == 'p_name' and search != null">
-	    	and IMAGE_RNK = 1 and p.p_name like '%${search}%'
+	    	and p.p_name like '%${search}%'
 	    </if>
 	    <if test="searchCategory == 'order_date' and search != null">
-	    	and IMAGE_RNK = 1 and o.order_d	ate like '%${search}%'
+	    	and o.order_d	ate like '%${search}%'
 	    </if>
 	    order by ORDER_DATE desc
 	</select>
 	<select id="myOrderCount" parameterType="map" resultType="int">
 		select count(*) 
 		    from orders o full outer join  product p using(p_id)
-  			left outer join images using(p_id)
-			where o.userid = #{userid}
+  			left outer join images using(p_id) 
+			where o.userid = #{userid} and IMAGE_RNK = 1
 	    <if test="searchCategory == 'p_name' and search != null">
-	    	and IMAGE_RNK = 1 and p.p_name like '%${search}%'
+	    	and p.p_name like '%${search}%'
 	    </if>
 	    <if test="searchCategory == 'order_date' and search != null">
-	    	and IMAGE_RNK = 1 and o.order_d	ate like '%${search}%'
+	    	and o.order_d	ate like '%${search}%'
 	    </if>
 	</select>
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">

@@ -29,7 +29,15 @@
 	#modalBtn{
 		display: none;
 	}
+	.paging {
+		cursor: pointer;
+	}
+	a {
+		text-decoration: none;
+		color: black;
+	}
 </style>
+
 <!-- 메세지 있는 경우 modal 일단 지움* 메세지 안 뜨면 jstl로 바꿔서 추가하기 -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
@@ -37,7 +45,7 @@
 		//관리자페이지 카테고리
 		$(".category").click(function() {
 			let category = $(this).attr("data-category");
-			location.href="AdminCategoryServlet?category="+category;
+			location.href="/zzp/admin/"+category;
 		});
 		//페이징
  		$('.paging').on('click', function() {
@@ -96,38 +104,25 @@
 	});//end ready
 	
 </script>
-<%
-	PageDTO pDTO = (PageDTO) request.getAttribute("pDTO");
-	List<CategoryProductDTO> product_list = pDTO.getList();
-	String searchName = (String) request.getAttribute("searchName");
-	String searchValue = (String) request.getAttribute("searchValue");
-	String sortBy = (String) request.getAttribute("sortBy");
-%>
 
 <c:set value="${pDTO.list}" var="product_list" />
 
 <!-- 검색 / 정렬 -->
 <div class="container mt-2 mb-2">
-	<form action="AdminCategoryServlet" id="sortForm">
-	<input type="hidden" name="category" value="product">
+	<form action="/zzp/admin/${category}" id="sortForm">
+	<input type="hidden" name="category" value="${category}">
 		<div class="row">
 			<!-- 검색 -->
 			<div class="col">
 				<select class="form-select sortBy" name="searchName" data-style="btn-info" id="inputGroupSelect01">
 					<option selected disabled hidden>검색 기준</option>
-					<option value="c_id" <% if("c_id".equals(searchName)){%> selected
-					<%}%>>카테고리</option>
-					<option value="p_id" <% if("p_id".equals(searchName)){%> selected
-					<%}%>>상품번호</option>
-					<option value="p_name" <% if("p_name".equals(searchName)){%>
-					selected <%}%>>상품명</option>
-					<option value="p_selling_price"
-					<% if("p_selling_price".equals(searchName)){%> selected <%}%>>판매가</option>
-					<option value="p_created" <% if("p_created".equals(searchName)){%>
-					selected <%}%>>등록일</option>
+					<option value="c_id" <c:if test="${searchName=='c_id'}">selected</c:if>>카테고리</option>
+					<option value="p_id" <c:if test="${searchName=='p_id'}">selected</c:if>>상품번호</option>
+					<option value="p_name" <c:if test="${searchName=='p_name'}">selected</c:if>>상품명</option>
+					<option value="p_selling_price" <c:if test="${searchName=='p_selling_price'}">selected</c:if>>판매가</option>
+					<option value="p_created" <c:if test="${searchName=='p_created'}">selected</c:if>>등록일</option>
 				</select> 
-				<input type="text" name="searchValue" class="form-control searchValue" 
-				<% if(searchValue!=null && !searchValue.equals("null")) {%>value="<%= searchValue %>"<% } %>>
+				<input type="text" name="searchValue" class="form-control searchValue" <c:if test="${!empty searchName && searchValue!='null'}">selected</c:if>>
 				<button type="button" class="btn btn-success" id="searchProd" style="margin-top: -5px;">검색</button>
 			</div>
 			<!-- 정렬 -->
@@ -135,10 +130,10 @@
 				<div class="float-end">
 				<select class="form-select sortBy" name="sortBy" id="sortBy" data-style="btn-info">
 					<option selected disabled hidden>정렬</option>
-					<option value="p_id" <% if("p_id".equals(sortBy)){%>selected<%}%>>최신상품순</option>
-					<option value="p_selling_price" <% if("p_selling_price".equals(sortBy)){%>selected<%}%>>판매가순</option>
-					<option value="p_name" <% if("p_name".equals(sortBy)){%>selected<%}%>>상품명순</option>
-					<option value="p_stock" <% if("p_stock".equals(sortBy)){%>selected<%}%>>재고순</option>
+					<option value="p_id" <c:if test="${sortBy=='p_id'}">selected</c:if>>최신상품순</option>
+					<option value="p_selling_price" <c:if test="${sortBy=='p_selling_price'}">selected</c:if>>판매가순</option>
+					<option value="p_name" <c:if test="${sortBy=='p_name'}">selected</c:if>>상품명순</option>
+					<option value="p_stock" <c:if test="${sortBy=='p_stock'}">selected</c:if>>재고순</option>
 				</select>
 				<a href="adminProductAdd.jsp" class="btn btn-success" style="margin-top: -5px;">상품등록</a>
 				</div>
@@ -151,10 +146,9 @@
 <div class="container col-md-auto">
 <div class="row justify-content-md-center">
 	<form id="prodForm">
-	<input type="hidden" name="curPage" value="<%= pDTO.getCurPage() %>">
-	<input type="hidden" name="searchName" value="<%= searchName %>">
-	<input type="hidden" name="searchValue" value="<%= searchValue %>">
-	<input type="hidden" name="sortBy" value="<%= sortBy %>">
+	<input type="hidden" name="searchName" value="${searchName}">
+	<input type="hidden" name="searchValue" value="${searchValue}">
+	<input type="hidden" name="sortBy" value="${sortBy}">
 	<input type="hidden" name="category" value="product">
 	<input type="hidden" name="p_id" id="delp_id">
 	<!-- 상품 List -->	
@@ -170,44 +164,30 @@
 			<th>등록일</th>
 			<th>관리</th>
 		</tr>
-		<%
-		for ( int i = 0 ; i < product_list.size() ; i++ ) {
-		    int p_id = product_list.get(i).getP_id(); //상품번호
-		    String p_name =product_list.get(i).getP_name(); //상품이름
-			String p_content =product_list.get(i).getP_content(); //상품설명
-			int c_id =product_list.get(i).getC_id(); //카테고리 번호
-			int p_cost_price =product_list.get(i).getP_cost_price(); //판매가
-			int p_selling_price =product_list.get(i).getP_selling_price(); //할인적용판매가
-			int p_discount =product_list.get(i).getP_discount(); //할인
-			String p_created=product_list.get(i).getP_created(); //등록일
-			int p_stock =product_list.get(i).getP_stock(); // 재고
-			String p_image = product_list.get(i).getP_image(); //이미지
-			
-		%>
+		
 		<tr id="list">
-			<td><input type="checkbox" class="delCheck" name="p_id" value="<%= p_id %>"></td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_id %></td>
-			<td class="productDetail" data-p_id="<%= p_id %>">
-			<% if(6==c_id) {%>sale<%} %>
-			<% if(8==c_id) {%>bath<%} %>
-			<% if(9==c_id) {%>kitchen<%} %>
-			<% if(10==c_id) {%>life<%} %>
-			</td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_name %></td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_selling_price %>&nbsp;</td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_discount %></td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_stock %>&nbsp;&nbsp;</td>
-			<td class="productDetail" data-p_id="<%= p_id %>"><%= p_created %></td>
-			<td>
-			<!-- 모달버튼 -->
-			<button type="button" id="prodDetail" data-id="<%= p_id %>" class="btn btn-outline-success btn-sm">상품보기</button>
-			<button type="button" id="delPopup<%= p_id %>" data-bs-id="<%= p_id %>" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
-					삭제
-			</button>
-			</td>
-			<%		
-			}	
-			%>
+			<c:forEach var="p" items="${product_list}">
+				<td><input type="checkbox" class="delCheck" name="p_id" value="${p.p_id}"></td>
+				<td class="productDetail" data-p_id="${p.p_id}">${p.p_id}</td>
+				<td class="productDetail" data-p_id="${p.p_id}">
+					<c:if test="${p.c_id==6}">sale</c:if>
+					<c:if test="${p.c_id==8}">bath</c:if>
+					<c:if test="${p.c_id==9}">kitchen</c:if>
+					<c:if test="${p.c_id==10}">life</c:if>
+				</td>
+				<td class="productDetail" data-p_id="${p.p_id}">${p.p_name}</td>
+				<td class="productDetail" data-p_id="${p.p_id}">${p.p_selling_price}&nbsp;</td>
+				<td class="productDetail" data-p_id="${p.p_id}">${p.p_discount}</td>
+				<td class="productDetail" data-p_id="${p.p_id}>">${p.p_stock}&nbsp;&nbsp;</td>
+				<td class="productDetail" data-p_id="${p.p_id}">${p.p_created}</td>
+				<td>
+					<!-- 모달버튼 -->
+					<button type="button" id="prodDetail" data-id="${p.p_id}" class="btn btn-outline-success btn-sm">상품보기</button>
+					<button type="button" id="delPopup${p.p_id}" data-bs-id="${p.p_id}" class="btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal">
+							삭제
+					</button>
+				</td>
+			</c:forEach>
 		</tr>
 	</table>
 	</form>
@@ -220,21 +200,18 @@
 	</div>
 	<!-- 페이징 -->
 	<div class="p-2 text-center productPage">
-	<%
-	int curPage = pDTO.getCurPage();
-	int perPage = pDTO.getPerPage();
-	int totalCount = pDTO.getTotalCount();
-	int totalPage = totalCount/perPage;
-	if(totalCount%perPage!=0) totalPage++;
-	for(int p=1; p<=totalPage; p++){
-		if(p==curPage){
-			out.print("<b>"+p+"</b>&nbsp;&nbsp;");
-		} else {
-			out.print("<a id='search' href='AdminCategoryServlet?curPage="+p
-	   				+"&searchName="+searchName+"&searchValue="+searchValue
-	   				+"&sortBy="+sortBy+"&category=product'>"+p+"</a>&nbsp;&nbsp;");
-			}
-		} %>
+		 <c:if test="${pDTO.prev}">
+		  	<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+		  </c:if>
+		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			  <c:choose>
+		  		<c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+		  		<c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+		  	  </c:choose>
+		  </c:forEach>
+		  <c:if test="${pDTO.next}">
+		  	<a class="paging" data-page="${pDTO.endPage+1}">next</a>
+		  </c:if>
 	</div>
 </div>
 </div>

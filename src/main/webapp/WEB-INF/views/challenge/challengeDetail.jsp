@@ -286,7 +286,7 @@ a {
 			} else {
 				$.ajax({
 					type:"post",
-					url:"LikeServlet",
+					url:"/zzp/challenge/${cDTO.chall_id}/like",
 					data: {
 						chall_id:"${cDTO.chall_id}",
 						userid:"${login.userid}"
@@ -305,10 +305,10 @@ a {
 		//좋아요 개수 구해오기
 		function countLikes() {
 			$.ajax({
-				type:"post",
-				url:"LikeCountServlet",
+				type:"get",
+				url:"/zzp/challenge/${cDTO.chall_id}/like",
 				data: {
-					chall_id:"${cDTO.chall_id}",
+					chall_id:"${cDTO.chall_id}"
 				},
 				dataType:"text",
 				success: function (data) {
@@ -460,10 +460,10 @@ function displayedAt(createdAt) {
 		</tr>
 		<tr id="img_area">
 			<td colspan="3">
-				<img src="${contextPath}/resources/upload/challenge/${cDTO.chall_img}" class="img"
+				<img src="/zzp/resources/upload/challenge/${cDTO.chall_img}" class="img"
 					onerror="this.src='${contextPath}/resources/images/challenge/uploadarea.png'" width="80%">
 				<c:if test="${!empty cDTO.stamp_img}">
-					<img src="${contextPath}/resources/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
+					<img src="/zzp/resources/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
 				</c:if>
 			</td>
 		</tr>
@@ -474,17 +474,17 @@ function displayedAt(createdAt) {
 				  <c:choose>
 					<%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
 					<c:when test="${likedIt == 1}">
-						<img src="${contextPath}/resources/images/challenge/liked.png" width="40" height="40" class="liked">
+						<img src="/zzp/resources/images/challenge/liked.png" width="40" height="40" class="liked">
 					</c:when>
 					<%-- 그외의 경우 --%>
 					<c:otherwise>
-						<img src="${contextPath}/resources/images/challenge/like.png" width="40" height="40" class="liked">
+						<img src="/zzp/resources/images/challenge/like.png" width="40" height="40" class="liked">
 					</c:otherwise>
 				  </c:choose>
 					<span id="likeNum">${cDTO.chall_liked}</span>
 				</div>
 				<div class="col">
-					<img src="${contextPath}/resources/images/challenge/bubble.png" width="37" height="35"> 
+					<img src="/zzp/resources/images/challenge/bubble.png" width="37" height="35"> 
 					<span id="commentsNum">${cDTO.chall_comments}</span>
 				</div>
 			  </div>

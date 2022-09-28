@@ -21,6 +21,17 @@
 			});
 		});//end ready
 	</script>
+	<!-- <script src="resources/js/notice/noticeDetail.js"></script> -->
+	<scirpt>
+		$(document).ready(function () {
+			$("#noticeUpdate").click(function() {
+				$("form").attr("method", "get").attr("action", "../notice/write/${nDTO.notice_id}");
+			});
+			$("#noticeDelete").click(function() {
+				$("form").attr("action", "../notice/${nDTO.notice_id}");
+			});
+		});//end ready
+	</scirpt>
 
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">

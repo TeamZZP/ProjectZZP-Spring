@@ -39,17 +39,8 @@
 		})
 		//글수정 버튼
 		$('#update').on('click', function () {
-			$('#uploadForm').appendChild();
-			$.ajax({
-				url: '/zzp/challenge/${cDTO.chall_id}',
-				type: 'PUT',
-				success: function () {
-					location.href = '/zzp/challenge/${cDTO.chall_id}';
-				},
-				error: function () {
-					alert('문제가 발생했습니다. 다시 시도해 주세요.');
-				}
-			})
+			let url = '/zzp/challenge/${cDTO.chall_id}';
+			$('#uploadForm').attr('action', url).submit();
 		})
 		//글쓰기 취소
 		$(".cancelBtn").on("click", function () {

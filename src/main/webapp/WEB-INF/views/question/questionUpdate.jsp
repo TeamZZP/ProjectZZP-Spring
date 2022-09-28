@@ -5,18 +5,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%
-	QuestionProductDTO qDTO = (QuestionProductDTO)session.getAttribute("questionOneSelect");
-	System.out.print("questionUpdate " + qDTO);
-	
-	String operate = "update";
-	
-	MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
-	String userid = "";
-	if(mDTO != null){
-		userid = mDTO.getUserid();
-	}
-%>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -31,11 +19,11 @@
 				event.preventDefault();
 			}
 		});
-		if ($("#pId").val() == "null") {
-			$("#pId").val("");
+		if ($("#p_id").val() == 0) {
+			$("#p_id").val("");
 		}
 		$("#questionUpdate").click(function () {
-			location.href = "/zzp/qna/${dto.q_id}"; //업데이트 하다맘
+			$("#questionForm").attr("action", "/zzp/qna/${dto.q_id}");
 		});
 		$("#prodSel").click(function() {
  			var url = "/zzp/qna/pop"
@@ -65,7 +53,6 @@
 		<img src="/zzp/resources/images/question/question.png" alt="..." style="width: auto;">
 </div>
 <form id="questionForm" method="post" enctype="multipart/form-data">
-<input type="hidden" name="_method" value="put">
 <div class="container justify-content-center">
 <div class="row">
  <input type="hidden" name="q_id" value="${dto.q_id}">
@@ -84,7 +71,7 @@
 					<div class="input-group">
 					  <button id="prodSel" class="btn btn-outline-secondary" type="button">상품 정보</button>
 					  <input type="text" class="form-control shadow-none"  <c:if test="${!empty dto.p_name}"> value="${dto.p_name}" </c:if> readonly="readonly" name="p_name" id="p_name">
-					  <input type="hidden" class="form-control" <c:if test="${!empty dto.p_id}"> value="${dto.p_id}" </c:if> name="p_id" id="pId">
+					  <input type="hidden" class="form-control" <c:if test="${!empty dto.p_id}"> value="${dto.p_id}" </c:if> name="p_id" id="p_id">
 					</div>
 				</td>
 			</tr>

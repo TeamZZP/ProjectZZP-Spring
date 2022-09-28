@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ReviewMapper">
+	<select id="pordReview" resultType="ReviewProfileDTO" parameterType="string">
+		select * from profile join review USING(userid) where P_ID = #{p_id}
+	</select>
+	<select id="myReview" parameterType="String" resultType="ReviewProductImagesDTO">
+		select * from review r join product using(p_id) join images using(p_id)
+	    	where r.userid = #{userid} and image_rnk = 1 order by REVIEW_CREATED desc
+	</select>
+	<select id="myReviewCount" parameterType="String" resultType="int">
+		select count(*) from review where userid = #{userid}
+	</select>
+	<!-- 
+	<select id="selectOneProduct" resultType="hashmap">
+		select p_id, p_name, image_route
+		from product p join images i using(p_id)
+		where image_rnk=1 and p_id=#{p_id}
+	</select>
+	<insert id="reviewInsert" parameterType="map">
+		insert into REVIEW (REVIEW_ID, ORDER_ID, P_ID, USERID, REVIEW_TITLE, REVIEW_CONTENT, REVIEW_RATE, REVIEW_IMG, REVIEW_CREATED)
+			values (REVIEW_REVIEW_ID_SEQ.nextval, #{ORDER_ID}, #{P_ID}, #{USERID}, #{REVIEW_TITLE}, #{REVIEW_CONTENT},
+				#{REVIEW_RATE}, #{REVIEW_IMG}, sysdate)
+	</insert> 
+	<select id="orderIDreivewCheck" parameterType="map" resultType="ReviewDTO">
+		select * from REVIEW where ORDER_ID = #{ORDER_ID} and P_ID = #{P_ID}
+	</select>
+	<select id="selectOneReview" parameterType="map" resultType="ProductOrderReviewDTO">
+		select * from review r RIGHT OUTER JOIN product p USING(p_id) join REVIEW USING(p_id) where P_ID = #{P_ID} and r.REVIEW_ID = #{REVIEW_ID}
+	</select>
+	<update id="reviewUpdate" parameterType="map">
+		update REVIEW set REVIEW_TITLE = #{REVIEW_TITLE}, REVIEW_CONTENT = #{REVIEW_CONTENT}, REVIEW_RATE = #{REVIEW_RATE}, REVIEW_IMG = #{REVIEW_IMG}
+			where REVIEW_ID = #{REVIEW_ID}
+	</update>
+	<delete id="reviewDelete" parameterType="map">
+		delete from REVIEW where REVIEW_ID = #{REVIEW_ID} and USERID = #{USERID}
+	</delete> -->
+</mapper>

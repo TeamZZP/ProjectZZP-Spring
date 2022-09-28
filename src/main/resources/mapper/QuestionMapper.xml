@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="QuestionMapper">
 	<select id="questionList" resultType="QuestionProductDTO">
-		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
+		select P_id, p_name, q.q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
 			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) order by Q_ID desc
 	</select>
 	<select id="questionListCount" resultType="int">
@@ -37,7 +37,7 @@
 		</choose>
 	</select>
 	<select id="questionDetail" resultType="QuestionProductDTO" parameterType="string">
-		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
+		select P_id, p_name, q.q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
 			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) where Q_ID = #{Q_ID}
 	</select>
 	<delete id="questionDelete" parameterType="string">
@@ -55,20 +55,19 @@
 		update QUESTION set Q_BOARD_CATEGORY = #{q_board_category}, Q_CATEGORY = #{q_category}, Q_TITLE = #{q_title}, Q_CONTENT = #{q_content},
 			Q_IMG = #{qna_img}, P_ID = #{p_id}  where Q_ID = #{q_id} 
 	</update>
-	<!--
-	
-	
 	<select id="prodQuestion" parameterType="string" resultType="QuestionDTO">
-		select * from QUESTION where P_ID = #{P_ID}
+		select * from QUESTION where P_ID = #{p_id}
 	</select>
-	<update id="ImgUpdate" parameterType="string">
-		update QUESTION set Q_IMG = 'null' where Q_IMG = #{img}
-	</update>
-	<select id="MyQeustionList" parameterType="string" resultType="QuestionProductDTO">
+	<select id="myQuestion" parameterType="string" resultType="QuestionProductDTO">
 		select P_id, p_name, q_id, q.q_board_category,q.q_category, q.q_content, q.q_created, q.q_img, 
 			q.q_status, q.q_title, q.userid from product right outer join question q using(p_id) where q.userid = #{userid} order by Q_ID desc 
 	</select>
-	<select id="myQuestionNum" resultType="int">
+	<select id="myQuestionCount" parameterType="string" resultType="int">
 		select count(*) from QUESTION where userid = #{userid}
-	</select> -->
+	</select>
+	<!--
+	<update id="ImgUpdate" parameterType="string">
+		update QUESTION set Q_IMG = 'null' where Q_IMG = #{img}
+	</update>
+	 -->
 </mapper>

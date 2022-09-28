@@ -101,7 +101,7 @@ public class StoreController {
 		System.out.println("productRetrieve Controller 실행 : "+ p_id );
 		System.out.println(pdto);
 		List<ImagesDTO> imageList= service.ImagesRetrieve(p_id);
-		
+		System.out.println(imageList);
 		if(mdto!=null) {
 			map.put("userid", mdto.getUserid());
 			map.put("p_id", String.valueOf(pdto.getP_id()));

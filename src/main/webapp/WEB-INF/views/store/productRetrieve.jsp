@@ -61,7 +61,7 @@ function order(p_id) {
 <c:set value="${pdto}" var="p" />
 <c:set value="${mdto}" var="m" />
 <c:set value="${zzim}" var="zzim" />
-<c:set value="${imageList}" var="images" />
+
 
    <form  name="goodRetrieveForm" action="#" method="get">
       <div class="row">
@@ -69,7 +69,7 @@ function order(p_id) {
          <div class="col-md-5">
             <table>
           
-              <c:forEach var=image items="${imageList}" varStatus="status" >
+              <c:forEach var="image" items="${imageList}">
                  <c:if test="${image.image_rnk==1}">  
               
                <tr>

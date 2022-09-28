@@ -3,6 +3,7 @@
     pageEncoding="UTF-8"%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="/zzp/resources/js/notice/noticeInsert.js"></script> 
 <!-- <script src="/resources/js/notice/noticeInsert.js"></script> -->
 <script>
 	$(document).ready(function () {

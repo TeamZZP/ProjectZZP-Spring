@@ -8,9 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.dao.StoreDAO;
 import com.dto.CategoryDTO;
+<<<<<<< HEAD
 import com.dto.ImagesDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+=======
+import com.dto.PageDTO;
+import com.dto.ProductByCategoryDTO;
+>>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 
 @Service
 public class StoreService {
@@ -56,6 +61,11 @@ public class StoreService {
 	public void deleteZzim(HashMap<String, String> map) {
 		dao.deleteZzim(map);
 		
+	}
+	
+	//관리자페이지 상품관리 : 전체 상품 목록
+	public PageDTO selectAllProduct(HashMap<String, String> map) {
+		return dao.selectAllProduct(map);
 	}
 
 	public List<ImagesDTO> ImagesRetrieve(int p_id) {

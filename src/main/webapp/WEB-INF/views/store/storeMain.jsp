@@ -106,9 +106,21 @@ a {
 
  <c:set value="${pDTO.list}" var="Productlist" />
 
+<<<<<<< HEAD
    <!-- 세일배너 -->  
     ${banner}
     
+=======
+<p>main.jsp</p>
+
+ 	<div style="text-align: center;">
+              <img id="banner" alt="" src="images/main/banner_sale.png">    
+     </div> 
+ ${mdto}<br>
+ ${zzimList}<br>
+ 
+<c:set value="${pDTO.list}" var="Productlist" />
+>>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 <form action="StoreServlet" id="prodForm" >    
     <div id="categoryProductContainer" class="container ">
  

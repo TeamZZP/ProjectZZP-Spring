@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OrderMapper">
+	<select id="myOrder" parameterType="map" resultType="ProductOrderImagesDTO">
+		select * 
+			from orders o full outer join  product p using(p_id)
+  			left outer join images using(p_id)
+  			where o.userid = #{userid}
+	    <if test="searchCategory == 'p_name' and search != null">
+	    	and IMAGE_RNK = 1 and p.p_name like '%${search}%'
+	    </if>
+	    <if test="searchCategory == 'order_date' and search != null">
+	    	and IMAGE_RNK = 1 and o.order_d	ate like '%${search}%'
+	    </if>
+	    order by ORDER_DATE desc
+	</select>
+	<select id="myOrderCount" parameterType="map" resultType="int">
+		select count(*) 
+		    from orders o full outer join  product p using(p_id)
+  			left outer join images using(p_id)
+			where o.userid = #{userid}
+	    <if test="searchCategory == 'p_name' and search != null">
+	    	and IMAGE_RNK = 1 and p.p_name like '%${search}%'
+	    </if>
+	    <if test="searchCategory == 'order_date' and search != null">
+	    	and IMAGE_RNK = 1 and o.order_d	ate like '%${search}%'
+	    </if>
+	</select>
+	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">
+		select o.order_id, o.userid, o.p_id, o.total_price, o.delivery_address, o.delivery_loc, o.delivery_req, o.order_date,
+			   (select IMAGE_ROUTE from images where p_id = o.p_id and IMAGE_RNK = 1) as p_image,p.p_name, p.p_selling_price,
+				c.p_amount,p.p_selling_price*c.p_amount money
+		 from orders o,  product p , cart c 
+		 where o.p_id = p.p_id and o.p_id = c.p_id
+		and o.userid = #{userid}
+		
+	</select>
+	
+	
+		
+	<select id="getProductList" parameterType="List" resultType="CategoryProductDTO">
+	select p.P_ID
+,(select 
+
+IMAGE_ROUTE
+
+from images
+where p_id = p.p_id 
+and IMAGE_RNK = 1) as p_image
+,p.P_NAME
+,p.P_CONTENT
+,p.C_ID
+,p.P_COST_PRICE
+,p.P_SELLING_PRICE
+,p.P_DISCOUNT
+,p.P_CREATED
+,p.P_STOCK
+from product p
+
+where p.p_id in
+<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+	
+
+<select id="getOrderid" resultType="int">
+select orders_order_id_seq.NEXTVAL from dual
+</select>	
+	
+	
+
+<insert id="addOrder" parameterType="OrderDTO">
+insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_loc, delivery_req, order_date,order_state,p_amount)
+values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_loc}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
+</insert>	
+
+
+ -->
+
+
+</mapper>

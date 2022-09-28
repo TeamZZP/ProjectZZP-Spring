@@ -11,7 +11,6 @@
 	</c:if>
 	
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<!-- <script src="/zzp/resources/js/notice/noticeDetail.js"></script> -->
 	<script>
 		$(document).ready(function () {
 			$("#noticeUpdate").click(function() {

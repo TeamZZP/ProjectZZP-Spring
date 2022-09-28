@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CartDTO;
 import com.dto.MemberDTO;
+import com.dto.ProductByCategoryDTO;
 import com.service.CartService;
 import com.service.StoreService;
 
@@ -29,7 +30,7 @@ public class CartController {
 	@Autowired
 	CartService service;
 	@Autowired
-	StoreService Sservice;
+	StoreService storeservice;
 
 	/**
 	 * 장바구니추가
@@ -50,7 +51,7 @@ public class CartController {
 	  }else{ // 있으면 수량 update 
 		  service.updateCart(cart); 
 		 } 
-	  return "redirect:../cart/{userid}"; 
+	  return "redirect:/cart/{userid}"; 
 	  }
 	 
 	/**
@@ -123,22 +124,22 @@ public class CartController {
 	  * 찜한 상품 목록
 	  */
 	 @RequestMapping(value = "/like/{userid}" , method = RequestMethod.GET)
-	 
+	 @ResponseBody
 	 public ModelAndView likeList(@PathVariable("userid") String userid, ModelAndView mav,HttpSession session  ) { 
 		 
-			// 찜 List
-		 	
-		 	
-			// 찜목록에 담긴 갯수
-		 	
-		 	//장바구니 담긴 갯수
-			int cartCount = service.cartCount(userid);
+		// 찜 List
 		
+		 
+		// 찜목록에 담긴 갯수
 		 	
-		 	mav.addObject("cartCount", cartCount);
-			mav.setViewName("likeList");
+		 //장바구니 담긴 갯수
+		int cartCount = service.cartCount(userid);
+		
+		mav.addObject("cartCount", cartCount); 	
+		mav.addObject("cartCount", cartCount);
+		mav.setViewName("likeList");
 			
-			return mav;
+		return mav;
 		 }
 	 
 }

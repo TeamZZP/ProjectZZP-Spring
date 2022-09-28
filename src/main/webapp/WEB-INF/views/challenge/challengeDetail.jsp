@@ -120,7 +120,7 @@ a {
 				let comment_content = content.val();
 				$.ajax({
 					type:"post",
-					url:"CommentsAddServlet",
+					url:"/zzp/challenge/comment",
 					data: {
 						chall_id:"${cDTO.chall_id}",
 						comment_content:comment_content.trim(),
@@ -154,7 +154,7 @@ a {
 			} else {
 				$.ajax({
 					type:"post",
-					url:"CommentsAddServlet",
+					url:"/zzp/challenge/comment",
 					data: {
 						chall_id:"${cDTO.chall_id}",
 						comment_content:comment_content.trim(),
@@ -235,8 +235,8 @@ a {
 		//댓글 개수 구해오기
 		function countComments() {
 			$.ajax({
-				type:"post",
-				url:"CommentsCountServlet",
+				type:"get",
+				url:"/zzp/challenge/comment/count",
 				data: {
 					chall_id:"${cDTO.chall_id}",
 				},
@@ -273,7 +273,7 @@ a {
 			$("#update"+comment_id).css("display", "block");
 			$("#update_content"+comment_id).val("");
 			$("#update_content"+comment_id).focus();
-			if (parent != "null") {
+			if (parent.length > 0) {
 				$("#update_content"+comment_id).val("@"+parent+"  ");
 			}
 			$("#update_content"+comment_id).val($("#update_content"+comment_id).val()+content);
@@ -286,7 +286,7 @@ a {
 			} else {
 				$.ajax({
 					type:"post",
-					url:"LikeServlet",
+					url:"/zzp/challenge/${cDTO.chall_id}/like",
 					data: {
 						chall_id:"${cDTO.chall_id}",
 						userid:"${login.userid}"
@@ -305,10 +305,10 @@ a {
 		//좋아요 개수 구해오기
 		function countLikes() {
 			$.ajax({
-				type:"post",
-				url:"LikeCountServlet",
+				type:"get",
+				url:"/zzp/challenge/${cDTO.chall_id}/like",
 				data: {
-					chall_id:"${cDTO.chall_id}",
+					chall_id:"${cDTO.chall_id}"
 				},
 				dataType:"text",
 				success: function (data) {
@@ -460,10 +460,10 @@ function displayedAt(createdAt) {
 		</tr>
 		<tr id="img_area">
 			<td colspan="3">
-				<img src="${contextPath}/resources/upload/challenge/${cDTO.chall_img}" class="img"
+				<img src="/zzp/resources/upload/challenge/${cDTO.chall_img}" class="img"
 					onerror="this.src='${contextPath}/resources/images/challenge/uploadarea.png'" width="80%">
 				<c:if test="${!empty cDTO.stamp_img}">
-					<img src="${contextPath}/resources/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
+					<img src="/zzp/resources/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
 				</c:if>
 			</td>
 		</tr>
@@ -474,17 +474,17 @@ function displayedAt(createdAt) {
 				  <c:choose>
 					<%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
 					<c:when test="${likedIt == 1}">
-						<img src="${contextPath}/resources/images/challenge/liked.png" width="40" height="40" class="liked">
+						<img src="/zzp/resources/images/challenge/liked.png" width="40" height="40" class="liked">
 					</c:when>
 					<%-- 그외의 경우 --%>
 					<c:otherwise>
-						<img src="${contextPath}/resources/images/challenge/like.png" width="40" height="40" class="liked">
+						<img src="/zzp/resources/images/challenge/like.png" width="40" height="40" class="liked">
 					</c:otherwise>
 				  </c:choose>
 					<span id="likeNum">${cDTO.chall_liked}</span>
 				</div>
 				<div class="col">
-					<img src="${contextPath}/resources/images/challenge/bubble.png" width="37" height="35"> 
+					<img src="/zzp/resources/images/challenge/bubble.png" width="37" height="35"> 
 					<span id="commentsNum">${cDTO.chall_comments}</span>
 				</div>
 			  </div>
@@ -509,7 +509,7 @@ function displayedAt(createdAt) {
                     <h6><b>댓글</b></h6>
                 </div>
                 <div class="mt-3 d-flex flex-row align-items-center p-3 form-color"> 
-                	<img src="${contextPath}/resources/upload/profile/${currProfile}" width="50" class="rounded-circle mr-2" > &nbsp;&nbsp;&nbsp;
+                	<img src="/zzp/resources/upload/profile/${currProfile}" width="50" class="rounded-circle mr-2" > &nbsp;&nbsp;&nbsp;
                 	<input type="text" class="comment_content form-control" name="comment_content"
                 		placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"> 
                 	<button class="commentBtn commentAddBtn">입력</button>
@@ -522,8 +522,8 @@ function displayedAt(createdAt) {
                       	<div style="width: 60px;"></div>
                       </c:if>
                     	<div class="profile">
-                    		<a href="${contextPath}/profile/${c.userid}">
-                    			<img src="${contextPath}/resources/upload/profile/${c.profile_img}" width="30" height="30" class="rounded-circle mr-3"></a>
+                    		<a href="/zzp/profile/${c.userid}">
+                    			<img src="/zzp/resources/upload/profile/${c.profile_img}" width="30" height="30" class="rounded-circle mr-3"></a>
                         </div>
                         <div class="w-100">
                             <div class="d-flex justify-content-between align-items-center">
@@ -566,7 +566,7 @@ function displayedAt(createdAt) {
 	                    <div class="d-flex flex-row p-3">
 	                    	<div style="width: 60px;"></div>
 	                    	<div class="profile">
-	                    		<img src="${contextPath}/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
+	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
 	                    	</div>
 	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
 	                    		<input type="text" class="reply_content form-control" name="comment_content" id="reply_content${c.comment_id}"> 
@@ -590,7 +590,7 @@ function displayedAt(createdAt) {
 	                    <div class="d-flex flex-row p-3">
 	                    	<div style="width: 60px;"></div>
 	                    	<div class="profile">
-	                    		<img src="${contextPath}/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
+	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
 	                    	</div>
 	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
 	                    		<input type="text" class="update_content form-control" name="comment_content" id="update_content${c.comment_id}"> 

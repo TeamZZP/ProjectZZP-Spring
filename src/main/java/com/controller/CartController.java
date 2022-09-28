@@ -40,10 +40,10 @@ public class CartController {
 	  
 	  @ResponseBody
 	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id) {
-	  // 장바구니에 기존 상품이 있는지 검사
+		// 장바구니에 기존 상품이 있는지 검사
 	  HashMap<String, Object> cartMap = new HashMap<String, Object>();
-	  cartMap.put("p_id", p_id); cartMap.put("userid", userid);
-	  
+	  cartMap.put("p_id", p_id); 
+	  cartMap.put("userid", userid);
 	  int cartCount = service.checkCart(cartMap); 
 	  System.out.println("동일한상품 확인 " +cartCount);
 	  if (cartCount == 0) { // 없으면 새로 insert 
@@ -51,7 +51,7 @@ public class CartController {
 	  }else{ // 있으면 수량 update 
 		  service.updateCart(cart); 
 		 } 
-	  return "redirect:/cart/{userid}"; 
+	  return "redirect:../cart/{userid}"; 
 	  }
 	 
 	/**
@@ -128,7 +128,12 @@ public class CartController {
 	 public ModelAndView likeList(@PathVariable("userid") String userid, ModelAndView mav,HttpSession session  ) { 
 		 
 		// 찜 List
-		
+		/*
+		 * List<Integer> zzimList = new ArrayList<Integer>();
+		 * zzimList=storeservice.zzimAllCheck(userid); List<ProductByCategoryDTO>
+		 * likelist = null; for(int i = 0; i < zzimList.size(); i++){ likelist
+		 * =storeservice.productRetrieve(zzimList.get(i)); }
+		 */
 		 
 		// 찜목록에 담긴 갯수
 		 	

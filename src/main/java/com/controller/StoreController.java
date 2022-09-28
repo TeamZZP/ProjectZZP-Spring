@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.CartDTO;
 import com.dto.CategoryDTO;
+import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
-import com.dto.ProductByCategoryDTO;
+import com.dto.PageDTO;
+import com.dto.ProductDTO;
 import com.service.StoreService;
 
 @Controller
@@ -31,14 +35,16 @@ public class StoreController {
 		ModelAndView mav = new ModelAndView();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
-		List<ProductByCategoryDTO> bestProdudctlist = service.bestProduct();  //베스트상품리스트
+		PageDTO pDTO = new PageDTO();
+		
+		pDTO = service.bestProduct();  //베스트상품리스트
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
 		System.out.println("zzimList: "+zzimList);
 		List<CategoryDTO> categoryList = service.category(); //카테고리 리스트
 		mav.addObject("categoryList", categoryList);
-		mav.addObject("Productlist", bestProdudctlist);
+		mav.addObject("pDTO", pDTO);
 		mav.addObject("mdto", mdto);
 		mav.addObject("zzimList", zzimList);
 		System.out.println("mdto:" + mdto);
@@ -53,17 +59,35 @@ public class StoreController {
 		List<Integer> zzimList = new ArrayList<Integer>();
 		ModelAndView mav = new ModelAndView();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
-		List<ProductByCategoryDTO> prodByCateList = service.productByCategory(c_id);  //해당카테고리상품리스트
-		System.out.println(prodByCateList);
+		PageDTO pDTO = new PageDTO();
+		String banner = "";
+		pDTO= service.productByCategory(c_id);  //해당카테고리상품리스트
+		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
-		mav.addObject("Productlist",prodByCateList);  
+		if(c_id==6) {
+			banner = "<div style='text-align: center;'>\r\n" + 
+					"              <img id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>    \r\n" + 
+					"        </div>";
+		}
+		
+		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("zzimList", zzimList);
+		mav.addObject("banner", banner);
 		mav.setViewName("storeMain");
 		return mav;
+	}
+	
+	@RequestMapping("/pageChange")
+	@ResponseBody
+	public void pageChange(@RequestParam("pageNum") int pageNum ) {
+		PageDTO pDTO = new PageDTO();
+		
+		
+		
 	}
 	
 	//제품상세
@@ -73,7 +97,11 @@ public class StoreController {
 		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
-		ProductByCategoryDTO pdto= service.productRetrieve(p_id);  //선택상품상세
+		ProductDTO pdto= service.productRetrieve(p_id);  //선택상품상세
+		System.out.println("productRetrieve Controller 실행 : "+ p_id );
+		System.out.println(pdto);
+		List<ImagesDTO> imageList= service.ImagesRetrieve(p_id);
+		
 		if(mdto!=null) {
 			map.put("userid", mdto.getUserid());
 			map.put("p_id", String.valueOf(pdto.getP_id()));
@@ -82,6 +110,7 @@ public class StoreController {
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("pdto",pdto);
+		mav.addObject("imageList",imageList);
 		mav.addObject("mdto", mdto);
 		mav.addObject("zzim", zzimList);
 		mav.setViewName("productRetrieve");
@@ -108,6 +137,32 @@ public class StoreController {
 		
 		return zzimData;
 	}
+	
+	@RequestMapping("/castingCartDTO")
+	public @ResponseBody CartDTO castingCartDTO(HashMap<String, String> map) {
+		CartDTO cdto = new CartDTO();
+		Date date = new Date();
+		String now = String.valueOf(date);
+		cdto.setCart_created(now);
+		cdto.setCart_id(1);
+		cdto.setMoney(Integer.parseInt(map.get("p_amount"))*Integer.parseInt(map.get("p_selling_price")));
+		cdto.setP_amount(Integer.parseInt(map.get("p_amount")));
+		cdto.setP_id(Integer.parseInt(map.get("p_id")));
+		cdto.setP_image(map.get("p_image"));
+		cdto.setP_name(map.get("p_name"));
+		cdto.setP_selling_price(Integer.parseInt(map.get("p_selling_price")));
+		cdto.setUserid(map.get("userid"));	
+		
+		return cdto;
+	}
+	
+	
+	  public void order(HttpSession session, @PathVariable("cdto") CartDTO cdto) {
+		  
+		  
+	  
+	  }
+	 
 	
 
 }

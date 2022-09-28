@@ -94,6 +94,44 @@ public class ChallengeDAO {
 		return session.update("ChallengeMapper.updateChallenge", map);
 	}
 
+	public void insertLike(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertLike", map);
+		System.out.println("insert된 좋아요 수 "+n);
+	}
+
+	public void deleteLike(HashMap<String, String> map) {
+		int n = session.delete("ChallengeMapper.deleteLike", map);
+		System.out.println("delete된 좋아요 수 "+n);
+	}
+
+	public void updateChallLiked(String chall_id) {
+		int n = session.update("ChallengeMapper.updateChallLiked", chall_id);
+		System.out.println("update된 게시글 수 "+n);
+	}
+
+	public int countLiked(String chall_id) {
+		return session.selectOne("ChallengeMapper.countLiked", chall_id);
+	}
+
+	public void insertComment(CommentsDTO dto) {
+		int n = session.insert("ChallengeMapper.insertComment", dto);
+		System.out.println("insert된 댓글 수 "+n);
+	}
+
+	public void insertReply(CommentsDTO dto) {
+		int n = session.insert("ChallengeMapper.insertReply", dto);
+		System.out.println("insert된 댓글 수 "+n);
+	}
+
+	public void updateChallComments(int chall_id) {
+		int n = session.update("ChallengeMapper.updateChallComments", chall_id);
+		System.out.println("update된 게시글 수 "+n);
+	}
+
+	public int countComments(String chall_id) {
+		return session.selectOne("ChallengeMapper.countComments", chall_id);
+	}
+
 	
 
 }

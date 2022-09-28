@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <script src="https://kit.fontawesome.com/a4e70846ef.js" crossorigin="anonymous"></script>
 <style>
 
@@ -44,7 +45,8 @@
 $(document).ready(function () {
 	$(".category").click(function() {
 		let category = $(this).attr("data-category");
-		location.href="/zzp/admin/"+category;
+		console.log(category);
+		location.href="/zzp/admin/"+category; 
 	});
 	
 	$('.store').on('click', function () {
@@ -58,8 +60,6 @@ $(document).ready(function () {
 	
 });
 </script>
-
-
 
 <div id="adminNav" class="col-lg-2 float-md-start">
 	<ul class="nav flex-column">

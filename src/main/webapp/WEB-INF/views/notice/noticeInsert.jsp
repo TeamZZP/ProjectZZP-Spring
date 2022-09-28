@@ -3,10 +3,33 @@
     pageEncoding="UTF-8"%>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="resources/js/notice/noticeInsert.js"></script>
+<script src="/zzp/resources/js/notice/noticeInsert.js"></script> 
+<!-- <script src="/resources/js/notice/noticeInsert.js"></script> -->
+<script>
+	$(document).ready(function () {
+		$("#nTittle").focus();
+		$("#noticeInsert").click(function () {
+			var nTittle = $("#nTittle").val();
+			var nContent = $("#nContent").val();
+			if (nTittle.length == 0) {
+				alert("제목을 입력하십시오");
+				evnet.preventDefault();
+			} else if (nContent.length == 0) {
+				alert("내용을 입력하십시오");
+				evnet.preventDefault();
+			} else {
+				$("form").attr("action","../notice");
+			}
+		});
+		$("#noticeList").click(function () {
+			history.back();
+			event.preventDefault();
+		});
+	});;//end ready
+</script>
 
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
 
 	<form method="post" action="">

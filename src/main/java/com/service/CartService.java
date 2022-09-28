@@ -58,5 +58,4 @@ public class CartService {
 		dao.cartAllDel(list);
 	}
 
-	
 }

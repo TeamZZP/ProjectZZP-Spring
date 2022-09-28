@@ -16,15 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CartDTO;
+import com.dto.MemberDTO;
 import com.service.CartService;
+import com.service.StoreService;
 
 @Controller
 public class CartController {
 
 	@Autowired
 	CartService service;
+	@Autowired
+	StoreService Sservice;
 
 	/**
 	 * 장바구니추가
@@ -87,9 +92,6 @@ public class CartController {
 	@ResponseBody
 	public void delete(@PathVariable("cart_id") String cart_id) {
 		System.out.println(cart_id);
-		/*
-		 * int cart_id1 = Integer.parseInt(cart_id); System.out.println(cart_id1);
-		 */
 		 service.cartDel(cart_id); 
 	}
 
@@ -97,24 +99,46 @@ public class CartController {
 	 * 장바구니 상품 전체 삭제
 	 */
 	
-	 @RequestMapping(value = "/cart")
-	 @ResponseBody
-	  public String  cartAllDel(@RequestParam("check") ArrayList<String> list ) {
+	 @RequestMapping(value = "/cart", method = RequestMethod.DELETE)
+	  public String  cartAllDel(@RequestParam("check") ArrayList<String> list, HttpSession session, RedirectAttributes attr ) {
+		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
+		 String userid = mDTO.getUserid();
+		 attr.addAttribute("userid", userid);
 		 System.out.println(list);
-		/* service.cartAllDel(list); */
-	  return "redirect:../cart/{userid}"; 
+		 service.cartAllDel(list); 
+	  return "redirect:/cart/{userid}"; 
 	  } 
 	  
-		/**W
+		/**
 		 * 장바구니 수량 변경
 		 */
-	
 	 @RequestMapping(value = "/cart/{cart_id}", method = RequestMethod.PUT)
 	 @ResponseBody
 	 public void update(@RequestBody HashMap<String, Object> map) { 
+		 System.out.println(map);
 		 service.cartUpdate(map);
 		 }
-			 
-
+	
+	 /**
+	  * 찜한 상품 목록
+	  */
+	 @RequestMapping(value = "/like/{userid}" , method = RequestMethod.GET)
+	 
+	 public ModelAndView likeList(@PathVariable("userid") String userid, ModelAndView mav,HttpSession session  ) { 
+		 
+			// 찜 List
+		 	
+		 	
+			// 찜목록에 담긴 갯수
+		 	
+		 	//장바구니 담긴 갯수
+			int cartCount = service.cartCount(userid);
+		
+		 	
+		 	mav.addObject("cartCount", cartCount);
+			mav.setViewName("likeList");
+			
+			return mav;
+		 }
 	 
 }

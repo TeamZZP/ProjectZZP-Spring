@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.CategoryDTO;
+import com.dto.ImagesDTO;
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
+import com.dto.ProductDTO;
 
 @Repository
 public class StoreDAO {
@@ -41,6 +43,7 @@ public class StoreDAO {
 			pDTO.setStartEndPages();
 			System.out.println("bestDAO list개수"+list.size());
 		 return pDTO;
+
 	}
 
 	public PageDTO productByCategory(int c_id) {
@@ -56,10 +59,13 @@ public class StoreDAO {
 			pDTO.setStartEndPages();
 			System.out.println("DAO list개수"+list.size());
 			return pDTO;
+
 	}
 
-	public ProductByCategoryDTO productRetrieve(int p_id) {
-		ProductByCategoryDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);
+
+
+	public ProductDTO productRetrieve(int p_id) {
+		ProductDTO dto=template.selectOne("StoreMapper.productRetrieve",p_id);
 		return dto;
 	}
 	
@@ -108,6 +114,11 @@ public class StoreDAO {
 	//관리자페이지 상품관리 : 전체 상품 목록 페이징 countTotal
 	private int countTotalAdmin(HashMap<String, String> map) {
 		return template.selectOne("countTotalAdmin", map);
+	}
+
+	public List<ImagesDTO> ImagesRetrieve(int p_id) {
+		List<ImagesDTO> list = template.selectList("StoreMapper.ImagesRetrieve",p_id);
+		return list;
 	}
 
 

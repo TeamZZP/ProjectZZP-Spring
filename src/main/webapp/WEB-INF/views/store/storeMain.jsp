@@ -104,7 +104,13 @@ a {
 
 </script>
 
+ <c:set value="${pDTO.list}" var="Productlist" />
 
+<<<<<<< HEAD
+   <!-- 세일배너 -->  
+    ${banner}
+    
+=======
 <p>main.jsp</p>
 
  	<div style="text-align: center;">
@@ -114,13 +120,14 @@ a {
  ${zzimList}<br>
  
 <c:set value="${pDTO.list}" var="Productlist" />
+>>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 <form action="StoreServlet" id="prodForm" >    
     <div id="categoryProductContainer" class="container ">
  
      <div class="row">
       <c:forEach var="pList" items="${Productlist}" varStatus="status">
-      
-        
+
+
       <div class="col-lg-3 col-md-4 col-sm-6">
       
          <div class="hover-zoomin">

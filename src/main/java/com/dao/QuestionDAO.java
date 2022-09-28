@@ -81,5 +81,29 @@ public class QuestionDAO {
 		int num = session.update("QuestionMapper.questionUpdate", map);
 		System.out.println("게시글 수정 갯수 " + num);
 	}
+	public List<QuestionDTO> prodQuestion(String p_id) {
+		List<QuestionDTO> list = session.selectList("QuestionMapper.prodQuestion", p_id);
+		return list;
+	}
+	public PageDTO myQuestion(String userid, Map<String, String> map) {
+		PageDTO pDTO = new PageDTO();
+		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		pDTO.setPerPage(10);
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage - 1) * perPage;
+		
+		List<QuestionProductDTO> list = session.selectList("QuestionMapper.myQuestion", userid, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(myQuestionCount(userid));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
+	}
+	private int myQuestionCount(String userid) {
+		return session.selectOne("QuestionMapper.myQuestionCount", userid);
+	}
 
 }

@@ -15,6 +15,39 @@
 </style>
 
 
+<script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+
+function order(p_id) {
+	
+	$.ajax({
+		type: "post",
+		utl : "castingCartDTO",
+		data: {
+			p_id : p_id,
+			userid: userid,
+			p_amount : p_amount,
+			p_image : p_image,
+			p_name : p_name,
+			p_selling_price : p_selling_price,
+			userid : userid
+		},
+		dataType: "text",
+		success : function(data,status,xhr) {
+			
+		location.href="orders";
+		},
+		error : function(xhr, status,error) {
+			console.log(error);
+		}
+		
+		
+	})//end order ajax
+	
+	
+}//end order
+
+</script>
 
 
 

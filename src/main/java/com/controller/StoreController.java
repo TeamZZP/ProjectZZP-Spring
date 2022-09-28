@@ -18,11 +18,7 @@ import com.dto.CategoryDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
-<<<<<<< HEAD
 import com.dto.ProductDTO;
-=======
-import com.dto.ProductByCategoryDTO;
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 import com.service.StoreService;
 
 @Controller
@@ -62,24 +58,18 @@ public class StoreController {
 		ModelAndView mav = new ModelAndView();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		PageDTO pDTO = new PageDTO();
-<<<<<<< HEAD
 		String banner = "";
-=======
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 		pDTO= service.productByCategory(c_id);  //해당카테고리상품리스트
 		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
-<<<<<<< HEAD
 		if(c_id==6) {
 			banner = "<div style='text-align: center;'>\r\n" + 
 					"              <img id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>    \r\n" + 
 					"        </div>";
 		}
 		
-=======
->>>>>>> d69e79f2b13b30b035a6a4e9d1b4632c2a85396c
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);

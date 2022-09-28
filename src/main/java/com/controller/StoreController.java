@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.CartDTO;
 import com.dto.CategoryDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
@@ -135,6 +137,32 @@ public class StoreController {
 		
 		return zzimData;
 	}
+	
+	@RequestMapping("/castingCartDTO")
+	public @ResponseBody CartDTO castingCartDTO(HashMap<String, String> map) {
+		CartDTO cdto = new CartDTO();
+		Date date = new Date();
+		String now = String.valueOf(date);
+		cdto.setCart_created(now);
+		cdto.setCart_id(1);
+		cdto.setMoney(Integer.parseInt(map.get("p_amount"))*Integer.parseInt(map.get("p_selling_price")));
+		cdto.setP_amount(Integer.parseInt(map.get("p_amount")));
+		cdto.setP_id(Integer.parseInt(map.get("p_id")));
+		cdto.setP_image(map.get("p_image"));
+		cdto.setP_name(map.get("p_name"));
+		cdto.setP_selling_price(Integer.parseInt(map.get("p_selling_price")));
+		cdto.setUserid(map.get("userid"));	
+		
+		return cdto;
+	}
+	
+	
+	  public void order(HttpSession session, @PathVariable("cdto") CartDTO cdto) {
+		  
+		  
+	  
+	  }
+	 
 	
 
 }

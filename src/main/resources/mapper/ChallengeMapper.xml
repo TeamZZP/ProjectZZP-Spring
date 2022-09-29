@@ -189,6 +189,15 @@
 	where chall_id=#{chall_id}
 </select>
 
+<delete id="deleteAllComments">
+	delete from comments
+	where comment_id in 
+		(	select comment_id from comments
+			start with comment_id=#{comment_id}
+			connect by prior comment_id=parent_id
+		)
+</delete>
+
 
 <select id="countLikedByMap" resultType="int">
 	select count(*) from chall_liked

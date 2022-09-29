@@ -42,7 +42,7 @@ a:hover {
 		<div class="btn-group" role="group" aria-label="Basic example">
 			${cartList.p_id}
 			<button type="button" class="btn btn-outline-success" id="cart">
-				장바구니(${map.count})</button>
+				장바구니(<span id="cartCount">${map.count}</span>)</button>
 			<button type="button" class="btn btn-outline-success" id="like"
 				onclick="location.href='${contextPath}/like/${login.userid}';"> 
 				찜한상품()
@@ -96,10 +96,10 @@ a:hover {
 									<!-- 주문번호  -->
 									<td><span name="cart_id" id="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
 									<!-- 이미지사진  -->
-									<td><a href="ProductRetrieveServlet?p_id=${cart.p_id}"> 
+									<td><a href="${contextPath}/product/${cart.p_id}"> 
 										<img src="../resources/images/product/p_image/${cart.p_image}" width="100"
 											style="border: 10px;" height="100"></a> <a
-										href="ProductRetrieveServlet?p_id=${cart.p_id}"> 
+										href="${contextPath}/product/${cart.p_id}"> 
 										<!-- 상품명  -->
 										<span name="p_name" style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
 									<!-- 수량  -->
@@ -162,7 +162,9 @@ a:hover {
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
 function totalprice(){
+	
 	var sum_money = 0;
 	$(".item_price").each(function(idx,data){
 		sum_money += Number.parseInt($(data).text());
@@ -175,6 +177,10 @@ function totalprice(){
 	$("#total").text(total+"원");
 
 }
+
+function totalprice2(){
+	
+}//체크박스 선택 시 토탈값 변경
 	
 $(function() {
 	
@@ -217,8 +223,8 @@ $(function() {
 		var cart_id = $(this).attr("data-xxx");
 		var xxx = $(this); //클릭된 버튼 자체
 		console.log("delBtn 클릭"+cart_id);
-		
-		 $.ajax({
+	
+		  $.ajax({
 			type : "delete",
 			url : "${contextPath}/cart/"+cart_id,
 			data :{
@@ -228,12 +234,13 @@ $(function() {
 			success : function(data, status, xhr) {
 				//삭제 버튼의 부모 요소 중 tr을 remove
 				console.log("성공");
+				$("#cartCount").text(data);
 				xxx.parents().filter("tr").remove();  
 				totalprice(); // 수정 후 합계부분 다시 불러옴  	
 			},
 			error : function(xhr, status, error) {
 				console.log(error);
-			}
+			} 
 			
 		}) // end ajax
 		
@@ -311,7 +318,7 @@ $(function() {
 			var total2=total.toLocaleString('ko-KR')+"원";
 			$("#sum_money").text(sum_money2);
 			$("#fee").text(fee2);
-			$("#total").text(total2);
+			$("#total").text(total2); 
 		} else {
 			$("input[name=check]").prop("checked", false);//체크박스 전체 선택 해제
 			

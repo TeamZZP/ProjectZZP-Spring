@@ -77,50 +77,42 @@ a {
 
 	}
 	
-	function pageChange(pageNum) {
-		
-		$.ajax({
-			type : "get",
-			url : "paging",
-			data : {
-				pageNum : pageNum
-			},
-			dataType : "text",
-			success : function(data,status,xhr) {
-			console.log("페이지 바꿈");
-			$("form").attr()
-			},
-			error : function(xhr, status,error) {
-				console.log(error);
-			}
-			
-			
-		})//end ajax
-		
-	}
-	
-
-
-	
-
 
 </script>
 
- <c:set value="${pDTO.list}" var="Productlist" />
+
 
 
    <!-- 세일배너 -->  
     ${banner}
     
 
-<p>main.jsp</p>
- ${mdto}<br>
- ${zzimList}<br>
+
+<%--  ${mdto}<br>
+ ${zzimList}<br> --%>
  
 <c:set value="${pDTO.list}" var="Productlist" />
 
 <form action="#" id="prodForm" >    
-    <div id="categoryProductContainer" class="container ">
+
+<div class="row">
+        <div class="col">
+                 <div class="float-end">
+                <!-- 정렬 -->
+              <select class="form-select sortBy" name="sortBy" id="sortBy" data-style="btn-info" 
+                      style="width: 145px; margin-left: -24px; display: inline;">
+                   <option value="p_id" selected>정렬</option>
+                   <option value="p_created" <% if("p_created".equals("${sortBy}")){%>selected<%}%>>최신상품순</option>
+                   <option value="p_selling_price" <% if("p_selling_price".equals("${sortBy}")){%>selected<%}%>>판매가순</option>
+                   <option value="p_name" <% if("p_name".equals("${sortBy}")){%>selected<%}%>>상품명순</option>
+              </select>
+           </div>
+          </div>
+      </div>
+      <div style="height: 10px;"></div>
+      
+
+    <div id="productContainer" class="container ">
  
      <div class="row">
       <c:forEach var="pList" items="${Productlist}" varStatus="status">
@@ -170,9 +162,10 @@ a {
 				
 				<!-- Modal -->
 				<form action="/cart/{userid}" method="post">
-					<input type="hidden" name="p_id" value="${pList.p_id}"> <input
-						type="hidden" name="p_image" value="${pList.p_image}"> <input
-						type="hidden" name="p_name" value="${pList.p_name}">
+					<input type="hidden" name="p_id" value="${pList.p_id}"> 
+					<input type="hidden" name="p_image" value="${pList.p_image}"> 
+					<input type="hidden" name="p_name" value="${pList.p_name}">
+				
 
 					<div class="modal fade" id="addcart${pList.p_id}"
 						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -258,16 +251,16 @@ a {
           <!-- 페이징 -->
 	  <div class="p-2 text-center">
 		  <c:if test="${pDTO.prev}">   <!-- boolean타입 변수 prev가 true일 경우 (prev = startPage > 1;) -->
-		  	<a class="paging" data-page="${pDTO.startPage-1}" id="page" href="javascript:pageChange(${pDTO.startPage-1})">prev&nbsp;&nbsp;</a>
+		  	<a class="paging" data-page="${pDTO.startPage-1}" id="page" >prev&nbsp;&nbsp;</a>
 		  </c:if>
 		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
 			  <c:choose>
 		  		<c:when test="${p==pDTO.page}" ><b>${p}</b>&nbsp;&nbsp;</c:when>
-		  		<c:otherwise><a class="paging" data-page="${p}"  id="page" href="javascript:pageChange(${p})">${p}&nbsp;&nbsp;</a></c:otherwise>
+		  		<c:otherwise><a class="paging" data-page="${p}"  id="page" >${p}&nbsp;&nbsp;</a></c:otherwise>
 		  	  </c:choose>
 		  </c:forEach>
 		  <c:if test="${pDTO.next}">
-		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" href="javascript:pageChange(${pDTO.endPage+1})">next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
+		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" >next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
 		  </c:if>
 </div>
           
@@ -360,5 +353,87 @@ a {
 
 		});//end fn
 		
+		
+		//페이지 선택시
+		$(".paging").on("click", function() {
+			console.log("pageChange()실행");
+			var sortBy = $("#sortBy").val();
+			var curPage = $(this).attr("data-page");
+			var c_id = 0;
+			if(${empty c_id}){
+				c_id = 0;
+			}else{
+				c_id = '${c_id}';
+			}
+	
+		    
+		    console.log("정렬 change");
+			console.log("sortBy:"+ sortBy);
+			console.log("c_id:"+ c_id);
+			
+			$.ajax({
+			   type : "get",
+			   url : "pageChange",
+			   data : {
+			      sortBy :sortBy,
+			      c_id : c_id,
+			      curPage : curPage
+			   },
+			   dataType: "text",
+			   success : function(data,status,xhr) {
+				console.log("페이지 바꿈");
+			  },
+			   error : function(xhr, status,error) {
+				console.log(error);
+			  }
+
+			}); //end ajax 
+		});
+		
+	
+		 
+		
+		//정렬 선택시 
+			$("#sortBy").on("change", function () {
+					
+			var sortBy = $("#sortBy").val();
+			var curPage = 1;
+			var c_id = 0;
+			if(${empty c_id}){
+				c_id = 0;
+			}else{
+				c_id = '${c_id}';
+			}
+	
+			console.log("정렬 change");
+			console.log("sortBy:"+ sortBy);
+			console.log("c_id:"+ c_id);
+			
+			$.ajax({
+			   type : "get",
+			   url : "pageChange",
+			   data : {
+			      sortBy :sortBy,
+			      c_id : c_id,
+			      curPage : curPage
+			   },
+			   dataType: "text",
+			   success : function(data,status,xhr) {
+				console.log("페이지 바꿈");
+			  },
+			   error : function(xhr, status,error) {
+				console.log(error);
+			  }
+
+			}) //end ajax
+
+			});
+		
+		
+		
 	}); //end function
+	
+	
+
+	
 </script>        	

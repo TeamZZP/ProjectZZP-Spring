@@ -29,6 +29,11 @@ public class StoreDAO {
 		int count = template.selectOne("StoreMapper.countAllProduct");
 	return count;
 	}
+	
+	public int countProductBycategory(int c_id) {
+		int count = template.selectOne("StoreMapper.countProductBycategory", c_id);
+	return count;
+	}
 
 	public PageDTO bestProduct() {
 		    int curPage = 1;
@@ -55,10 +60,41 @@ public class StoreDAO {
 			List<ProductByCategoryDTO> list = template.selectList("StoreMapper.productByCategory", c_id,new RowBounds(offset, perPage));
 			pDTO.setPage(curPage);
 			pDTO.setList(list);
-			pDTO.setTotalCount(countAllProduct());
+			pDTO.setTotalCount(countProductBycategory(c_id));
 			pDTO.setStartEndPages();
 			System.out.println("DAO list개수"+list.size());
 			return pDTO;
+
+	}
+	
+	public PageDTO paging(HashMap<String, String> map) {
+		int curPage =  Integer.parseInt( map.get("curPage"));
+	    PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(12);
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage-1)*perPage;
+		List<ProductByCategoryDTO> list = template.selectList("StoreMapper.productByCategory", map,new RowBounds(offset, perPage));
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countProductBycategory( Integer.parseInt( map.get("c_id"))));
+		pDTO.setStartEndPages();
+		System.out.println("DAO : 선택한 카테고리의 Productlist개수 :"+list.size());
+		return pDTO;
+	}
+
+	public PageDTO bestProdPaging(HashMap<String, String> map) {
+		int curPage =  Integer.parseInt( map.get("curPage"));
+		    PageDTO pDTO = new PageDTO();
+			pDTO.setPerPage(12);
+			int perPage = pDTO.getPerPage();
+			int offset = (curPage-1)*perPage;
+			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.bestProduct",map,new RowBounds(offset, perPage));
+			pDTO.setPage(curPage);
+			pDTO.setList(list);
+			pDTO.setTotalCount(countAllProduct());
+			pDTO.setStartEndPages();
+			System.out.println("DAO : bestProductlist개수"+list.size());
+		 return pDTO;
 
 	}
 
@@ -94,6 +130,8 @@ public class StoreDAO {
 		 List<ImagesDTO> list = template.selectList("StoreMapper.ImagesRetrieve", p_id);
 		return list;
 	}
+
+	
 
 
 }

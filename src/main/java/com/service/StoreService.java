@@ -33,6 +33,16 @@ public class StoreService {
 		return  dao.productByCategory(c_id);
 
 	}
+	
+	public PageDTO paging(HashMap<String, String> map) {
+		
+		return dao.paging(map);
+	}
+
+	public PageDTO bestProdPaging(HashMap<String, String> map) {
+	
+		return dao.bestProdPaging(map);
+	}
 
 	public ProductDTO productRetrieve(int p_id) {
 		ProductDTO dto= dao.productRetrieve(p_id);
@@ -64,4 +74,7 @@ public class StoreService {
 		return list;
 	}
 
+
+
+	
 }

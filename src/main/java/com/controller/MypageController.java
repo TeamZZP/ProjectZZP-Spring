@@ -150,23 +150,88 @@ public class MypageController {
 		return mav;
 	}
 	/**
-	 * 마이페이지 배송지 추가,,,,,,?
+	 * 마이페이지 배송지 추가 폼
+	 */
+	@RequestMapping(value = "/mypage/address", method = RequestMethod.GET)
+	public String addressForm() {
+		//interceptor 인증 후
+		System.out.println("배송지 추가 폼");
+		return "addressForm";
+	}
+	/**
+	 * 마이페이지 배송지 수정 폼
+	 */
+	@RequestMapping(value = "/mypage/address", method = RequestMethod.POST)
+	public String addressUpdateForm(String address_id, Model model) {
+		//interceptor 인증 후
+		System.out.println("배송지 수정 폼 : "+address_id);
+		//int?
+		AddressDTO address=service.selectAddress(address_id);
+		System.out.println("address 출력>>>"+address);
+		model.addAttribute("address", address);
+		return "addressForm";
+	}
+	/**
+	 * 마이페이지 배송지 추가
 	 */
 	@RequestMapping(value = "/mypage/{userid}/address", method = RequestMethod.POST)
-	public String addAddress(@PathVariable("userid") String userid) {
+	public String addAddress(@PathVariable("userid") String userid, AddressDTO address,
+			String chk, RedirectAttributes m) {
 		//interceptor 인증 후
-		System.out.println("배송지 추가 userid : "+userid);
-		return "addAddress";
+		System.out.println("배송지 추가 "+address);
+		System.out.println("기본 배송지 : "+chk);//체크하면 on//체크 안 하면 null
+		
+		if (chk == null) {
+			System.out.println("기본 배송지 아님");
+			service.addAddress(address);
+		} else {
+			System.out.println("기본 배송지 체크");
+			address.setDefault_chk(1);
+			//기존 기본 배송지의 default_chk=0으로 변경
+			service.changeNotDefaultAddress(userid);
+			
+			service.addAddress(address);
+		}
+		
+		m.addFlashAttribute("mesg", "배송지가 추가되었습니다.");
+		return "redirect:/mypage/"+userid+"/address";
 	}
 	/**
 	 * 마이페이지 배송지 삭제
 	 */
 	@RequestMapping(value = "/mypage/{userid}/address", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteAddress(@RequestBody String address_id) {//@RequestBody 없으면 null 출력
+	public void deleteAddress(@RequestBody HashMap<String, String> map) {//@RequestBody 없으면 null 출력
 		//interceptor 인증 후
-		System.out.println("배송지 삭제 : "+address_id);//value 값만 추출?
-		int id=Integer.parseInt(address_id);
-		//service.deleteAddress(id);
+		System.out.println("배송지 삭제 : "+map);
+		String id=map.get("address_id");
+		int address_id=Integer.parseInt(id);
+		service.deleteAddress(address_id);
+	}
+	/**
+	 * 마이페이지 배송지 수정
+	 */
+	@RequestMapping(value = "/mypage/{userid}/address", method = RequestMethod.PUT)
+	public String updateAddress(String addressId, AddressDTO address,
+			String chk, RedirectAttributes m) {
+		//interceptor 인증 후
+		System.out.println("배송지 수정 address_id : "+addressId);
+		System.out.println("기본 배송지 : "+chk);//체크하면 on//체크 안 하면 null
+		String userid=address.getUserid();
+		
+		if (chk != null) {
+			System.out.println("기본 배송지 체크");
+			address.setDefault_chk(1);
+			//기존 기본 배송지의 default_chk=0으로 변경
+			service.changeNotDefaultAddress(userid);
+		}
+		
+		int id=Integer.parseInt(addressId);
+		address.setAddress_id(id);
+		System.out.println(address);
+		service.updateAddress(address);
+		
+		m.addFlashAttribute("mesg", "배송지가 수정되었습니다.");
+		return "redirect:/mypage/"+userid+"/address";
 	}
 }

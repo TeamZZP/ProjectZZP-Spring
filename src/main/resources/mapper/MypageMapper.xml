@@ -57,4 +57,30 @@
 			delete from address
 			where address_id = #{address_id}
 		</delete>
+		<insert id="addAddress" parameterType="AddressDTO">
+			insert into address
+			values (address_address_id_seq.nextval, #{userid}, #{address_name}, #{receiver_name}, #{receiver_phone}, 
+					#{post_num}, #{addr1}, #{addr2}, #{default_chk})
+		</insert>
+		<update id="changeNotDefaultAddress">
+			update address
+			set default_chk = 0
+			where userid = #{userid}
+			and default_chk = 1
+		</update>
+		<select id="selectAddress" resultType="AddressDTO">
+			select * from address
+			where address_id = #{address_id}
+		</select>
+		<update id="changeAddress" parameterType="AddressDTO">
+			update address
+			set address_name = #{address_name}, 
+				receiver_name = #{receiver_name}, 
+				receiver_phone = #{receiver_phone}, 
+				post_num = #{post_num}, 
+				addr1 = #{addr1}, 
+				addr2 = #{addr2}, 
+				default_chk = #{default_chk}
+			where address_id = #{address_id}
+		</update>
 </mapper>

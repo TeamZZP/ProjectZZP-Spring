@@ -21,7 +21,7 @@
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>
-<jsp:include page="cart/cartList.jsp" flush="true"></jsp:include><br>
+<jsp:include page="cart/likeList.jsp" flush="true"></jsp:include><br>
 <jsp:include page="common/footer.jsp" flush="true"></jsp:include><br>
 
 <!-- modal -->

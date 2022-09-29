@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.dto.MemberCouponDTO;
 import com.dto.PageDTO;
 import com.dto.ProductOrderImagesDTO;
 
@@ -16,7 +17,7 @@ import com.dto.ProductOrderImagesDTO;
 public class OrderDAO {
 
 	@Autowired
-	SqlSessionTemplate session;
+	SqlSessionTemplate template;
 
 	public PageDTO myOrder(Map<String, String> map) {
 		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
@@ -25,7 +26,7 @@ public class OrderDAO {
 		int perPage = pDTO.getPerPage();
 		int offset = (curPage - 1) * perPage;
 		
-		List<ProductOrderImagesDTO> list = session.selectList("OrderMapper.myOrder", map, new RowBounds(offset, perPage));
+		List<ProductOrderImagesDTO> list = template.selectList("OrderMapper.myOrder", map, new RowBounds(offset, perPage));
 		
 		pDTO.setPage(curPage);
 		pDTO.setList(list);
@@ -36,7 +37,11 @@ public class OrderDAO {
 		return pDTO;
 	}
 	public int myOrderCount(Map<String, String> map) {
-		return session.selectOne("OrderMapper.myOrderCount", map);
+		return template.selectOne("OrderMapper.myOrderCount", map);
+	}
+	public List<MemberCouponDTO> selectAllCoupon(String userid) {
+		List<MemberCouponDTO> couponList = template.selectList("StoreMapper.selectAllCoupon", userid);
+		return couponList;
 	}
 	
 }

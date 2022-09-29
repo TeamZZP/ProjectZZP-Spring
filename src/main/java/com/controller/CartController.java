@@ -16,15 +16,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CartDTO;
+import com.dto.MemberDTO;
 import com.service.CartService;
+import com.service.StoreService;
 
 @Controller
 public class CartController {
 
 	@Autowired
 	CartService service;
+	@Autowired
+	StoreService storeservice;
 
 	/**
 	 * 장바구니추가
@@ -33,11 +38,12 @@ public class CartController {
 	  @RequestMapping(value = "/cart/{userid}", method = RequestMethod.POST)
 	  
 	  @ResponseBody
-	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id) {
-	  // 장바구니에 기존 상품이 있는지 검사
+	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id,String p_name,int p_amount) {
+		System.out.println(userid+p_id+p_name+p_amount);
+		  // 장바구니에 기존 상품이 있는지 검사
 	  HashMap<String, Object> cartMap = new HashMap<String, Object>();
-	  cartMap.put("p_id", p_id); cartMap.put("userid", userid);
-	  
+	  cartMap.put("p_id", p_id); 
+	  cartMap.put("userid", userid);
 	  int cartCount = service.checkCart(cartMap); 
 	  System.out.println("동일한상품 확인 " +cartCount);
 	  if (cartCount == 0) { // 없으면 새로 insert 
@@ -45,7 +51,7 @@ public class CartController {
 	  }else{ // 있으면 수량 update 
 		  service.updateCart(cart); 
 		 } 
-	  return "redirect:../cart/{userid}"; 
+	  return "redirect:/cart/{userid}"; 
 	  }
 	 
 	/**
@@ -85,36 +91,64 @@ public class CartController {
 
 	@RequestMapping(value = "/cart/{cart_id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void delete(@PathVariable("cart_id") String cart_id) {
+	public int delete(@PathVariable("cart_id") String cart_id,HttpSession session) {
 		System.out.println(cart_id);
-		/*
-		 * int cart_id1 = Integer.parseInt(cart_id); System.out.println(cart_id1);
-		 */
 		 service.cartDel(cart_id); 
+		 
+		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
+		 int n = service.cartCount(mDTO.getUserid());
+		 return n;
 	}
 
 	/**
 	 * 장바구니 상품 전체 삭제
 	 */
 	
-	 @RequestMapping(value = "/cart")
-	 @ResponseBody
-	  public String  cartAllDel(@RequestParam("check") ArrayList<String> list ) {
+	 @RequestMapping(value = "/cart", method = RequestMethod.DELETE)
+	  public String  cartAllDel(@RequestParam("check") ArrayList<String> list, HttpSession session, RedirectAttributes attr ) {
+		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
+		 String userid = mDTO.getUserid();
+		 attr.addAttribute("userid", userid);
 		 System.out.println(list);
-		/* service.cartAllDel(list); */
-	  return "redirect:../cart/{userid}"; 
+		 service.cartAllDel(list); 
+	  return "redirect:/cart/{userid}"; 
 	  } 
 	  
-		/**W
+		/**
 		 * 장바구니 수량 변경
 		 */
-	
 	 @RequestMapping(value = "/cart/{cart_id}", method = RequestMethod.PUT)
 	 @ResponseBody
 	 public void update(@RequestBody HashMap<String, Object> map) { 
+		 System.out.println(map);
 		 service.cartUpdate(map);
 		 }
-			 
-
+	
+	 /**
+	  * 찜한 상품 목록
+	  */
+	 @RequestMapping(value = "/like/{userid}" , method = RequestMethod.GET)
+	 @ResponseBody
+	 public ModelAndView likeList(@PathVariable("userid") String userid, ModelAndView mav,HttpSession session  ) { 
+		 
+		// 찜 List
+		/*
+		 * List<Integer> zzimList = new ArrayList<Integer>();
+		 * zzimList=storeservice.zzimAllCheck(userid); List<ProductByCategoryDTO>
+		 * likelist = null; for(int i = 0; i < zzimList.size(); i++){ likelist
+		 * =storeservice.productRetrieve(zzimList.get(i)); }
+		 */
+		 
+		// 찜목록에 담긴 갯수
+		 	
+		 //장바구니 담긴 갯수
+		int cartCount = service.cartCount(userid);
+		
+		mav.addObject("cartCount", cartCount); 	
+		mav.addObject("cartCount", cartCount);
+		mav.setViewName("likeList");
+			
+		return mav;
+		 }
 	 
 }

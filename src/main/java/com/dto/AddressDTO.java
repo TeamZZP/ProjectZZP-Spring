@@ -21,8 +21,4 @@ public class AddressDTO {
 	private String addr1;	
 	private String addr2;	
 	private int default_chk;
-	
-	private String username;
-	private String phone; 
-	private String created_at;
 }

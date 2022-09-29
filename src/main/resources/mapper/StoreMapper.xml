@@ -108,6 +108,10 @@
 		</if>
 	</where>
 </select>
+
+<select id="selectAllCoupon" parameterType="String" resultType="MemberCouponDTO">
+select * from membere_coupon where userid = #{userid}
+</select>
   
   
   </mapper>

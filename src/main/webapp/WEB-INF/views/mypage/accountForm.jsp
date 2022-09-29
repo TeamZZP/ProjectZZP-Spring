@@ -14,6 +14,7 @@
 <style>
 	label {
 		padding: 5px 0 5px 0;
+		font-weight: bold;
 	}
 </style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -130,7 +131,7 @@
 				<input type="hidden" name="accountDelete" value="accountDelete">
 					<!-- username -->
 					<div class="form-group">
-						<label for="username" class="cols-sm-2 control-label" style="font-weight: bold;">이름</label>
+						<label for="username" class="cols-sm-2 control-label">이름</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -140,7 +141,7 @@
 					</div>
 					<!-- 비밀번호 -->
 					<div class="form-group">
-						<label for="changedPasswd" class="cols-sm-2 control-label" style="font-weight: bold;">변경할 비밀번호</label>
+						<label for="changedPasswd" class="cols-sm-2 control-label">변경할 비밀번호</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -149,7 +150,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="checkPasswd" class="cols-sm-2 control-label" style="font-weight: bold;">비밀번호 확인</label>
+						<label for="checkPasswd" class="cols-sm-2 control-label"">비밀번호 확인</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -162,7 +163,7 @@
 					</div>
 					<!-- 이메일 -->
 					<div class="form-group">
-						<label for="type" class="col-sm-3 control-label" style="font-weight: bold;">이메일</label>
+						<label for="type" class="col-sm-3 control-label">이메일</label>
 							<div class="row g-3">
 							<div class="col-sm-4">
 								<input type="text" name="email1" id="email1" class="form-control" value="${login.email1}">
@@ -188,7 +189,7 @@
 					</div>
 					<!-- 전화번호 -->
 					<div class="form-group">
-						<label for="phone" class="cols-sm-2 control-label" style="font-weight: bold;">전화번호</label>
+						<label for="phone" class="cols-sm-2 control-label"">전화번호</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -198,7 +199,7 @@
 					</div>
 					<!-- 주소 -->
 					<div class="form-group">
-						<label for="address" class="cols-sm-2 control-label" style="font-weight: bold;">주소(기본으로 선택된 주소지)</label>
+						<label for="address" class="cols-sm-2 control-label"">주소(기본으로 선택된 주소지)</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>

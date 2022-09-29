@@ -67,4 +67,24 @@ public class MypageDAO {
 		System.out.println("배송지 삭제 : "+n);
 	}
 
+	public void addAddress(AddressDTO address) {
+		int n=session.insert("MypageMapper.addAddress", address);
+		System.out.println("배송지 추가 : "+n);
+	}
+
+	public void changeNotDefaultAddress(String userid) {
+		int n=session.update("MypageMapper.changeNotDefaultAddress", userid);
+		System.out.println("기본 배송지 취소 : "+n);
+	}
+
+	public AddressDTO selectAddress(String address_id) {
+		AddressDTO address=session.selectOne("MypageMapper.selectAddress", address_id);
+		return address;
+	}
+
+	public void updateAddress(AddressDTO address) {
+		int n=session.update("MypageMapper.changeAddress", address);
+		System.out.println("배송지 업데이트 : "+n);
+	}
+
 }

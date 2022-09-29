@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CartDTO;
 import com.dto.MemberDTO;
-import com.dto.ProductByCategoryDTO;
 import com.service.CartService;
 import com.service.StoreService;
 
@@ -39,8 +38,9 @@ public class CartController {
 	  @RequestMapping(value = "/cart/{userid}", method = RequestMethod.POST)
 	  
 	  @ResponseBody
-	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id) {
-		// 장바구니에 기존 상품이 있는지 검사
+	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id,String p_name,int p_amount) {
+		System.out.println(userid+p_id+p_name+p_amount);
+		  // 장바구니에 기존 상품이 있는지 검사
 	  HashMap<String, Object> cartMap = new HashMap<String, Object>();
 	  cartMap.put("p_id", p_id); 
 	  cartMap.put("userid", userid);
@@ -51,7 +51,7 @@ public class CartController {
 	  }else{ // 있으면 수량 update 
 		  service.updateCart(cart); 
 		 } 
-	  return "redirect:../cart/{userid}"; 
+	  return "redirect:/cart/{userid}"; 
 	  }
 	 
 	/**
@@ -91,9 +91,13 @@ public class CartController {
 
 	@RequestMapping(value = "/cart/{cart_id}", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void delete(@PathVariable("cart_id") String cart_id) {
+	public int delete(@PathVariable("cart_id") String cart_id,HttpSession session) {
 		System.out.println(cart_id);
 		 service.cartDel(cart_id); 
+		 
+		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
+		 int n = service.cartCount(mDTO.getUserid());
+		 return n;
 	}
 
 	/**

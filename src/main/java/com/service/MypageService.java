@@ -63,4 +63,21 @@ public class MypageService {
 		dao.deleteAddress(address_id);
 	}
 
+	public void addAddress(AddressDTO address) {
+		dao.addAddress(address);
+	}
+
+	public void changeNotDefaultAddress(String userid) {
+		dao.changeNotDefaultAddress(userid);
+	}
+
+	public AddressDTO selectAddress(String address_id) {
+		AddressDTO address=dao.selectAddress(address_id);
+		return address;
+	}
+
+	public void updateAddress(AddressDTO address) {
+		dao.updateAddress(address);
+	}
+
 }

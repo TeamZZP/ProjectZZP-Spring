@@ -44,6 +44,7 @@ public class QuestionController {
 	public String questionList(@RequestParam Map<String, String> map, Model m, HttpServletRequest request) {
 		PageDTO pDTO = new PageDTO();
 		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		
 		pDTO = qService.questionPage(curPage);
 		System.out.println("pDTO " + pDTO);
 		
@@ -63,14 +64,14 @@ public class QuestionController {
 	/**
 	 * 상품 검색 팝업 띄우기
 	 */
-	@RequestMapping("/qna/pop")
+	@RequestMapping(value = "/qna/pop", method = RequestMethod.GET)
 	public String prodSelectPop() {
 		return "questionproductSelect";
 	}
 	/**
 	 * 상품 검색 팝업
 	 */
-	@RequestMapping(value = "/qna/search")
+	@RequestMapping(value = "/qna/search", method = RequestMethod.GET)
 	public ModelAndView prodselect(@RequestParam Map<String, String> map, 
 			String category, String searchValue, String prodNum, HttpServletRequest request) {
 		System.out.println("검색할 내용 " + category + "\t" + searchValue);
@@ -136,9 +137,11 @@ public class QuestionController {
 	/**
 	 * 게시글 수정
 	 */
-	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.PUT)
-	public @ResponseBody String questionUpdate(@PathVariable String q_id, Map<String, String> map, 
+	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.POST)
+	public String questionUpdate(@PathVariable String q_id, @RequestParam Map<String, String> map, 
 			@RequestParam("qna_img") CommonsMultipartFile uploadFile) {
+		
+		System.out.println("수정할 게시글 " + map);
 		
 		long size = uploadFile.getSize();
 		String name= uploadFile.getName();

@@ -12,19 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.PageDTO;
-import com.service.ChallengeService;
-import com.service.MemberService;
-import com.service.StoreService;
+import com.service.AdminService;
 
 @Controller
 public class AdminController {
 	
 	@Autowired
-	private ChallengeService cService;
-	@Autowired
-	private StoreService sService;
-	@Autowired
-	private MemberService mService;
+	private AdminService service;
 	
 	/**
 	 * 메인 화면
@@ -54,8 +48,9 @@ public class AdminController {
 		} 
 		//전체 상품 목록
 		else if (category.equals("product")) {
-			pDTO = sService.selectAllProduct(map);
+			pDTO = service.selectAllProduct(map);
 			model.addAttribute("pDTO", pDTO);
+			model.addAttribute("category", "product");
 			System.out.println("product pDTO : "+pDTO);
 			url = "adminProduct";
 		} 

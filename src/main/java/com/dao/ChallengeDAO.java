@@ -113,6 +113,25 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.countLiked", chall_id);
 	}
 
+	public void insertComment(CommentsDTO dto) {
+		int n = session.insert("ChallengeMapper.insertComment", dto);
+		System.out.println("insert된 댓글 수 "+n);
+	}
+
+	public void insertReply(CommentsDTO dto) {
+		int n = session.insert("ChallengeMapper.insertReply", dto);
+		System.out.println("insert된 댓글 수 "+n);
+	}
+
+	public void updateChallComments(int chall_id) {
+		int n = session.update("ChallengeMapper.updateChallComments", chall_id);
+		System.out.println("update된 게시글 수 "+n);
+	}
+
+	public int countComments(String chall_id) {
+		return session.selectOne("ChallengeMapper.countComments", chall_id);
+	}
+
 	
 
 }

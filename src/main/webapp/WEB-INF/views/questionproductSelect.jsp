@@ -25,6 +25,10 @@
 				opener.$("#p_id").val(p_id);
 				window.close();
 			});
+			$('.paging').on('click', function() {
+				   $('#page').val($(this).attr('data-page'));
+				   $('form').submit();
+			});
 		})//end ready
 	</script>
 	<style type="text/css">
@@ -34,35 +38,36 @@
 	</style>
 </head>
 <body>
-<%
-	String category = request.getParameter("category"); //카테고리
-	String searchValue = request.getParameter("searchValue"); //검색어
-	if(searchValue == null){searchValue = "";}
-%>
-	<form action="/zzp/qna/search" method="post">
+	<form action="/zzp/qna/search" method="get">
 	<input type="hidden" name="page" value="1" id="page">
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
-		<table border="1" style="border-collapse: collapse; border: 1px solid green;">
-			<tr>
-				<td>
-					<select  name="category" id="category" class="form-select">
-						<option value="p_name" <c:if test="${category == 'p_name'}"> selected="selected" </c:if>>상품명</option>
-						<option value="p_id" <c:if test="${category == 'p_id'}"> selected="selected" </c:if>>상품코드</option>
-					</select>
-				</td>
-				<td colspan="2">
-					<div class="input-group">
-					  <input type="text" name="searchValue" id="searchValue" value="${searchValue}" class="form-control">
-					  <button class="btn btn-outline-secondary" type="submit" id="search">검색하기</button>
-					</div>
-				</td>
-			</tr>
-	<%
-		Integer prodSelectCount = (Integer)request.getAttribute("prodSelectCount");
-		if(prodSelectCount == null){prodSelectCount = 0;}
-	%>
+	<table border="1" style="border-collapse: collapse; border: 1px solid green;">
 		<tr>
-			<td style="color: blue;" colspan="2">총 <%=prodSelectCount%> 개의 상품이 검색되었습니다.</td>
+			<td>
+				<select  name="category" id="category" class="form-select">
+					<option value="p_name" <c:if test="${category == 'p_name'}"> selected="selected" </c:if>>상품명</option>
+					<option value="p_id" <c:if test="${category == 'p_id'}"> selected="selected" </c:if>>상품코드</option>
+				</select>
+			</td>
+			<td colspan="2">
+				<div class="input-group"> 
+				  <input type="text" name="searchValue" id="searchValue" 
+				  	<c:if test="${!empty searchValue}"> value="${searchValue}"</c:if> class="form-control">
+				  <button class="btn btn-outline-secondary" type="submit" id="search">검색하기</button>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td style="color: blue;" colspan="2">
+				<c:choose>
+					<c:when test="${prodSelectCount != null}">
+						${prodSelectCount} 개의 상품이 검색되었습니다.
+					</c:when>
+					<c:otherwise>
+						0 개의 상품이 검색되었습니다.
+					</c:otherwise>
+				</c:choose>
+			</td>
 			<td> 
 				<select class="form-select" name="prodNum" id="prodNum">
 					<option value="5" <c:if test="${prodNum == 5}"> selected="selected" </c:if>>5개씩보기</option>
@@ -85,19 +90,22 @@
 		<tr>
 			<td colspan="3">
 			  <div class="p-2 text-center">
-			        <c:if test="${pDTO.prev}">
-			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
-			        </c:if>
-			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
-			           <c:choose>
-			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			              <c:otherwise><a class="paging" href="zzp/qna/search?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-			             </c:choose>
-			        </c:forEach>
-			        <c:if test="${pDTO.next}">
-			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
-			        </c:if>
-			     </div>
+			       <!-- 페이징 -->
+				     <div class="p-2 text-center">
+				        <c:if test="${prodSelect.prev}">
+				           <a class="paging" data-page="${prodSelect.startPage-1}">prev&nbsp;&nbsp;</a>
+				        </c:if>
+				        <c:forEach var="p" begin="${prodSelect.startPage}" end="${prodSelect.endPage}">
+				           <c:choose>
+				              <c:when test="${p==prodSelect.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+				              <c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+				             </c:choose>
+				        </c:forEach>
+				        <c:if test="${prodSelect.next}">
+				           <a class="paging" data-page="${prodSelect.endPage+1}">next</a>
+				        </c:if>
+				     </div>
+			    </div>
 			</td>
 		</tr>
 	</table>

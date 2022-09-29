@@ -98,12 +98,20 @@ a {
 		})//end ajax
 		
 	}
+	
+
 
 	
 
 
 </script>
 
+ <c:set value="${pDTO.list}" var="Productlist" />
+
+
+   <!-- 세일배너 -->  
+    ${banner}
+    
 
 <p>main.jsp</p>
 
@@ -114,13 +122,14 @@ a {
  ${zzimList}<br>
  
 <c:set value="${pDTO.list}" var="Productlist" />
+
 <form action="StoreServlet" id="prodForm" >    
     <div id="categoryProductContainer" class="container ">
  
      <div class="row">
       <c:forEach var="pList" items="${Productlist}" varStatus="status">
-      
-        
+
+
       <div class="col-lg-3 col-md-4 col-sm-6">
       
          <div class="hover-zoomin">

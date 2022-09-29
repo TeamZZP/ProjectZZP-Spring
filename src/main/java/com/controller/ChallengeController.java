@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,29 +77,16 @@ public class ChallengeController {
 		model.addAttribute("cDTO", cDTO);
 		System.out.println(cDTO);
 		
-		//해당 게시글의 전체 댓글 목록 가져오기
-		List<CommentsDTO> commentsList = service.selectAllComments(chall_id);
-		model.addAttribute("commentsList", commentsList);
-		//대댓글 위해 부모댓글 Map으로 따로 저장
-		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
-		for (CommentsDTO c : commentsList) {
-			parentMap.put(c.getComment_id(), c.getUserid());
-		}
-		model.addAttribute("parentMap", parentMap);
-		
-		//현재 로그인한 회원의 프로필 이미지 가져오기
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		String userid = "";
-		if (mDTO != null) { userid = mDTO.getUserid(); }
-		String currProfile = service.selectProfileImg(userid);
-		model.addAttribute("currProfile", currProfile);
-		
 		//현재 로그인한 회원이 해당 게시글에 좋아요를 눌렀는지 판단하기
-		HashMap<String, String> likedMap = new HashMap<String, String>();
-		likedMap.put("chall_id", chall_id);
-		likedMap.put("userid", userid);
-		int likedIt = service.countLikedByMap(likedMap);
-		model.addAttribute("likedIt", likedIt);
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		if (mDTO != null) { 
+			String userid = mDTO.getUserid(); 
+			HashMap<String, String> likedMap = new HashMap<String, String>();
+			likedMap.put("chall_id", chall_id);
+			likedMap.put("userid", userid);
+			int likedIt = service.countLikedByMap(likedMap);
+			model.addAttribute("likedIt", likedIt);
+		}
 		
 		return "challengeDetail";
 	}
@@ -223,17 +211,16 @@ public class ChallengeController {
 		return service.countLiked(chall_id);
 	}
 	/**
-	 * 댓글 추가
+	 * 댓글 조회
 	 */
-	@RequestMapping(value = "/challenge/comment", method = RequestMethod.POST)
-	public String addComment(CommentsDTO dto, Model model, HttpSession session) {
-		//댓글 추가 
-		service.addComment(dto);
-		
+	@RequestMapping(value = "/challenge/comment", method = RequestMethod.GET)
+	public String comments(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		//해당 게시글의 전체 댓글 목록 가져오기
-		List<CommentsDTO> commentsList = service.selectAllComments(String.valueOf(dto.getChall_id()));
-		model.addAttribute("commentsList", commentsList);
+		PageDTO pDTO = service.selectAllComments(map);
+		model.addAttribute("pDTO", pDTO);
+		
 		//대댓글 위해 부모댓글 Map으로 따로 저장
+		List<CommentsDTO> commentsList = pDTO.getList();
 		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
 		for (CommentsDTO c : commentsList) {
 			parentMap.put(c.getComment_id(), c.getUserid());
@@ -243,19 +230,79 @@ public class ChallengeController {
 		//현재 로그인한 회원의 프로필 이미지 가져오기
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
 		String userid = "";
-		if (mDTO != null) { userid = mDTO.getUserid(); }
-		String currProfile = service.selectProfileImg(userid);
-		model.addAttribute("currProfile", currProfile);
+		if (mDTO != null) { 
+			userid = mDTO.getUserid(); 
+			String currProfile = service.selectProfileImg(userid);
+			model.addAttribute("currProfile", currProfile);
+		}
 		
 		return "challenge/comments";
 	}
-	/**
-	 * 댓글 개수 구하기
-	 */
-	@RequestMapping(value = "/challenge/comment/count", method = RequestMethod.GET)
-	@ResponseBody
-	public int countComments(@RequestParam String chall_id) {
-		return service.countComments(chall_id);
-	}
+	
+//	/**
+//	 * 댓글 추가
+//	 */
+//	@RequestMapping(value = "/challenge/comment", method = RequestMethod.POST)
+//	public String addComment(CommentsDTO dto, Model model, HttpSession session) {
+//		//댓글 추가 
+//		service.addComment(dto);
+//		
+//		//해당 게시글의 전체 댓글 목록 가져오기
+//		List<CommentsDTO> commentsList = service.selectAllComments(String.valueOf(dto.getChall_id()));
+//		model.addAttribute("commentsList", commentsList);
+//		//대댓글 위해 부모댓글 Map으로 따로 저장
+//		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
+//		for (CommentsDTO c : commentsList) {
+//			parentMap.put(c.getComment_id(), c.getUserid());
+//		}
+//		model.addAttribute("parentMap", parentMap);
+//		
+//		//현재 로그인한 회원의 프로필 이미지 가져오기
+//		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+//		String userid = "";
+//		if (mDTO != null) { userid = mDTO.getUserid(); }
+//		String currProfile = service.selectProfileImg(userid);
+//		model.addAttribute("currProfile", currProfile);
+//		
+//		return "challenge/comments";
+//	}
+//	/**
+//	 * 댓글 개수 구하기
+//	 */
+//	@RequestMapping(value = "/challenge/comment/count", method = RequestMethod.GET)
+//	@ResponseBody
+//	public int countComments(@RequestParam String chall_id) {
+//		return service.countComments(chall_id);
+//	}
+//	/**
+//	 * 댓글 삭제
+//	 */
+//	@RequestMapping(value = "/challenge/comment/{comment_id}", method = RequestMethod.DELETE)
+//	public String deleteComment(
+//			@PathVariable String comment_id, 
+//			@RequestBody CommentsDTO dto, 
+//			Model model, HttpSession session) {
+//		//댓글 삭제
+//		service.deleteComment(comment_id, String.valueOf(dto.getChall_id()));
+//		
+//		//해당 게시글의 전체 댓글 목록 가져오기
+//		List<CommentsDTO> commentsList = service.selectAllComments(String.valueOf(dto.getChall_id()));
+//		model.addAttribute("commentsList", commentsList);
+//		//대댓글 위해 부모댓글 Map으로 따로 저장
+//		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
+//		for (CommentsDTO c : commentsList) {
+//			parentMap.put(c.getComment_id(), c.getUserid());
+//		}
+//		model.addAttribute("parentMap", parentMap);
+//		
+//		//현재 로그인한 회원의 프로필 이미지 가져오기
+//		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+//		String currUserid = "";
+//		if (mDTO != null) { currUserid = mDTO.getUserid(); }
+//		String currProfile = service.selectProfileImg(currUserid);
+//		model.addAttribute("currProfile", currProfile);
+//		
+//		return "challenge/comments";
+//	}
 	
 }

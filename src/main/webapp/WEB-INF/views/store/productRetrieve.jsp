@@ -7,6 +7,8 @@
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 <style>
    .item_info td{
       padding-left: 10px;
@@ -18,7 +20,7 @@
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
-function order(p_id) {
+/* function order(p_id) {
 	
 	$.ajax({
 		type: "post",
@@ -42,7 +44,7 @@ function order(p_id) {
 		}
 		
 		
-	})//end order ajax
+	})//end order ajax */
 	
 	
 }//end order
@@ -59,7 +61,7 @@ function order(p_id) {
 
 <!-- 넘어온데이터 -->
 <c:set value="${pdto}" var="p" />
-<c:set value="${mdto}" var="m" />
+<%-- <c:set value="${mdto}" var="m" /> --%>
 <c:set value="${zzim}" var="zzim" />
 
 
@@ -122,7 +124,7 @@ function order(p_id) {
                <tr>
                   <th>상품가격</th>
                   <td></td>
-                  <td><span id="price${p.p_price}" name="p_selling_price">${p.p_selling_price}</span>원</td>
+                  <td><span id="price${p.p_id}" name="p_selling_price">${p.p_selling_price}</span>원</td>
                   
                </tr>
 
@@ -189,19 +191,130 @@ function order(p_id) {
 	   	     </c:otherwise>
 	   	   </c:choose>
                </a></td> 
-               
+               		
                   <td><button type="submit" class="btn btn-success" id="order">주문하기</button>
                   </td>
                   
                   <td>
-                  <!-- Button trigger modal -->
-                  
-                  </td>
+						<!-- Button trigger modal -->
+						<button  type="button" class="btn btn-success" name="cart" id="cart${p.p_id}" data-P_id = "${p.p_id}"
+						data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk==1}">
+						장바구니
+						</button>
+						<!-- Modal -->
+						<button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartCkeck" style="display: none;">modal</button>
+						<div class="modal fade" id="cartCkeck" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+						  <div class="modal-dialog">
+						    <div class="modal-content">
+						      <div class="modal-header">
+						        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						      </div>
+						      <div class="modal-body" style="text-align: center;">
+						       	장바구니에 저장되었습니다.
+						      </div>
+						      <div class="modal-footer">
+						        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">쇼핑계속하기</button>
+						        <button type="button" class="btn btn-success" onclick="location.href='${contextPath}/cart/${login.userid}';" >장바구니보기</button>
+						      </div>
+						    </div>
+						  </div>
+						</div>
+						</td>
                </tr>
                
             </table>
          </div>
       </div>
    </form>
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script type="text/javascript">
+
+	$(function() {
+		
+		var count = "1";
+		$("button[name=up]").click(function() {
+			
+			var p_id =$(this).attr("data-p_id");
+			console.log("up클릭 "+p_id);
+			
+			var p_amount= $("#p_amount"+p_id).val();
+			$("#p_amount"+p_id).val(parseInt(p_amount)+1);
+			count = $("#p_amount"+p_id).val();
+			
+			var price = $("#price"+p_id).text();
+			console.log(price);
+			var total = $("#total"+p_id).text(count*price);
+			
+		});//end up
+
+		 $("button[name=down]").click(function() {
+
+			var p_id =$(this).attr("data-p_id");
+			console.log("down클릭 "+p_id);
+			var p_amount= $("#p_amount"+p_id).val();
+			
+			if(p_amount != 1){
+			$("#p_amount"+p_id).val(parseInt(p_amount)-1);
+			count = $("#p_amount"+p_id).val();
+			console.log(count);
+			var price = $("#price"+p_id).text();
+			var total = $("#total"+p_id).text(count*price);
+			}
+			
+		});//end down 
+
+	  $("button[name=cart]").on("click", function() {
+		  var p_id = $(this).attr("data-P_id");
+		  var p_name = $(this).attr("data-p_name");
+	
+		   console.log("p_id",p_id,"p_name :", p_name ,"count:", count);
+		  
+		 if ("${login.userid}" != null) {
+				$.ajax({
+					type : "post",
+					url : "${contextPath}/cart/${login.userid}",
+					data : {
+						p_id : p_id,
+						p_name : p_name, 
+						p_amount : count,
+					},
+		  	  	dataType : "text",
+		  		success : function(data, status, xhr) {
+					console.log("add성공");
+				},
+				error : function(xhr, status, error) {
+				console.log(error);
+				}
+		  })//end ajax
+		  
+		  $("#modalBtn2").trigger("click");
+		}else{
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
+				
+				$("#closemodal").click(function() {
+		        location.href="${contextPath}/login";
+		     });
+		     	
+			}
+	
+	})//cart 
+	
+	$("#order").on("click", function() {
+		location.href="OrderServlet=";
+		$("form").attr("action", "OrderServlet");
+	})//order
+ 
+	
+	$(".imageChange").mouseover(function () {
+		var src2 = $(this).attr("src");
+		 $("#firstImage").attr("src", src2);
+	});
+		
+	})//end ready
+	
+	 
+</script>
 
 

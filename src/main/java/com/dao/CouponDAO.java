@@ -89,5 +89,15 @@ public class CouponDAO {
 		int num = session.delete("CouponMapper.couponAllDel", delCoupon);
 		System.out.println("쿠폰 삭제 갯수 " + num);
 	}
+
+	public void memberAddCoupon(String userid) {
+		int num = session.insert("CouponMapper.memberAddCoupon", userid);
+		System.out.println("회원가입 축하 쿠폰 지급 갯수 " + num);
+	}
+
+	public CouponDTO couponSelect(String coupon) {
+		CouponDTO dto = session.selectOne("CouponMapper.couponSelect", coupon);
+		return dto;
+	}
 	
 }

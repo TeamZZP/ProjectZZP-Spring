@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:if test="${!empty pDTO.list}">
 <c:set var="commentsList" value="${pDTO.list}"/>
+
 				<c:forEach var="c" items="${commentsList}">
                     <div class="d-flex flex-row p-3"> 
                       <c:if test="${c.step!=0}">
@@ -115,4 +117,4 @@
 					  </c:if>
 				  </div>
 	  
-                
+</c:if>               

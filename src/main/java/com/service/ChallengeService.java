@@ -137,6 +137,14 @@ public class ChallengeService {
 		dao.updateComment(dto);
 	}
 
+	public int checkReportExist(HashMap<String, String> map) {
+		return dao.checkReportExist(map);
+	}
+
+	public void insertReport(HashMap<String, String> map) {
+		dao.insertReport(map);
+	}
+
 
 
 }

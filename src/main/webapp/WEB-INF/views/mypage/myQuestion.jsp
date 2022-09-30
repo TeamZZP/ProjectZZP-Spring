@@ -6,8 +6,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- 
-<link rel="stylesheet" href="/zzp/resources/mypage/myReview.css">   
+
+<style>
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	.currCategory {
+		color: green;
+		font-weight: bold;
+	}
+	
+	.tableTop {
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
+</style>  
 
 <div id="addContainer">
 <div class="container">

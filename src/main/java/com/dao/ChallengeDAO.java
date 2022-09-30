@@ -173,6 +173,15 @@ public class ChallengeDAO {
 		System.out.println("update된 댓글 수 "+n);
 	}
 
+	public int checkReportExist(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.checkReportExist", map);
+	}
+
+	public void insertReport(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertReport", map);
+		System.out.println("insert된 신고 수 "+n);
+	}
+
 	
 
 }

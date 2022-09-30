@@ -297,5 +297,20 @@ public class ChallengeController {
 		
 		return page;
 	}
+	/**
+	 * 신고 추가
+	 */
+	@RequestMapping(value = "/challenge/report", method = RequestMethod.POST)
+	@ResponseBody
+	public String report(@RequestParam HashMap<String, String> map) {
+		//중복 신고 확인
+		int count = service.checkReportExist(map);
+		if (count == 0) {
+			service.insertReport(map);
+			return "true";
+		} else {
+			return "false";
+		}
+	}
 	
 }

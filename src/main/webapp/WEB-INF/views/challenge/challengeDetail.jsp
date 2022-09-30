@@ -384,7 +384,7 @@ a {
 				
 				$.ajax({
 					type:"post",
-					url:"ReportAddServlet",
+					url:"/zzp/challenge/report",
 					data: {
 						chall_id:chall_id,
 						comment_id:comment_id,

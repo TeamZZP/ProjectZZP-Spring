@@ -231,6 +231,11 @@
 	where chall_id=#{chall_id} and userid=#{userid}
 </select>
 
+<select id="countLiked" resultType="int">
+	select chall_liked from challenge
+	where chall_id=#{chall_id}
+</select>
+
 <insert id="insertLike" parameterType="hashmap">
 	insert into chall_liked (chall_id, userid)
 	values (#{chall_id}, #{userid})
@@ -248,16 +253,58 @@
 	where chall_id=#{chall_id}
 </update>
 
-<select id="countLiked" resultType="int">
-	select chall_liked from challenge
-	where chall_id=#{chall_id}
-</select>
+
 
 
 <select id="selectProfileImg" resultType="string">
 	select profile_img from profile
 	where userid=#{userid}
 </select>
+
+
+
+<select id="checkReportExist" parameterType="hashmap" resultType="int">
+	select count(*) from report
+	where userid=#{userid} 
+	and
+	<if test="chall_id != ''">
+		chall_id=#{chall_id}
+	</if>
+	<if test="comment_id != ''">
+		comment_id=#{comment_id}
+	</if>
+</select>
+
+<insert id="insertReport" parameterType="hashmap">
+	insert into report
+		(report_id,
+		userid,
+		<if test="chall_id != ''">
+		chall_id,
+		reported_userid,
+		</if>
+		<if test="comment_id != ''">
+		comment_id,
+		reported_userid,
+		</if>
+		report_reason,
+		report_status,
+		report_created)
+	values
+		(report_report_id_seq.NEXTVAL,
+		#{userid},
+		<if test="chall_id != ''">
+		#{chall_id},
+		(select userid from challenge where chall_id=#{chall_id}),
+		</if>
+		<if test="comment_id != ''">
+		#{comment_id},
+		(select userid from comments where comment_id=#{comment_id}),
+		</if>
+		#{report_reason},
+		0,
+		CURRENT_TIMESTAMP)
+</insert>
 
 
 

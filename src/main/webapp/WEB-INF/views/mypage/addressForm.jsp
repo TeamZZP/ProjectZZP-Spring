@@ -74,7 +74,7 @@
 						address_id : id
 					}),
 					success : function(data, status, xhr) {
-						console.log("success");
+						//console.log(data);
 						$("#confirm").attr("data-bs-dismiss","modal");
 						$("#modalMesg").text("배송지가 삭제되었습니다.");
 						$("#confirm").on("click", function() {

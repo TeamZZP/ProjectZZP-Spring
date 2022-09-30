@@ -43,6 +43,7 @@ public class StoreController {
 		}
 		System.out.println("zzimList: "+zzimList);
 		List<CategoryDTO> categoryList = service.category(); //카테고리 리스트
+		mav.addObject("c_id","");  
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("pDTO", pDTO);
 		mav.addObject("mdto", mdto);
@@ -72,6 +73,7 @@ public class StoreController {
 					"        </div>";
 		}
 		
+		mav.addObject("c_id",c_id);  
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
 		mav.addObject("categoryList", categoryList);
@@ -83,10 +85,21 @@ public class StoreController {
 	
 	@RequestMapping("/pageChange")
 	@ResponseBody
-	public void pageChange(@RequestParam("pageNum") int pageNum ) {
+	public void pageChange(int curPage, String sortBy, int c_id ) {
+		System.out.println("페이징 컨트롤러");
+		System.out.println("curPage :"+ curPage);
+		System.out.println("sortBy :"+ sortBy);
+		System.out.println("c_id :"+ c_id);
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("curPage", String.valueOf(curPage) );
+		map.put("sortBy", sortBy);
+		map.put("c_id", String.valueOf(c_id));
 		PageDTO pDTO = new PageDTO();
-		
-		
+		if(c_id==0) {
+			pDTO=service.bestProdPaging(map);
+		}else {
+			pDTO=service.paging(map);
+		}
 		
 	}
 	

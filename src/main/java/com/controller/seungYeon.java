@@ -211,7 +211,7 @@ public class seungYeon {
 	/**
 	 * 쿠폰 수정 페이지 가기
 	 */
-	@RequestMapping(value = "/admin/{coupon_id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/admin/coupon/{coupon_id}", method = RequestMethod.GET)
 	public String couponUpatePage(@PathVariable String coupon_id, HttpSession session, Model m) {
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
 		if (mDTO.getRole() == 1) {

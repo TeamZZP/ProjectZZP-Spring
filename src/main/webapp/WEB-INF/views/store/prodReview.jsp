@@ -47,7 +47,7 @@
 			<td>작성일</td>
 			<td>만족도</td>
 		</tr>
-		<c:forEach var="rDTO" items="${pordReview}">
+		<c:forEach var="rDTO" items="${prodReview}">
 		<tr class="show" id="show${rDTO.review_id}" data-review="${rDTO.review_id}">
 			<td><img alt="리뷰" src="/zzp/resources/images/review/review.png" width="45px" height="45px"></td>
 			<td>${rDTO.review_id}</td>

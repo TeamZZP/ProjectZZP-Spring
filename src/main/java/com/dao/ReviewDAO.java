@@ -17,13 +17,13 @@ import com.dto.ReviewProductImagesDTO;
 import com.dto.ReviewProfileDTO;
 
 @Repository
-public class reviewDAO {
+public class ReviewDAO {
 
 	@Autowired
 	SqlSessionTemplate session;
 
-	public List<ReviewProfileDTO> pordReview(String p_id) {
-		List<ReviewProfileDTO> list = session.selectList("ReviewMapper.pordReview", p_id);
+	public List<ReviewProfileDTO> prodReview(String p_id) {
+		List<ReviewProfileDTO> list = session.selectList("ReviewMapper.prodReview", p_id);
 		return list;
 	}
 

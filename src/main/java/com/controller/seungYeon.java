@@ -28,7 +28,7 @@ import com.service.AnswerService;
 import com.service.CouponService;
 import com.service.OrderService;
 import com.service.QuestionService;
-import com.service.reviewService;
+import com.service.ReviewService;
 
 @Controller
 public class seungYeon {
@@ -36,7 +36,7 @@ public class seungYeon {
 	@Autowired
 	QuestionService qService;
 	@Autowired
-	reviewService rService;
+	ReviewService rService;
 	@Autowired
 	AnswerService aService;
 	@Autowired
@@ -54,11 +54,11 @@ public class seungYeon {
 		List<QuestionDTO> prodQuestion = qService.prodQuestion(p_id);
 		System.out.println("상품 문의 " + prodQuestion); // Question
 
-		List<ReviewProfileDTO> pordReview = rService.pordReview(p_id);
-		System.out.println("상품 리뷰 " + pordReview); // 리뷰
+		List<ReviewProfileDTO> prodReview = rService.prodReview(p_id);
+		System.out.println("상품 리뷰 " + prodReview); // 리뷰
 
 		m.addAttribute("prodQuestion", prodQuestion);
-		m.addAttribute("pordReview", pordReview);
+		m.addAttribute("prodReview", prodReview);
 		/////////////////////
 		return "store/prodReview"; // prodQA.jsp,prodReview.jsp include 필요
 	}

@@ -38,8 +38,7 @@
 			var order_id = $(this).attr("data-orderID");
 			var p_name = $(this).attr("data-pNAME");
 			var p_id = $(this).attr("data-pID");
-			console.log(order_id, p_name, p_id);
-		 	/* $.ajax({
+		 	$.ajax({
 				type:"post",
 				url:"/zzp/orders/review",
 				data:{
@@ -48,15 +47,16 @@
 				},
 				dataType:"text",
 				success: function (data, status, xhr) {
-					if (data == 0) {
-						chk.attr("href","reviewInsert.jsp?ORDER_ID="+ORDER_ID+"&P_NAME="+P_NAME+"&P_ID="+P_ID);
+					console.log( "==",data);
+					if (data != 0) {
+						chk.attr("href","/zzp/review/"+data);
 					} else {
-						chk.attr("href","reviewOneSelect?REVIEW_ID="+REVIEW_ID+"&P_ID="+P_ID);
+						chk.attr("href","/zzp/review?order_id="+order_id+"&p_name="+p_name+"&p_id="+p_id);
 					}
 				},
 				error: function (xhr, status, error) {
 					
-				}  */
+				}  
 			});//end ajax
 		});
 		$('.paging').on('click', function() {

@@ -51,7 +51,7 @@
 			$(".delCheck").prop('checked', $(this).prop('checked'));
 		});
 		$("#couponInsert").click(function () {
-			$("#couponForm").attr("action", "/zzp/admin/coupon/write").submit();
+			$("#couponForm").attr("method","get").attr("action", "/zzp/admin/coupon/write").submit();
 		});
 		$(".delCheckBtn").click(function() {
 			if ($(".delCheck:checked").length == 0) {

@@ -46,5 +46,14 @@ public class CouponService {
 	public void couponAllDel(List<String> delCoupon) {
 		dao.couponAllDel(delCoupon);
 	}
-	
+
+	public void memberAddCoupon(String userid) {
+		dao.memberAddCoupon(userid);
+	}
+
+	public CouponDTO couponSelect(String coupon) {
+		CouponDTO dto = dao.couponSelect(coupon);
+		return dto;
+	}
+
 }

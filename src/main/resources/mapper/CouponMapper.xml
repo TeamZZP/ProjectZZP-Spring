@@ -83,9 +83,8 @@
 			#{coupon_id}
 		</foreach>
 	</delete>
-	<!-- 
-	<insert id="memberAddCoupon" parameterType="string">
+	<insert id="memberAddCoupon" parameterType="String">
 		insert into member_coupon (USERID, COUPON_ID, COUPON_GET, COUPON_VALIDITY, COUPON_STATUS, COUPON_USED)
-			values (#{userid}, 25, sysdate, add_months(sysdate, 1), '미사용', null)
-	</insert> -->
+			values (#{userid}, 44, sysdate, add_months(sysdate, 1), '미사용', null)
+	</insert>
 </mapper>

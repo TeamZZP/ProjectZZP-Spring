@@ -50,7 +50,7 @@
 		//페이징
  		$('.paging').on('click', function() {
 			$('#page').val($(this).attr('data-page'));
-			$('form').attr('action', 'admin/product').submit();
+			$('#prodForm').attr('action', '/zzp/admin/product').submit();
 		})
 		//상품검색
 		$("#searchProd").click(function() {
@@ -151,6 +151,7 @@
 	<input type="hidden" name="sortBy" value="${sortBy}">
 	<input type="hidden" name="category" value="product">
 	<input type="hidden" name="p_id" id="delp_id">
+	<input type="hidden" name="page" value="1" id="page">
 	<!-- 상품 List -->	
 	<table class="table table-hover table-sm">
 		<tr>

@@ -20,7 +20,11 @@ import com.dto.ReviewProfileDTO;
 public class ReviewDAO {
 
 	@Autowired
+<<<<<<< HEAD
 	SqlSessionTemplate session;    
+=======
+	SqlSessionTemplate session;  
+>>>>>>> 136ad4a6393a2edb8d11f4f815d3e00f911b9c65
 
 	public List<ReviewProfileDTO> prodReview(String p_id) {
 		List<ReviewProfileDTO> list = session.selectList("ReviewMapper.prodReview", p_id);

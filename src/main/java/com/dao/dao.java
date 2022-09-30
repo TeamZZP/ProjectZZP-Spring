@@ -17,7 +17,7 @@ import com.dto.ReviewProductImagesDTO;
 import com.dto.ReviewProfileDTO;
 
 @Repository
-public class ReviewDAO {
+public class dao {
 
 	@Autowired
 	SqlSessionTemplate session;    

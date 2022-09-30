@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:set var="commentsList" value="${pDTO.list}"/>
 				<c:forEach var="c" items="${commentsList}">
                     <div class="d-flex flex-row p-3"> 
                       <c:if test="${c.step!=0}">
@@ -14,7 +15,7 @@
                         <div class="w-100">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex flex-row align-items-center"> 
-                                	<a href="/zzp/profile/${c.userid}">
+                                	<a href="profile/${c.userid}">
                                 	<span class="mr-2">${c.userid}</span></a> 
                                 </div> 
                                 <small id="commentTime${c.comment_id}"></small>
@@ -96,3 +97,22 @@
                     </div>
                     
                 </c:forEach>
+                
+                
+                <!-- 페이징 -->
+				  <div class="p-2 text-center">
+					  <c:if test="${pDTO.prev}">
+					  	<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+					  </c:if>
+					  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+						  <c:choose>
+					  		<c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+					  		<c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+					  	  </c:choose>
+					  </c:forEach>
+					  <c:if test="${pDTO.next}">
+					  	<a class="paging" data-page="${pDTO.endPage+1}">next</a>
+					  </c:if>
+				  </div>
+	  
+                

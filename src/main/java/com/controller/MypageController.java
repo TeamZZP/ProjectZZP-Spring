@@ -54,7 +54,7 @@ public class MypageController {
 		return mav;
 	}
 	/**
-	 * 마이페이지 계정 인증
+	 * 마이페이지 계정 인증//=>(RequestParam 속성을 필수가 아니도록 하고, 파라미터가 있으면 탈퇴, 없으면 계정 수정)=>url 수정하는 방법으로 진행
 	 */
 	@RequestMapping(value = "/mypage/{userid}/check", method = RequestMethod.GET)
 	public String accountCheck() {
@@ -63,13 +63,13 @@ public class MypageController {
 		return "checkAccount";
 	}
 	/**
-	 * 마이페이지 계정 삭제 인증
+	 * 마이페이지 계정 삭제 인증//=>url 수정, method get으로 수정하기(폼 제출 불필요, 링크로 이동)
 	 */
-	@RequestMapping(value = "/mypage/{userid}/check", method = RequestMethod.POST)
-	public String deleteCheck(String accountDelete, Model model) {
+	@RequestMapping(value = "/mypage/{userid}/quit", method = RequestMethod.GET)
+	public String deleteCheck(Model model) {
 		//interceptor 인증 후
 		System.out.println("계정 삭제 인증");
-		model.addAttribute("accountDelete", accountDelete);
+		model.addAttribute("accountDelete", "quit");
 		return "checkAccount";
 	}
 	/**
@@ -159,10 +159,10 @@ public class MypageController {
 		return "addressForm";
 	}
 	/**
-	 * 마이페이지 배송지 수정 폼
+	 * 마이페이지 배송지 수정 폼//=>url에 address id 추가하고 get 요청으로 수정, 같은 jsp 출력
 	 */
-	@RequestMapping(value = "/mypage/address", method = RequestMethod.POST)
-	public String addressUpdateForm(String address_id, Model model) {
+	@RequestMapping(value = "/mypage/address/{address_id}", method = RequestMethod.GET)
+	public String addressUpdateForm(@PathVariable("address_id") String address_id, Model model) {
 		//interceptor 인증 후
 		System.out.println("배송지 수정 폼 : "+address_id);
 		//int?
@@ -201,12 +201,16 @@ public class MypageController {
 	 */
 	@RequestMapping(value = "/mypage/{userid}/address", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteAddress(@RequestBody HashMap<String, String> map) {//@RequestBody 없으면 null 출력
+	public int deleteAddress(@RequestBody HashMap<String, String> map,
+			@PathVariable("userid") String userid) {//@RequestBody 없으면 null 출력
 		//interceptor 인증 후
 		System.out.println("배송지 삭제 : "+map);
 		String id=map.get("address_id");
 		int address_id=Integer.parseInt(id);
 		service.deleteAddress(address_id);
+		List<AddressDTO> list=service.selectAllAddress(userid);
+		int size=list.size();
+		return size;
 	}
 	/**
 	 * 마이페이지 배송지 수정

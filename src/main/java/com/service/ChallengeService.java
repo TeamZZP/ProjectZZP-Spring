@@ -133,6 +133,10 @@ public class ChallengeService {
 		return dao.getCommentPage(map);
 	}
 
+	public void updateComment(CommentsDTO dto) {
+		dao.updateComment(dto);
+	}
+
 
 
 }

@@ -201,6 +201,12 @@
 		)
 </delete>
 
+<update id="updateComment" parameterType="com.dto.CommentsDTO">
+	update comments
+	set comment_content=#{comment_content}
+	where comment_id=#{comment_id}
+</update>
+
 <select id="getNewestComment" resultType="int">
 	select MAX(comment_id) from comments 
 	where userid=#{userid}

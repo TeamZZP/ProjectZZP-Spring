@@ -28,7 +28,7 @@ import com.service.AnswerService;
 import com.service.CouponService;
 import com.service.OrderService;
 import com.service.QuestionService;
-import com.service.ReviewService;
+import com.service.service;
 
 @Controller
 public class seungYeon {
@@ -36,7 +36,7 @@ public class seungYeon {
 	@Autowired
 	QuestionService qService;
 	@Autowired
-	ReviewService rService;
+	service rService;
 	@Autowired
 	AnswerService aService;
 	@Autowired

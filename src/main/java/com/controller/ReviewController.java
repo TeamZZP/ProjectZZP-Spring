@@ -18,13 +18,13 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ProductOrderReviewDTO;
-import com.service.ReviewService;
+import com.service.service;
 
 @Controller
 public class ReviewController {
 
 	@Autowired
-	ReviewService rService;
+	service rService;
 	
 	/**
 	 * 리뷰 작성 페이지 가기

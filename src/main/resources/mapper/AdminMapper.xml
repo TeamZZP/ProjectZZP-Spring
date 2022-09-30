@@ -36,7 +36,49 @@
 		</if>
 	</where>
 </select>
-  
+
+<!-- 회원관리 : 전체 회원 목록 -->
+<select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">
+	select m.userid, m.username, m.phone,a.post_num, a.addr1, a.addr2, m.created_at
+	from member m join address a
+	on m.userid = a.userid
+	<where>
+		a.default_chk = 1
+		<if test="searchName=='userid'"><!-- searchName은 어떻게 인식? -->
+			and	upper(m.userid) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='username'">
+			and upper(m.username) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='phone'">
+			and m.phone like '%${searchValue}%'
+		</if>
+		<if test="searchName=='address'">
+			and upper(a.addr1) like upper('%${searchValue}%')
+		</if>				
+	</where>
+	order by ${sortBy}
+</select>
+<select id="countTotalMember" parameterType="hashmap" resultType="int">
+	select count(*)
+	from member m join address a
+	on m.userid = a.userid
+	<where>
+		a.default_chk = 1
+		<if test="searchName=='userid'"><!-- searchName은 어떻게 인식? -->
+			and upper(m.userid) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='username'">
+			and upper(m.username) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='phone'">
+			and m.phone like '%${searchValue}%'
+		</if>
+		<if test="searchName=='address'">
+			and upper(a.addr1) like upper('%${searchValue}%')
+		</if>
+	</where>
+</select>
   
   </mapper>
   

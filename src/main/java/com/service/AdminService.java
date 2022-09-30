@@ -19,4 +19,8 @@ public class AdminService {
 		return dao.selectAllProduct(map);
 	}
 
+	public PageDTO selectAllMember(HashMap<String, String> map) {
+		return dao.selectAllMember(map);
+	}
+
 }

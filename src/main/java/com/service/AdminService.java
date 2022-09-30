@@ -18,7 +18,8 @@ public class AdminService {
 	public PageDTO selectAllProduct(HashMap<String, String> map) {
 		return dao.selectAllProduct(map);
 	}
-
+	
+	//관리자페이지 회원 관리 : 전체 회원 목록
 	public PageDTO selectAllMember(HashMap<String, String> map) {
 		return dao.selectAllMember(map);
 	}

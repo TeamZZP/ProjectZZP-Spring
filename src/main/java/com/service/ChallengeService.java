@@ -125,6 +125,14 @@ public class ChallengeService {
 		dao.updateChallComments(chall_id);
 	}
 
+	public int getNewestComment(String userid) {
+		return dao.getNewestComment(userid);
+	}
+
+	public int getCommentPage(HashMap<String, Integer> map) {
+		return dao.getCommentPage(map);
+	}
+
 
 
 }

@@ -22,7 +22,7 @@
                                 	<script>$("#commentTime${c.comment_id}").html(displayedAt('${c.comment_created}'));</script>
                             </div>
                             <p class="text-justify mb-0">
-                            	<c:if test="${c.step!=0}"><span style="color: green;">@${parentMap[c.parent_id]} &nbsp;</span></c:if>
+                            	<c:if test="${c.step!=0}"><span style="color: green;">@${c.parent_userid} &nbsp;</span></c:if>
                             	${c.comment_content}</p>
                             <div class="d-flex flex-row user-feed"> 
                             	<a class="reply ml-3" data-cid="${c.comment_id}" data-user="${c.userid}">답글 달기</a> &nbsp;&nbsp;
@@ -30,7 +30,7 @@
                             	  <%-- 해당 댓글의 작성자인 경우 --%>
                             	  <c:when test="${!empty login && login.userid==c.userid}">
 									<a class="ml-3 update" data-cid="${c.comment_id}" 
-											data-parent="${parentMap[c.parent_id]}" data-content="${c.comment_content}">수정</a> &nbsp;&nbsp;
+											data-parent="${c.parent_userid}" data-content="${c.comment_content}">수정</a> &nbsp;&nbsp;
 									<a class="ml-3 commentDelBtn" data-cid="${c.comment_id}">삭제</a> 
 								  </c:when>
 								  <%-- 관리자인 경우 --%>
@@ -59,7 +59,7 @@
 	                    		<input type="text" class="reply_content form-control" name="comment_content" id="reply_content${c.comment_id}"> 
 	                    		<button class="commentBtn commentReplyBtn" 
 	                    			data-cid="${c.comment_id}" data-group="${c.group_order}"
-	                    			data-parent="${parentMap[c.parent_id]}">입력</button>
+	                    			data-parent="${c.userid}">입력</button>
 	                    			<%-- 답글 대상 아이디 고정 --%>
 		                    		<script type="text/javascript">
 		                    		 $("#reply_content${c.comment_id}").on("input", function () {
@@ -82,13 +82,13 @@
 	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
 	                    		<input type="text" class="update_content form-control" name="comment_content" id="update_content${c.comment_id}"> 
 	                    		<button class="commentBtn commentUpdateBtn" data-cid="${c.comment_id}"
-	                    					data-parent="${parentMap[c.parent_id]}">입력</button>
+	                    					data-parent="${c.parent_userid}">입력</button>
 	                    			<%-- 답글 대상 아이디 고정 --%>
 		                    		<script type="text/javascript">
 		                    		 $("#update_content${c.comment_id}").on("input", function () {
-		            					if ("${parentMap[c.parent_id]}" != "null" 
-		            							&& String($(this).val()).indexOf("@${parentMap[c.parent_id]}  ") == -1 ) {
-		            						$(this).val("@${parentMap[c.parent_id]}  ");
+		            					if ("${c.parent_userid}" != "null" 
+		            							&& String($(this).val()).indexOf("@${c.parent_userid}  ") == -1 ) {
+		            						$(this).val("@${c.parent_userid}  ");
 		            					}
 		            				 }); 
 		                    		</script>

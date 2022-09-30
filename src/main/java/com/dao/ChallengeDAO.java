@@ -155,6 +155,14 @@ public class ChallengeDAO {
 		System.out.println("delete된 댓글 수 "+n);
 	}
 
+	public int getNewestComment(String userid) {
+		return session.selectOne("ChallengeMapper.getNewestComment", userid);
+	}
+
+	public int getCommentPage(HashMap<String, Integer> map) {
+		return session.selectOne("ChallengeMapper.getCommentPage", map);
+	}
+
 	
 
 }

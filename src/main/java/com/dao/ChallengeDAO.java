@@ -64,8 +64,26 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectOneChallenge", chall_id);
 	}
 
-	public List<CommentsDTO> selectAllComments(String chall_id) {
-		return session.selectList("ChallengeMapper.selectAllComments", chall_id);
+	public PageDTO selectAllComments(HashMap<String, String> map) {
+		int curPage = Integer.parseInt(
+				Optional.ofNullable(map.get("page"))
+				.orElse(("1"))
+				);
+		
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(5);
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage - 1)*perPage;
+		
+		List<CommentsDTO> list = session.selectList("ChallengeMapper.selectAllComments", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countComments(map.get("chall_id")));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
 	}
 
 	public String selectProfileImg(String userid) {
@@ -123,13 +141,18 @@ public class ChallengeDAO {
 		System.out.println("insert된 댓글 수 "+n);
 	}
 
-	public void updateChallComments(int chall_id) {
+	public void updateChallComments(String chall_id) {
 		int n = session.update("ChallengeMapper.updateChallComments", chall_id);
 		System.out.println("update된 게시글 수 "+n);
 	}
 
 	public int countComments(String chall_id) {
 		return session.selectOne("ChallengeMapper.countComments", chall_id);
+	}
+
+	public void deleteAllComments(String comment_id) {
+		int n = session.delete("ChallengeMapper.deleteAllComments", comment_id);
+		System.out.println("delete된 댓글 수 "+n);
 	}
 
 	

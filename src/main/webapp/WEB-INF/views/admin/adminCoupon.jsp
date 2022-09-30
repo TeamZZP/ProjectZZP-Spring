@@ -92,7 +92,7 @@
 		});
 		$(".couponUpdate").click(function () {
 			var couponId = $(this).attr("data-couponId");
-			$("#couponForm").attr("method","get").attr("action", "/zzp/admin/"+couponId).submit();
+			$("#couponForm").attr("method","get").attr("action", "/zzp/admin/coupon/"+couponId).submit();
 		});
 	});//end ready
 </script>

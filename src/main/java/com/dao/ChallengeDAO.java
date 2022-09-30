@@ -72,15 +72,20 @@ public class ChallengeDAO {
 		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(5);
+		pDTO.setTotalCount(countComments(map.get("chall_id")));
+		
 		int perPage = pDTO.getPerPage();
+		int totalCount = pDTO.getTotalCount();
+		
+		int totalPage = (int) Math.ceil((double)totalCount/perPage);
+		if (curPage > totalPage) curPage = totalPage; //넘어온 페이지가 전체 페이지를 넘을 경우 마지막 페이지로 변경
+		
 		int offset = (curPage - 1)*perPage;
 		
 		List<CommentsDTO> list = session.selectList("ChallengeMapper.selectAllComments", map, new RowBounds(offset, perPage));
 		
 		pDTO.setPage(curPage);
 		pDTO.setList(list);
-		pDTO.setTotalCount(countComments(map.get("chall_id")));
-		
 		pDTO.setStartEndPages();
 		
 		return pDTO;
@@ -161,6 +166,20 @@ public class ChallengeDAO {
 
 	public int getCommentPage(HashMap<String, Integer> map) {
 		return session.selectOne("ChallengeMapper.getCommentPage", map);
+	}
+
+	public void updateComment(CommentsDTO dto) {
+		int n = session.update("ChallengeMapper.updateComment", dto);
+		System.out.println("update된 댓글 수 "+n);
+	}
+
+	public int checkReportExist(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.checkReportExist", map);
+	}
+
+	public void insertReport(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertReport", map);
+		System.out.println("insert된 신고 수 "+n);
 	}
 
 	

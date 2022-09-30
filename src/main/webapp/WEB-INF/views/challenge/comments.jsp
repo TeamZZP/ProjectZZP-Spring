@@ -86,7 +86,7 @@
 	                    			<%-- 답글 대상 아이디 고정 --%>
 		                    		<script type="text/javascript">
 		                    		 $("#update_content${c.comment_id}").on("input", function () {
-		            					if ("${c.parent_userid}" != "null" 
+		            					if ("${c.parent_userid}" != "" 
 		            							&& String($(this).val()).indexOf("@${c.parent_userid}  ") == -1 ) {
 		            						$(this).val("@${c.parent_userid}  ");
 		            					}

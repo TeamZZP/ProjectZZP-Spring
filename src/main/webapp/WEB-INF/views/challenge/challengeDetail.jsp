@@ -214,9 +214,9 @@ a {
 					data: JSON.stringify( 
 							{'chall_id':'${cDTO.chall_id}'} 
 					),
-					dataType:"html",
+					dataType:"text",
 					success: function (data) {
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -232,24 +232,29 @@ a {
 			let parent = $(this).attr("data-parent");
 			let comment_content = content.val();
 			
-			if (parent != "null") {
+			if (parent != "") {
 				comment_content = content.val().substring(parent.length+3);
 			}
 			if (comment_content.trim().length == 0) {
 				content.focus();
 			} else {
 				$.ajax({
-					type:"post",
-					url:"CommentsUpdateServlet",
-					data: {
-						chall_id:"${cDTO.chall_id}",
-						comment_id:cid,
-						comment_content:comment_content.trim(),
-						userid:"${login.userid}"
+					type:"put",
+					url:"/zzp/challenge/comment/"+cid,
+					headers: {
+						"Content-Type":"application/json"
 					},
-					dataType:"html",
+					data: JSON.stringify( 
+							{
+								'chall_id':'${cDTO.chall_id}',
+								'comment_id':cid,
+								'comment_content':comment_content.trim(),
+								'userid':'${login.userid}'
+							} 
+					),
+					dataType:"text",
 					success: function (data) {
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -349,8 +354,8 @@ a {
 		$(".backList").on("click", function () {
 			let preUrl = document.referrer;
 			//게시글 업데이트한 후 이동한 페이지에서는 글작성 페이지로 돌아가지 않도록 최신글 화면으로 이동한다.
-			if (preUrl.includes("ChallengeUIServlet")) {
-				location.href = "ChallengeListServlet";
+			if (preUrl.includes("write")) {
+				location.href = "/zzp/challenge";
 			} else {
 				history.back();
 			}

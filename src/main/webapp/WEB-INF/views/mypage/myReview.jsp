@@ -13,23 +13,23 @@
 </c:if>  
     
 <style>
-	a {
-		color: black;
-		text-decoration: none;
-	}
-	
-	.currCategory {
-		color: green;
-		font-weight: bold;
-	}
-	
-	.tableTop {
-		border-bottom-color: #24855B;
-		border-bottom-width: 2.5px;
-	}
-	
-	.paging {
-		cursor: pointer;
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.currCategory {
+	color: green;
+	font-weight: bold;
+}
+
+.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
+}
+
+.paging {
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -80,15 +80,15 @@
 		<div class="col">
 			<a href="MypageServlet">마이페이지 홈</a>
 		</div>
-	    <div class="col">
+	   <div class="col">
 	   		<a href="/zzp/mypage/${mDTO.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">반품/취소/교환 목록</div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/review"  class="currCategory">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="MyCouponServlet">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>
@@ -105,7 +105,7 @@
 	   <div class="col">
 	      <a href="checkPasswd.jsp">계정 관리</a>
 	   </div>
-	</div>
+ </div>
 <div class="col-lg-10">
 <div id="addTableDiv">
 <form method="get" id="reviewForm">

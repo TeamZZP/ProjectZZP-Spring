@@ -37,14 +37,14 @@
 			<a href="MypageServlet">마이페이지 홈</a>
 		</div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/order"  class="currCategory">주문 내역</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">반품/취소/교환 목록</div>
 	   <div class="col">
 	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon" class="currCategory">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>

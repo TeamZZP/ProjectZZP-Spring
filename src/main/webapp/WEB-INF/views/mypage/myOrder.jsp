@@ -83,7 +83,7 @@
 	   <div class="col">
 	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
 	   </div>
-	    <div class="col">
+	   <div class="col">
 	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">

@@ -11,7 +11,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,9 +58,12 @@ public class QuestionController {
 	 * 큐엔에이 글 쓰러가기
 	 */
 	@RequestMapping(value = "/qna/write", method = RequestMethod.GET)
-	public String questionInsert(HttpSession session, Model m) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		m.addAttribute("mDTO", mDTO);
+	public String questionInsert(HttpSession session, Model m, Map<String,String> map) {
+		System.out.println("상품상세보기에서 글쓰기 " + map);
+		
+		m.addAttribute("mDTO", session.getAttribute("login"));
+		m.addAttribute("prodQnaInserInfo", map);
+		
 		return "questionInsert";
 	}
 	/**
@@ -99,7 +104,8 @@ public class QuestionController {
 	 * 큐엔에이 게시글 작성
 	 */
 	@RequestMapping(value = "/qna", method = RequestMethod.POST)
-	public String questionInsert (@RequestParam HashMap<String, String> map, @RequestParam("qna_img") CommonsMultipartFile uploadFile) {
+	public String questionInsert (@RequestParam HashMap<String, String> map, 
+			@RequestParam("qna_img") CommonsMultipartFile uploadFile, RedirectAttributes attr) {
 		
 		long size = uploadFile.getSize();
 		String name= uploadFile.getName();
@@ -122,6 +128,8 @@ public class QuestionController {
 		
 		qService.questionInsert(map);
 		
+		attr.addFlashAttribute("mesg", "게시물이 작성되었습니다.");
+		
 		return "redirect:/qna";
 	}
 	/**
@@ -139,7 +147,7 @@ public class QuestionController {
 	 */
 	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.POST)
 	public String questionUpdate(@PathVariable String q_id, @RequestParam Map<String, String> map, 
-			@RequestParam("qna_img") CommonsMultipartFile uploadFile) {
+			@RequestParam("qna_img") CommonsMultipartFile uploadFile, RedirectAttributes attr) {
 		
 		System.out.println("수정할 게시글 " + map);
 		
@@ -163,6 +171,8 @@ public class QuestionController {
 		map.put("qna_img", originalFileName);
 		
 		qService.questionUPdate(map);
+		
+		attr.addFlashAttribute("mesg", "게시글이 수정 되었습니다.");
 		
 		return "redirect:/qna";
 	}
@@ -257,8 +267,11 @@ public class QuestionController {
 	/**
 	 * 이미지 상세보기 팝업
 	 */
-	@RequestMapping(value = "/qna/{q_id}/showImg")
-	public String showImg() {
+	@RequestMapping(value = "/showImg")
+	public String showImg(HttpServletRequest request, Model m) {
+		String img = request.getParameter("img");
+		System.out.println("이미지 주소 " + img);
+		m.addAttribute("img", img);
 		return "showImg";
 	}
 }

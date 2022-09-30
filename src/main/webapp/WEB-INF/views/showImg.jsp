@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +24,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">
-				<img alt="첨부파일" src="" id="upload" width="380px" height="500px" title="첨부파일">
+				<img alt="첨부파일" src='<c:if test="${img != null}">${img}</c:if>' id="upload" width="380px" height="500px" title="첨부파일">
 			</td>
 		</tr>
 	</table>

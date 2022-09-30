@@ -41,7 +41,7 @@
 			var qID = $("#pID").val();
 			var pName = $("#P_name").val();
 			console.log(qID + "\t" + pName);
-			location.href = "/zzp/qna/write?P_ID="+qID+"&P_Name="+pName; //controller에 추가하고 수정하기
+			location.href = "/zzp/qna/write?p_id="+qID+"&p_name="+pName; //controller에 추가하고 수정하기
 		});//
 	}); //end ready
 </script>

@@ -46,14 +46,17 @@ public class AdminController {
 		if (category.equals("member")) {
 			//카테고리 선택하여 회원관리 페이지 이동--처음에는 검색, 정렬 조건 다 null
 			pDTO=service.selectAllMember(map);
-			url = "adminProduct";
+			System.out.println("member pDTO : "+pDTO);
+			
+			model.addAttribute("category", "member");
+			url = "adminMember";
 		} 
 		//전체 상품 목록
 		else if (category.equals("product")) {
 			pDTO = service.selectAllProduct(map);
-			model.addAttribute("pDTO", pDTO);
-			model.addAttribute("category", "product");
 			System.out.println("product pDTO : "+pDTO);
+			
+			model.addAttribute("category", "product");
 			url = "adminProduct";
 		} 
 		//관리자 작성 챌린지 목록
@@ -73,7 +76,7 @@ public class AdminController {
 			
 		}
 		
-		
+		model.addAttribute("pDTO", pDTO);
 		return url;
 	}
 	

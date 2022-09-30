@@ -114,6 +114,7 @@ a {
 				}
 			})
 		}
+		//처음 페이지 로딩시 댓글 조회
 		getComments('${cDTO.chall_id}', 1);
 		//글 삭제
 		$('#deleteChallenge').on('click', function () {
@@ -135,7 +136,6 @@ a {
  		$('#comment_area').on('click', '.paging', function() {
  			getComments('${cDTO.chall_id}', $(this).attr('data-page'));
 		})
-		
 		//댓글 입력
 		$(".comment").on("click", ".commentAddBtn", function () {
 			let content = $(".comment_content");
@@ -153,10 +153,10 @@ a {
 						comment_content:comment_content.trim(),
 						userid:"${login.userid}",
 					},
-					dataType:"html",
+					dataType:"text",
 					success: function (data) {
 						content.val("");
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -172,7 +172,6 @@ a {
 			let parent = $(this).attr("data-parent");
 			let content = $("#reply_content"+cid);
 			let comment_content = content.val().substring(parent.length+3);
-			console.log(comment_content)
 			
 			if ("${empty login}" == "true") {
 				alert("로그인이 필요합니다.");
@@ -189,10 +188,10 @@ a {
 						parent_id:cid,
 						group_order:group
 					},
-					dataType:"html",
+					dataType:"text",
 					success: function (data) {
 						content.val("");
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {

@@ -60,7 +60,7 @@ public class seungYeon {
 		m.addAttribute("prodQuestion", prodQuestion);
 		m.addAttribute("prodReview", prodReview);
 		/////////////////////
-		return "store/prodReview"; // prodQA.jsp,prodReview.jsp include 필요
+		return "store/prodReview"; // prodQA.jsp,prodReview.jsp -- include 필요
 	}
 
 	/**

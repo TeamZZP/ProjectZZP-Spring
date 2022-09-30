@@ -17,7 +17,7 @@ import com.dto.ReviewProfileDTO;
 public class ReviewService {
 
 	@Autowired
-	ReviewDAO dao;
+	ReviewDAO dao;  
 
 	public List<ReviewProfileDTO> prodReview(String p_id) {
 		List<ReviewProfileDTO> list = dao.prodReview(p_id);

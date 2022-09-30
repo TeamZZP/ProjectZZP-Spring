@@ -123,9 +123,12 @@
 
 <!-- 댓글 -->
 <select id="selectAllComments" resultType="CommentsDTO">
-	select * from comments join profile using(userid) 
-	where chall_id=#{chall_id}
-	order by group_order desc, step
+	select c.*, p.profile_img, parent.userid as parent_userid
+	from comments c 
+	JOIN profile p ON c.userid=p.userid
+	LEFT OUTER JOIN comments parent ON c.parent_id=parent.comment_id
+	where c.chall_id=#{chall_id}
+	order by c.group_order desc, c.step
 </select>
 
 <insert id="insertComment" parameterType="CommentsDTO">
@@ -197,6 +200,24 @@
 			connect by prior comment_id=parent_id
 		)
 </delete>
+
+<select id="getNewestComment" resultType="int">
+	select MAX(comment_id) from comments 
+	where userid=#{userid}
+</select>
+
+<select id="getCommentPage" parameterType="hashmap" resultType="int">
+	select TRUNC((num-0.1)/5)+1 as page
+	from (
+	    select 
+	    ROW_NUMBER() OVER(order by group_order desc, step) as num, c.*
+	    from comments c
+	    where chall_id=#{chall_id}
+	)
+	where comment_id=#{comment_id}
+</select>
+
+
 
 
 <select id="countLikedByMap" resultType="int">

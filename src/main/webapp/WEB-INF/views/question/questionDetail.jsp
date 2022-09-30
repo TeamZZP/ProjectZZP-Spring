@@ -37,7 +37,7 @@
 				},
 		        dataType: "text",
 				success: function (data, status, xhr) {
-					console.log(data.answer)
+					alert("답변 성공");
 					$("#answerCheck").text($("#answer").val());
 					$("#answer").text(data.answer);
 				},
@@ -48,7 +48,7 @@
 		});//
 		$("#uploadBtu").click(function () {
 			var upload = $("#upload").attr("src");
-			var url = "../qna/${qDTO.q_id}/showImg"
+			var url = "/zzp/showImg"
 			window.open(url, "", "width=400px height=500px");
 		});
 	});//end ready

@@ -134,9 +134,9 @@
 	</div>
 </div>
 </div>
-<form style="display: none" action="${contextPath}/mypage/address" method="POST">
+<%-- <form style="display: none" action="${contextPath}/mypage/address" method="POST">
 	<input type="hidden" id="data" name="address_id" value="">
-</form>
+</form> --%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -176,6 +176,7 @@
 						address_id : id
 					}),
 					success : function(data, status, xhr) {
+						console.log(data);
 						$("#openModal").trigger("click");
 						$("#modalMesg").text("해당 배송지가 삭제되었습니다.");
 						$("div[name=deleteAddress]").modal("hide");//백드롭도 같이 hide
@@ -195,8 +196,7 @@
 		$("button[name=change]").on("click", function() {//배송지 정보 출력 페이지로 이동
 			var address_id=$(this).attr("data-id");
 			//console.log(address_id);
-			$("#data").val(address_id);
-			$("form").submit();
+			location.href="${contextPath}/mypage/address/"+address_id;
 		});//end fn
 	});//end ready
 </script>

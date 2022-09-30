@@ -113,9 +113,8 @@
 		//6. 회원 탈퇴
 		$("#delAccount").on("click", function() {
 			console.log("회원 탈퇴 버튼 클릭");
-			$("input[name=_method]").val("");//put method 제거, post 요청
-			$("form").attr("action", "${contextPath}/mypage/${login.userid}/check");
-			$("form").submit();
+			//$("input[name=_method]").val("");//put method 제거, post 요청
+			location.href="${contextPath}/mypage/${login.userid}/quit";
 		});
 	});//end ready
 </script>
@@ -128,7 +127,6 @@
 				<form class="form-horizontal" method="post" action="${contextPath}/mypage/${login.userid}/user">
 				<input type="hidden" name="_method" value="put">
 				<input type="hidden" name="address_id" id="address_id" value="${address.address_id}"/>
-				<input type="hidden" name="accountDelete" value="accountDelete">
 					<!-- username -->
 					<div class="form-group">
 						<label for="username" class="cols-sm-2 control-label">이름</label>

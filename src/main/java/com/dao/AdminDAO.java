@@ -43,6 +43,31 @@ public class AdminDAO {
 	private int countTotalAdmin(HashMap<String, String> map) {
 		return session.selectOne("AdminMapper.countTotalAdmin", map);
 	}
-
+	
+	//관리자페이지 회원 관리 : 전체 회원 목록
+	public PageDTO selectAllMember(HashMap<String, String> map) {
+		int curPage=Integer.parseInt(
+				  Optional.ofNullable(map.get("page"))//현재 페이지 null이면
+				  .orElse(("1"))//1로 설정
+		);
+		PageDTO pDTO=new PageDTO();
+		pDTO.setPerPage(5);//한 페이지 당 record 5개 씩
+		int perPage=pDTO.getPerPage();
+		int offset=(curPage-1)*perPage;//페이지 시작 idx
+		
+		List<ProductByCategoryDTO> list=session.selectList("AdminMapper.selectAllMember", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalAdmin(map));
+		
+		pDTO.setStartEndPages();//startPage, endPage, prev, next 생성 함수 호출
+		
+		return pDTO;
+	}
+	//관리자페이지 회원 관리 : 전체 회원 목록 페이징 countTotal
+	private int countTotalMember(HashMap<String, String> map) {
+		return session.selectOne("AdminMapper.countTotalMember", map);
+	}
 
 }

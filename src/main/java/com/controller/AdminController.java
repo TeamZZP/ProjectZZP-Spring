@@ -44,7 +44,9 @@ public class AdminController {
 		
 		//전체 회원 목록
 		if (category.equals("member")) {
-			
+			//카테고리 선택하여 회원관리 페이지 이동--처음에는 검색, 정렬 조건 다 null
+			pDTO=service.selectAllMember(map);
+			url = "adminProduct";
 		} 
 		//전체 상품 목록
 		else if (category.equals("product")) {

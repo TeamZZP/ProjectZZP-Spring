@@ -45,12 +45,12 @@
 
 <!-- 회원관리 : 전체 회원 목록 -->
 <select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">
-	select m.userid, m.username, m.phone,a.post_num, a.addr1, a.addr2, m.created_at
+	select m.userid, m.username, m.phone, a.post_num, a.addr1, a.addr2, m.created_at
 	from member m join address a
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'"><!-- searchName은 어떻게 인식? -->
+		<if test="searchName=='userid'">
 			and	upper(m.userid) like upper('%${searchValue}%')
 		</if>
 		<if test="searchName=='username'">
@@ -71,7 +71,7 @@
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'"><!-- searchName은 어떻게 인식? -->
+		<if test="searchName=='userid'">
 			and upper(m.userid) like upper('%${searchValue}%')
 		</if>
 		<if test="searchName=='username'">

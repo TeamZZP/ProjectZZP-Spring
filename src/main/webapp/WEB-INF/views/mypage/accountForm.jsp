@@ -1,6 +1,3 @@
-<%-- <%@page import="com.dto.AddressDTO"%> --%>
-<%@page import="com.dto.MemberDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -148,7 +145,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="checkPasswd" class="cols-sm-2 control-label"">비밀번호 확인</label>
+						<label for="checkPasswd" class="cols-sm-2 control-label">비밀번호 확인</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -187,7 +184,7 @@
 					</div>
 					<!-- 전화번호 -->
 					<div class="form-group">
-						<label for="phone" class="cols-sm-2 control-label"">전화번호</label>
+						<label for="phone" class="cols-sm-2 control-label">전화번호</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -197,7 +194,7 @@
 					</div>
 					<!-- 주소 -->
 					<div class="form-group">
-						<label for="address" class="cols-sm-2 control-label"">주소(기본으로 선택된 주소지)</label>
+						<label for="address" class="cols-sm-2 control-label">주소(기본으로 선택된 주소지)</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>

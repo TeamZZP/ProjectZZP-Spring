@@ -8,6 +8,15 @@
 <meta charset="UTF-8">
 <title>ZZP</title>
 <link rel="stylesheet" type="text/css" href="resources/css/mypage/mypage.css">
+<c:if test="${not empty mesg}">
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#openModal").trigger("click");
+			$("#modalMesg").text("${mesg}");
+		});//end ready
+	</script>
+</c:if>
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include>

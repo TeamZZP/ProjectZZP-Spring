@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dto.PageDTO;
 import com.service.AdminService;
@@ -31,7 +32,7 @@ public class AdminController {
 	 * 카테고리
 	 */
 	@RequestMapping(value = "/admin/{category}")
-	public String adminCategory(@PathVariable("category")String category, @RequestParam HashMap<String, String> map, Model model, HttpSession session) {
+	public String adminCategory(@PathVariable("category") String category, @RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		System.out.println("adminCategory category: "+category);
 		System.out.println("adminCategory map: "+map);
 		
@@ -44,14 +45,19 @@ public class AdminController {
 		
 		//전체 회원 목록
 		if (category.equals("member")) {
+			//카테고리 선택하여 회원관리 페이지 이동--처음에는 검색, 정렬 조건 다 null
+			pDTO=service.selectAllMember(map);
+			System.out.println("member pDTO : "+pDTO);
 			
+			model.addAttribute("category", "member");//카테고리를 member로 저장
+			url = "adminMember";
 		} 
 		//전체 상품 목록
 		else if (category.equals("product")) {
 			pDTO = service.selectAllProduct(map);
-			model.addAttribute("pDTO", pDTO);
-			model.addAttribute("category", "product");
 			System.out.println("product pDTO : "+pDTO);
+			
+			model.addAttribute("category", "product");
 			url = "adminProduct";
 		} 
 		//관리자 작성 챌린지 목록
@@ -71,7 +77,7 @@ public class AdminController {
 			
 		}
 		
-		
+		model.addAttribute("pDTO", pDTO);
 		return url;
 	}
 	

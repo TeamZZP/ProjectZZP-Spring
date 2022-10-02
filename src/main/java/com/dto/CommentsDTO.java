@@ -18,6 +18,7 @@ public class CommentsDTO {
 	private String comment_created;
 	private String userid;
 	private int parent_id;
+	private String parent_userid;
 	private int group_order;
 	private int step;
 	private String profile_img;

@@ -64,8 +64,31 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectOneChallenge", chall_id);
 	}
 
-	public List<CommentsDTO> selectAllComments(String chall_id) {
-		return session.selectList("ChallengeMapper.selectAllComments", chall_id);
+	public PageDTO selectAllComments(HashMap<String, String> map) {
+		int curPage = Integer.parseInt(
+				Optional.ofNullable(map.get("page"))
+				.orElse(("1"))
+				);
+		
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(5);
+		pDTO.setTotalCount(countComments(map.get("chall_id")));
+		
+		int perPage = pDTO.getPerPage();
+		int totalCount = pDTO.getTotalCount();
+		
+		int totalPage = (int) Math.ceil((double)totalCount/perPage);
+		if (curPage > totalPage) curPage = totalPage; //넘어온 페이지가 전체 페이지를 넘을 경우 마지막 페이지로 변경
+		
+		int offset = (curPage - 1)*perPage;
+		
+		List<CommentsDTO> list = session.selectList("ChallengeMapper.selectAllComments", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setStartEndPages();
+		
+		return pDTO;
 	}
 
 	public String selectProfileImg(String userid) {
@@ -123,13 +146,40 @@ public class ChallengeDAO {
 		System.out.println("insert된 댓글 수 "+n);
 	}
 
-	public void updateChallComments(int chall_id) {
+	public void updateChallComments(String chall_id) {
 		int n = session.update("ChallengeMapper.updateChallComments", chall_id);
 		System.out.println("update된 게시글 수 "+n);
 	}
 
 	public int countComments(String chall_id) {
 		return session.selectOne("ChallengeMapper.countComments", chall_id);
+	}
+
+	public void deleteAllComments(String comment_id) {
+		int n = session.delete("ChallengeMapper.deleteAllComments", comment_id);
+		System.out.println("delete된 댓글 수 "+n);
+	}
+
+	public int getNewestComment(String userid) {
+		return session.selectOne("ChallengeMapper.getNewestComment", userid);
+	}
+
+	public int getCommentPage(HashMap<String, Integer> map) {
+		return session.selectOne("ChallengeMapper.getCommentPage", map);
+	}
+
+	public void updateComment(CommentsDTO dto) {
+		int n = session.update("ChallengeMapper.updateComment", dto);
+		System.out.println("update된 댓글 수 "+n);
+	}
+
+	public int checkReportExist(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.checkReportExist", map);
+	}
+
+	public void insertReport(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertReport", map);
+		System.out.println("insert된 신고 수 "+n);
 	}
 
 	

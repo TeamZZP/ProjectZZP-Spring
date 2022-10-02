@@ -1,6 +1,3 @@
-<%-- <%@page import="com.dto.AddressDTO"%> --%>
-<%@page import="com.dto.MemberDTO"%>
-<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -14,6 +11,7 @@
 <style>
 	label {
 		padding: 5px 0 5px 0;
+		font-weight: bold;
 	}
 </style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -112,9 +110,8 @@
 		//6. 회원 탈퇴
 		$("#delAccount").on("click", function() {
 			console.log("회원 탈퇴 버튼 클릭");
-			$("input[name=_method]").val("");//put method 제거, post 요청
-			$("form").attr("action", "${contextPath}/mypage/${login.userid}/check");
-			$("form").submit();
+			//$("input[name=_method]").val("");//put method 제거, post 요청
+			location.href="${contextPath}/mypage/${login.userid}/quit";
 		});
 	});//end ready
 </script>
@@ -127,10 +124,9 @@
 				<form class="form-horizontal" method="post" action="${contextPath}/mypage/${login.userid}/user">
 				<input type="hidden" name="_method" value="put">
 				<input type="hidden" name="address_id" id="address_id" value="${address.address_id}"/>
-				<input type="hidden" name="accountDelete" value="accountDelete">
 					<!-- username -->
 					<div class="form-group">
-						<label for="username" class="cols-sm-2 control-label" style="font-weight: bold;">이름</label>
+						<label for="username" class="cols-sm-2 control-label">이름</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
@@ -140,7 +136,7 @@
 					</div>
 					<!-- 비밀번호 -->
 					<div class="form-group">
-						<label for="changedPasswd" class="cols-sm-2 control-label" style="font-weight: bold;">변경할 비밀번호</label>
+						<label for="changedPasswd" class="cols-sm-2 control-label">변경할 비밀번호</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -149,7 +145,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="checkPasswd" class="cols-sm-2 control-label" style="font-weight: bold;">비밀번호 확인</label>
+						<label for="checkPasswd" class="cols-sm-2 control-label">비밀번호 확인</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
@@ -162,7 +158,7 @@
 					</div>
 					<!-- 이메일 -->
 					<div class="form-group">
-						<label for="type" class="col-sm-3 control-label" style="font-weight: bold;">이메일</label>
+						<label for="type" class="col-sm-3 control-label">이메일</label>
 							<div class="row g-3">
 							<div class="col-sm-4">
 								<input type="text" name="email1" id="email1" class="form-control" value="${login.email1}">
@@ -188,7 +184,7 @@
 					</div>
 					<!-- 전화번호 -->
 					<div class="form-group">
-						<label for="phone" class="cols-sm-2 control-label" style="font-weight: bold;">전화번호</label>
+						<label for="phone" class="cols-sm-2 control-label">전화번호</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
@@ -198,7 +194,7 @@
 					</div>
 					<!-- 주소 -->
 					<div class="form-group">
-						<label for="address" class="cols-sm-2 control-label" style="font-weight: bold;">주소(기본으로 선택된 주소지)</label>
+						<label for="address" class="cols-sm-2 control-label">주소(기본으로 선택된 주소지)</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>

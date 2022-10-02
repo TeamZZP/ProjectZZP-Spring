@@ -13,6 +13,10 @@
   select count(*) from product
   </select>
   
+   <select id="countProductBycategory" parameterType="int" resultType="int">
+   select count(*) from product where c_id = #{c_id}
+   </select>
+  
   <!-- 베스트상품들 (스토어 메인용)-->
   <select id="bestProduct" resultType="ProductByCategoryDTO">
    select * 
@@ -31,7 +35,7 @@
    order by p_order desc 
   </select>
   
-  <!-- 카테고리별 상품 -->
+  <!-- 카테고리별 상품(기본) -->
   <select id="productByCategory" parameterType="int" resultType="ProductByCategoryDTO">
    select p.P_ID ,
    (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
@@ -45,6 +49,41 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
+  </select>
+  
+  <!-- 베스트상품들 (페이징용)-->
+  <select id="bestProdPaging" parameterType="hashmap"  resultType="ProductByCategoryDTO">
+   select * 
+   from ( select p.P_ID ,
+   (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   (select count(*) from Orders where p_id = p.p_id ) as p_order ,
+   p.P_NAME ,
+   p.P_CONTENT ,
+   p.C_ID ,
+   p.P_COST_PRICE ,
+   p.P_SELLING_PRICE ,
+   p.P_DISCOUNT ,
+   p.P_CREATED ,
+   p.P_STOCK 
+   from product p ) 
+   order by #{sortBy} desc 
+  </select>
+  
+  <!-- 카테고리별 상품(페이징용) -->
+  <select id="paging" parameterType="hashmap" resultType="ProductByCategoryDTO">
+   select p.P_ID ,
+   (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   p.P_NAME ,
+   p.P_CONTENT ,
+   p.C_ID ,
+   p.P_COST_PRICE ,
+   p.P_SELLING_PRICE ,
+   p.P_DISCOUNT ,
+   p.P_CREATED ,
+   p.P_STOCK 
+   from product p 
+   where p.c_id = #{c_id} 
+    order by #{sortBy} desc
   </select>
   
   <!-- 제품상세 -->
@@ -108,7 +147,12 @@
 		</if>
 	</where>
 </select>
+
+<select id="selectAllCoupon" parameterType="String" resultType="MemberCouponDTO">
+select * from membere_coupon where userid = #{userid}
+</select>
   
+ 
   
   </mapper>
   

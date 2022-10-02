@@ -79,8 +79,9 @@
 		<td style="padding:5 0 0 10px;">
 			<span>${address.address_name}</span><br>
 			<span>${address.receiver_name}</span><br>
-			<span id="check" name="check" data-chk="${address.default_chk}" style="font-size: 12px; background-color: Gainsboro; font-weight: bold">
-			</span><!-- if문으로 default_chk가 1일 때 text() 입력되도록 -->
+			<span style="font-size: 12px; background-color: Gainsboro; font-weight: bold">
+				<c:if test="${not empty address && address.default_chk eq 1}">기본 배송지</c:if>
+			</span><!-- default_chk가 1일 때 text() 입력되도록 -->
 		</td>
 		<td>
 			<span style="font-size: 14px">${address.post_num}</span><br>
@@ -133,63 +134,56 @@
 	</div>
 </div>
 </div>
-<form style="display: none" action="${contextPath}/mypage/${login.userid}/address" method="POST">
-	<input type="hidden" name="_method" value="put">
-</form>
+<%-- <form style="display: none" action="${contextPath}/mypage/address" method="POST">
+	<input type="hidden" id="data" name="address_id" value="">
+</form> --%>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-/* 		if ($("span[name=check]").attr("data-chk") == 1) {
-			console.log($(this).attr("data-chk"));
-			$(this).text("기본 배송지");
-		} */
-		console.log("${size}");
-
+		//console.log("${size}");
+		
+		//배송지 추가
 		$("#addAddress").on("click", function() {
-			$("input[name=_method]").val("");//method post 요청//지금은 그냥 jsp 호출하고 폼 제출 때 post 아닐까
-			$("form").submit();
+			location.href="${contextPath}/mypage/address";
 		});//end fn
 		
 		//배송지 삭제
 		//버튼 구분 userid->address_id로 --> name으로 선택
 		$("button[name=delete]").on("click", function() {//모달 창에서 삭제 버튼 클릭
 			event.preventDefault();
-			var xxx=$("button[name=checkDelete]");
+			var xxx=$(this);
+			//console.log(xxx);//#delete 버튼 선택
 			var id=$(this).data("id");
 			var chk=$(this).data("chk");
 			var size=${size};
-			console.log(id, chk, size);
+			//console.log(id, chk, size);
    			if (size <= 1) {
-				console.log(size);
-				alert("배송지는 한 개 이상 있어야 합니다.");
-				//$("#openModal").trigger("click");
-				//$("#modalMesg").text("배송지는 한 개 이상 있어야 합니다.");
-				//$("div[name=deleteAddress]").modal("hide");
-				//$(".modal-backdrop").hide();//모달창 닫고 백드롭 hide
-				//window.location.reload();//새로고침 자동-스크롤 멈춤 현상 때문에
+				$("#openModal").trigger("click");
+				$("#modalMesg").text("배송지는 한 개 이상 있어야 합니다.");
+				$("div[name=deleteAddress]").modal("hide");
 			} else if(chk == 1){//기본 배송지
-				alert("기본 배송지는 삭제할 수 없습니다.");
-				//$("#openModal").trigger("click");
-				//$("#modalMesg").text("기본 배송지는 삭제할 수 없습니다.");
-				//$("div[name=deleteAddress]").modal("hide");
-				//$(".modal-backdrop").hide();//모달창 닫고 백드롭 hide
-				//window.location.reload();//새로고침 자동-스크롤 멈춤 현상 때문에
+				$("#openModal").trigger("click");
+				$("#modalMesg").text("기본 배송지는 삭제할 수 없습니다.");
+				$("div[name=deleteAddress]").modal("hide");
 			} else {
-				console.log("삭제 가능 : ", size, id);
-  	 			$.ajax({
+				//console.log("삭제 가능 : ", size, id);
+    	 			$.ajax({
 					type : "delete",
 					url : "${contextPath}/mypage/${login.userid}/address",
 					dataType : "text",
-					data : {//서버에 전송할 데이터
+					contentType:"application/json;charset=UTF-8",//매개변수 map으로 받을 수 있도록
+					data : JSON.stringify({//서버에 전송할 데이터
 						address_id : id
-					},
+					}),
 					success : function(data, status, xhr) {
-						alert("해당 배송지가 삭제되었습니다."); 
-						//$("div[name=deleteAddress]").modal("hide");
-						//$(".modal-backdrop").hide();//모달창 닫고 백드롭 hide
-						console.log("success");
+						console.log(data);
+						$("#openModal").trigger("click");
+						$("#modalMesg").text("해당 배송지가 삭제되었습니다.");
+						$("div[name=deleteAddress]").modal("hide");//백드롭도 같이 hide
+						///////$(".modal-backdrop").hide();//모달창 닫고 백드롭 hide
+						//console.log("success");
 						xxx.parents().filter("tr").remove();
-						//window.location.reload();//새로고침 자동-스크롤 멈춤 현상 때문에
+						///////window.location.reload();//새로고침 자동-스크롤 멈춤 현상 때문에
 					},
 					error: function(xhr, status, error) {
 						console.log(error);
@@ -201,8 +195,8 @@
 		//배송지 수정
 		$("button[name=change]").on("click", function() {//배송지 정보 출력 페이지로 이동
 			var address_id=$(this).attr("data-id");
-			console.log(address_id);
-			//location.href="AddressSelectServlet?address_id="+address_id;
+			//console.log(address_id);
+			location.href="${contextPath}/mypage/address/"+address_id;
 		});//end fn
 	});//end ready
 </script>

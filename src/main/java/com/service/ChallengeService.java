@@ -46,8 +46,8 @@ public class ChallengeService {
 		return dao.selectOneChallenge(chall_id);
 	}
 
-	public List<CommentsDTO> selectAllComments(String chall_id) {
-		return dao.selectAllComments(chall_id);
+	public PageDTO selectAllComments(HashMap<String, String> map) {
+		return dao.selectAllComments(map);
 	}
 
 	public String selectProfileImg(String userid) {
@@ -109,11 +109,40 @@ public class ChallengeService {
 		}
 		
 		//해당 게시글의 댓글수 변경
-		dao.updateChallComments(dto.getChall_id());
+		dao.updateChallComments(String.valueOf(dto.getChall_id()));
 	}
 
 	public int countComments(String chall_id) {
 		return dao.countComments(chall_id);
+	}
+
+	@Transactional
+	public void deleteComment(String comment_id, String chall_id) {
+		//댓글 삭제
+		dao.deleteAllComments(comment_id);
+		
+		//해당 게시글의 댓글수 변경
+		dao.updateChallComments(chall_id);
+	}
+
+	public int getNewestComment(String userid) {
+		return dao.getNewestComment(userid);
+	}
+
+	public int getCommentPage(HashMap<String, Integer> map) {
+		return dao.getCommentPage(map);
+	}
+
+	public void updateComment(CommentsDTO dto) {
+		dao.updateComment(dto);
+	}
+
+	public int checkReportExist(HashMap<String, String> map) {
+		return dao.checkReportExist(map);
+	}
+
+	public void insertReport(HashMap<String, String> map) {
+		dao.insertReport(map);
 	}
 
 

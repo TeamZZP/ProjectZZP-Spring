@@ -159,25 +159,22 @@ a:hover {
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
 function totalprice(){
-	
-	var sum_money= parseInt($("#sum_money").text());
-	var fee = parseInt($("#fee").text());
-	var total = parseInt($("#total").text());
-	var item = 0;
-	
-	$(".item_price").each(function(){
-		item =parseInt($(this).text())
-		$(this).text(item.toLocaleString('ko-KR')); //개별 상품금액
-		 
+
+	var sum_money = 0;
+	$(".item_price").each(function(idx,data){
+		sum_money += Number.parseInt($(data).text());
 	});
-	
-	$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
-	$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
-	$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
-	
-	console.log(sum_money,fee,total,item)
+	$("#sum_money").text(sum_money+"원");
+ 	var fee = sum_money >= 50000 ? 0 : 3000;
+	var total = sum_money+fee;
+	console.log(sum_money,fee,total);
+	$("#fee").text(fee+"원");
+	$("#total").text(total+"원");
+
 }
+
 
 function itemSum(frm) {
 	console.log("실행됨");
@@ -297,6 +294,25 @@ $(function() {
 				}) // end ajax 
 		}
 			
+		console.log("delBtn 클릭"+cart_id);
+	
+		  $.ajax({
+			type : "delete",
+			url : "${contextPath}/cart/"+cart_id,
+			data :{
+				cart_id : cart_id
+			},
+			dataType : "text",
+			success : function(data, status, xhr) {
+				//삭제 버튼의 부모 요소 중 tr을 remove
+				console.log("성공");
+				$("#cartCount").text(data);
+				xxx.parents().filter("tr").remove();  
+				totalprice(); // 수정 후 합계부분 다시 불러옴  	
+			},
+			error : function(xhr, status, error) {
+				console.log(error);
+			} 
 			
 		
 	})//end
@@ -359,8 +375,13 @@ $(function() {
 				$("#total").text(total.toLocaleString('ko-KR')); 
 
 			});
-			
-			
+
+			var sum_money2=sum_money.toLocaleString('ko-KR')+"원";
+			var fee2=fee.toLocaleString('ko-KR')+"원";
+			var total2=total.toLocaleString('ko-KR')+"원";
+			$("#sum_money").text(sum_money2);
+			$("#fee").text(fee2);
+			$("#total").text(total2); 
 		} else {
 			$("input[name=check]").prop("checked", false);//체크박스 전체 선택 해제
 			
@@ -449,9 +470,9 @@ $(function() {
 		}
 	})*/ //end individual_cart_checkbox
 	
-	var sum_money =  0;
 	
-	$("input[name=check]").click(function(){ //체크가 되면 상품가격을 상품금액에 포함
+	
+//	$("input[name=check]").click(function(){ //체크가 되면 상품가격을 상품금액에 포함
 		//체크박스 선택 된 값만 누적시키기
 		
 		
@@ -483,6 +504,6 @@ $(function() {
 	
 
 	
-})//end
+})//end  
 </script>
 

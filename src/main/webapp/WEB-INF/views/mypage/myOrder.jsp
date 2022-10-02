@@ -15,21 +15,24 @@
 </c:if>  
 <style>
 	a {
-		color : black;
+		color: black;
 		text-decoration: none;
 	}
+	
 	.currCategory {
-		color: green; 
+		color: green;
 		font-weight: bold;
 	}
+	
 	.tableTop {
-    	border-bottom-color: #24855B;
-    	border-bottom-width: 2.5px;
-    }
-    .paging {
-   	 	cursor: pointer;
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
 </style>
-
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -81,7 +84,7 @@
 	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="MyCouponServlet">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>

@@ -12,7 +12,6 @@ import com.service.MemberService;
 public class ProfileController {
 	
 	private MemberService mService;
-	//private MemberService mService;
 	
 //	@RequestMapping(value = "/profile/{userid}", method = RequestMethod.GET)
 //	public String profile(@PathVariable String userid) {

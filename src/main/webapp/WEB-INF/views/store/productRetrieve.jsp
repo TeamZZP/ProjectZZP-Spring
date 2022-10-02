@@ -44,10 +44,10 @@
 		}
 		
 		
-	})//end order ajax */
+	})//end order ajax 
 	
 	
-}//end order
+}*///end order
 
 </script>
 

@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<c:if test="${!empty pDTO.list}">
 <c:set var="commentsList" value="${pDTO.list}"/>
+
 				<c:forEach var="c" items="${commentsList}">
                     <div class="d-flex flex-row p-3"> 
                       <c:if test="${c.step!=0}">
@@ -86,7 +88,7 @@
 	                    			<%-- 답글 대상 아이디 고정 --%>
 		                    		<script type="text/javascript">
 		                    		 $("#update_content${c.comment_id}").on("input", function () {
-		            					if ("${c.parent_userid}" != "null" 
+		            					if ("${c.parent_userid}" != "" 
 		            							&& String($(this).val()).indexOf("@${c.parent_userid}  ") == -1 ) {
 		            						$(this).val("@${c.parent_userid}  ");
 		            					}
@@ -115,4 +117,4 @@
 					  </c:if>
 				  </div>
 	  
-                
+</c:if>               

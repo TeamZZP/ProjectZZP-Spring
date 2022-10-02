@@ -72,7 +72,8 @@
 		//상품보기 버튼
 		$("body").on("click", "#prodDetail", function () {
 			let p_id = $(this).attr("data-id");
-			location.href="ProductRetrieveServlet?p_id="+p_id;
+			//location.href="ProductRetrieveServlet?p_id="+p_id;
+			location.href="/zzp/product/"+p_id;
 		});
 		//삭제 모달
 		$("#deleteModal").on("shown.bs.modal", function (e) { //삭제모달 띄우면 발생하는 이벤트

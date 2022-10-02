@@ -20,5 +20,5 @@ public class CartDTO {
 	String p_name;
 	int p_selling_price;
 	String cart_created;
-	int money;
+	int money; //수량 * 개별 가격
 }

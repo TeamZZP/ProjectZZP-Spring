@@ -189,6 +189,7 @@
 				$("input[name=check]").prop("checked", true);//체크박스 전체 선택
 				
 				var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
+				sum_money2=0;
 				sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
 				sum_money = parseInt(sum_money);//정수로
 				console.log("장바구니 금액 : "+sum_money);

@@ -40,30 +40,34 @@ a:hover {
 <div class="container">
 	<div class="row">
 		<div class="btn-group" role="group" aria-label="Basic example">
+			${cartList.p_id}
 			<button type="button" class="btn btn-outline-success" id="cart">
-				장바구니(<span id="cartCount">${map.cartCount}</span>)</button>
-			<button type="button" class="btn btn-outline-success" id="like" onclick="location.href='${contextPath}/like/${login.userid}';">
-			 찜한상품(${map.likeCount})
+				장바구니(<span id="cartCount">${map.count}</span>)</button>
+			<button type="button" class="btn btn-outline-success" id="like"
+				onclick="location.href='${contextPath}/like/${login.userid}';"> 
+				찜한상품()
 			</button>
 		</div>
 	</div>
 	<c:choose>
 		<c:when test="${fn:length(map.cartList)==0}">
+			<div>
 				<div class="no_item_cart"
 					style="text-align: center; padding: 50px; line-height: 70px;">
 					<img src="../resources/images/cart/cart.png" width="150" height="150"><br>
 					<span>장바구니에 담긴 상품이 없습니다.</span>
 					<div>
-						<button type="button" onclick="location.href='${contextPath}/store';"  
+						<button type="button" onclick="${contextPath}/store';"
 							class="btn btn-success">상품보러가기</button>
 						<hr>
 					</div>
 				</div>
+			</div>
 		</c:when>
 			<c:otherwise>
 		
 			<%-- <form id="cartListForm" action="cart/${login.userid}/" method="post"> --%>
-			<form action="" method="post" name="form"> 
+			<form action="" method="post"> 
 			 	<input type="hidden" name="_method" value="delete">
 			 
 				<div style="padding-top: 30px;">
@@ -85,9 +89,9 @@ a:hover {
 									<td style="padding-top: 35px;">
 										<!-- 체크박스  --> 
 										<input type="checkbox" name="check"
-										id="check${cart.cart_id}" checked="checked"
-										class="individual_cart_checkbox" value="${cart.cart_id}" data-money="${cart.money}"
-										data-p_id="${cart.p_id}" onclick="itemSum(this.form);">
+										id="check${cart.cart_id}>" checked="checked"
+										class="individual_cart_checkbox" value="${cart.cart_id}"
+										data-p_id="${cart.p_id}">
 									</td>
 									<!-- 주문번호  -->
 									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
@@ -114,12 +118,12 @@ a:hover {
 									<td style="padding-top: 40px; font-size: 18px; font-weight: bold;">
 									<span id="item_price${cart.cart_id}" data-id="${cart.cart_id}"
 										 style="margin-bottom: 15px; "
-										class="item_price">${cart.money}</span>원
+										class="item_price">${cart.p_selling_price*cart.p_amount}</span>원
 									</td>
 										<!-- 개인삭제버튼  -->
 									<td ><span class="cart_item_del"> <img
 											src="../resources/images/cart/delete.png" width="15" height="15" class="delBtn"
-											data-xxx="${cart.cart_id}" data-price="${cart.money}"></span></td>	 
+											data-xxx="${cart.cart_id}"></span></td>	 
 								</tr>
 							</tbody>
 						</c:forEach>
@@ -161,38 +165,81 @@ a:hover {
 <script>
 
 function totalprice(){
-
+	
 	var sum_money = 0;
+	var item_price = 0;
+	var data_id = $(".item_price").attr("data-id");
+	console.log(data_id);
+	
 	$(".item_price").each(function(idx,data){
 		sum_money += Number.parseInt($(data).text());
+		item_price	=parseInt($(this).text()).toLocaleString('ko-KR');
+		console.log(item_price);
+		$(this).text(item_price);
 	});
-	$("#sum_money").text(sum_money+"원");
+
+	$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
  	var fee = sum_money >= 50000 ? 0 : 3000;
 	var total = sum_money+fee;
 	console.log(sum_money,fee,total);
-	$("#fee").text(fee+"원");
-	$("#total").text(total+"원");
+	$("#fee").text(fee.toLocaleString('ko-KR'));
+	$("#total").text(total.toLocaleString('ko-KR'));
 
 }
 
-
-function itemSum(frm) {
-	console.log("실행됨");
+/*function totalprice2(){
+	var sum_money= parseInt($("#sum_money").text());
+	var fee = parseInt($("#fee").text());
+	var total = parseInt($("#total").text());
+	var item_price = parseInt($(".item_price").text());
 	
-}
-
+	$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
+ var sum_money2= parseInt($("#sum_money").text()); 
+	$("#fee").text(fee.toLocaleString('ko-KR'));
+	$("#total").text(total.toLocaleString('ko-KR'));
+	$(".item_price").text(item_price.toLocaleString('ko-KR'));
+	
+	var sum_money2= $("#sum_money").text(); 
+	var fee2 =$("#fee").text();
+	var total2=$("#total").text();
+	var item_price2=$(".item_price").text();
+	console.log(sum_money2,fee2,total2,item_price2);
+}*/
+	
 $(function() {
 	
-	totalprice();
-
+	totalprice(); //합계 구하는 함수 호출
+	//totalprice2();
+/* 	
+	//페이지 첫 로딩시 숫자 천단위 ,찍기
+	var sum_money= parseInt($("#sum_money").text());
+	var fee = parseInt($("#fee").text());
+	var total = parseInt($("#total").text());
+	/* var item_price = parseInt($(".item_price").text()); */
+	/* var item_price =0;
+	
+	$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
+	$("#fee").text(fee.toLocaleString('ko-KR'));
+	$("#total").text(total.toLocaleString('ko-KR'));
+	
+	$(".item_price").each(function(idx,data){
+		item_price = parseInt($(data).text()); */
+	//$(".item_price").text(item_price.toLocaleString('ko-KR')); 
+	//	console.log($(".item_price").text());
+		//console.log(item_price.toLocaleString('ko-KR'));
+	//});
+	 
+	
+	
 	//장바구니 수량 수정
 	$(".updBtn").on("click", function() {
 		
 		var cart_id = $(this).attr("data-xxx"); //장바구니 번호
 		var p_selling_price = $(this).attr("data-price"); //상품가격
 		var p_amount = $("#cartAmount" + cart_id).val(); //카트번호 이용 class 선택하여 수량을 가져옴
+		var sum_money = $(this).attr("data-sum_money"); //총금액
 		
-		console.log(cart_id, p_selling_price, p_amount);
+		console.log(cart_id, p_selling_price, p_amount)
 		
 		$.ajax({
 			type : "put",
@@ -205,22 +252,9 @@ $(function() {
 			contentType:'application/json;charset=UTF-8',
 			success : function(data, status, xhr) {
 				
-				if($("input[name=check]").is(":checked")==true){
-					console.log($("input[name=check]"));
-					//개별상품 가격 sum
-					var sum = p_amount * p_selling_price;
-				/* 	$("#item_price" + cart_id).text(sum.toLocaleString('ko-KR')); */
-					$("#item_price" + cart_id).text(sum);
-					
-					var sum_money =0;
-					sum_money += sum;
-					$("#sum_money").text(sum_money.toLocaleString('ko-KR')); 
-					
-					var fee = sum_money >= 50000 ? 0 : 3000;
-					var total = sum_money + fee;
-					$("#fee").text(fee.toLocaleString('ko-KR'));
-					$("#total").text(total.toLocaleString('ko-KR'));
-				}	
+				var sum = p_amount * p_selling_price;
+				$("#item_price" + cart_id).text(sum);
+				totalprice(); // 수정 후 합계부분 다시 불러옴
 			},
 			error : function(xhr, status, error) {
 				console.log(error);
@@ -233,67 +267,6 @@ $(function() {
 	$(".delBtn").on("click", function() {
 		var cart_id = $(this).attr("data-xxx");
 		var xxx = $(this); //클릭된 버튼 자체
-		var item_price = parseInt($(this).attr("data-price"));
-		var sum1 =$("#sum_money").text();
-		
-		//체크박스 선택된 값만 상품금액에 출력
-		if($(".individual_cart_checkbox").is(":checked")==true){
-			var sum = parseInt(sum1.replace(/,/g, ""));//콤마 제거 문자열 변환
-			
-			$.ajax({
-				type : "delete",
-				url : "${contextPath}/cart/"+cart_id,
-				data :{
-					cart_id : cart_id
-				},
-				dataType : "json",
-				success : function(data, status, xhr) {
-					
-					//삭제 버튼의 부모 요소 중 tr을 remove
-					$("#cartCount").text(data);
-					xxx.parents().filter("tr").remove();  
-					var sum_money = sum-item_price;
-					$("#sum_money").text(sum_money.toLocaleString('ko-KR')); 
-					var fee = sum_money >= 50000 ? 0 : 3000;
-					var total = sum_money + fee;
-					$("#fee").text(fee.toLocaleString('ko-KR'));
-					$("#total").text(total.toLocaleString('ko-KR')); 
-					
-				},
-				error : function(xhr, status, error) {
-					console.log(error);
-				} 
-				
-			}) // end ajax 
-		}else{
-			console.log(">>체크박스선택x");
-			var sum_money = parseInt(sum1.replace(/,/g, ""));//콤마 제거 문자열 변환
-			
-			 $.ajax({
-					type : "delete",
-					url : "${contextPath}/cart/"+cart_id,
-					data :{
-						cart_id : cart_id
-					},
-					dataType : "json",
-					success : function(data, status, xhr) {
-						//삭제 버튼의 부모 요소 중 tr을 remove
-						$("#cartCount").text(data);
-						xxx.parents().filter("tr").remove();  
-						$("#sum_money").text(sum_money.toLocaleString('ko-KR')); 
-						var fee = sum_money >= 50000 ? 0 : 3000;	
-						var total = sum_money + fee;
-						$("#fee").text(fee.toLocaleString('ko-KR'));
-						$("#total").text(total.toLocaleString('ko-KR')); 
-						
-					},
-					error : function(xhr, status, error) {
-						console.log(error);
-					} 
-					
-				}) // end ajax 
-		}
-			
 		console.log("delBtn 클릭"+cart_id);
 	
 		  $.ajax({
@@ -314,8 +287,21 @@ $(function() {
 				console.log(error);
 			} 
 			
+		}) // end ajax
 		
 	})//end
+	
+	//체크박스 미선택시 alert창 / 전체 선택시 전체선택 주소로 이동
+	$("#delAllCart").on("click", function() {
+		console.log("delAll 클릭됨");
+		if ($(".individual_cart_checkbox").is(":checked") == false) {
+			$("#modalBtn").trigger("click");
+			$("#mesg").text("삭제할 상품을 선택하세요.");
+			event.preventDefault();
+		}
+	 	$("form").attr("action", "../cart"); 
+	})//체크박스미선택
+	
 	//폼 제출시 선택된 체크박스 값만 가져오기
  	$("#order").on("click", function() {
  		
@@ -329,36 +315,22 @@ $(function() {
 
  	});//end order
 	
-	
-	
- 	//체크박스 미선택시 alert창 / 전체 선택시 전체선택 주소로 이동
-	$("#delAllCart").on("click", function() {
-		console.log("delAll 클릭됨");
-		
-		if ($(".individual_cart_checkbox").is(":checked") == false) {
-			$("#modalBtn").trigger("click");
-			$("#mesg").text("삭제할 상품을 선택하세요.");
-			event.preventDefault();
-		}
-	 	$("form").attr("action", "../cart"); 
-	})//체크박스미선택
-
-	//전체선택
+ 	//전체선택
  	$("#allCheck").on("click", function() {
 		console.log("click====");
 		if ($(this).is(":checked")) {
 			$("input[name=check]").prop("checked", true);//체크박스 전체 선택
 			
 			var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
-			/* sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환 */
-			sum_money = 0;
+			sum_money =0;
+			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
 			sum_money = parseInt(sum_money);//정수로
 			console.log("장바구니 금액 : "+sum_money);
 			
 			//체크박스 전체 가격 데이터 더한 값==text()
 			$("input[name=check]").each(function (index, data) {
 				var cart_id=$(this).val();
-				console.log("전체선택 카트번호>",cart_id);
+				console.log(cart_id);
 				
 				var item_price = $("#item_price" + cart_id).text();//상품 가격
 				item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
@@ -369,23 +341,21 @@ $(function() {
 				console.log("최종 장바구니 가격 : "+sum_money);
 
 				var fee = sum_money >= 50000 ? 0 : 3000;
-				var total = sum_money + fee;  
-				$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
-				$("#fee").text(fee.toLocaleString('ko-KR'));
-				$("#total").text(total.toLocaleString('ko-KR')); 
+				var total = sum_money + fee;
+				
 
 			});
-
-			var sum_money2=sum_money.toLocaleString('ko-KR')+"원";
-			var fee2=fee.toLocaleString('ko-KR')+"원";
-			var total2=total.toLocaleString('ko-KR')+"원";
+			var sum_money2=sum_money.toLocaleString('ko-KR');
+			var fee2=fee.toLocaleString('ko-KR');
+			var total2=total.toLocaleString('ko-KR');
 			$("#sum_money").text(sum_money2);
 			$("#fee").text(fee2);
-			$("#total").text(total2); 
+			$("#total").text(total2);
 		} else {
 			$("input[name=check]").prop("checked", false);//체크박스 전체 선택 해제
 			
 			var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
+			sum_money =0;
 			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
 			sum_money = parseInt(sum_money);//정수로
 			console.log("장바구니 금액 : "+sum_money);
@@ -401,19 +371,93 @@ $(function() {
 				console.log("상품 가격 : "+item_price);
 				
 				sum_money =  parseInt(sum_money) - parseInt(item_price);//장바구니에서 상품 가격 빼기
-				sum_money =0;
 				console.log("최종 장바구니 가격 : "+sum_money);
-				
 				var fee = sum_money >= 50000 ? 0 : 3000;
 				var total = sum_money + fee;
 				
-				$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
-				$("#fee").text(fee.toLocaleString('ko-KR'));
-				$("#total").text(total.toLocaleString('ko-KR'));
+				var sum_money2=sum_money.toLocaleString('ko-KR');
+				var fee2=fee.toLocaleString('ko-KR');
+				var total2=total.toLocaleString('ko-KR');
+
+				$("#sum_money").text(sum_money2);
+				$("#fee").text(fee2);
+				$("#total").text(total2);
 			});
 
 		}
 	})//end fn
+	
+
+	//전체선택
+ 	/* $("#allCheck").on("click", function() {
+		console.log("click====");
+		if ($(this).is(":checked")) {
+			$("input[name=check]").prop("checked", true);//체크박스 전체 선택
+			
+			var sum_money2 = $("#sum_money").text();//현재 장바구니 상품 금액
+			sum_money2=0;
+			sum_money2 = sum_money2.replace(/,/g, "");//콤마 제거 문자열 변환
+			sum_money2 = parseInt(sum_money2);//정수로 
+			console.log("장바구니 금액 : "+sum_money2); 
+			 */
+			//체크박스 전체 가격 데이터 더한 값==text()
+			/* $("input[name=check]").each(function (index, data) {
+				var cart_id=$(this).val();
+				console.log(cart_id);
+				
+				var item_price = $("#item_price" + cart_id).text();//상품 가격
+				 item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
+				item_price = parseInt(item_price);//정수로 
+				console.log("상품 가격 : "+item_price);
+				
+				sum_money2 =  parseInt(sum_money2) + parseInt(item_price);//장바구니에 상품 가격 추가
+				console.log("최종 장바구니 가격 : "+sum_money2);
+
+				var fee = sum_money2 >= 50000 ? 0 : 3000;
+				var total = sum_money2 + fee;
+				
+
+			});
+			 var sum_money3=sum_money2.toLocaleString('ko-KR');
+			var fee2=fee.toLocaleString('ko-KR');
+			var total2=total.toLocaleString('ko-KR'); 
+			$("#sum_money").text(sum_money3);
+			$("#fee").text(fee);
+			$("#total").text(total); 
+		} else {
+			$("input[name=check]").prop("checked", false);//체크박스 전체 선택 해제
+			
+			var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
+			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
+			sum_money = parseInt(sum_money);//정수로
+			console.log("장바구니 금액 : "+sum_money); */
+			
+			//체크박스 전체 가격 데이터 뺀 값==text()
+			/* $("input[name=check]").each(function (index, data) {
+				var cart_id=$(this).val();
+				console.log(cart_id);
+				
+				var item_price = $("#item_price" + cart_id).text();//상품 가격
+				item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
+				item_price = parseInt(item_price);//정수로
+				console.log("상품 가격 : "+item_price);
+				
+				sum_money =  parseInt(sum_money) - parseInt(item_price);//장바구니에서 상품 가격 빼기
+				console.log("최종 장바구니 가격 : "+sum_money);
+				var fee = sum_money >= 50000 ? 0 : 3000;
+				var total = sum_money + fee;
+				
+				var sum_money2=sum_money.toLocaleString('ko-KR');
+				var fee2=fee.toLocaleString('ko-KR');
+				var total2=total.toLocaleString('ko-KR');
+
+				$("#sum_money").text(sum_money2);
+				$("#fee").text(fee2);
+				$("#total").text(total2);
+			});
+
+		}
+	})//end fn */
 	
 	//전체선택 안됐을 경우 체크 해제
 	$("input[name=check]").click(function() {
@@ -423,40 +467,43 @@ $(function() {
 		if(total != checked) $("#allCheck").prop("checked", false);
 		else $("#allCheck").prop("checked", true); 
 	});
-	/*
+	
 	//개별체크박스 선택시 가격 변동
 	$(".individual_cart_checkbox").on("click",function(){
 		var n = $(this).val();
 		console.log("체크박스의 카트 아이디 : "+n);
 		
+		var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
+		sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
+		sum_money = parseInt(sum_money);//정수로 '원' 삭제됨
+		console.log("장바구니 금액 : "+sum_money);
 		
 		var item_price = $("#item_price" + n).text();//상품 가격
-		item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
-		item_price = parseInt(item_price);//정수로
+	item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
+		item_price = parseInt(item_price);//정수로	
 		console.log("상품 가격 : "+item_price);
 
-		if($(this).is(":checked")==true){//체크박스 선택이 될 경우
-			
-			var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
-			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환 
-			sum_money = parseInt(sum_money);//정수로 '원' 삭제됨
-			console.log("장바구니 금액 : "+sum_money);
+		if($(this).is(":checked")==true){
+			console.log("check true");
+			console.log("체크 된 상품 가격 : "+item_price);
 			
 			sum_money = sum_money + item_price;//장바구니에 상품 가격 추가
 
 			var fee = sum_money >= 50000 ? 0 : 3000;
 			var total = sum_money + fee;
 			
-			$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
-			$("#fee").text(fee.toLocaleString('ko-KR'));
-			$("#total").text(total.toLocaleString('ko-KR'));
+			var sum_money2=sum_money.toLocaleString('ko-KR');
+			var fee2=fee.toLocaleString('ko-KR');
+			var total2=total.toLocaleString('ko-KR');
+			$("#sum_money").text(sum_money2);
+			$("#fee").text(fee2);
+			$("#total").text(total2);
+		} else {
+			console.log("check false XXX");
+			console.log("체크 해제 된 상품 가격 : "+item_price);
 			
-		} else {//체크박스 해제될 경우
-			var sum_money = $("#sum_money").text();//현재 장바구니 상품 금액
-			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환 
-			/* sum_money =0; */
-			//sum_money = parseInt(sum_money);//정수로 '원' 삭제됨
-			/*console.log("장바구니 금액 : "+sum_money);
+			console.log(sum_money);
+			console.log(item_price);
 
 			sum_money =  sum_money - item_price;//장바구니에서 상품 가격 빼기
 			console.log(sum_money);
@@ -464,46 +511,15 @@ $(function() {
 			var fee = sum_money >= 50000 ? 0 : 3000;
 			var total = sum_money + fee;
 
-			$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
-			$("#fee").text(fee.toLocaleString('ko-KR'));
-			$("#total").text(total.toLocaleString('ko-KR'));
+			var sum_money2=sum_money.toLocaleString('ko-KR');
+			var fee2=fee.toLocaleString('ko-KR');
+			var total2=total.toLocaleString('ko-KR');
+			$("#sum_money").text(sum_money2);
+			$("#fee").text(fee2);
+			$("#total").text(total2);
 		}
-	})*/ //end individual_cart_checkbox
+	})//end individual_cart_checkbox
+})//end
 	
-	
-	
-//	$("input[name=check]").click(function(){ //체크가 되면 상품가격을 상품금액에 포함
-		//체크박스 선택 된 값만 누적시키기
-		
-		
-			
-			
-		
-
-	
-		/* 	 var cart_id=$(this).val();
-			console.log("전체선택 카트번호>",cart_id);
-			
-			var item_price = $("#item_price" + cart_id).text();//상품 가격
-			console.log(item_price);
-			item_price = item_price.replace(/,/g, "");//콤마 제거 문자열 변환
-			item_price = parseInt(item_price);//정수로
-			console.log("상품 가격 : "+item_price);
-			
-			sum_money =  parseInt(sum_money) + parseInt(item_price);//장바구니에 상품 가격 추가
-			console.log("최종 장바구니 가격 : "+sum_money);
-			
-			var fee = sum_money >= 50000 ? 0 : 3000;
-			var total = sum_money + fee;  
-			$("#sum_money").text(sum_money.toLocaleString('ko-KR'));
-			$("#fee").text(fee.toLocaleString('ko-KR'));
-			$("#total").text(total.toLocaleString('ko-KR'));   */
-
-		
-	})//end
-	
-
-	
-})//end  
 </script>
 

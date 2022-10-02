@@ -12,7 +12,7 @@
 	    	and p.p_name like '%${search}%'
 	    </if>
 	    <if test="searchCategory == 'order_date' and search != null">
-	    	and o.order_d	ate like '%${search}%'
+	    	and o.order_date like '%${search}%'
 	    </if>
 	    order by ORDER_DATE desc
 	</select>
@@ -25,7 +25,7 @@
 	    	and p.p_name like '%${search}%'
 	    </if>
 	    <if test="searchCategory == 'order_date' and search != null">
-	    	and o.order_d	ate like '%${search}%'
+	    	and o.order_date like '%${search}%'
 	    </if>
 	</select>
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">

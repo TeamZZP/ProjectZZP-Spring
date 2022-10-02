@@ -14,6 +14,7 @@ public class ProfileController {
 	private MemberService mService;
 	//private MemberService mService;
 	
+
 //	@RequestMapping(value = "/profile/{userid}", method = RequestMethod.GET)
 //	public String profile(@PathVariable String userid) {
 //		//회원의 프로필 가져오기
@@ -21,4 +22,5 @@ public class ProfileController {
 //		
 //		
 //	}
+
 }

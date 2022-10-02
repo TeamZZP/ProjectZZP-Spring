@@ -7,20 +7,20 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dao.reviewDAO;
+import com.dao.ReviewDAO;
 import com.dto.PageDTO;
 import com.dto.ProductOrderReviewDTO;
 import com.dto.ReviewDTO;
 import com.dto.ReviewProfileDTO;
 
 @Service
-public class reviewService {
+public class ReviewService {
 
 	@Autowired
-	reviewDAO dao;
+	ReviewDAO dao;  
 
-	public List<ReviewProfileDTO> pordReview(String p_id) {
-		List<ReviewProfileDTO> list = dao.pordReview(p_id);
+	public List<ReviewProfileDTO> prodReview(String p_id) {
+		List<ReviewProfileDTO> list = dao.prodReview(p_id);
 		return list;
 	}
 

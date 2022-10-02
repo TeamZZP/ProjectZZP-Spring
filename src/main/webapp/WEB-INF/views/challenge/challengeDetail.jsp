@@ -485,9 +485,9 @@ function displayedAt(createdAt) {
 		</tr>
 		<tr>
 			<td colspan="2">
-			    <a href="/profile/${cDTO.userid}">
+			    <a href="/zzp/profile/${cDTO.userid}">
 				   <img src="${contextPath}/resources/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3"></a>
-				<a href="/profile/${cDTO.userid}">${cDTO.userid}</a>
+				<a href="/zzp/profile/${cDTO.userid}">${cDTO.userid}</a>
 			</td>
 		</tr>
 		<tr id="img_area">

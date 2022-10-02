@@ -28,7 +28,7 @@ import com.service.CouponService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.QuestionService;
-import com.service.reviewService;
+import com.service.ReviewService;
 
 
 @Controller
@@ -38,7 +38,7 @@ public class MypageController {
 	@Autowired
 	QuestionService qService;
 	@Autowired
-	reviewService rService;
+	ReviewService rService;
 	@Autowired
 	AnswerService aService;
 	@Autowired

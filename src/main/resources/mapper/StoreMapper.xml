@@ -83,7 +83,7 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
-    order by #{sortBy} desc
+    order by ${sortBy} asc
   </select>
   
   <!-- 제품상세 -->

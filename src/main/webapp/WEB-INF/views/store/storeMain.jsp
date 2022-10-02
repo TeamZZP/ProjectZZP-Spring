@@ -87,11 +87,6 @@ a {
     ${banner}
     
 
-<p>main.jsp</p>
- ${mdto}<br>
- ${zzimList}<br>
-
-
 <%--  ${mdto}<br>
  ${zzimList}<br> --%>
  
@@ -454,7 +449,7 @@ a {
 	
 	
 
-      });//end fn
+
       
       
      

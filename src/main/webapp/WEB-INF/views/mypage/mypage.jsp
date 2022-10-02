@@ -302,11 +302,11 @@
 		<div class="modify">i</div>
 	</div>
 	<div class="summaryContainer">
-		<a href="/zzp/mypage/>${login.username}/review" class="item">
+		<a href="/zzp/mypage/${login.userid}/review" class="item">
 			<div class="number">${map.myReview}</div>
 			<div>구매 후기</div>
 		</a>
-		<a href="/zzp/mypage/>${login.username}/coupon" class="item">
+		<a href="/zzp/mypage/${login.userid}/coupon" class="item">
 			<div class="number">${map.myCoupon}</div>
 			<div>내 쿠폰함</div>
 		</a>

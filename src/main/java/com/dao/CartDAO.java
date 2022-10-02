@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.CartDTO;
+import com.dto.ProductByCategoryDTO;
 
 @Repository("CartDAO")
 public class CartDAO {
@@ -62,6 +63,16 @@ public class CartDAO {
 	public void cartAllDel(ArrayList<String> list) {
 		session.delete("CartMapper.cartAllDel",list);
 		System.out.println("장바구니 비우기성공");
+	}
+
+	public int likeCount(String userid) {
+		int count = session.selectOne("CartMapper.likeCount", userid);
+		return count;
+	}
+
+	public List<ProductByCategoryDTO> likeList(String userid) {
+		List<ProductByCategoryDTO> list = session.selectList("CartMapper.likeList",userid);
+		return list;
 	}
 	
 	

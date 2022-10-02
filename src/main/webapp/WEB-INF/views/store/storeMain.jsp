@@ -220,7 +220,6 @@ a {
 								</div>
 							</div>
 						</div>
-
 					</form>
 				<!-- 장바구니 모달안에 모달 -->
 						<button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chkmodal${pList.p_id}" style="display: none;">modal</button>

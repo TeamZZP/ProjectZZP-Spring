@@ -6,23 +6,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+
 <style>
 	a {
-		color : black;
+		color: black;
 		text-decoration: none;
 	}
+	
 	.currCategory {
-		color: green; 
+		color: green;
 		font-weight: bold;
 	}
+	
 	.tableTop {
-    	border-bottom-color: #24855B;
-    	border-bottom-width: 2.5px;
-    }
-    .paging {
-   	 	cursor: pointer;
-</style>
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
+</style>  
 
 <div id="addContainer">
 <div class="container">
@@ -32,14 +36,14 @@
 			<a href="MypageServlet">마이페이지 홈</a>
 		</div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/{userid}/order">주문 내역</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">반품/취소/교환 목록</div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/{userid}/review">내 구매후기</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="MyCouponServlet">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>
@@ -48,7 +52,7 @@
 	   		<a href="ProfileCategoryServlet?category=mystamp&userid=${mDTO.userid}">내 도장</a>
 	   </div>
 	   <div class="col">
-	      <a href="/zzp/mypage/{userid}/question" class="currCategory">내 문의 내역</a>
+	      <a href="/zzp/mypage/${mDTO.userid}/question" class="currCategory">내 문의 내역</a>
 	   </div>
 	   <div class="col">
 	      <a href="AddressListServlet">배송지 관리</a>

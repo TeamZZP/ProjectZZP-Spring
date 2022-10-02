@@ -1,6 +1,7 @@
 <%@page import="com.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!--  <script src="resources/js/question/questionInsert.js"></script> -->
@@ -63,13 +64,13 @@
 			<tr>
 				<th colspan="2"> 
 					<div class="input-group">
-					<% 
-						String P_ID = request.getParameter("P_ID");		
-						String P_Name = request.getParameter("P_Name");	
-					%>
 					  <button id="prodSel" class="btn btn-outline-secondary" type="button">상품 정보</button>
-					  <input type="text" class="form-control shadow-none" name="P_Name" id="p_name" readonly="readonly" <%if(P_Name != null){ %>value="<%=P_Name%>"<%} %>>
-					  <input type="hidden" id="p_id" name="p_id" <%if(P_Name != null){ %>value="<%=P_ID%>"<%} %>>
+					  <input type="text" class="form-control shadow-none" name="P_Name" id="p_name" readonly="readonly"
+					  	<c:if test="${prodQnaInserInfo != null && prodQnaInserInfo.p_name != null}">value=${prodQnaInserInfo.p_name}</c:if>
+					  >
+					  <input type="hidden" id="p_id" name="p_id" 
+					  	<c:if test="${prodQnaInserInfo != null && prodQnaInserInfo.p_id != null}">value=${prodQnaInserInfo.p_id}</c:if>
+					  >
 					</div>
 				</th>
 			</tr>

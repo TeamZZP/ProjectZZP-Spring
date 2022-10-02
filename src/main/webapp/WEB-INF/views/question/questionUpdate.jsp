@@ -34,7 +34,7 @@
 		});
 		$("#uploadBtu").click(function () {
 			var upload = $("#upload").attr("src");
-			var url = "../qna/${qDTO.q_id}/showImg"
+			var url = "/zzp/showImg"
 			window.open(url, "", "width=400px height=500px");
 		});
 		function checkFileExtension(){ 

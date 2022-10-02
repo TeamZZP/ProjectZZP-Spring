@@ -6,14 +6,17 @@
   
 <!-- 상품관리 : 전체 상품 목록 -->
 <select id="selectAllProduct" parameterType="hashmap" resultType="ProductByCategoryDTO">
- 	select (select C_NAME from category where c_id = p.c_id) as c_name, p.P_ID,(select IMAGE_ROUTE from images where p_id = p.p_id 
-	and IMAGE_RNK = 1) as p_image,p.P_NAME,p.P_CONTENT,p.C_ID,p.P_COST_PRICE
-	,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p
+ 	select (select C_NAME from category where c_id = product.c_id) as c_name, P_ID,(select IMAGE_ROUTE from images where p_id = product.p_id 
+	and IMAGE_RNK = 1) as p_image, P_NAME, P_CONTENT, C_ID, P_COST_PRICE
+	, P_SELLING_PRICE, P_DISCOUNT, to_char(P_CREATED,'yyyy-mm-dd') P_CREATED, P_STOCK from product
 	<where>
 		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
+			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
 		</if>
-		<if test='searchName!=null and !searchName.equals("null")'>
+		<if test='searchName=="p_created"'>
+			to_char(product.p_created,'yyyy-mm-dd') like '%${searchValue}%'
+		</if>
+		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and searchName!="c_id"  and !searchName.equals("p_created") and searchName!="p_created"'>
 			${searchName} like '%${searchValue}%'
 		</if>
 	</where>
@@ -29,14 +32,59 @@
  select count(*) from product 
 	<where>
 		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
+			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
 		</if>
-		<if test='searchName!=null and !searchName.equals("null")'>
+		<if test='searchName=="p_created"'>
+			to_char(product.p_created,'yyyy-mm-dd') like upper('%${searchValue}%')
+		</if>
+		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and !searchName.equals("p_created") and searchName!="p_created"'>
 			${searchName} like '%${searchValue}%'
 		</if>
 	</where>
 </select>
-  
+
+<!-- 회원관리 : 전체 회원 목록 -->
+<select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">
+	select m.userid, m.username, m.phone, a.post_num, a.addr1, a.addr2, m.created_at
+	from member m join address a
+	on m.userid = a.userid
+	<where>
+		a.default_chk = 1
+		<if test="searchName=='userid'">
+			and	upper(m.userid) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='username'">
+			and upper(m.username) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='phone'">
+			and m.phone like '%${searchValue}%'
+		</if>
+		<if test="searchName=='address'">
+			and upper(a.addr1) like upper('%${searchValue}%')
+		</if>				
+	</where>
+	order by ${sortBy}
+</select>
+<select id="countTotalMember" parameterType="hashmap" resultType="int">
+	select count(*)
+	from member m join address a
+	on m.userid = a.userid
+	<where>
+		a.default_chk = 1
+		<if test="searchName=='userid'">
+			and upper(m.userid) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='username'">
+			and upper(m.username) like upper('%${searchValue}%')
+		</if>
+		<if test="searchName=='phone'">
+			and m.phone like '%${searchValue}%'
+		</if>
+		<if test="searchName=='address'">
+			and upper(a.addr1) like upper('%${searchValue}%')
+		</if>
+	</where>
+</select>
   
   </mapper>
   

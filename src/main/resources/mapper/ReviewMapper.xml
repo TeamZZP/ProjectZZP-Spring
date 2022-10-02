@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="ReviewMapper">
-	<select id="pordReview" resultType="ReviewProfileDTO" parameterType="string">
+	<select id="prodReview" resultType="ReviewProfileDTO" parameterType="string">
 		select * from profile join review USING(userid) where P_ID = #{p_id}
 	</select>
 	<select id="myReview" parameterType="String" resultType="ReviewProductImagesDTO">
@@ -13,28 +13,23 @@
 	<select id="myReviewCount" parameterType="String" resultType="int">
 		select count(*) from review where userid = #{userid}
 	</select>
-	<!-- 
-	<select id="selectOneProduct" resultType="hashmap">
-		select p_id, p_name, image_route
-		from product p join images i using(p_id)
-		where image_rnk=1 and p_id=#{p_id}
+	<select id="reviewCheck" parameterType="map" resultType="ReviewDTO">
+		select * from review where order_id = #{order_id} and p_id = #{p_id}
 	</select>
 	<insert id="reviewInsert" parameterType="map">
 		insert into REVIEW (REVIEW_ID, ORDER_ID, P_ID, USERID, REVIEW_TITLE, REVIEW_CONTENT, REVIEW_RATE, REVIEW_IMG, REVIEW_CREATED)
-			values (REVIEW_REVIEW_ID_SEQ.nextval, #{ORDER_ID}, #{P_ID}, #{USERID}, #{REVIEW_TITLE}, #{REVIEW_CONTENT},
-				#{REVIEW_RATE}, #{REVIEW_IMG}, sysdate)
+			values (REVIEW_REVIEW_ID_SEQ.nextval, #{order_id}, #{p_id}, #{userid}, #{review_title}, #{review_content},
+				#{review_rate}, #{review_img}, sysdate)
 	</insert> 
-	<select id="orderIDreivewCheck" parameterType="map" resultType="ReviewDTO">
-		select * from REVIEW where ORDER_ID = #{ORDER_ID} and P_ID = #{P_ID}
+	<select id="reviewOneSelect" parameterType="String" resultType="ProductOrderReviewDTO">
+		select * from review r full outer join product p USING(p_id)
+			where r.REVIEW_ID = #{review_id}
 	</select>
-	<select id="selectOneReview" parameterType="map" resultType="ProductOrderReviewDTO">
-		select * from review r RIGHT OUTER JOIN product p USING(p_id) join REVIEW USING(p_id) where P_ID = #{P_ID} and r.REVIEW_ID = #{REVIEW_ID}
-	</select>
-	<update id="reviewUpdate" parameterType="map">
-		update REVIEW set REVIEW_TITLE = #{REVIEW_TITLE}, REVIEW_CONTENT = #{REVIEW_CONTENT}, REVIEW_RATE = #{REVIEW_RATE}, REVIEW_IMG = #{REVIEW_IMG}
-			where REVIEW_ID = #{REVIEW_ID}
+	<update id="reviewUpate" parameterType="map">
+		update REVIEW set REVIEW_TITLE = #{review_title}, REVIEW_CONTENT = #{review_content}, REVIEW_RATE = #{review_rate}, 
+			REVIEW_IMG = #{review_img} where REVIEW_ID = #{review_id}
 	</update>
 	<delete id="reviewDelete" parameterType="map">
-		delete from REVIEW where REVIEW_ID = #{REVIEW_ID} and USERID = #{USERID}
-	</delete> -->
+		delete from REVIEW where REVIEW_ID = #{review_id}
+	</delete>
 </mapper>

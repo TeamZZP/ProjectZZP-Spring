@@ -13,45 +13,45 @@
 </c:if>  
     
 <style>
-	a {
-		color : black;
-		text-decoration: none;
-	}
-	.currCategory {
-		color: green; 
-		font-weight: bold;
-	}
-	.tableTop {
-    	border-bottom-color: #24855B;
-    	border-bottom-width: 2.5px;
-    }
-    .paging {
-   	 	cursor: pointer;
-</style>
+a {
+	color: black;
+	text-decoration: none;
+}
 
+.currCategory {
+	color: green;
+	font-weight: bold;
+}
+
+.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
+}
+
+.paging {
+	cursor: pointer;
+}
+</style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$(".reviewUpdate").click(function () {
 			var review_id = $(this).attr("data-reviewID");
-			var p_id = $(this).attr("data-pID");
-			$("#reviewForm").attr("action","reviewOneSelect?review_id="+review_id+"&p_id="+p_id);
+			location.href = "/zzp/review/"+review_id;
 		});
 		$(".reviewDelete").click(function () {
-			var REVIEW_ID = $(this).attr("data-reviewID");
-			var USERID = $(this).attr("data-userid");
+			var review_id = $(this).attr("data-reviewID");
 			$.ajax({
-				type:"post",
-				url:"reviewDeleteServlet",
+				type:"delete",
+				url:"/zzp/review/"+review_id,
 				data:{
-					REVIEW_ID:REVIEW_ID,
-					USERID:USERID
+					review_id:review_id
 				},
 				dataType:"text",
 				success: function (data, status, xhr) {
 					console.log(data);
-					if (data == "삭제성공") {
-						location.href= "ProfileCategoryServlet?category=myreview&userid="+USERID;
+					if (data == 1) {
+						location.href= "/zzp/mypage/${mDTO.userid}/review";
 						alert("리뷰가 삭제되었습니다.");
 					} else {
 						alret("리뷰 삭제를 실패했습니다. 다시 시도해주세요");
@@ -66,10 +66,10 @@
 			var popupX = (document.body.offsetWidth / 2) - (200 / 2);
 			var popupY= (window.screen.height / 2) - (300 / 2);
 			
-			var img = $(this).children(img).attr("src");
+			var img = $(this).children(img).attr("src"); 
 			console.log(img);
 			
-			window.open('showImgReview.jsp?img='+img , '', 'status=no, height=500, width=400, left='+ popupX + ', top='+ popupY);
+			window.open('/zzp/showImg?img='+img , '', 'status=no, height=500, width=400, left='+ popupX + ', top='+ popupY);
 		});
 	});//end ready
 </script>
@@ -80,15 +80,15 @@
 		<div class="col">
 			<a href="MypageServlet">마이페이지 홈</a>
 		</div>
-	    <div class="col">
-	   		<a href="/zzp/mypage/{userid}/order">주문 내역</a>
+	   <div class="col">
+	   		<a href="/zzp/mypage/${mDTO.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">반품/취소/교환 목록</div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/{userid}/review">내 구매후기</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/review"  class="currCategory">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="MyCouponServlet">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>
@@ -97,7 +97,7 @@
 	   		<a href="ProfileCategoryServlet?category=mystamp&userid=${mDTO.userid}">내 도장</a>
 	   </div>
 	   <div class="col">
-	      <a href="/zzp/mypage/{userid}/question">내 문의 내역</a>
+	      <a href="/zzp/mypage/${mDTO.userid}/question">내 문의 내역</a>
 	   </div>
 	   <div class="col">
 	      <a href="AddressListServlet">배송지 관리</a>
@@ -105,10 +105,11 @@
 	   <div class="col">
 	      <a href="checkPasswd.jsp">계정 관리</a>
 	   </div>
-	</div>
+ </div>
 <div class="col-lg-10">
 <div id="addTableDiv">
-<form method="post" id="reviewForm">
+<form method="get" id="reviewForm">
+<input type="hidden" name="userid" value="${mDTO.userid}">
 <table id="reviewTable" class="table table-hover">
 	<tr class="tableTop text-center">
 		<th width="25%">상품정보</th>
@@ -136,7 +137,7 @@
 				</c:when>
 				<c:otherwise>
 					<div class="uploadBtu">
-						<img class="upload" alt="" src="/eclipse/upload/${list.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
+						<img class="upload" alt="" src="/zzp/resources/upload/review/${list.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
 					</div>
 				</c:otherwise>
 			</c:choose>
@@ -145,8 +146,8 @@
 			<div>${list.review_create.substring(0,10)}</div>
 		</td>
 		<td class="align-middle text-center">
-			<button class="btn btn-light btn-sm reviewUpdate" data-reviewID="${list.review_id}" data-pID="${list.p_id}">수정</button>
-			<button type="button" class="btn btn-light btn-sm reviewDelete" data-reviewID="${list.review_id}" data-userid="${list.userid}">삭제</button>
+			<button type="button" class="btn btn-light btn-sm reviewUpdate" data-reviewID="${list.review_id}">수정</button>
+			<button type="button" class="btn btn-light btn-sm reviewDelete" data-reviewID="${list.review_id}">삭제</button>
 		</td>
 	</tr>
 	</c:forEach>

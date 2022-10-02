@@ -302,11 +302,11 @@
 		<div class="modify">i</div>
 	</div>
 	<div class="summaryContainer">
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/review" class="item">
 			<div class="number">${map.myReview}</div>
 			<div>구매 후기</div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/coupon" class="item">
 			<div class="number">${map.myCoupon}</div>
 			<div>내 쿠폰함</div>
 		</a>
@@ -361,7 +361,7 @@
 		</div>
 	</div>
 	<div class="listContainer">
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/orde" class="item">
 			<div class="icon">1.</div>
 			<div class="text">주문 내역<span class="circle"></span></div>
 			<div class="right">></div>
@@ -371,7 +371,7 @@
 			<div class="text">반품/취소/교환 목록</div>
 			<div class="right">></div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/question" class="item">
 			<div class="icon">3.</div>
 			<div class="text">내 문의 내역</div>
 			<div class="right">></div>

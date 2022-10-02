@@ -50,7 +50,7 @@
 		//페이징
  		$('.paging').on('click', function() {
 			$('#page').val($(this).attr('data-page'));
-			$('form').attr('action', 'admin/product').submit();
+			$('#prodForm').attr('action', '/zzp/admin/product').submit();
 		})
 		//상품검색
 		$("#searchProd").click(function() {
@@ -72,7 +72,8 @@
 		//상품보기 버튼
 		$("body").on("click", "#prodDetail", function () {
 			let p_id = $(this).attr("data-id");
-			location.href="ProductRetrieveServlet?p_id="+p_id;
+			//location.href="ProductRetrieveServlet?p_id="+p_id;
+			location.href="/zzp/product/"+p_id;
 		});
 		//삭제 모달
 		$("#deleteModal").on("shown.bs.modal", function (e) { //삭제모달 띄우면 발생하는 이벤트
@@ -151,6 +152,7 @@
 	<input type="hidden" name="sortBy" value="${sortBy}">
 	<input type="hidden" name="category" value="product">
 	<input type="hidden" name="p_id" id="delp_id">
+	<input type="hidden" name="page" value="1" id="page">
 	<!-- 상품 List -->	
 	<table class="table table-hover table-sm">
 		<tr>

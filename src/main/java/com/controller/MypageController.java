@@ -3,6 +3,7 @@ package com.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -20,13 +21,30 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
 import com.dto.MemberDTO;
+import com.dto.PageDTO;
+import com.dto.ReviewDTO;
+import com.service.AnswerService;
+import com.service.CouponService;
 import com.service.MypageService;
+import com.service.OrderService;
+import com.service.QuestionService;
+import com.service.ReviewService;
 
 
 @Controller
 public class MypageController {
 	@Autowired
 	MypageService service;
+	@Autowired
+	QuestionService qService;
+	@Autowired
+	ReviewService rService;
+	@Autowired
+	AnswerService aService;
+	@Autowired
+	OrderService oService;
+	@Autowired
+	CouponService cService;
 	/**
 	 * 마이페이지 메인
 	 */
@@ -54,7 +72,7 @@ public class MypageController {
 		return mav;
 	}
 	/**
-	 * 마이페이지 계정 인증
+	 * 마이페이지 계정 인증//=>(RequestParam 속성을 필수가 아니도록 하고, 파라미터가 있으면 탈퇴, 없으면 계정 수정)=>url 수정하는 방법으로 진행
 	 */
 	@RequestMapping(value = "/mypage/{userid}/check", method = RequestMethod.GET)
 	public String accountCheck() {
@@ -63,13 +81,13 @@ public class MypageController {
 		return "checkAccount";
 	}
 	/**
-	 * 마이페이지 계정 삭제 인증
+	 * 마이페이지 계정 삭제 인증//=>url 수정, method get으로 수정하기(폼 제출 불필요, 링크로 이동)
 	 */
-	@RequestMapping(value = "/mypage/{userid}/check", method = RequestMethod.POST)
-	public String deleteCheck(String accountDelete, Model model) {
+	@RequestMapping(value = "/mypage/{userid}/quit", method = RequestMethod.GET)
+	public String deleteCheck(Model model) {
 		//interceptor 인증 후
 		System.out.println("계정 삭제 인증");
-		model.addAttribute("accountDelete", accountDelete);
+		model.addAttribute("accountDelete", "quit");
 		return "checkAccount";
 	}
 	/**
@@ -159,10 +177,10 @@ public class MypageController {
 		return "addressForm";
 	}
 	/**
-	 * 마이페이지 배송지 수정 폼
+	 * 마이페이지 배송지 수정 폼//=>url에 address id 추가하고 get 요청으로 수정, 같은 jsp 출력
 	 */
-	@RequestMapping(value = "/mypage/address", method = RequestMethod.POST)
-	public String addressUpdateForm(String address_id, Model model) {
+	@RequestMapping(value = "/mypage/address/{address_id}", method = RequestMethod.GET)
+	public String addressUpdateForm(@PathVariable("address_id") String address_id, Model model) {
 		//interceptor 인증 후
 		System.out.println("배송지 수정 폼 : "+address_id);
 		//int?
@@ -201,12 +219,16 @@ public class MypageController {
 	 */
 	@RequestMapping(value = "/mypage/{userid}/address", method = RequestMethod.DELETE)
 	@ResponseBody
-	public void deleteAddress(@RequestBody HashMap<String, String> map) {//@RequestBody 없으면 null 출력
+	public int deleteAddress(@RequestBody HashMap<String, String> map,
+			@PathVariable("userid") String userid) {//@RequestBody 없으면 null 출력
 		//interceptor 인증 후
 		System.out.println("배송지 삭제 : "+map);
 		String id=map.get("address_id");
 		int address_id=Integer.parseInt(id);
 		service.deleteAddress(address_id);
+		List<AddressDTO> list=service.selectAllAddress(userid);
+		int size=list.size();
+		return size;
 	}
 	/**
 	 * 마이페이지 배송지 수정
@@ -233,5 +255,84 @@ public class MypageController {
 		
 		m.addFlashAttribute("mesg", "배송지가 수정되었습니다.");
 		return "redirect:/mypage/"+userid+"/address";
+	}
+	/**
+	 * 마이페이지 내 문의 글
+	 */
+	@RequestMapping(value = "/mypage/{userid}/question", method = RequestMethod.GET)
+	public String myQuestion(@PathVariable String userid, @RequestParam Map<String, String> map, Model m, HttpSession session) {
+		PageDTO pDTO =  qService.myQuestion(userid, map);
+		System.out.println("내 문의 게시글 " + pDTO);
+		
+		m.addAttribute("orderList", pDTO);
+		m.addAttribute("mDTO", session.getAttribute("login"));
+		
+		return "myQuestion";
+	}
+	/**
+	 * 마이페이지 내 리뷰 내역
+	 */
+	@RequestMapping(value = "/mypage/{userid}/review", method = RequestMethod.GET)
+	public String myReview(@PathVariable String userid, 
+			@RequestParam Map<String, String> map, Model m, HttpSession session) {
+		PageDTO pDTO = rService.myReview(userid, map);
+		System.out.println("내 리뷰 내역 " + pDTO);
+		
+		m.addAttribute("myReview", pDTO);
+		m.addAttribute("mDTO", session.getAttribute("login"));
+		
+		return "myReview";
+	}
+	/**
+	 * 마이페이지 내 구매내역
+	 */
+	@RequestMapping(value = "/mypage/{userid}/order", method = RequestMethod.GET)
+	public String myOrder(@PathVariable String userid, 
+			@RequestParam Map<String, String> map, Model m, HttpSession session) {
+		map.put("userid", userid);
+		System.out.println(map);
+		
+		PageDTO pDTO = oService.myOrder(map);
+		System.out.println("내 주문 내역 " + pDTO);
+		
+		m.addAttribute("myOrder", pDTO);
+		m.addAttribute("search", map);
+		m.addAttribute("mDTO", session.getAttribute("login"));
+		return "myOrder";
+	}
+	/**
+	 * 마이페이지 리뷰 작성 여부 확인 ajax
+	 */
+	@RequestMapping(value = "/orders/review", method = RequestMethod.POST)
+	public @ResponseBody int reviewCheck(@RequestParam Map<String,String> map) {
+		System.out.println(map);
+		ReviewDTO dto = rService.reviewCheck(map);
+		System.out.println("리뷰 작성 여부 " + dto);
+		
+		int review_id = 0;
+		if (dto != null) {
+			review_id = dto.getReview_id();
+		} else {
+			review_id = 0;
+		}
+		return review_id;
+	}
+	/**
+	 * 마이페이지 내 쿠폰함
+	 */
+	@RequestMapping(value = "/mypage/{userid}/coupon", method = RequestMethod.GET)
+	public String myCoupon(@PathVariable String userid,
+			@RequestParam Map<String, String> map, Model m, HttpSession session) {
+		map.put("userid", userid);
+		System.out.println(map);
+		System.out.println("페이지, 검색어, 유저아이디 " + map);
+		
+		PageDTO pDTO = cService.myCoupon(map);
+		System.out.println("내 쿠폰 내역 " + pDTO);
+		
+		m.addAttribute("myCoupon", pDTO);
+		m.addAttribute("search", map);
+		m.addAttribute("mDTO", session.getAttribute("login"));
+		return "myCoupon";
 	}
 }

@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,29 +77,16 @@ public class ChallengeController {
 		model.addAttribute("cDTO", cDTO);
 		System.out.println(cDTO);
 		
-		//해당 게시글의 전체 댓글 목록 가져오기
-		List<CommentsDTO> commentsList = service.selectAllComments(chall_id);
-		model.addAttribute("commentsList", commentsList);
-		//대댓글 위해 부모댓글 Map으로 따로 저장
-		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
-		for (CommentsDTO c : commentsList) {
-			parentMap.put(c.getComment_id(), c.getUserid());
-		}
-		model.addAttribute("parentMap", parentMap);
-		
-		//현재 로그인한 회원의 프로필 이미지 가져오기
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		String userid = "";
-		if (mDTO != null) { userid = mDTO.getUserid(); }
-		String currProfile = service.selectProfileImg(userid);
-		model.addAttribute("currProfile", currProfile);
-		
 		//현재 로그인한 회원이 해당 게시글에 좋아요를 눌렀는지 판단하기
-		HashMap<String, String> likedMap = new HashMap<String, String>();
-		likedMap.put("chall_id", chall_id);
-		likedMap.put("userid", userid);
-		int likedIt = service.countLikedByMap(likedMap);
-		model.addAttribute("likedIt", likedIt);
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		if (mDTO != null) { 
+			String userid = mDTO.getUserid(); 
+			HashMap<String, String> likedMap = new HashMap<String, String>();
+			likedMap.put("chall_id", chall_id);
+			likedMap.put("userid", userid);
+			int likedIt = service.countLikedByMap(likedMap);
+			model.addAttribute("likedIt", likedIt);
+		}
 		
 		return "challengeDetail";
 	}
@@ -223,31 +211,47 @@ public class ChallengeController {
 		return service.countLiked(chall_id);
 	}
 	/**
-	 * 댓글 추가
+	 * 댓글 조회
 	 */
-	@RequestMapping(value = "/challenge/comment", method = RequestMethod.POST)
-	public String addComment(CommentsDTO dto, Model model, HttpSession session) {
-		//댓글 추가 
-		service.addComment(dto);
-		
+	@RequestMapping(value = "/challenge/comment", method = RequestMethod.GET)
+	public String comments(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		//해당 게시글의 전체 댓글 목록 가져오기
-		List<CommentsDTO> commentsList = service.selectAllComments(String.valueOf(dto.getChall_id()));
-		model.addAttribute("commentsList", commentsList);
-		//대댓글 위해 부모댓글 Map으로 따로 저장
-		HashMap<Integer, String> parentMap = new HashMap<Integer, String>();
-		for (CommentsDTO c : commentsList) {
-			parentMap.put(c.getComment_id(), c.getUserid());
-		}
-		model.addAttribute("parentMap", parentMap);
+		PageDTO pDTO = service.selectAllComments(map);
+		model.addAttribute("pDTO", pDTO);
 		
 		//현재 로그인한 회원의 프로필 이미지 가져오기
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
 		String userid = "";
-		if (mDTO != null) { userid = mDTO.getUserid(); }
-		String currProfile = service.selectProfileImg(userid);
-		model.addAttribute("currProfile", currProfile);
+		if (mDTO != null) { 
+			userid = mDTO.getUserid(); 
+			String currProfile = service.selectProfileImg(userid);
+			model.addAttribute("currProfile", currProfile);
+		}
 		
 		return "challenge/comments";
+	}
+	
+	/**
+	 * 댓글 추가
+	 */
+	@RequestMapping(value = "/challenge/comment", method = RequestMethod.POST)
+	@ResponseBody
+	public int addComment(CommentsDTO dto, Model model, HttpSession session) {
+		//댓글 추가 
+		service.addComment(dto);
+		
+		//추가된 댓글의 번호 가져오기
+		int comment_id = service.getNewestComment(dto.getUserid());
+		System.out.println(comment_id);
+		
+		//해당 댓글의 페이지 구하기
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("chall_id", dto.getChall_id());
+		map.put("comment_id", comment_id);
+		int page = service.getCommentPage(map);
+		System.out.println(page);
+		
+		return page;
 	}
 	/**
 	 * 댓글 개수 구하기
@@ -256,6 +260,57 @@ public class ChallengeController {
 	@ResponseBody
 	public int countComments(@RequestParam String chall_id) {
 		return service.countComments(chall_id);
+	}
+	/**
+	 * 댓글 삭제
+	 */
+	@RequestMapping(value = "/challenge/comment/{comment_id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public int deleteComment(@PathVariable String comment_id, @RequestBody CommentsDTO dto) {
+		//해당 댓글의 페이지 구하기
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("chall_id", dto.getChall_id());
+		map.put("comment_id", Integer.parseInt(comment_id));
+		int page = service.getCommentPage(map);
+		System.out.println(page);
+		
+		//댓글 삭제
+		service.deleteComment(comment_id, String.valueOf(dto.getChall_id()));
+		
+		return page;
+	}
+	/**
+	 * 댓글 수정
+	 */
+	@RequestMapping(value = "/challenge/comment/{comment_id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public int updateComment(@PathVariable String comment_id, @RequestBody CommentsDTO dto) {
+		//해당 댓글의 페이지 구하기
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("chall_id", dto.getChall_id());
+		map.put("comment_id", Integer.parseInt(comment_id));
+		int page = service.getCommentPage(map);
+		System.out.println(page);
+		
+		//댓글 수정
+		service.updateComment(dto);
+		
+		return page;
+	}
+	/**
+	 * 신고 추가
+	 */
+	@RequestMapping(value = "/challenge/report", method = RequestMethod.POST)
+	@ResponseBody
+	public String report(@RequestParam HashMap<String, String> map) {
+		//중복 신고 확인
+		int count = service.checkReportExist(map);
+		if (count == 0) {
+			service.insertReport(map);
+			return "true";
+		} else {
+			return "false";
+		}
 	}
 	
 }

@@ -15,21 +15,24 @@
 </c:if>  
 <style>
 	a {
-		color : black;
+		color: black;
 		text-decoration: none;
 	}
+	
 	.currCategory {
-		color: green; 
+		color: green;
 		font-weight: bold;
 	}
+	
 	.tableTop {
-    	border-bottom-color: #24855B;
-    	border-bottom-width: 2.5px;
-    }
-    .paging {
-   	 	cursor: pointer;
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
 </style>
-
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -38,8 +41,7 @@
 			var order_id = $(this).attr("data-orderID");
 			var p_name = $(this).attr("data-pNAME");
 			var p_id = $(this).attr("data-pID");
-			console.log(order_id, p_name, p_id);
-		 	/* $.ajax({
+		 	$.ajax({
 				type:"post",
 				url:"/zzp/orders/review",
 				data:{
@@ -48,15 +50,16 @@
 				},
 				dataType:"text",
 				success: function (data, status, xhr) {
-					if (data == 0) {
-						chk.attr("href","reviewInsert.jsp?ORDER_ID="+ORDER_ID+"&P_NAME="+P_NAME+"&P_ID="+P_ID);
+					console.log( "==",data);
+					if (data != 0) {
+						chk.attr("href","/zzp/review/"+data);
 					} else {
-						chk.attr("href","reviewOneSelect?REVIEW_ID="+REVIEW_ID+"&P_ID="+P_ID);
+						chk.attr("href","/zzp/review?order_id="+order_id+"&p_name="+p_name+"&p_id="+p_id);
 					}
 				},
 				error: function (xhr, status, error) {
 					
-				}  */
+				}  
 			});//end ajax
 		});
 		$('.paging').on('click', function() {
@@ -81,7 +84,7 @@
 	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	   		<a href="MyCouponServlet">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${mDTO.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
 	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>

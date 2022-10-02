@@ -36,6 +36,9 @@ a {
 	text-decoration: none;
 	color: black;
 }
+.paging {
+	cursor: pointer;
+}
 
 /* 댓글 목록 */
 .card {
@@ -93,6 +96,26 @@ a {
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function () {
+		//댓글 조회
+		function getComments(chall_id, page) {
+			$.ajax({
+				url: '/zzp/challenge/comment',
+				type: 'get',
+				data: {
+					chall_id:chall_id,
+					page:page
+				},
+				dataType:"html",
+				success: function (data) {
+					$("#comment_area").html(data);
+				},
+				error: function () {
+					alert('문제가 발생했습니다. 다시 시도해 주세요.');
+				}
+			})
+		}
+		//처음 페이지 로딩시 댓글 조회
+		getComments('${cDTO.chall_id}', 1);
 		//글 삭제
 		$('#deleteChallenge').on('click', function () {
 			let mesg = '정말 삭제하시겠습니까? 한번 삭제한 글은 되돌릴 수 없습니다.';
@@ -109,6 +132,10 @@ a {
 				})
 			}
 		});
+		//댓글 페이징
+ 		$('#comment_area').on('click', '.paging', function() {
+ 			getComments('${cDTO.chall_id}', $(this).attr('data-page'));
+		})
 		//댓글 입력
 		$(".comment").on("click", ".commentAddBtn", function () {
 			let content = $(".comment_content");
@@ -126,10 +153,10 @@ a {
 						comment_content:comment_content.trim(),
 						userid:"${login.userid}",
 					},
-					dataType:"html",
+					dataType:"text",
 					success: function (data) {
 						content.val("");
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -145,7 +172,6 @@ a {
 			let parent = $(this).attr("data-parent");
 			let content = $("#reply_content"+cid);
 			let comment_content = content.val().substring(parent.length+3);
-			console.log(comment_content)
 			
 			if ("${empty login}" == "true") {
 				alert("로그인이 필요합니다.");
@@ -162,10 +188,10 @@ a {
 						parent_id:cid,
 						group_order:group
 					},
-					dataType:"html",
+					dataType:"text",
 					success: function (data) {
 						content.val("");
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -178,26 +204,26 @@ a {
 		$("#comment_area").on("click", ".commentDelBtn", function () { 
 			let mesg = "정말 삭제하시겠습니까?";
 			if (confirm(mesg)) {
+				let cid = $(this).attr("data-cid");
 				$.ajax({
-					type:"post",
-					url:"CommentsDeleteServlet",
-					data: {
-						chall_id:"${cDTO.chall_id}",
-						comment_id:$(this).attr("data-cid"),
-						userid:"${login.userid}"
+					type:"delete",
+					url:"/zzp/challenge/comment/"+cid,
+					headers: {
+						"Content-Type":"application/json"
 					},
-					dataType:"html",
+					data: JSON.stringify( 
+							{'chall_id':'${cDTO.chall_id}'} 
+					),
+					dataType:"text",
 					success: function (data) {
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
 						alert("문제가 발생했습니다. 다시 시도해 주세요.");
 					}
 				});
-			} else {
-				event.preventDefault();
-			}
+			} 
 		});
 		//댓글 수정 
 		$("#comment_area").on("click", ".commentUpdateBtn", function () { 
@@ -206,24 +232,29 @@ a {
 			let parent = $(this).attr("data-parent");
 			let comment_content = content.val();
 			
-			if (parent != "null") {
+			if (parent != "") {
 				comment_content = content.val().substring(parent.length+3);
 			}
 			if (comment_content.trim().length == 0) {
 				content.focus();
 			} else {
 				$.ajax({
-					type:"post",
-					url:"CommentsUpdateServlet",
-					data: {
-						chall_id:"${cDTO.chall_id}",
-						comment_id:cid,
-						comment_content:comment_content.trim(),
-						userid:"${login.userid}"
+					type:"put",
+					url:"/zzp/challenge/comment/"+cid,
+					headers: {
+						"Content-Type":"application/json"
 					},
-					dataType:"html",
+					data: JSON.stringify( 
+							{
+								'chall_id':'${cDTO.chall_id}',
+								'comment_id':cid,
+								'comment_content':comment_content.trim(),
+								'userid':'${login.userid}'
+							} 
+					),
+					dataType:"text",
 					success: function (data) {
-						$("#comment_area").html(data);
+						getComments('${cDTO.chall_id}', data);
 						countComments();
 					},
 					error: function () {
@@ -323,8 +354,8 @@ a {
 		$(".backList").on("click", function () {
 			let preUrl = document.referrer;
 			//게시글 업데이트한 후 이동한 페이지에서는 글작성 페이지로 돌아가지 않도록 최신글 화면으로 이동한다.
-			if (preUrl.includes("ChallengeUIServlet")) {
-				location.href = "ChallengeListServlet";
+			if (preUrl.includes("write")) {
+				location.href = "/zzp/challenge";
 			} else {
 				history.back();
 			}
@@ -353,7 +384,7 @@ a {
 				
 				$.ajax({
 					type:"post",
-					url:"ReportAddServlet",
+					url:"/zzp/challenge/report",
 					data: {
 						chall_id:chall_id,
 						comment_id:comment_id,
@@ -416,7 +447,8 @@ function displayedAt(createdAt) {
 	
 </script>
 
-<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
+<c:set var="contextPath" value="${pageContext.request.contextPath}" />
+<c:set var="commentsList" value="${pDTO.list}"/>
 <c:if test="${empty currProfile}">
 	<c:set var="currProfile" value="user.png"></c:set>
 </c:if>
@@ -453,9 +485,9 @@ function displayedAt(createdAt) {
 		</tr>
 		<tr>
 			<td colspan="2">
-			    <a href="/profile/${cDTO.userid}">
+			    <a href="/zzp/profile/${cDTO.userid}">
 				   <img src="${contextPath}/resources/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3"></a>
-				<a href="/profile/${cDTO.userid}">${cDTO.userid}</a>
+				<a href="/zzp/profile/${cDTO.userid}">${cDTO.userid}</a>
 			</td>
 		</tr>
 		<tr id="img_area">
@@ -516,103 +548,8 @@ function displayedAt(createdAt) {
                 </div>
                 
                 <div class="mt-2" id="comment_area"> 
-                <c:forEach var="c" items="${commentsList}">
-                    <div class="d-flex flex-row p-3"> 
-                      <c:if test="${c.step!=0}">
-                      	<div style="width: 60px;"></div>
-                      </c:if>
-                    	<div class="profile">
-                    		<a href="/zzp/profile/${c.userid}">
-                    			<img src="/zzp/resources/upload/profile/${c.profile_img}" width="30" height="30" class="rounded-circle mr-3"></a>
-                        </div>
-                        <div class="w-100">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex flex-row align-items-center"> 
-                                	<a href="profile/${c.userid}">
-                                	<span class="mr-2">${c.userid}</span></a> 
-                                </div> 
-                                <small id="commentTime${c.comment_id}"></small>
-                                	<script>$("#commentTime${c.comment_id}").html(displayedAt('${c.comment_created}'));</script>
-                            </div>
-                            <p class="text-justify mb-0">
-                            	<c:if test="${c.step!=0}"><span style="color: green;">@${parentMap[c.parent_id]} &nbsp;</span></c:if>
-                            	${c.comment_content}</p>
-                            <div class="d-flex flex-row user-feed"> 
-                            	<a class="reply ml-3" data-cid="${c.comment_id}" data-user="${c.userid}">답글 달기</a> &nbsp;&nbsp;
-                            	<c:choose>
-                            	  <%-- 해당 댓글의 작성자인 경우 --%>
-                            	  <c:when test="${!empty login && login.userid==c.userid}">
-									<a class="ml-3 update" data-cid="${c.comment_id}" 
-											data-parent="${parentMap[c.parent_id]}" data-content="${c.comment_content}">수정</a> &nbsp;&nbsp;
-									<a class="ml-3 commentDelBtn" data-cid="${c.comment_id}">삭제</a> 
-								  </c:when>
-								  <%-- 관리자인 경우 --%>
-								  <c:when test="${!empty login && login.role==1}">
-									<a class="ml-3 commentDelBtn" data-cid="${c.comment_id}">삭제</a> 
-								  </c:when>
-								  <%-- 그외의 경우 --%> 
-								  <c:otherwise>
-									<a class="ml-3" data-bs-toggle="modal" data-bs-target="#reportModal" 
-												data-bs-category="2" data-bs-cid="${c.comment_id}">신고</a> 
-								  </c:otherwise>
-								</c:choose>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    
-                    <%-- 답글 입력창 --%>
-                    <div id="reply${c.comment_id}" style="display: none;">
-	                    <div class="d-flex flex-row p-3">
-	                    	<div style="width: 60px;"></div>
-	                    	<div class="profile">
-	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
-	                    	</div>
-	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
-	                    		<input type="text" class="reply_content form-control" name="comment_content" id="reply_content${c.comment_id}"> 
-	                    		<button class="commentBtn commentReplyBtn" 
-	                    			data-cid="${c.comment_id}" data-group="${c.group_order}"
-	                    			data-parent="${parentMap[c.parent_id]}">입력</button>
-	                    			<%-- 답글 대상 아이디 고정 --%>
-		                    		<script type="text/javascript">
-		                    		 $("#reply_content${c.comment_id}").on("input", function () {
-		            					if (String($(this).val()).indexOf("@${c.userid}  ") == -1) {
-		            						$(this).val("@${c.userid}  ");
-		            					}
-		            				 }); 
-		                    		</script>
-	                    	</div>
-	                    </div>
-                    </div>
-                    
-                    <%-- 수정 입력창 --%>
-                    <div id="update${c.comment_id}" style="display: none;">
-	                    <div class="d-flex flex-row p-3">
-	                    	<div style="width: 60px;"></div>
-	                    	<div class="profile">
-	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
-	                    	</div>
-	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
-	                    		<input type="text" class="update_content form-control" name="comment_content" id="update_content${c.comment_id}"> 
-	                    		<button class="commentBtn commentUpdateBtn" data-cid="${c.comment_id}"
-	                    					data-parent="${parentMap[c.parent_id]}">입력</button>
-	                    			<%-- 답글 대상 아이디 고정 --%>
-		                    		<script type="text/javascript">
-		                    		 $("#update_content${c.comment_id}").on("input", function () {
-		            					if ("${parentMap[c.parent_id]}" != "null" 
-		            							&& String($(this).val()).indexOf("@${parentMap[c.parent_id]}  ") == -1 ) {
-		            						$(this).val("@${parentMap[c.parent_id]}  ");
-		            					}
-		            				 }); 
-		                    		</script>
-	                    	</div>
-	                    </div>
-                    </div>
-                    
-                </c:forEach>
+                
                 </div>
-                
-                
                 
             </div>
         

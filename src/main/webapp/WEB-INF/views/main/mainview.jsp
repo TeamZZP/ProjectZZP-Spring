@@ -66,7 +66,7 @@
 	    	<c:set var="idx" value="${fn:length(bestProdudctlist)}"></c:set>
 	    </c:if>
 	    <c:forEach var="p" items="${bestProdudctlist}" begin="0" end="${idx}">
-	      <div class="col retrieve" onclick="javascrip:location.href='productRetrieve?p_id=${p.p_id}';">
+	      <div class="col retrieve" onclick="javascrip:location.href='product/${p.p_id}';">
 	        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
 	        	style="background-image: url('resources/images/product/p_image/${p.p_image}'); background-size:cover;">
 	          <div class="d-flex flex-column h-100 p-5 pb-3 text-white fw-bold text-shadow-1">
@@ -99,7 +99,7 @@
 	    	<c:set var="idx2" value="${fn:length(bestProdudctlist)}"></c:set>
 	    </c:if>
 	    <c:forEach var="p" items="${bestProdudctlist}" begin="3" end="${idx2}">
-	   	<div class="col retrieve" onclick="javascrip:location.href='productRetrieve?p_id=${p.p_id}';">
+	   	<div class="col retrieve" onclick="javascrip:location.href='product/${p.p_id}';">
 	        <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" 
 	        	style="background-image: url('resources/images/product/p_image/${p.p_image}'); background-size:cover;">
 	          <div class="d-flex flex-column h-100 p-5 pb-3 text-white fw-bold text-shadow-1">

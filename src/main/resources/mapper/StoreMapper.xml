@@ -66,7 +66,7 @@
    p.P_CREATED ,
    p.P_STOCK 
    from product p ) 
-   order by #{sortBy} desc 
+   order by ${sortBy} asc 
   </select>
   
   <!-- 카테고리별 상품(페이징용) -->
@@ -83,7 +83,7 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
-    order by #{sortBy} desc
+    order by ${sortBy} asc
   </select>
   
   <!-- 제품상세 -->

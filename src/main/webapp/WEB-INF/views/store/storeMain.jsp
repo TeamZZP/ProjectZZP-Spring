@@ -87,13 +87,14 @@ a {
     ${banner}
     
 
-
 <%--  ${mdto}<br>
  ${zzimList}<br> --%>
  
 <c:set value="${pDTO.list}" var="Productlist" />
 
 <form action="#" id="prodForm" >    
+    <div id="categoryProductContainer" class="container ">
+
 
 <div class="row">
         <div class="col">
@@ -113,8 +114,10 @@ a {
       
 
     <div id="productContainer" class="container ">
+
  
      <div class="row">
+    
       <c:forEach var="pList" items="${Productlist}" varStatus="status">
 
 
@@ -122,7 +125,7 @@ a {
       
          <div class="hover-zoomin">
             <a href="product/${pList.p_id}"> 
-            <img src="${contextPath}/resources/images/product/p_image/${pList.p_image}">
+            <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
@@ -157,15 +160,17 @@ a {
 				<!-- Button trigger modal -->
 				 <button type="button" class="carticon btn" data-bs-toggle="modal" 
 					data-bs-target="#addcart${pList.p_id}" style="border: 0; outline: 0;">
-					<img src="${contextPath}/resources/images/product/cart.png" width="25" height="25" >
+					<img src="/zzp/resources/images/product/cart.png" width="25" height="25" >
 				</button>
 				
 				<!-- Modal -->
 				<form action="/cart/{userid}" method="post">
+
 					<input type="hidden" name="p_id" value="${pList.p_id}"> 
 					<input type="hidden" name="p_image" value="${pList.p_image}"> 
 					<input type="hidden" name="p_name" value="${pList.p_name}">
 				
+
 
 					<div class="modal fade" id="addcart${pList.p_id}"
 						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -247,15 +252,23 @@ a {
             		   
    
           </c:forEach>
+       
           
+          
+         
+          
+
+          
+       </div>
+      </div>
           <!-- 페이징 -->
-	  <div class="p-2 text-center">
+      	  <div class="p-2 text-center">
 		  <c:if test="${pDTO.prev}">   <!-- boolean타입 변수 prev가 true일 경우 (prev = startPage > 1;) -->
 		  	<a class="paging" data-page="${pDTO.startPage-1}" id="page" >prev&nbsp;&nbsp;</a>
 		  </c:if>
 		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
 			  <c:choose>
-		  		<c:when test="${p==pDTO.page}" ><b>${p}</b>&nbsp;&nbsp;</c:when>
+		  		<c:when test="${p==pDTO.page}" ><a class="paging" data-page="${p}"  id="page" >${p}&nbsp;&nbsp;</a></c:when>
 		  		<c:otherwise><a class="paging" data-page="${p}"  id="page" >${p}&nbsp;&nbsp;</a></c:otherwise>
 		  	  </c:choose>
 		  </c:forEach>
@@ -263,125 +276,126 @@ a {
 		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" >next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
 		  </c:if>
 </div>
-          
-       </div>
-      </div>
+      
 </form>
-  
 <script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script  type="text/javascript">
-	$(function() {
-		//UP버튼 수량 변화	
-		var count="1";
-		$("button[name=up]").on("click", function() {
-			var p_id = $(this).attr("data-p_id");
-			console.log(p_id +" up클릭");
-			
-			var p_amount = parseInt($("#p_amount"+p_id).val());
-			$("#p_amount"+p_id).val(parseInt(p_amount) + 1);
-			count=$("#p_amount"+p_id).val();
-			var price = parseInt($("#price"+p_id).val());
-			
-			 $("#total"+p_id).text(count*price);
-		
-			//총합 구하기
-		})//end up
-		
-		$("button[name=down]").on("click", function() {
-			var p_id = $(this).attr("data-p_id");
-			console.log(p_id +" down클릭");
-			
-			//input태그 수량변화
-			var p_amount = parseInt($("#p_amount"+p_id).val());
-			
-			if(p_amount !=1){
-			$("#p_amount"+p_id).val(parseInt(p_amount) - 1);
-			count=$("#p_amount"+p_id).val();
-			var price = parseInt($("#price"+p_id).val());
-			
-			$("#total"+p_id).text(count*price);
-			
-			}
-		})//end down
-			$("button[name=saveCart]").on("click",function(){
-			console.log("saveCart클릭됨");
-			
-			var p_id = $(this).attr("data-P_id");
-			var p_name = $(this).attr("data-p_name");
-			var p_selling_price = $(this).attr("data-p_selling_price");
-			var p_image = $(this).attr("data-p_image");
-			console.log(p_id, p_name, p_selling_price, count, p_image);
-			
-			if ("${mdto.userid}" != "") {
-				$.ajax({
-					type : "post",
-					url : "${contextPath}/cart/${mdto.userid}",
-					data : {
-						p_id : p_id,
-						p_name : p_name, 
-						p_amount : count,
-					},
-					dataType : "text",
-					success : function(data,status,xhr) {
-						console.log("장바구니에 저장되었습니다.");
-					},
-					error : function(xhr, status, error) {
-						console.log(error);
-					}
-				}); //end ajax
-				
-				$("#modalBtn2").trigger("click");
-			}else{
-				$("#modalBtn").trigger("click");
-				$("#mesg").text("로그인이 필요합니다.");
-				
-				$("#closemodal").click(function() {
-		        location.href="/login";
-		     });
-		     	
-			}
+   $(function() {
+      //UP버튼 수량 변화   
+      var count="1";
+      $("button[name=up]").on("click", function() {
+         var p_id = $(this).attr("data-p_id");
+         console.log(p_id +" up클릭");
+         
+         var p_amount = parseInt($("#p_amount"+p_id).val());
+         $("#p_amount"+p_id).val(parseInt(p_amount) + 1);
+         count=$("#p_amount"+p_id).val();
+         var price = parseInt($("#price"+p_id).val());
+         
+          $("#total"+p_id).text(count*price);
+      
+         //총합 구하기
+      })//end up
+      
+      $("button[name=down]").on("click", function() {
+         var p_id = $(this).attr("data-p_id");
+         console.log(p_id +" down클릭");
+         
+         //input태그 수량변화
+         var p_amount = parseInt($("#p_amount"+p_id).val());
+         
+         if(p_amount !=1){
+         $("#p_amount"+p_id).val(parseInt(p_amount) - 1);
+         count=$("#p_amount"+p_id).val();
+         var price = parseInt($("#price"+p_id).val());
+         
+         $("#total"+p_id).text(count*price);
+         
+         }
+      })//end down
+         $("button[name=saveCart]").on("click",function(){
+         console.log("saveCart클릭됨");
+         
+         var p_id = $(this).attr("data-P_id");
+         var p_name = $(this).attr("data-p_name");
+         var p_selling_price = $(this).attr("data-p_selling_price");
+         var p_image = $(this).attr("data-p_image");
+         console.log(p_id, p_name, p_selling_price, count, p_image);
+         
+         if ("${mdto.userid}" != "") {
+            $.ajax({
+               type : "post",
+               url : "${contextPath}/cart/${mdto.userid}",
+               data : {
+                  p_id : p_id,
+                  p_name : p_name, 
+                  p_amount : count,
+               },
+               dataType : "text",
+               success : function(data,status,xhr) {
+                  console.log("장바구니에 저장되었습니다.");
+               },
+               error : function(xhr, status, error) {
+                  console.log(error);
+               }
+            }); //end ajax
+            
+            $("#modalBtn2").trigger("click");
+         }else{
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("로그인이 필요합니다.");
+            
+            $("#closemodal").click(function() {
+              location.href="/login";
+           });
+              
+         }
 
-		}) 
-		
- 		$("button[name=back]").on("click", function() {
-			console.log("click======");
-			var p_id=$(this).attr("data-p_id");
-			console.log(p_id);
-			$("#addcart"+p_id).modal("hide");
-			$("#chkmodal"+p_id).modal("hide");
+      }) 
+      
+       $("button[name=back]").on("click", function() {
+         console.log("click======");
+         var p_id=$(this).attr("data-p_id");
+         console.log(p_id);
+         $("#addcart"+p_id).modal("hide");
+         $("#chkmodal"+p_id).modal("hide");
+
 
 		});//end fn
-		
 		
 		//페이지 선택시
 		$(".paging").on("click", function() {
 			console.log("pageChange()실행");
 			var sortBy = $("#sortBy").val();
 			var curPage = $(this).attr("data-page");
-			var c_id = 0;
-			if(${empty c_id}){
-				c_id = 0;
-			}else{
-				c_id = '${c_id}';
-			}
-	
-		    
+			var c_id = '${c_id}';
+			
 		    console.log("정렬 change");
 			console.log("sortBy:"+ sortBy);
 			console.log("c_id:"+ c_id);
+			console.log("curPage:"+ curPage);
 			
+			$(".paging").css( "color", "black");
+			$(this).css( "color", "green");
 			$.ajax({
 			   type : "get",
-			   url : "pageChange",
+			   url : "/zzp/pageChange",
 			   data : {
 			      sortBy :sortBy,
-			      c_id : c_id,
+			      c_id :c_id,
 			      curPage : curPage
 			   },
 			   dataType: "text",
 			   success : function(data,status,xhr) {
 				console.log("페이지 바꿈");
+				
+				$("#productContainer").empty();
+				$("#productContainer").append(data);
+				
+				
+				
+										 
 			  },
 			   error : function(xhr, status,error) {
 				console.log(error);
@@ -398,36 +412,36 @@ a {
 					
 			var sortBy = $("#sortBy").val();
 			var curPage = 1;
-			var c_id = 0;
-			if(${empty c_id}){
-				c_id = 0;
-			}else{
-				c_id = '${c_id}';
-			}
-	
+			var c_id = '${c_id}';
+			
 			console.log("정렬 change");
 			console.log("sortBy:"+ sortBy);
 			console.log("c_id:"+ c_id);
+			console.log("curPage:"+ curPage);
+			
+			$(".paging").css( "color", "black");
 			
 			$.ajax({
 			   type : "get",
-			   url : "pageChange",
+			   url : "/zzp/pageChange",
 			   data : {
 			      sortBy :sortBy,
-			      c_id : c_id,
+			      c_id :c_id,
 			      curPage : curPage
 			   },
 			   dataType: "text",
 			   success : function(data,status,xhr) {
 				console.log("페이지 바꿈");
+				$("#productContainer").empty();
+				 $("#productContainer").append(data);
 			  },
 			   error : function(xhr, status,error) {
 				console.log(error);
 			  }
 
-			}) //end ajax
+			}); //end ajax
 
-			});
+		});
 		
 		
 		
@@ -435,5 +449,9 @@ a {
 	
 	
 
-	
-</script>        	
+
+      
+      
+     
+    
+</script>           

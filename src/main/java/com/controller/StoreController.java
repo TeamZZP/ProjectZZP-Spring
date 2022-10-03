@@ -1,7 +1,6 @@
 package com.controller;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,13 +8,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.dto.CartDTO;
 import com.dto.CategoryDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
@@ -85,22 +84,31 @@ public class StoreController {
 	
 	@RequestMapping("/pageChange")
 	@ResponseBody
-	public void pageChange(int curPage, String sortBy, int c_id ) {
+	public ModelAndView pageChange(HttpSession session ,@RequestParam("curPage") String curPage,@RequestParam("sortBy") String sortBy,@RequestParam("c_id") String c_id) {
 		System.out.println("페이징 컨트롤러");
 		System.out.println("curPage :"+ curPage);
 		System.out.println("sortBy :"+ sortBy);
 		System.out.println("c_id :"+ c_id);
+		List<Integer> zzimList = new ArrayList<Integer>();
+		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
+		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("curPage", String.valueOf(curPage) );
+		map.put("curPage",curPage);
 		map.put("sortBy", sortBy);
-		map.put("c_id", String.valueOf(c_id));
+		map.put("c_id", c_id);
 		PageDTO pDTO = new PageDTO();
-		if(c_id==0) {
+		if(c_id.equals(0)||c_id.equals("")) {
 			pDTO=service.bestProdPaging(map);
+			System.out.println(pDTO.getList());
+			mav.addObject("pDTO", pDTO);
 		}else {
 			pDTO=service.paging(map);
+			System.out.println(pDTO.getList());
+			mav.addObject("pDTO", pDTO);
 		}
+		mav.setViewName("productPaging");
 		
+		return mav;		
 	}
 	
 	//제품상세

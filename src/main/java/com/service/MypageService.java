@@ -10,6 +10,7 @@ import com.dao.MemberDAO;
 import com.dao.MypageDAO;
 import com.dto.AddressDTO;
 import com.dto.MemberDTO;
+import com.dto.ProfileDTO;
 
 @Service
 public class MypageService {
@@ -78,6 +79,10 @@ public class MypageService {
 
 	public void updateAddress(AddressDTO address) {
 		dao.updateAddress(address);
+	}
+
+	public ProfileDTO selectProfile(String userid) {
+		return dao.selectProfile(userid);
 	}
 
 }

@@ -25,6 +25,7 @@
 		from cart c, product p 
 		where c.p_id = p.p_id and c.userid = #{userid}
 	</select>  
+	
 	<!-- 장바구니에 동일한 상품있는지 확인  -->
  	<select id="checkCart" parameterType="hashmap" resultType="int" >
  		select count(*) from cart where userid = #{userid} and p_id = #{p_id}
@@ -68,9 +69,19 @@
       	on c.p_id = p.p_id where c.p_id = #{p_id} and c.userid= #{userid}
 	</select>
 	
-
+	<!-- 찜목록갯수 -->
+ 	<select id="likeCount" parameterType="String" resultType="int">
+		select count(*) from product_liked where userid = #{userid}
+	</select>
  	
- 	
+ 	<!-- 찜리스트 -->
+ 	<select id="likeList" parameterType="String" resultType="ProductByCategoryDTO">
+	 	select pl.p_id, p.p_name,p.p_selling_price,pl.userid,(select IMAGE_ROUTE from images where p_id = pl.p_id and IMAGE_RNK = 1) as p_image 
+		from product_liked pl join product p 
+		on pl.p_id = p.p_id
+		where pl.userid = #{userid}
+		order by p_id 
+ 	</select>
 	
 	
 	

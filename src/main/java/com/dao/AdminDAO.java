@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dto.AddressDTO;
 import com.dto.CategoryDTO;
+import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
 
@@ -51,8 +52,6 @@ public class AdminDAO {
 				  Optional.ofNullable(map.get("page"))//현재 페이지 null이면
 				  .orElse(("1"))//1로 설정
 		);
-		String sortBy=Optional.ofNullable(map.get("sortBy")).orElse("created_at");//초기 정렬
-		map.put("sortBy", sortBy);
 		PageDTO pDTO=new PageDTO();
 		pDTO.setPerPage(5);//한 페이지 당 record 5개 씩
 		int perPage=pDTO.getPerPage();
@@ -71,6 +70,20 @@ public class AdminDAO {
 	//관리자페이지 회원 관리 : 전체 회원 목록 페이징 countTotal
 	private int countTotalMember(HashMap<String, String> map) {
 		return session.selectOne("AdminMapper.countTotalMember", map);
+	}
+	public void deleteMember(String userid) {
+		int n=session.delete("MypageMapper.deleteMember", userid);
+		System.out.println("회원 삭제 : "+n);
+	}
+	public MemberDTO selectMember(String userid) {
+		return session.selectOne("MypageMapper.selectMember", userid);
+	}
+	public List<AddressDTO> selectAllAddress(String userid) {
+		return session.selectList("MypageMapper.selectAllAddress", userid);
+	}
+	public void updateMember(HashMap<String, String> map) {
+		int n=session.update("AdminMapper.updateMember", map);
+		System.out.println("회원 수정 : "+n);
 	}
 
 }

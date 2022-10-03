@@ -73,10 +73,10 @@ public class StoreDAO {
 		pDTO.setPerPage(12);
 		int perPage = pDTO.getPerPage();
 		int offset = (curPage-1)*perPage;
-		List<ProductByCategoryDTO> list = template.selectList("StoreMapper.productByCategory", map,new RowBounds(offset, perPage));
+		List<ProductByCategoryDTO> list = template.selectList("StoreMapper.paging", map,new RowBounds(offset, perPage));
 		pDTO.setPage(curPage);
 		pDTO.setList(list);
-		pDTO.setTotalCount(countProductBycategory( Integer.parseInt( map.get("c_id"))));
+		pDTO.setTotalCount(countProductBycategory( Integer.parseInt(map.get("c_id"))));
 		pDTO.setStartEndPages();
 		System.out.println("DAO : 선택한 카테고리의 Productlist개수 :"+list.size());
 		return pDTO;
@@ -88,7 +88,7 @@ public class StoreDAO {
 			pDTO.setPerPage(12);
 			int perPage = pDTO.getPerPage();
 			int offset = (curPage-1)*perPage;
-			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.bestProduct",map,new RowBounds(offset, perPage));
+			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.bestProdPaging",map,new RowBounds(offset, perPage));
 			pDTO.setPage(curPage);
 			pDTO.setList(list);
 			pDTO.setTotalCount(countAllProduct());

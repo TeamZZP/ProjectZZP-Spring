@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CartDTO;
 import com.dto.MemberDTO;
+import com.dto.ProductByCategoryDTO;
 import com.service.CartService;
 import com.service.StoreService;
 
@@ -66,15 +67,16 @@ public class CartController {
 		int sum_money = service.sum_money(userid);
 		// 장바구니에 담긴 갯수
 		int cartCount = service.cartCount(userid);
-		// 찜에 담긴 갯수
-
+		// 찜목록에 담긴 갯수
+		int likeCount = service.likeCount(userid);
 		// 장바구니 전체 금액에 따라 배송비 구분
 		// 배송료 (5000만원 이상 ->무료 , 미만 -> 3000원)
 		int fee = sum_money >= 50000 ? 0 : 3000;
 		int total = sum_money + fee; // 총금액 + 배송비
 
 		totalMap.put("cartList", cartList); // 장바구니 정보 map에 저장
-		totalMap.put("count", cartCount); // 상품유무
+		totalMap.put("cartCount", cartCount); // 장바구니 갯수
+		totalMap.put("likeCount", likeCount); // 찜상품 갯수
 		totalMap.put("sum_money", sum_money); // 장바구니 전체금액
 		totalMap.put("fee", fee); // 배송비
 		totalMap.put("total", total); // 주문상품 금액
@@ -97,10 +99,10 @@ public class CartController {
 		 
 		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
 		 int n = service.cartCount(mDTO.getUserid());
-		 return n;
+		 return n; //ajax의 data로 받는 부분
 	}
 
-	/**
+	 /**
 	 * 장바구니 상품 전체 삭제
 	 */
 	
@@ -119,9 +121,15 @@ public class CartController {
 		 */
 	 @RequestMapping(value = "/cart/{cart_id}", method = RequestMethod.PUT)
 	 @ResponseBody
-	 public void update(@RequestBody HashMap<String, Object> map) { 
-		 System.out.println(map);
-		 service.cartUpdate(map);
+	 public void update(@RequestBody HashMap<String, Object> map, HttpSession session ) { 
+		 System.out.println("map>>"+map.values());
+		 service.cartUpdate(map);	
+		 
+		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
+		 String userid = mDTO.getUserid();
+		 
+		 //int sum_money = service.sum_money(userid);
+		 //return sum_money;
 		 }
 	
 	 /**
@@ -130,22 +138,16 @@ public class CartController {
 	 @RequestMapping(value = "/like/{userid}" , method = RequestMethod.GET)
 	 @ResponseBody
 	 public ModelAndView likeList(@PathVariable("userid") String userid, ModelAndView mav,HttpSession session  ) { 
-		 
 		// 찜 List
-		/*
-		 * List<Integer> zzimList = new ArrayList<Integer>();
-		 * zzimList=storeservice.zzimAllCheck(userid); List<ProductByCategoryDTO>
-		 * likelist = null; for(int i = 0; i < zzimList.size(); i++){ likelist
-		 * =storeservice.productRetrieve(zzimList.get(i)); }
-		 */
-		 
+		 List<ProductByCategoryDTO> likeList = service.likeList(userid);
 		// 찜목록에 담긴 갯수
-		 	
+		int likeCount = service.likeCount(userid);	
 		 //장바구니 담긴 갯수
 		int cartCount = service.cartCount(userid);
 		
-		mav.addObject("cartCount", cartCount); 	
+		mav.addObject("likeCount", likeCount); 	
 		mav.addObject("cartCount", cartCount);
+		mav.addObject("likeList", likeList);
 		mav.setViewName("likeList");
 			
 		return mav;

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dto.AddressDTO;
 import com.dto.MemberDTO;
+import com.dto.ProfileDTO;
 
 @Repository
 public class MypageDAO {
@@ -85,6 +86,10 @@ public class MypageDAO {
 	public void updateAddress(AddressDTO address) {
 		int n=session.update("MypageMapper.changeAddress", address);
 		System.out.println("배송지 업데이트 : "+n);
+	}
+
+	public ProfileDTO selectProfile(String userid) {
+		return session.selectOne("MypageMapper.selectProfile", userid);
 	}
 
 }

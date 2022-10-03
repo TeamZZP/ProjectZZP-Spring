@@ -50,41 +50,36 @@
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'">
-			and	upper(m.userid) like upper('%${searchValue}%')
+		<if test="searchName != null and !searchName.equals('')">
+			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
-		<if test="searchName=='username'">
-			and upper(m.username) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='phone'">
-			and m.phone like '%${searchValue}%'
-		</if>
-		<if test="searchName=='address'">
-			and upper(a.addr1) like upper('%${searchValue}%')
-		</if>				
 	</where>
-	order by ${sortBy}
+	order by
+	<if test="sortBy != null and !sortBy.equals('')">
+		${sortBy},
+	</if>
+	created_at
 </select>
+
+<!-- 회원관리 : 전체 회원 목록 페이징 countTotal -->
 <select id="countTotalMember" parameterType="hashmap" resultType="int">
 	select count(*)
 	from member m join address a
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'">
-			and upper(m.userid) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='username'">
-			and upper(m.username) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='phone'">
-			and m.phone like '%${searchValue}%'
-		</if>
-		<if test="searchName=='address'">
-			and upper(a.addr1) like upper('%${searchValue}%')
+		<if test="searchName != null and !searchName.equals('')">
+			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
 	</where>
 </select>
-  
+
+<!-- 회원 이름, 연락처 수정 -->
+<update id="updateMember" parameterType="hashmap">
+	update member
+	set username = #{username},
+		phone = #{phone}
+	where userid = #{userid}
+</update>
   </mapper>
   

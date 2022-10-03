@@ -194,7 +194,7 @@
 		   <img src="/zzp/resources/images/challenge/bubble.png" width="30" height="25"> ${c.chall_comments}
 	   </div>
 	   <div class="pb-5 text-center">
-	   		<a href="ChallengeDetailServlet?chall_id=${c.chall_id}">${c.chall_title}</a>
+	   		<a href="challenge/${c.chall_id}">${c.chall_title}</a>
 	   </div>
      </div>
 	</c:forEach>

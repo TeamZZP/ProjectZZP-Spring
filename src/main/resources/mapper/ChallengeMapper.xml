@@ -119,6 +119,29 @@
 	where chall_id=#{chall_id}
 </delete>
 
+<select id="selectChallengeByUserid" parameterType="hashmap" resultType="ChallengeDTO">
+	select * 
+	from challenge c
+	LEFT OUTER JOIN profile p on c.userid=p.userid
+	where c.userid=#{userid}
+	<if test='searchName!=null and !searchName.equals("")'>
+	and ${searchName} like '%${searchValue}%'
+	</if>
+	order by 
+	<if test="sortBy!=null">
+		${sortBy} desc,
+	</if>
+	chall_id desc
+</select>
+
+<select id="countTotalUserChallenge" resultType="int">
+	select count(*) from challenge
+	where userid=#{userid}
+	<if test='searchName!=null and !searchName.equals("")'>
+	and ${searchName} like '%${searchValue}%'
+	</if>
+</select>
+
 
 
 <!-- 댓글 -->
@@ -253,7 +276,29 @@
 	where chall_id=#{chall_id}
 </update>
 
+<select id="selectMemberStampByUserid" resultType="StampDTO">
+	select userid, stamp_id, stamp_img, stamp_name, stamp_content, stamp_num
+	from (select userid, stamp_id, count(*) as stamp_num 
+            from member_stamp 
+            group by userid, stamp_id 
+            having userid=#{userid}) m 
+    join stamp s using(stamp_id)
+	order by stamp_id desc
+</select>
 
+<select id="countTotalPageStamp" resultType="int">
+	select count(*)
+	from (select userid
+            from member_stamp 
+            group by userid, stamp_id 
+            having userid=#{userid})
+</select>
+
+<select id="countTotalStamp" resultType="int">
+	select count(*) 
+	from member_stamp 
+	where userid=#{userid}
+</select>
 
 
 <select id="selectProfileImg" resultType="string">

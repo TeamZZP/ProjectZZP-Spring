@@ -2,7 +2,7 @@ $(document).ready(function() {
 	
 	//reset 시 pw focus
 	$("#btn2").click(function() {
-		$("#passwd").focus();
+		$("#userid").focus();
 	});
 	
 	//비밀번호 재확인-키 이벤트 발생시 패스워드 일치여부 검사 

@@ -38,7 +38,6 @@
 	}
 </style>
 
-<!-- 메세지 있는 경우 modal 일단 지움* 메세지 안 뜨면 jstl로 바꿔서 추가하기 -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 	$(document).ready(function () {
@@ -50,6 +49,7 @@
 		//페이징
  		$('.paging').on('click', function() {
 			$('#page').val($(this).attr('data-page'));
+			$('#prodForm').attr('method', 'get');
 			$('#prodForm').attr('action', '/zzp/admin/product').submit();
 		})
 		//상품검색
@@ -60,19 +60,14 @@
 		$("#sortBy").on("change", function () {
 			$("#sortForm").submit();
 		});
-		//상품등록 버튼
-		$("#addProduct").click(function() {
-			location.href="../adminProductAdd.jsp";
-		});
-		//상품 상세페이지
+		//상품 상세페이지(수정 페이지)
 		$(".productDetail").click(function() {
 			let p_id = $(this).attr("data-p_id");
-			location.href="AdminProdDetailServlet?p_id="+p_id;
+			location.href="/zzp/admin/product/"+p_id;
 		});
 		//상품보기 버튼
 		$("body").on("click", "#prodDetail", function () {
 			let p_id = $(this).attr("data-id");
-			//location.href="ProductRetrieveServlet?p_id="+p_id;
 			location.href="/zzp/product/"+p_id;
 		});
 		//삭제 모달
@@ -85,7 +80,8 @@
 		});
 		//상품삭제 버튼
 		$(".delProdBtn").on("click", function (e) { //삭제모달 안의 확인버튼
-			$('#prodForm').attr('action', 'ProductDeleteServlet').submit() //form 제출
+			$('#prodForm').attr('method', 'post');
+			$('#prodForm').attr('action', '/zzp/admin/product').submit() //form 제출
 		});
 		//체크박스 전체선택
 		$("#checkAll").click(function() {
@@ -136,7 +132,7 @@
 					<option value="p_name" <c:if test="${sortBy=='p_name'}">selected</c:if>>상품명순</option>
 					<option value="p_stock" <c:if test="${sortBy=='p_stock'}">selected</c:if>>재고순</option>
 				</select>
-				<a href="adminProductAdd.jsp" class="btn btn-success" style="margin-top: -5px;">상품등록</a>
+				<a href="/zzp/admin/product/add" class="btn btn-success" style="margin-top: -5px;">상품등록</a>
 				</div>
 			</div>
 		</div>
@@ -147,6 +143,7 @@
 <div class="container col-md-auto">
 <div class="row justify-content-md-center">
 	<form id="prodForm">
+	<input type="hidden" name="_method" value="delete">
 	<input type="hidden" name="searchName" value="${searchName}">
 	<input type="hidden" name="searchValue" value="${searchValue}">
 	<input type="hidden" name="sortBy" value="${sortBy}">

@@ -21,13 +21,13 @@
 </style>
 <c:set value="${pDTO.list}" var="member_list"/>
 <!-- 관리자 페이지 회원 관리 -->
-<form action="/zzp/adminnn/${category}" id="sortForm">
+<form action="/zzp/admin/${category}" id="sortForm">
 <div class="container mt-2 mb-2">
 	<div class="row"><!-- 상단 카테고리, 검색, 정렬 -->
 		<div class="col">
 			<!-- 검색 searchName 같으면 selected -->
 				<select class="form-select" name="searchName" data-style="btn-info" id="inputGroupSelect01">
-					<option selected disabled hidden>카테고리</option>
+					<option selected disabled hidden>검색 기준</option>
 					<option value="userid"<c:if test="${searchName eq 'userid'}">selected</c:if>>아이디</option>
 					<option value="username"<c:if test="${searchName eq 'username'}">selected</c:if>>이름</option>
 					<option value="phone"<c:if test="${searchName eq 'phone'}">selected</c:if>>전화번호</option>
@@ -137,7 +137,7 @@
 		//페이징
  		$('.paging').on('click', function() {
 			$('#page').val($(this).attr('data-page'));
-			$('#memberForm').attr('action', '/zzp/adminnn/member').submit();
+			$('#memberForm').submit();
 		})
 		
 		//정렬
@@ -150,36 +150,56 @@
 			$("#sortForm").submit();
 		});//end fn
 		
+		//회원 삭제
 		$("button[name=delete]").on("click", function() {//모달의 삭제 버튼 클릭시 회원 삭제
 			var userid=$(this).data("id");
 			console.log(userid);
  			//*****ajax
-/*  			$.ajax({
-				type : "post",
-				url : "",//페이지 이동 없이 해당 url에서 작업 완료 후 데이터만 가져옴
+  			$.ajax({
+				type : "delete",
+				url : "${contextPath}/admin/member/"+userid,
 				dataType : "text",
-				data : {//서버에 전송할 데이터
+				contentType:"application/json;charset=UTF-8",//매개변수 map으로 받을 수 있도록
+				data : JSON.stringify({//서버에 전송할 데이터
 					userid : userid
-				},
+				}),
 				success : function(data, status, xhr) {
-					//alert("해당 회원이 삭제되었습니다.");
-					$("#modalBtn").trigger("click");
-					$("#mesg").text("해당 회원이 삭제되었습니다.");
-					$("#deleteMember"+userid).modal("hide");
-					$(".modal-backdrop").hide();//모달창 닫고 백드롭 hide
-					console.log("success");
+					$("#openModal").trigger("click");
+					$("#modalMesg").text("해당 회원이 삭제되었습니다.");
+					//console.log("success");
 					$("#checkDelete"+userid).parents("tr").remove();
 				},
 				error: function(xhr, status, error) {
 					alert(error);
 				}						
-			});//end ajax */
+			});//end ajax
 		});//end fn
 		
-		$("button[name=change]").on("click", function() {//수정 버튼 클릭//회원 정보 출력 페이지로 이동
+		//수정 버튼 클릭//회원 정보 출력 페이지로 이동
+		$("button[name=change]").on("click", function() {
 			var id=$(this).attr("data-id");
 			console.log(id);
-//			location.href="AccountManagementServlet?memberId="+id;
+			location.href="${contextPath}/admin/member/"+id;
 		});//end fn
 	});//end ready
 </script>
+<!-- Button trigger modal -->
+<button type="button" id="openModal" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#adminModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="adminModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <span id="modalMesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="confirm" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

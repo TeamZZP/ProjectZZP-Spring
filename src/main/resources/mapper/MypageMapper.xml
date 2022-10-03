@@ -83,4 +83,8 @@
 				default_chk = #{default_chk}
 			where address_id = #{address_id}
 		</update>
+		<select id="selectProfile" resultType="ProfileDTO">
+			select userid, profile_img, profile_txt from profile
+			where userid = #{userid}
+		</select>
 </mapper>

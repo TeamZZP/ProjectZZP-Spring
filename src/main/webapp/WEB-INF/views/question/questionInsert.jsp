@@ -49,7 +49,6 @@
 
 <form action="" id="questionForm"  method="post" encType="multipart/form-data">
 <input type="hidden" name="userid" value="${mDTO.userid}">
-<input type="hidden" name="oldFile" value="">
 <div class="container justify-content-center">
 <div class="row">
 		<table>

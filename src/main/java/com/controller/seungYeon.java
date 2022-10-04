@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -242,8 +243,8 @@ public class seungYeon {
 	/**
 	 * 쿠폰 개별 삭제
 	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.DELETE)
-	public @ResponseBody void couponDelete(String coupon_id) {
+	@RequestMapping(value = "/admin/coupon/{coupon_id}", method = RequestMethod.DELETE)
+	public @ResponseBody void couponDelete(@PathVariable String coupon_id) {
 		System.out.println("삭제할 쿠폰 아이디 " + coupon_id);
 		cService.couponDelete(coupon_id);
 	}
@@ -251,8 +252,8 @@ public class seungYeon {
 	/**
 	 * 쿠폰 전체 삭제
 	 */
-	@RequestMapping(value = "/admin/coupon/{coupon_id}", method = RequestMethod.DELETE)
-	public String couponDelAll(String coupon_id, RedirectAttributes attr) {
+	@RequestMapping(value = "/admin/coupon", method = RequestMethod.DELETE)
+	public String couponDelAll(@RequestParam String coupon_id, RedirectAttributes attr) {
 		String[] deleteId = coupon_id.split(",");
 		List<String> delCoupon = Arrays.asList(deleteId);
 		System.out.println("삭제할 쿠폰 아이디들 " + delCoupon);

@@ -162,9 +162,7 @@ public class AdminController {
 			map.put("image_rnk"+i, Integer.toString(i));
 			
 			CommonsMultipartFile uploadFile = uploadFiles[i-1];
-			
 			uploadFile(location, uploadFile);
-			
 		}
 		
 		System.out.println("addProduct map : "+map);

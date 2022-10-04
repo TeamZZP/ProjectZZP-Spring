@@ -141,5 +141,5 @@ public class AdminDAO {
 		int num = session.insert("AdminMapper.insertImages", map);
 		System.out.println("insertImages num : "+num);
 	}
-	
+
 }

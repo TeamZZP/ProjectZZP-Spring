@@ -208,7 +208,6 @@
 <div class="container col-md-10">
 <form action="/zzp/subin" method="post" enctype="multipart/form-data">
 <input type="hidden" name="userid" id="userid" value="${login.userid}">
-<%-- <input type="hidden" name="old_file" id="old_file" value="<%= profile_img %>"> --%>
 
 <div class="justify-content-center">
 <div class="row">

@@ -81,5 +81,24 @@
 		phone = #{phone}
 	where userid = #{userid}
 </update>
-  </mapper>
+
+<!-- 상품 삭제 -->
+<delete id="deleteProduct" parameterType="list">
+	delete from product where p_id in
+		<foreach item="p_id" collection="list" open="(" separator="," close=")">
+			#{p_id}
+		</foreach>
+</delete>
+
+<!-- 상품 수정페이지(상품)-->
+<select id="productRetrieve" parameterType="int" resultType="ProductDTO">
+	select * from product where p_id = #{p_id}
+</select>
+
+<!-- 상품 수정페이지(이미지)-->
+<select id="ImagesRetrieve" parameterType="int" resultType="ImagesDTO">
+    select * from images where p_id = #{p_id}
+</select>
+
+</mapper>
   

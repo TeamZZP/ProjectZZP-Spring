@@ -171,9 +171,8 @@
 		</td>
 	</tr>
 	</c:forEach>
-	<tr>
-		<td colspan="7" style="text-align: center;">
-			<!-- 페이징 -->
+</table>
+<!-- 페이징 -->
 				     <div class="p-2 text-center">
 				        <c:if test="${myOrder.prev}">
 				           <a class="paging" data-page="${myOrder.startPage-1}">prev&nbsp;&nbsp;</a>
@@ -188,9 +187,6 @@
 				           <a class="paging" data-page="${myOrder.endPage+1}">next</a>
 				        </c:if>
 				     </div>
-		</td>
-	</tr>
-</table>
 </div>
 </div>
 </div>

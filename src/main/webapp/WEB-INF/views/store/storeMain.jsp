@@ -87,11 +87,6 @@ a {
     ${banner}
     
 
-<p>main.jsp</p>
- ${mdto}<br>
- ${zzimList}<br>
-
-
 <%--  ${mdto}<br>
  ${zzimList}<br> --%>
  
@@ -122,6 +117,7 @@ a {
 
  
      <div class="row">
+    
       <c:forEach var="pList" items="${Productlist}" varStatus="status">
 
 
@@ -129,7 +125,7 @@ a {
       
          <div class="hover-zoomin">
             <a href="product/${pList.p_id}"> 
-            <img src="${contextPath}/resources/images/product/p_image/${pList.p_image}">
+            <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
@@ -164,7 +160,7 @@ a {
 				<!-- Button trigger modal -->
 				 <button type="button" class="carticon btn" data-bs-toggle="modal" 
 					data-bs-target="#addcart${pList.p_id}" style="border: 0; outline: 0;">
-					<img src="${contextPath}/resources/images/product/cart.png" width="25" height="25" >
+					<img src="/zzp/resources/images/product/cart.png" width="25" height="25" >
 				</button>
 				
 				<!-- Modal -->
@@ -256,15 +252,23 @@ a {
             		   
    
           </c:forEach>
+       
           
+          
+         
+          
+
+          
+       </div>
+      </div>
           <!-- 페이징 -->
-	  <div class="p-2 text-center">
+      	  <div class="p-2 text-center">
 		  <c:if test="${pDTO.prev}">   <!-- boolean타입 변수 prev가 true일 경우 (prev = startPage > 1;) -->
 		  	<a class="paging" data-page="${pDTO.startPage-1}" id="page" >prev&nbsp;&nbsp;</a>
 		  </c:if>
 		  <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
 			  <c:choose>
-		  		<c:when test="${p==pDTO.page}" ><b>${p}</b>&nbsp;&nbsp;</c:when>
+		  		<c:when test="${p==pDTO.page}" ><a class="paging" data-page="${p}"  id="page" >${p}&nbsp;&nbsp;</a></c:when>
 		  		<c:otherwise><a class="paging" data-page="${p}"  id="page" >${p}&nbsp;&nbsp;</a></c:otherwise>
 		  	  </c:choose>
 		  </c:forEach>
@@ -272,9 +276,7 @@ a {
 		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" >next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
 		  </c:if>
 </div>
-          
-       </div>
-      </div>
+      
 </form>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -359,83 +361,97 @@ a {
          $("#addcart"+p_id).modal("hide");
          $("#chkmodal"+p_id).modal("hide");
 
-      });//end fn
-      
-      
-      //페이지 선택시
-      $(".paging").on("click", function() {
-         console.log("pageChange()실행");
-         var sortBy = $("#sortBy").val();
-         var curPage = $(this).attr("data-page");
-         var c_id = '${c_id}';
-         
-          console.log("정렬 change");
-         console.log("sortBy:"+ sortBy);
-         console.log("c_id:"+ c_id);
-         console.log("curPage:"+ curPage);
-         
-         $.ajax({
-            type : "get",
-            url : "/zzp/pageChange",
-            data : {
-               sortBy :sortBy,
-               c_id :c_id,
-               curPage : curPage
-            },
-            dataType: "text",
-            success : function(data,status,xhr) {
-            console.log("페이지 바꿈");
-            $("#productContainer").empty();
-            $("#productContainer").append(data);
-           },
-            error : function(xhr, status,error) {
-            console.log(error);
-           }
 
-         }); //end ajax 
-      });
-      
-   
-       
-      
-      //정렬 선택시 
-         $("#sortBy").on("change", function () {
-               
-         var sortBy = $("#sortBy").val();
-         var curPage = 1;
-         var c_id = '${c_id}';
-         
-         console.log("정렬 change");
-         console.log("sortBy:"+ sortBy);
-         console.log("c_id:"+ c_id);
-         console.log("curPage:"+ curPage);
-         $.ajax({
-            type : "get",
-            url : "/zzp/pageChange",
-            data : {
-               sortBy :sortBy,
-               c_id :c_id,
-               curPage : curPage
-            },
-            dataType: "text",
-            success : function(data,status,xhr) {
-            console.log("페이지 바꿈");
-            $("#productContainer").empty();
-            $("#productContainer").append(data);
-           },
-            error : function(xhr, status,error) {
-            console.log(error);
-           }
+		});//end fn
+		
+		//페이지 선택시
+		$(".paging").on("click", function() {
+			console.log("pageChange()실행");
+			var sortBy = $("#sortBy").val();
+			var curPage = $(this).attr("data-page");
+			var c_id = '${c_id}';
+			
+		    console.log("정렬 change");
+			console.log("sortBy:"+ sortBy);
+			console.log("c_id:"+ c_id);
+			console.log("curPage:"+ curPage);
+			
+			$(".paging").css( "color", "black");
+			$(this).css( "color", "green");
+			$.ajax({
+			   type : "get",
+			   url : "/zzp/pageChange",
+			   data : {
+			      sortBy :sortBy,
+			      c_id :c_id,
+			      curPage : curPage
+			   },
+			   dataType: "text",
+			   success : function(data,status,xhr) {
+				console.log("페이지 바꿈");
+				
+				$("#productContainer").empty();
+				$("#productContainer").append(data);
+				
+				
+				
+										 
+			  },
+			   error : function(xhr, status,error) {
+				console.log(error);
+			  }
 
-         }); //end ajax
+			}); //end ajax 
+		});
+		
+	
+		 
+		
+		//정렬 선택시 
+			$("#sortBy").on("change", function () {
+					
+			var sortBy = $("#sortBy").val();
+			var curPage = 1;
+			var c_id = '${c_id}';
+			
+			console.log("정렬 change");
+			console.log("sortBy:"+ sortBy);
+			console.log("c_id:"+ c_id);
+			console.log("curPage:"+ curPage);
+			
+			$(".paging").css( "color", "black");
+			
+			$.ajax({
+			   type : "get",
+			   url : "/zzp/pageChange",
+			   data : {
+			      sortBy :sortBy,
+			      c_id :c_id,
+			      curPage : curPage
+			   },
+			   dataType: "text",
+			   success : function(data,status,xhr) {
+				console.log("페이지 바꿈");
+				$("#productContainer").empty();
+				 $("#productContainer").append(data);
+			  },
+			   error : function(xhr, status,error) {
+				console.log(error);
+			  }
 
-      });
-      
-      
-      
-   }); //end function
-   
-   
+			}); //end ajax
 
+		});
+		
+		
+		
+	}); //end function
+	
+	
+
+
+      
+      
+     
     
 </script>           

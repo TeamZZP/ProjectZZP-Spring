@@ -69,6 +69,10 @@ public class ChallengeService {
 	public int updateChallenge(HashMap<String, String> map) {
 		return dao.updateChallenge(map);
 	}
+	
+	public PageDTO selectChallengeByUserid(HashMap<String, String> map, int perPage) {
+		return dao.selectChallengeByUserid(map, perPage);
+	}
 
 	@Transactional
 	public String like(HashMap<String, String> map) {
@@ -144,6 +148,16 @@ public class ChallengeService {
 	public void insertReport(HashMap<String, String> map) {
 		dao.insertReport(map);
 	}
+
+	public PageDTO selectMemberStampByUserid(HashMap<String, String> map, int perPage) {
+		return dao.selectMemberStampByUserid(map, perPage);
+	}
+
+	public int countTotalStamp(HashMap<String, String> map) {
+		return dao.countTotalStamp(map);
+	}
+
+	
 
 
 

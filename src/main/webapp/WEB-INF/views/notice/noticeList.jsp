@@ -15,6 +15,15 @@
 	    cursor: pointer;
 	    color: green;
 	}
+	#noticeListTable {
+		text-align: center; 
+		border-collapse: collapse;
+		
+	}
+	.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
+}
 </style>
 	<c:if test="${!empty mesg}">
 		<script>
@@ -25,16 +34,9 @@
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
 	</div>
-
-	<c:if test="${mDTO.role == 1}">
-		<form method="get" action="notice/write">
-			<div style="text-align: right; padding-right: 10px;">
-				<button type="submit" class="btn btn-outline-success">공지 글쓰기</button> 
-			</div>
-		</form>
-	</c:if>
-   <table border="1" style="text-align: center; border-collapse: collapse;" class="table table-hover">
-		<tr style="background-color: #8FBC8F">
+<div style="margin: 0 100px;">
+   <table id="noticeListTable" class="table table-hover">
+		<tr class="tableTop">
 			<td>번호</td>
 			<td>제목</td>
 			<td>작성일</td>
@@ -60,30 +62,31 @@
     		<td> ${list.notice_hits} </td>
     	</tr>
     	</c:forEach>
-		<tr>
-			<td colspan="4">
-			 <%--  <c:set var="totalPage" value="${pDTO.totalCount/pDTO.perPage}" />
-			  <c:forEach var="p" begin="1" end="${totalPage+(1-(totalPage%1))%1}">
-			  	<c:choose>
-			  		<c:when test="${p==pDTO.curPage}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			  		<c:otherwise><a style='color: green; text-decoration: none;' href="notice?curPage=${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-			  	</c:choose>
-			  </c:forEach> --%>
-			   <!-- 페이징 -->
-			     <div class="p-2 text-center">
-			        <c:if test="${pDTO.prev}">
-			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
-			        </c:if>
-			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
-			           <c:choose>
-			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			              <c:otherwise><a class="paging" href="notice?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-			             </c:choose>
-			        </c:forEach>
-			        <c:if test="${pDTO.next}">
-			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
-			        </c:if>
-			     </div>
-			</td>
-		</tr>
     </table>
+    <div>
+    	<c:if test="${mDTO.role == 1}">
+			<form method="get" action="notice/write">
+				<div style="text-align: right; padding-right: 10px;">
+					<button type="submit" class="btn btn-outline-success">공지 글쓰기</button> 
+				</div>
+			</form>
+		</c:if>
+    </div>
+	<div class="p-2 text-center">
+		<c:if test="${pDTO.prev}">
+			<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+		</c:if>
+		<c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+			<c:choose>
+				<c:when test="${p==pDTO.page}">
+					<b>${p}</b>&nbsp;&nbsp;</c:when>
+				<c:otherwise>
+					<a class="paging" href="notice?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+		<c:if test="${pDTO.next}">
+			<a class="paging" data-page="${pDTO.endPage+1}">next</a>
+		</c:if>
+	</div>
+</div>

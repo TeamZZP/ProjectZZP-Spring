@@ -15,6 +15,11 @@
 	}
 	.paging {
    	 	cursor: pointer;
+   	}
+   	.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
+	} 	
 </style>
 
 <c:if test="${!empty mesg}">
@@ -24,7 +29,7 @@
 </c:if>
 	
     <table  style="text-align: center;" class="table table-hover">
-    	<tr>
+    	<tr class="tableTop">
     		<td>번호</td>
     		<td>상품명</td>
     		<td>카테고리</td>
@@ -52,30 +57,24 @@
     		<td <c:if test="${list.q_status == '답변완료'}">style="color: green;"</c:if>> ${list.q_status} </td>
     	</tr>
     </c:forEach>
-    <tr>
-		<td colspan="7">
-		 <!-- 페이징 -->
-			     <div class="p-2 text-center">
-			        <c:if test="${pDTO.prev}">
-			           <a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
-			        </c:if>
-			        <c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
-			           <c:choose>
-			              <c:when test="${p==pDTO.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			              <c:otherwise><a class="paging" href="qna?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-			             </c:choose>
-			        </c:forEach>
-			        <c:if test="${pDTO.next}">
-			           <a class="paging" data-page="${pDTO.endPage+1}">next</a>
-			        </c:if>
-			     </div>
-		</td>
-	</tr>
-    <tr>
-    	<td colspan="6"></td>
-    	<td>  
-    		<button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
-    	</td>
-    </tr>
     </table>
-   
+    <div style="text-align: right;">
+    	<button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
+    </div>
+<div class="p-2 text-center">
+	<c:if test="${pDTO.prev}">
+		<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>
+	</c:if>
+	<c:forEach var="p" begin="${pDTO.startPage}" end="${pDTO.endPage}">
+		<c:choose>
+			<c:when test="${p==pDTO.page}">
+				<b>${p}</b>&nbsp;&nbsp;</c:when>
+			<c:otherwise>
+				<a class="paging" href="qna?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a>
+			</c:otherwise>
+		</c:choose>
+	</c:forEach>
+	<c:if test="${pDTO.next}">
+		<a class="paging" data-page="${pDTO.endPage+1}">next</a>
+	</c:if>
+</div>

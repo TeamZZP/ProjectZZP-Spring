@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
+import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
+import com.dto.ProductDTO;
 import com.service.AdminService;
 
 @Controller
@@ -37,7 +39,7 @@ public class AdminController {
 	/**
 	 * 카테고리
 	 */
-	@RequestMapping(value = "/admin/{category}")
+	@RequestMapping(value = "/admin/{category}", method = RequestMethod.GET)
 	public String adminCategory(@PathVariable("category") String category, @RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		System.out.println("adminCategory category: "+category);
 		System.out.println("adminCategory map: "+map);
@@ -134,4 +136,46 @@ public class AdminController {
 		m.addFlashAttribute("mesg", "회원 정보가 수정되었습니다.");
 		return "redirect:/admin/member/"+userid;
 	}
+	/**
+	 * 상품 등록화면
+	 */
+	@RequestMapping(value = "/admin/product/add", method = RequestMethod.GET)
+	public String addProductView () {
+		return "adminProductAdd";
+	}
+	/**
+	 * 상품 등록
+	 */
+	@RequestMapping(value = "/admin/product", method = RequestMethod.POST)
+	public String addProduct () {
+		
+		
+		
+		
+		
+		return "";
+	}
+	/**
+	 * 상품 상세페이지(수정페이지)
+	 */
+	@RequestMapping(value = "/admin/product/{p_id}", method = RequestMethod.GET)
+	public String productRetrieve (@PathVariable("p_id") int p_id, Model model) {
+		 System.out.println("AdminProdDetailServlet에서 파싱한 p_id=="+p_id);
+		 ProductDTO pDTO = service.productRetrieve(p_id);
+	     List <ImagesDTO> imageList = service.ImagesRetrieve(p_id);
+		
+		 model.addAttribute("pDTO", pDTO);
+		 model.addAttribute("imageList", imageList);
+	    
+		 return "adminProductDetail";
+	}
+	/**
+	 * 상품 삭제
+	 */
+	@RequestMapping(value = "/admin/product", method = RequestMethod.DELETE)
+	public String productDelete (@RequestParam("p_id") List<String> ids, RedirectAttributes attr) {
+		service.deleteProduct(ids);
+		return "redirect:../admin/product";
+	}
+	
 }

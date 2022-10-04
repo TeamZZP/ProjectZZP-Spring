@@ -8,8 +8,10 @@
 </head>
 <body>
 	<jsp:include page="common/header.jsp" flush="true"></jsp:include><br>
-	<jsp:include page="question/FA.jsp" flush="true"></jsp:include> <br>
-	<jsp:include page="question/questionList.jsp" flush="true"></jsp:include> <br>
+	<div style="margin: 0 100px;">
+		<jsp:include page="question/FA.jsp" flush="true"></jsp:include> <br>
+		<jsp:include page="question/questionList.jsp" flush="true"></jsp:include> <br>
+	</div>
 	<jsp:include page="common/footer.jsp" flush="true"></jsp:include><br>
 </body>
 </html>

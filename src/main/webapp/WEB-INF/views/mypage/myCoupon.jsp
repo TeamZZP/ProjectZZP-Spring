@@ -114,25 +114,21 @@
 		<td> ${list.coupon_validity.substring(0,10)} </td>
 	</tr>
 	</c:forEach>
-	<tr>
-		<td colspan="6" style="text-align: center;">
-			<div class="p-2 text-center">
-				<c:if test="${myOrder.prev}">
-					 <a class="paging" data-page="${myCoupon.startPage-1}">prev&nbsp;&nbsp;</a>
-					</c:if>
-					<c:forEach var="p" begin="${myCoupon.startPage}" end="${myCoupon.endPage}">
-					<c:choose>
-						<c:when test="${p==myCoupon.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-						<c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-					</c:choose>
-					</c:forEach>
-					<c:if test="${myCoupon.next}">
-					<a class="paging" data-page="${myCoupon.endPage+1}">next</a>
-				</c:if>
-			</div>
-		</td>
-	</tr>
 </table>
+<div class="p-2 text-center">
+	<c:if test="${myOrder.prev}">
+		 <a class="paging" data-page="${myCoupon.startPage-1}">prev&nbsp;&nbsp;</a>
+	</c:if>
+	<c:forEach var="p" begin="${myCoupon.startPage}" end="${myCoupon.endPage}">
+	<c:choose>
+		<c:when test="${p==myCoupon.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
+		<c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+	</c:choose>
+	</c:forEach>
+	<c:if test="${myCoupon.next}">
+		<a class="paging" data-page="${myCoupon.endPage+1}">next</a>
+	</c:if>
+</div>
 </div>
 </div>
 </div>

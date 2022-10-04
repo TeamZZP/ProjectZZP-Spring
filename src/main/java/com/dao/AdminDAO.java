@@ -97,9 +97,15 @@ public class AdminDAO {
 	}
 	
 	//상품관리 : 상품 삭제
-	public void deleteProduct(List<String> ids) {
-		int num = session.delete("AdminMapper.deleteProduct",ids);
+	public int deleteProduct(List<String> ids) {
+		int num = session.delete("AdminMapper.deleteProduct", ids);
 		System.out.println("productDelete num : "+num);
+		return num;
+	}
+	
+	//상품관리 : 상품 삭제(이미지)
+	public List<ImagesDTO> productImages(List<String> ids) {
+		return session.selectList("AdminMapper.productImages", ids);
 	}
 	
 	//상품관리 : 상품 수정페이지(상품)
@@ -111,5 +117,30 @@ public class AdminDAO {
 	public List<ImagesDTO> ImagesRetrieve(int p_id) {
 		return session.selectList("AdminMapper.ImagesRetrieve",p_id);
 	}
+	
+	//상품관리 : 상품 등록
+	public void insertProduct(HashMap<String, String> map) {
+		int num = session.insert("AdminMapper.insertProduct", map);
+		System.out.println("insertProduct num : "+num);
+	}
+	
+	//상품관리 : 상품 수정
+	public void updateProduct(HashMap<String, String> map) {
+		int num = session.update("AdminMapper.updateProduct", map);
+		System.out.println("updateProduct num : "+num);
+	}
+	
+	//상품관리 : 상품 수정(기존 이미지 삭제)
+	public void deleteImages(HashMap<String, String> map) {
+		int num = session.delete("AdminMapper.deleteImages", map);
+		System.out.println("deleteImages num : "+num);
+	}
+	
+	//상품관리 : 상품 수정(새 이미지 등록)
+	public void insertImages(HashMap<String, String> map) {
+		int num = session.insert("AdminMapper.insertImages", map);
+		System.out.println("insertImages num : "+num);
+	}
+	
 
 }

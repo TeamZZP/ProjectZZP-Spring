@@ -57,10 +57,20 @@
     		<td <c:if test="${list.q_status == '답변완료'}">style="color: green;"</c:if>> ${list.q_status} </td>
     	</tr>
     </c:forEach>
+<<<<<<< HEAD
     </table>
     <div style="text-align: right;">
     	<button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
     </div>
+=======
+    <tr>
+    	<td colspan="6"></td>
+    	<td>  
+    		<button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
+    	</td>
+    </tr>
+    </table>
+>>>>>>> 86502862c16a230e13aebe9842ce1d7e8f6ea63f
 <div class="p-2 text-center">
 	<c:if test="${pDTO.prev}">
 		<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>

@@ -130,6 +130,12 @@ public class StoreDAO {
 		 List<ImagesDTO> list = template.selectList("StoreMapper.ImagesRetrieve", p_id);
 		return list;
 	}
+	
+	public String getFirstImage(int p_id) {
+		String firstImage = template.selectOne("StoreMapper.getFirstImage", p_id);
+		System.out.println("DAO : getFirstImage : "+firstImage);
+		return firstImage;
+	}
 
 	
 

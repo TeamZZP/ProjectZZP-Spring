@@ -142,5 +142,4 @@ public class AdminDAO {
 		System.out.println("insertImages num : "+num);
 	}
 	
-
 }

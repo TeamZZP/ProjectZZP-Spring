@@ -18,5 +18,5 @@ public class StampDTO {
 	private String stamp_name;
 	private String stamp_content;
 	private String userid;
-	
+	private int stamp_num;
 }

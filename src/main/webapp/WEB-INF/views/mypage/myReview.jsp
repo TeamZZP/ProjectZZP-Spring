@@ -143,7 +143,7 @@ a {
 			</c:choose>
 		</td>
 		<td class="align-middle text-center">
-			<div>${list.review_create.substring(0,10)}</div>
+			<div>${list.review_created.substring(0,10)}</div>
 		</td>
 		<td class="align-middle text-center">
 			<button type="button" class="btn btn-light btn-sm reviewUpdate" data-reviewID="${list.review_id}">수정</button>
@@ -151,26 +151,25 @@ a {
 		</td>
 	</tr>
 	</c:forEach>
-	<tr>
-		<td colspan="6" style="text-align: center;">
-			 <!-- 페이징 -->
-			     <div class="p-2 text-center">
-			        <c:if test="${myReview.prev}">
-			           <a class="paging" data-page="${myReview.startPage-1}">prev&nbsp;&nbsp;</a>
-			        </c:if>
-			        <c:forEach var="p" begin="${myReview.startPage}" end="${myReview.endPage}">
-			           <c:choose>
-			              <c:when test="${p==myReview.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-			              <c:otherwise><a class="paging" href=/zzp//mypage/{userid}/review?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
-			             </c:choose>
-			        </c:forEach>
-			        <c:if test="${myReview.next}">
-			           <a class="paging" data-page="${myReview.endPage+1}">next</a>
-			        </c:if>
-			     </div>
-		</td>
-	</tr>
 </table>
+<!-- 페이징 -->
+<div class="p-2 text-center">
+	<c:if test="${myReview.prev}">
+		<a class="paging" data-page="${myReview.startPage-1}">prev&nbsp;&nbsp;</a>
+	</c:if>
+	<c:forEach var="p" begin="${myReview.startPage}" end="${myReview.endPage}">
+	<c:choose>
+		<c:when test="${p==myReview.page}">
+				<b>${p}</b>&nbsp;&nbsp;</c:when>
+		<c:otherwise>
+			<a class="paging" href=/zzp//mypage/{userid}/review?page=${p}" data-page="${p}">${p}&nbsp;&nbsp;</a>
+		</c:otherwise>
+	</c:choose>
+	</c:forEach>
+	<c:if test="${myReview.next}">
+		<a class="paging" data-page="${myReview.endPage+1}">next</a>
+	</c:if>
+</div>
 </form>
 </div>
 </div>

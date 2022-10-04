@@ -50,41 +50,172 @@
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'">
-			and	upper(m.userid) like upper('%${searchValue}%')
+		<if test="searchName != null and !searchName.equals('')">
+			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
-		<if test="searchName=='username'">
-			and upper(m.username) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='phone'">
-			and m.phone like '%${searchValue}%'
-		</if>
-		<if test="searchName=='address'">
-			and upper(a.addr1) like upper('%${searchValue}%')
-		</if>				
 	</where>
-	order by ${sortBy}
+	order by
+	<if test="sortBy != null and !sortBy.equals('')">
+		${sortBy},
+	</if>
+	created_at
 </select>
+
+<!-- 회원관리 : 전체 회원 목록 페이징 countTotal -->
 <select id="countTotalMember" parameterType="hashmap" resultType="int">
 	select count(*)
 	from member m join address a
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName=='userid'">
-			and upper(m.userid) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='username'">
-			and upper(m.username) like upper('%${searchValue}%')
-		</if>
-		<if test="searchName=='phone'">
-			and m.phone like '%${searchValue}%'
-		</if>
-		<if test="searchName=='address'">
-			and upper(a.addr1) like upper('%${searchValue}%')
+		<if test="searchName != null and !searchName.equals('')">
+			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
 	</where>
 </select>
-  
-  </mapper>
+
+<!-- 회원 이름, 연락처 수정 -->
+<update id="updateMember" parameterType="hashmap">
+	update member
+	set username = #{username},
+		phone = #{phone}
+	where userid = #{userid}
+</update>
+
+<!-- 상품 삭제 -->
+<delete id="deleteProduct" parameterType="list">
+	delete from product where p_id in
+		<foreach item="p_id" collection="list" open="(" separator="," close=")">
+			#{p_id}
+		</foreach>
+</delete>
+
+<!-- 상품 삭제 : 이미지 -->
+<select id="productImages" parameterType="list" resultType="ImagesDTO">
+	select * from images where p_id in
+		<foreach item="p_id" collection="list" open="(" separator="," close=")">
+			#{p_id}
+		</foreach>
+</select>
+
+<!-- 상품 수정페이지(상품)-->
+<select id="productRetrieve" parameterType="int" resultType="ProductDTO">
+	select * from product where p_id = #{p_id}
+</select>
+
+<!-- 상품 수정페이지(이미지)-->
+<select id="ImagesRetrieve" parameterType="int" resultType="ImagesDTO">
+    select * from images where p_id = #{p_id}
+</select>
+
+<!-- 상품 등록 -->
+<insert id="insertProduct">
+	insert all
+	into product (p_id,
+		p_name,
+		p_content,
+		c_id,
+		p_cost_price,
+		p_selling_price,
+		p_discount,
+		p_created,
+		p_stock,
+		userid)
+	values (product_p_id_seq.NEXTVAL,
+		#{p_name},
+		#{p_content},
+		#{c_id},
+		#{p_cost_price},
+		#{p_selling_price},
+		#{p_discount},
+		sysdate,
+		#{p_stock},
+		'admin1')
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk1==1'>
+		values (product_p_id_seq.NEXTVAL, #{image_rnk1}, #{image_route_1}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk2==2'>
+		values (product_p_id_seq.NEXTVAL, #{image_rnk2}, #{image_route_2}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk3==3'>
+		values (product_p_id_seq.NEXTVAL, #{image_rnk3}, #{image_route_3}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk4==4'>
+		values (product_p_id_seq.NEXTVAL, #{image_rnk4}, #{image_route_4}, 'admin1', sysdate )
+	</if>
+	select * from dual
+</insert>
+
+<!-- 상품 수정 -->
+<update id="updateProduct" parameterType="hashmap">
+	update product
+	set p_name=#{p_name}, p_stock=#{p_stock}, c_id=#{c_id}, p_cost_price=#{p_cost_price}, p_selling_price=#{p_selling_price},
+		p_content=#{p_content}, p_discount=#{p_discount}
+	where p_id=#{p_id}
+</update>
+
+<!-- 상품 수정(기존 이미지 삭제) -->
+<delete id="deleteImages" parameterType="hashmap">
+	delete from images where p_id in #{p_id}
+</delete>
+
+<!-- 상품 수정(새 이미지 등록) -->
+<insert id="insertImages" parameterType="hashmap">
+insert all
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk1==1'>
+		values (#{p_id}, #{image_rnk1}, #{image_route_1}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk2==2'>
+		values (#{p_id}, #{image_rnk2}, #{image_route_2}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk3==3'>
+		values (#{p_id}, #{image_rnk3}, #{image_route_3}, 'admin1', sysdate )
+	</if>
+	into images (p_id,
+		image_rnk,
+		image_route,
+		userid,
+		update_date)
+	<if test='image_rnk4==4'>
+		values (#{p_id}, #{image_rnk4}, #{image_route_4}, 'admin1', sysdate )
+	</if>
+	select * from dual
+</insert>
+
+</mapper>
   

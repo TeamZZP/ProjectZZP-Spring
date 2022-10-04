@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
 import com.dto.PageDTO;
+import com.dto.StampDTO;
 
 @Repository
 public class ChallengeDAO {
@@ -63,6 +64,43 @@ public class ChallengeDAO {
 	public ChallengeDTO selectOneChallenge(String chall_id) {
 		return session.selectOne("ChallengeMapper.selectOneChallenge", chall_id);
 	}
+	
+	public int insertChallenge(HashMap<String, String> map) {
+		return session.insert("ChallengeMapper.insertChallenge", map);
+	}
+
+	public int deleteChallenge(String chall_id) {
+		return session.delete("ChallengeMapper.deleteChallenge", chall_id);
+	}
+
+	public int updateChallenge(HashMap<String, String> map) {
+		return session.update("ChallengeMapper.updateChallenge", map);
+	}
+	
+	public PageDTO selectChallengeByUserid(HashMap<String, String> map, int perPage) {
+		int curPage = Integer.parseInt(
+				Optional.ofNullable(map.get("page"))
+				.orElse(("1"))
+				);
+		
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(perPage);
+		int offset = (curPage - 1)*perPage;
+		
+		List<ChallengeDTO> list = session.selectList("ChallengeMapper.selectChallengeByUserid", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalUserChallenge(map));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
+	}
+	
+	private int countTotalUserChallenge(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.countTotalUserChallenge", map);
+	}
 
 	public PageDTO selectAllComments(HashMap<String, String> map) {
 		int curPage = Integer.parseInt(
@@ -102,19 +140,6 @@ public class ChallengeDAO {
 	//메인 - 뉴 챌린지
 	public List<ChallengeDTO> selectNewChallenge() {
 		return session.selectList("ChallengeMapper.selectNewChallenge");
-	}
-
-
-	public int insertChallenge(HashMap<String, String> map) {
-		return session.insert("ChallengeMapper.insertChallenge", map);
-	}
-
-	public int deleteChallenge(String chall_id) {
-		return session.delete("ChallengeMapper.deleteChallenge", chall_id);
-	}
-
-	public int updateChallenge(HashMap<String, String> map) {
-		return session.update("ChallengeMapper.updateChallenge", map);
 	}
 
 	public void insertLike(HashMap<String, String> map) {
@@ -181,6 +206,37 @@ public class ChallengeDAO {
 		int n = session.insert("ChallengeMapper.insertReport", map);
 		System.out.println("insert된 신고 수 "+n);
 	}
+
+	public PageDTO selectMemberStampByUserid(HashMap<String, String> map, int perPage) {
+		int curPage = Integer.parseInt(
+				Optional.ofNullable(map.get("page"))
+				.orElse(("1"))
+				);
+		
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(perPage);
+		int offset = (curPage - 1)*perPage;
+		
+		List<StampDTO> list = session.selectList("ChallengeMapper.selectMemberStampByUserid", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalPageStamp(map));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
+	}
+	
+	private int countTotalPageStamp(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.countTotalPageStamp", map);
+	}
+
+	public int countTotalStamp(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.countTotalStamp", map);
+	}
+
+	
 
 	
 

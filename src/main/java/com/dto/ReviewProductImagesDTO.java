@@ -21,7 +21,7 @@ public class ReviewProductImagesDTO {
 	private String review_content; 
 	private String review_rate; 
 	private String review_img; 
-	private String review_create; 
+	private String review_created; 
 	private String p_name;
 	private String p_content;
 	private int c_id;

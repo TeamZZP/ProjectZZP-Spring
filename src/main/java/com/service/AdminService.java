@@ -50,8 +50,13 @@ public class AdminService {
 	}
 		
 	//상품관리 : 상품 삭제
-	public void deleteProduct(List<String> ids) {
-		dao.deleteProduct(ids);
+	public int deleteProduct(List<String> ids) {
+		return dao.deleteProduct(ids);
+	}
+	
+	//상품관리 : 상품 삭제(이미지)
+	public List<ImagesDTO> productImages(List<String> ids) {
+		return dao.productImages(ids);
 	}
 	
 	//상품관리 : 상품 수정페이지(상품)
@@ -63,5 +68,26 @@ public class AdminService {
 	public List<ImagesDTO> ImagesRetrieve(int p_id) {
 		return dao.ImagesRetrieve(p_id);
 	}
+	
+	//상품관리 : 상품 등록
+	public void insertProduct(HashMap<String, String> map) {
+		dao.insertProduct(map);
+	}
+	
+	//상품관리 : 상품 수정
+	public void updateProduct(HashMap<String, String> map) {
+		dao.updateProduct(map);
+	}
+	
+	//상품관리 : 상품 수정(기존 이미지 삭제)
+	public void deleteImages(HashMap<String, String> map) {
+		dao.deleteImages(map);
+	}
+	
+	//상품관리 : 상품 수정(새 이미지 등록)
+	public void insertImages(HashMap<String, String> map) {
+		dao.insertImages(map);
+	}
+	
 
 }

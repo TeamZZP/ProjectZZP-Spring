@@ -67,14 +67,14 @@ public class OrderController {
 			  List<CartDTO> list = new ArrayList<CartDTO>();
 			  MemberDTO mdto = (MemberDTO)session.getAttribute("login");
 			  cdto.setUserid(mdto.getUserid());
-			  AddressDTO addrdto = myService.selectDefaultAddress(mdto.getUserid());  //주소가져오기
-			  System.out.println("address : "+ addrdto);
+			  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
+			  System.out.println("address : "+ addrList);
 			  List<MemberCouponDTO> couponList = service.selectAllCoupon(mdto.getUserid()); //쿠폰가져오기
 			  System.out.println("coupon : "+couponList);
 			  list.add(cdto);  //카트 리스트로 담기(여러개일경우의수를 생각하여)
 			  mav.addObject("cartList", list);
 			  mav.addObject("mdto", mdto);
-			  mav.addObject("addrdto", addrdto);
+			  mav.addObject("addrList", addrList);
 			  mav.addObject("couponList", couponList);
 			  mav.setViewName("orders");
 			  return mav;

@@ -92,4 +92,9 @@ public class MypageDAO {
 		return session.selectOne("MypageMapper.selectProfile", userid);
 	}
 
+	public void updateProfile(HashMap<String, String> map) {
+		int n=session.update("MypageMapper.updateProfile", map);
+		System.out.println("프로필 업데이트 : "+n);
+	}
+
 }

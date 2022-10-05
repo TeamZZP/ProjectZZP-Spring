@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.AdminDAO;
 import com.dto.AddressDTO;
@@ -73,21 +74,41 @@ public class AdminService {
 	public void insertProduct(HashMap<String, String> map) {
 		dao.insertProduct(map);
 	}
+
+	//신고관리 : 전체 조회
+	public PageDTO selectAllReport(HashMap<String, String> map) {
+		return dao.selectAllReport(map);
+	}
+
+	//주문관리 : 전체 조회
+	public PageDTO selectAllOrders(HashMap<String, String> map) {
+		return dao.selectAllOrders(map);
+	}
+	
+	//챌린지관리 : 챌린지 등록
+	@Transactional
+	public void addAdminChallenge(HashMap<String, String> map) {
+		//현재 진행중인 이 달의 챌린지 게시글 1=>0으로 변경
+		HashMap<String, Integer> updateMap = new HashMap<String, Integer>();
+		updateMap.put("before", 1);
+		updateMap.put("after", 0);
+		dao.updateChallThisMonth(updateMap);
+		
+		//챌린지 게시글 추가
+		dao.insertAdminChallenge(map);
+	}
 	
 	//상품관리 : 상품 수정
-	public void updateProduct(HashMap<String, String> map) {
-		dao.updateProduct(map);
-	}
-	
-	//상품관리 : 상품 수정(기존 이미지 삭제)
-	public void deleteImages(HashMap<String, String> map) {
+	@Transactional
+	public void productUpdate(HashMap<String, String> map) {
+		//DB 이미지 삭제
 		dao.deleteImages(map);
-	}
-	
-	//상품관리 : 상품 수정(새 이미지 등록)
-	public void insertImages(HashMap<String, String> map) {
+		//DB 상품 수정
+		dao.updateProduct(map);
+		//DB 이미지 등록
 		dao.insertImages(map);
 	}
+
 	
 
 }

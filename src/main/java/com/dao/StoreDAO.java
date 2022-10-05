@@ -46,7 +46,7 @@ public class StoreDAO {
 			pDTO.setList(list);
 			pDTO.setTotalCount(countAllProduct());
 			pDTO.setStartEndPages();
-			System.out.println("bestDAO list개수"+list.size());
+			System.out.println("bestProduct list : "+list.size());
 		 return pDTO;
 
 	}
@@ -62,7 +62,7 @@ public class StoreDAO {
 			pDTO.setList(list);
 			pDTO.setTotalCount(countProductBycategory(c_id));
 			pDTO.setStartEndPages();
-			System.out.println("DAO list개수"+list.size());
+			System.out.println("DAO list : "+list.size());
 			return pDTO;
 
 	}
@@ -135,6 +135,21 @@ public class StoreDAO {
 		String firstImage = template.selectOne("StoreMapper.getFirstImage", p_id);
 		System.out.println("DAO : getFirstImage : "+firstImage);
 		return firstImage;
+	}
+
+	public PageDTO searchProduct(String searchValue) {
+		 int curPage = 1;
+		    PageDTO pDTO = new PageDTO();
+			pDTO.setPerPage(12);
+			int perPage = pDTO.getPerPage();
+			int offset = (curPage-1)*perPage;
+			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.searchProduct",searchValue,new RowBounds(offset, perPage));
+			pDTO.setPage(curPage);
+			pDTO.setList(list);
+			pDTO.setTotalCount(countAllProduct());
+			pDTO.setStartEndPages();
+			System.out.println("searchProduct list : "+list.size());
+		 return pDTO;
 	}
 
 	

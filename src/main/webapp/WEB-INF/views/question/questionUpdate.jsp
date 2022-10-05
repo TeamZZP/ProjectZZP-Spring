@@ -108,15 +108,15 @@
 			<tr> 
 				<c:choose>
 					<c:when test="${dto.q_img == null || dto.q_img eq 'null'}">
-					<td colspan="2">
-						<input class="form-control" type="file" accept="image/*" name="qna_img" id="qFile">
-					</td>
+						<td colspan="2">
+							<input class="form-control" type="file" accept="image/*" name="qna_img" id="qFile">
+						</td>
 					</c:when>
 					<c:otherwise>
 						<td colspan="2">
 							<div>
 							  <button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-							  	<img id="upload" alt="" src="/zzp/resources/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+							  	<img id="upload" alt="" src="/zzp/resources/upload/qna/${dto.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
 							  	<input class="form-control" type="file" accept="image/*" name="qna_img">
 							</div>
 						</td>

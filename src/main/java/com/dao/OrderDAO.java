@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.MemberCouponDTO;
+import com.dto.OrderDTO;
 import com.dto.PageDTO;
 import com.dto.ProductOrderImagesDTO;
 
@@ -42,6 +44,18 @@ public class OrderDAO {
 	public List<MemberCouponDTO> selectAllCoupon(String userid) {
 		List<MemberCouponDTO> couponList = template.selectList("StoreMapper.selectAllCoupon", userid);
 		return couponList;
+	}
+	public int getOrderId() {
+		int n = template.selectOne("OrderMapper.getOrderId");
+		return n;
+	}
+	public int addOrder(OrderDTO orderDTO) {
+		int n = template.insert("OrderMapper.addOrder", orderDTO);
+		return n;
+	}
+	public int cartDelete(HashMap<String,String> map) {
+		int n = template.delete("OrderMapper.cartDelete",map);
+		return n;
 	}
 	
 }

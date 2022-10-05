@@ -55,8 +55,8 @@ public class CartService {
 		
 	}
 
-	public void cartAllDel(ArrayList<String> list) {
-		dao.cartAllDel(list);
+	public void chkdel(ArrayList<String> list) {
+		dao.chkdel(list);
 	}
 
 	public int likeCount(String userid) {
@@ -68,5 +68,11 @@ public class CartService {
 		List<ProductByCategoryDTO> list = dao.likeList(userid);
 		return list;
 	}
+
+	public List<CartDTO> orderCart(ArrayList<String> list) {
+		return dao.orderCart(list);
+	}
+
+	
 
 }

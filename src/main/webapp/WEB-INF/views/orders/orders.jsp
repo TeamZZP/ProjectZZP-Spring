@@ -202,7 +202,7 @@
                   <p>총결제금액 &nbsp;</p>
                   </div>
             
-               <div style="float: right;"><span  style="font-size:20px; font-weight: bold;">총 주문금액</span></div>
+               <div style="float: right;"><span style="font-size:20px; font-weight: bold;">총 주문금액</span></div>
                
          </div>
       <div class="form-group" style="margin-top: 150px; text-align: center;">

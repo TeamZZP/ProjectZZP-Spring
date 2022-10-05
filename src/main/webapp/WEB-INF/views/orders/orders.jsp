@@ -217,7 +217,7 @@
                   <div><span class="price" id="fee"></span>원 </div>
                   <!-- 쿠폰 -->
                   <div><span></span>
-                  <button style="padding-top: 11px;" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="couponModal">
+                  <button style="padding-top: 11px;" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#couponModal">
 					  쿠폰사용
 					</button></div>
                   <hr>

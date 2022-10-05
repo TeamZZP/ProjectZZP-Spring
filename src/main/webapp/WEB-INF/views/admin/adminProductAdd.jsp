@@ -20,10 +20,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		//취소버튼 클릭 시 목록으로
-		$("#backList").click(function() {
-			$("#categoryForm").attr("action","AdminCategoryServlet?category=product");
-		});
 		//정상가 수정 시 판매가 자동계산
 		$("#p_cost_price").keyup(function() {
 			let p_cost_price = $(this).val();
@@ -55,7 +51,7 @@
 			let image_rnk_1 = $("#image_route_1").val();
 			let image_rnk_2 = $("#image_route_2").val();
 			let image_rnk_3 = $("#image_route_3").val();
-			let route = $("#image_route_4").val();
+			let image_rnk_4 = $("#image_route_4").val();
 			let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
 			
 			if (c_id=='none') {
@@ -76,24 +72,38 @@
 			} else if (p_stock.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (image_route_1.length==0) {
+			} else if (image_rnk_1.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (image_route_2.length==0) {
+			} else if (image_rnk_2.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (image_route_3.length==0) {
+			} else if (image_rnk_3.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (image_route_4.length==0) {
+			} else if (image_rnk_4.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (!image_route.match(reg)) {
-				$("#modalBtn").click();
+			} else if (!checkFileExtension()) {
 				event.preventDefault();
 			}
 		});
- 
+		//이미지 확장자 검사
+		function checkFileExtension(){ 
+			let image_rnk_1 = $("#image_route_1").val();
+			let image_rnk_2 = $("#image_route_2").val();
+			let image_rnk_3 = $("#image_route_3").val();
+			let image_rnk_4 = $("#image_route_4").val();
+			let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
+			
+			if (image_rnk_1.match(reg) && image_rnk_2.match(reg) && image_rnk_3.match(reg) && image_rnk_4.match(reg)) {
+				return true;
+			} else {
+				$("#modalBtn").click();
+				return false;
+			}
+		}
+		
 	})//end ready
 </script>
 
@@ -180,7 +190,8 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 1</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_1" id="image_route_1" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_1" id="image_route_1" multiple> -->
+									<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_1" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -188,7 +199,8 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 2</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_2" id="image_route_2" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_2" id="image_route_2" multiple> -->
+									<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_2" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -196,7 +208,8 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 3</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_3" id="image_route_3" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_3" id="image_route_3" multiple> -->
+									<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_3" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -204,14 +217,15 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 4</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_4" id="image_route_4" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_4" id="image_route_4" multiple> -->
+									<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_4" multiple>
 						        </div>
 						    </div>
 						</div>
 						<!-- 상품등록or취소 버튼 -->
 						<div class="form-group" style="margin-top: 20px; text-align: center;">
 							<input type="submit" value="등록" id="addProd" class="btn btn-success">
-							<button id="backList" class="btn btn-success" onclick="location.href='/zzp/admin/product';">취소</button>
+							<a class="btn btn-success" onclick="location.href='/zzp/admin/product';">취소</a>
 						</div>
 				    </form>
 				</div>

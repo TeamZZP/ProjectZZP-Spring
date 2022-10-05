@@ -11,7 +11,7 @@
 
 	<!-- CommonsMultipartResolver -->
 	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-      <beans:property name="maxUploadSize" value="10485760" />
+      <beans:property name="maxUploadSize" value="1073741824" />
       <beans:property name="defaultEncoding" value="utf-8" />
 	</beans:bean>
    	

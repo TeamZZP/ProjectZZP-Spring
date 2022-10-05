@@ -44,7 +44,7 @@
 <div class="container">
    <div class="row">
       <div class="imagediv" style="text-align: center;">
-            <img class="image" src="images/ordering.png" width="900">
+            <img class="image" src="/zzp/resources/images/product/ordering.jpg" height="500" width="900">
       </div>
          
       <form action="AddOrder" method="post">
@@ -65,7 +65,7 @@
                <tr class="order_content">
                   <!-- 이미지사진  -->
                   <td >
-                  <img src="images/p_image/${cList.p_image}" width="100" style="border: 10px;" height="100"></td>
+                  <img src="/zzp/resources/images/product/p_image/${cList.p_image}" width="100" style="border: 10px;" height="100"></td>
                      <!-- 상품명  -->
                      <td style="line-height: 100px;">
                      <span name="p_name" style="font-weight: bold; margin: 8px; display: line " >${cList.p_name}</span></td>
@@ -76,8 +76,8 @@
                      <!-- 개별 총 가격 -->
                   <td style="line-height: 100px;"><span id="item_price"
                      name="item_price" style="font-weight: bold; font-size: 20px; "
-                     class="item_price">${cList.money}원</span></td>   
-                     <c:set var="sum_money" value="${cList.money+cList.money}"></c:set>
+                     class="item_price">${cList.p_selling_price}원</span></td>   
+                     <c:set var="sum_money" value="${cList.p_selling_price*cList.p_amount}"></c:set>
                </tr>
                </c:forEach>
                
@@ -128,10 +128,47 @@
                    <td></td>
                </tr>
                <tr>
-                <td>
+                <td>     <!-- 상세주소로 변경하기 -->
+                         <c:forEach items="${addrList}" var="addr">
+                         <c:if test="${addr.default_chk==1}" >
+                         
                          <input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control" value="${addr.addr1}"></td>
-                      <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control" value="${addr.addr2}">
-                        <span id="guide" style="color:#999"></span></td>
+                         <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control" value="${addr.addr2}">
+                         <span id="guide" style="color:#999"></span></td>
+                         
+                         </c:if>
+                         </c:forEach>
+                         
+                         
+                         <td><button type="button" class=" btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#otherAddr" >다른배송지</button></td>
+                        
+                <!-- 다른배송지 modal -->
+				<!-- Modal -->
+				<div class="modal fade" id="otherAddr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    					
+      						<div class="modal-header">
+        						<h5 class="modal-title" id="otherAddr">${mdto.userid}님의 다른 배송지</h5>
+        							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      						</div>
+      						
+     			 			<div class="modal-body">
+        					<c:forEach items="${addrList}" var="addr">
+        					주소별명 : ${addr.address_name}<br>
+        					주소 : ${addr.addr1} <br>
+        					</c:forEach>
+     			 			</div>
+     			 			
+     			 			<div class="modal-footer">
+       					    <button type="button" class=" btn btn-outline-success" data-bs-dismiss="modal">선택한주소로 배송</button>
+      						</div>
+      						
+    					</div>
+  					</div>
+				</div>
+			<!-- 배송지modal끝 -->
+			
                </tr>
                <tr>
                   <th style="padding-left: 50px;">배송시요청사항</th>
@@ -168,20 +205,20 @@
                <!-- 총 주문금액 -->
                
             <div>
-               <input type="hidden" id="list_size" value="${cList.size}">
-               <input type="hidden" id="Last_sum_money" name="Last_sum_money" value="${sum_money}">
+               <input type="hidden" id="list_size" value="">  <!-- 여기 -->
+               <input type="hidden" id="Last_sum_money" name="Last_sum_money" value="">  <!-- 여기 -->
                
-               <c:if test="${sum_money}>= 50000">
+               <%-- <c:if test="${sum_money}>= 50000">
                <c:choose>
                <c:set var="fee" value="0"></c:set>
                </c:choose>
                <c:otherwise>
                <c:set var="fee" value="3000"></c:set>
                </c:otherwise>
-               </c:if>
+               </c:if> --%>
                
                <input type="hidden" id="fee" name="fee" value="${fee}">
-               <input type="hidden" id="Last_total" name="Last_total" value="${sum_money+fee}">
+               <input type="hidden" id="Last_total" name="Last_total" value="">   <!-- 여기 -->
             
             	<!-- 쿠폰  -->
             	 <c:set value="${couponList}" var="coupon" />  
@@ -207,7 +244,7 @@
          </div>
       <div class="form-group" style="margin-top: 150px; text-align: center;">
            <input type="submit" value="결제하기" id="addOrder" class="btn btn-success">  
-              <input type="button" onclick="javascript:history.back();" value="취소" class="btn">
+              <input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
        </div>
           </form>
        </div> 
@@ -255,6 +292,11 @@
             event.preventDefault();
          } 
       });//end submit
+      
+      //다른배송지 선택
+      $("#otherAddr").on("click", function() {
+		
+	})
       
       
    })//end 

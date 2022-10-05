@@ -205,16 +205,9 @@
 	}
 
 </style>
-<%
-/*	ProfileDTO m_profile=(ProfileDTO) request.getAttribute("m_profile");
-	String profile_img=m_profile.getProfile_img();
-	String profile_txt=m_profile.getProfile_txt();	*/
-%>
-
 <div class="container col-md-10">
-<form action="ProfileChangeServlet" method="post" enctype="multipart/form-data">
+<form action="/zzp/subin" method="post" enctype="multipart/form-data">
 <input type="hidden" name="userid" id="userid" value="${login.userid}">
-<%-- <input type="hidden" name="old_file" id="old_file" value="<%= profile_img %>"> --%>
 
 <div class="justify-content-center">
 <div class="row">
@@ -223,14 +216,14 @@
 	  <div class="img">
 	  	<a>
 	  		<figure>
-	  			<img src="/eclipse/upload/" class="card-img-top">
+	  			<img src="/zzp/resources/upload/profile/${profile.profile_img}" class="card-img-top">
 	  			<figcaption id="changeImg"><b>프로필 이미지 변경</b></figcaption>
 	  		</figure>
 	  	</a>
 	  </div>
 	  <div class="card-body">
 	    <div class="card-title" style="padding-top: 10px;"><b>${login.username}님</b></div>
-	    <div class="profileTxt">프로필 텍스트</div>
+	    <div class="profileTxt">${profile.profile_txt}</div>
 	    <img id="changeTxt" src="images/edit.png" width="20;" style="margin-top: 10px; padding-bottom: 5px; float: right;">
 	  </div>
 	</div>

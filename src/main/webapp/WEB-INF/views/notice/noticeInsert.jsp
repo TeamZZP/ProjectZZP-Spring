@@ -35,7 +35,7 @@
 	<form method="post" action="">
 	<div class="container justify-content-center">
 	<div class="row">
-	    <table border="1" style="border-collapse: collapse;">
+	    <table>
 	    	<tr>
 	    		<td colspan="2"> 
 		    		<div class="input-group">

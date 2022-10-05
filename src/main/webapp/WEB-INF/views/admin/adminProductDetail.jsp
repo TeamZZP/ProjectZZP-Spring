@@ -26,10 +26,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
-		//취소버튼 클릭 시 목록으로
-		$("#backList").click(function() {
-			$("form").attr("action","AdminCategoryServlet?category=product");
-		});
 		//정상가 수정 시 판매가 자동계산
 		$("#p_cost_price").keyup(function() {
 			let p_cost_price = $(this).val();
@@ -63,14 +59,12 @@
 			<div class="card-header" style="text-align: left; font-weight: bold; font-size: large;">상품상세보기</div>
 				<div class="card-body">
 					<!-- Update form 시작 -->
-					<form action="AdminProdUpdateServlet" class="form-horizontal" method="post" enctype="multipart/form-data">
-					<input type="hidden" name="_method" value="put">
+					<form action="/zzp/admin/product/${pDTO.p_id}" class="form-horizontal" method="post" enctype="multipart/form-data">
 					<!-- 상품카테고리 -->
 					<div class="form-group">
 						<label for="c_id" class="cols-sm-2 control-label" style="font-weight: bold;">상품 카테고리</label>
 						<div class="cols-sm-10">
 							<div class="input-group">
-								<!-- <input type="text" class="form-control" name="c_id" /> -->
 								<label class="visually-hidden" for="autoSizingSelect">category</label>
 						    	 <select name="c_id" id="c_id" class="form-select" aria-label="Default select example">
 							        <option value="none" selected disabled hidden>카테고리 선택</option>
@@ -145,19 +139,13 @@
 					        </div>
 					    </div>
 					</div>
-					<%
-					List<ImagesDTO> ilist = (List<ImagesDTO>) request.getAttribute("imageList");
-					System.out.println("image List >> "+ilist);
-					int idx;
-					for(idx=1; idx<=ilist.size(); idx++){
-					%>
-						<input type="hidden" name="old_file<%= idx %>" id="old_file<%= idx %>" value="<%= ilist.get(idx-1).getImage_route() %>">
-					<% } %>
+					<!-- 상품 이미지 -->
 					<div class="form-group">
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 1</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_1" id="image_route_1" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_1" id="image_route_1" multiple> -->
+						        	<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_1" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -165,7 +153,8 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 2</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_2" id="image_route_2" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_2" id="image_route_2" multiple> -->
+									<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_2" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -173,7 +162,8 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 3</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_3" id="image_route_3" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_3" id="image_route_3" multiple> -->
+						        	<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_3" multiple>
 						        </div>
 						    </div>
 						</div>
@@ -181,15 +171,20 @@
 						    <label for="image_route" class="cols-sm-2 control-label" style="font-weight: bold;">상품이미지 4</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-									<input class="form-control" type="file" accept="image/*" name="image_route_4" id="image_route_4" multiple>
+									<!-- <input class="form-control" type="file" accept="image/*" name="image_route_4" id="image_route_4" multiple> -->
+						        	<input class="form-control" type="file" accept="image/*" name="image_route" id="image_route_4" multiple>
 						        </div>
 						    </div>
 						</div>
+						<!-- 기존 상품 이미지명 -->
+						<c:forEach var="i" items="${imageList}">
+							<input type="hidden" name="old_image_route" value="${i.image_route}">
+						</c:forEach>
 						
 					<!-- 상품수정or취소 버튼 -->
 					<div class="form-group" style="margin-top: 20px; text-align: center;">
 						<input type="submit" value="수정" id="updateProd" class="btn btn-success">
-						<button id="backList" class="btn btn-success">취소</button>
+						<a class="btn btn-success" onclick="location.href='/zzp/admin/product';">취소</a>
 					</div>
 				    </form>
 				</div>

@@ -1,5 +1,10 @@
 package com.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
@@ -147,22 +153,44 @@ public class AdminController {
 	 * 상품 등록
 	 */
 	@RequestMapping(value = "/admin/product", method = RequestMethod.POST)
-	public String addProduct () {
+	public String addProduct (@RequestParam HashMap<String, String> map, @RequestParam("image_route") CommonsMultipartFile [] uploadFiles) {
 		
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		for (int i = 1; i <= uploadFiles.length; i++) {
+			System.out.println(uploadFiles[i-1].getOriginalFilename());
+			map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
+			map.put("image_rnk"+i, Integer.toString(i));
+			
+			CommonsMultipartFile uploadFile = uploadFiles[i-1];
+			uploadFile(location, uploadFile);
+		}
 		
+		System.out.println("addProduct map : "+map);
+		service.insertProduct(map);
 		
+		return "redirect:../admin/product";
+	}
+	/**
+	 * 상품 등록(upload폴더 이미지 등록)
+	 */
+	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
+		String originalFileName= uploadFile.getOriginalFilename();
 		
-		
-		return "";
+		File f= new File(location, originalFileName);
+		try {
+			uploadFile.transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	/**
 	 * 상품 상세페이지(수정페이지)
 	 */
 	@RequestMapping(value = "/admin/product/{p_id}", method = RequestMethod.GET)
 	public String productRetrieve (@PathVariable("p_id") int p_id, Model model) {
-		 System.out.println("AdminProdDetailServlet에서 파싱한 p_id=="+p_id);
 		 ProductDTO pDTO = service.productRetrieve(p_id);
 	     List <ImagesDTO> imageList = service.ImagesRetrieve(p_id);
+	     System.out.println(imageList);
 		
 		 model.addAttribute("pDTO", pDTO);
 		 model.addAttribute("imageList", imageList);
@@ -170,12 +198,93 @@ public class AdminController {
 		 return "adminProductDetail";
 	}
 	/**
+	 * 상품 수정
+	 */
+	@RequestMapping(value = "/admin/product/{p_id}", method = RequestMethod.POST)
+	public String updateProduct (@RequestParam HashMap<String, String> map, @RequestParam("old_image_route") String [] old_image_routes,
+			@RequestParam("image_route") CommonsMultipartFile [] uploadFiles) {
+		/*
+		 * for (int i = 0; i < uploadFiles.length; i++) {
+		 * System.out.println("length "+uploadFiles.length); if
+		 * (uploadFiles[0].getOriginalFilename().equals("")) {
+		 * System.out.println("비어있음"); for (int j = 0; j < old_image_routes.length; j++)
+		 * { System.out.println(old_image_routes[j]); } } }
+		 */
+		
+		if (uploadFiles[0].getOriginalFilename().equals("")) {
+			System.out.println("비어있음");
+		}
+		
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		
+		/*
+		 * for (CommonsMultipartFile uploadFile : uploadFiles) { if (uploadFile==null) {
+		 * service.updateProduct(map); //product만 수정 } else { //기존 파일 삭제 for (int i = 0;
+		 * i < old_image_routes.length; i++) {
+		 * System.out.println("old_image_routes : "+old_image_routes[i]);
+		 * deleteFile(location, old_image_routes[i]); } //새 파일 업로드 for (int i = 1; i <=
+		 * uploadFiles.length; i++) {
+		 * System.out.println("uploadFiles : "+uploadFiles[i-1].getOriginalFilename());
+		 * map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
+		 * map.put("image_rnk"+i, Integer.toString(i));
+		 * 
+		 * uploadFile = uploadFiles[i-1]; uploadFile(location, uploadFile); }
+		 * System.out.println(map); service.deleteImages(map);
+		 * service.updateProduct(map); service.insertImages(map); } }
+		 */
+		
+		
+		/*
+		 * //1.이미지 수정 안 하는 경우 if (uploadFiles[0]==null && old_image_routes.length==4) {
+		 * service.updateProduct(map); //product만 수정 } //2.이미지 수정하는 경우 else { String
+		 * location =
+		 * "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		 * //2-1.전체 파일 수정 if (uploadFiles.length==4) { //기존 파일 삭제 for (int i = 0; i <
+		 * old_image_routes.length; i++) {
+		 * System.out.println("old_image_routes : "+old_image_routes[i]);
+		 * deleteFile(location, old_image_routes[i]); } //새 파일 업로드 for (int i = 1; i <=
+		 * uploadFiles.length; i++) {
+		 * System.out.println("uploadFiles : "+uploadFiles[i-1].getOriginalFilename());
+		 * map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
+		 * map.put("image_rnk"+i, Integer.toString(i));
+		 * 
+		 * CommonsMultipartFile uploadFile = uploadFiles[i-1]; uploadFile(location,
+		 * uploadFile); } System.out.println(map); service.deleteImages(map);
+		 * service.updateProduct(map); service.insertImages(map); } //2-2. 일부 파일 수정 else
+		 * {
+		 * 
+		 * } }
+		 */
+		return "redirect:/admin/product";
+	}
+	/**
 	 * 상품 삭제
 	 */
 	@RequestMapping(value = "/admin/product", method = RequestMethod.DELETE)
 	public String productDelete (@RequestParam("p_id") List<String> ids, RedirectAttributes attr) {
-		service.deleteProduct(ids);
+		System.out.println(ids);
+		List <ImagesDTO> imageList = service.productImages(ids);
+		System.out.println(imageList);
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		
+		int num = service.deleteProduct(ids);
+		if (num > 0) {
+			for (ImagesDTO imagesDTO : imageList) {
+				deleteFile(location, imagesDTO.getImage_route());//폴더에서 파일 삭제
+			}
+		}
 		return "redirect:../admin/product";
+	}
+	/**
+	 * 상품 삭제(upload폴더 이미지 삭제)
+	 */
+	private void deleteFile(String location, String fileName) {
+		Path file = Paths.get(location+"//"+fileName);
+		try {
+			Files.deleteIfExists(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -71,19 +71,21 @@
 					$.each(allDel, function (i, e) {
 						delId += e.value + ",";
 					});
-					$("#couponForm").attr("action", "/zzp/admin/coupon/{coupon_id}?coupon_id="+delId).submit();
+					$("#couponForm").attr("action", "/zzp/admin/coupon?coupon_id="+delId).submit();
 				});
 			}
 		});
 		$(".delCoupon").click(function () {
-			var couponId = $(this).attr("data-couponId");
+			var coupon_id = $(this).attr("data-couponId");
+			var del = $(this);
+			console.log(coupon_id);
 			$.ajax({
 				type:"delete",
-				url:"/zzp/admin/coupon?coupon_id="+couponId,
+				url:"/zzp/admin/coupon/"+coupon_id,
 				datatype:"text",
 				success: function (data, status, xhr) { 
+					del.parents().filter("tr").remove();
 					alert("쿠폰 삭제 완료");
-					$(this).parents().filter("tr").remove();
 				},
 				error: function (xhr, status, error) {
 					
@@ -161,26 +163,9 @@
 					<button type="button" data-couponId="${list.coupon_id}" class="couponUpdate btn btn-outline-success btn-sm">
 						수정
 					</button>
-					<button type="button" data-couponId="${list.coupon_id}" class="delCoupon btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#delCoupon">
+					<button type="button" data-couponId="${list.coupon_id}" class="delCoupon btn btn-outline-dark btn-sm"><!--  data-bs-toggle="modal" data-bs-target="#delCoupon" -->
 						삭제
 					</button>
-					<div class="modal fade modal-first" id="delCoupon" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-					  <div class="modal-dialog">
-					    <div class="modal-content">
-					      <div class="modal-header">
-					        <h5 class="modal-title" id="staticBackdropLabel">쿠폰 삭제</h5>
-					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					      </div>
-					      <div class="modal-body">
-					      	  선택한 쿠폰을 삭제하시겠습니까?
-					      </div>
-					      <div class="modal-footer">
-					        <button type="submit" data-couponId="${list.coupon_id}" class="btn btn-success">삭제</button>
-					        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-					      </div>
-					    </div> 
-					  </div>
-					</div>
 				</td>
 		</c:forEach>
 			</tr>
@@ -191,7 +176,6 @@
 				선택삭제
 			</button>
 		  </div>
-		  
 			<div class="modal fade" id="checkVal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
 			  <div class="modal-dialog" role="document">
 			    <div class="modal-content">

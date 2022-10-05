@@ -73,7 +73,7 @@ $(document).ready(function () {
 <div class="container mt-2 mb-2">
 	<div class="row">
 		  <div class="col">
-		    <form action="AdminCategoryServlet">
+		    <form action="/zzp/admin/challenge">
 		    	<input type="hidden" name="page" value="1" id="page">
 		  		<input type="hidden" name="category" value="challenge">
 				  <select name="searchName" class="form-select searchName" data-style="btn-info" id="inputGroupSelect01">

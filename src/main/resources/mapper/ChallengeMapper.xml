@@ -411,4 +411,12 @@
 	</if>
 </update>
 
+<update id="updateStamp" parameterType="hashmap">
+	update stamp
+	set stamp_img=#{stamp_img},
+		stamp_name=#{stamp_name},
+		stamp_content=#{stamp_content}
+	where chall_id=#{chall_id}
+</update>
+
 </mapper>

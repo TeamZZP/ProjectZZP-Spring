@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.AdminDAO;
 import com.dto.AddressDTO;
@@ -88,6 +89,30 @@ public class AdminService {
 	public void insertImages(HashMap<String, String> map) {
 		dao.insertImages(map);
 	}
+
+	//신고관리 : 전체 조회
+	public PageDTO selectAllReport(HashMap<String, String> map) {
+		return dao.selectAllReport(map);
+	}
+
+	//주문관리 : 전체 조회
+	public PageDTO selectAllOrders(HashMap<String, String> map) {
+		return dao.selectAllOrders(map);
+	}
+	
+	//챌린지관리 : 챌린지 등록
+	@Transactional
+	public void addAdminChallenge(HashMap<String, String> map) {
+		//현재 진행중인 이 달의 챌린지 게시글 1=>0으로 변경
+		HashMap<String, Integer> updateMap = new HashMap<String, Integer>();
+		updateMap.put("before", 1);
+		updateMap.put("after", 0);
+		dao.updateChallThisMonth(updateMap);
+		
+		//챌린지 게시글 추가
+		dao.insertAdminChallenge(map);
+	}
+
 	
 
 }

@@ -168,100 +168,88 @@ public class seungYeon {
 	/**
 	 * 관리자 페이지 쿠폰 조회
 	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.GET)
-	public String couponSelect(@RequestParam Map<String, String> map, Model m, HttpSession session) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		if (mDTO.getRole() == 1) {
-			System.out.println(map);
-			System.out.println("페이지, 검색어, 유저아이디 " + map);
-
-			PageDTO pDTO = cService.couponSelect(map);
-			System.out.println("쿠폰 내역 " + pDTO);
-
-			m.addAttribute("coupon", pDTO);
-			m.addAttribute("search", map);
-			m.addAttribute("mDTO", session.getAttribute("login"));
-		}
-		return "adminCoupon";
-	}
-
-	/**
-	 * 쿠폰 추가 페이지 가기
-	 */
-	@RequestMapping(value = "/admin/coupon/write", method = RequestMethod.GET)
-	public String couponInsertPage(HttpSession session) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		return "adminCouponInsert";
-	}
-
-	/**
-	 * 쿠폰 등록
-	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.POST)
-	public String couponInsert(HttpSession session, CouponDTO dto, RedirectAttributes attr) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		if (mDTO.getRole() == 1) {
-			System.out.println("등록할 쿠폰 내용 " + dto);
-			cService.couponInsert(dto);
-
-			attr.addFlashAttribute("mesg", "쿠폰이 등록 되었습니다.");
-		}
-		return "redirect:/admin/coupon";
-	}
-
-	/**
-	 * 쿠폰 수정 페이지 가기
-	 */
-	@RequestMapping(value = "/admin/coupon/{coupon_id}", method = RequestMethod.GET)
-	public String couponUpatePage(@PathVariable String coupon_id, HttpSession session, Model m) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		if (mDTO.getRole() == 1) {
-			System.out.println("수정할 쿠폰  " + coupon_id);
-			CouponDTO dto = cService.couponOneSelect(coupon_id);
-			System.out.println("수정할 쿠폰 내용 " + dto);
-
-			m.addAttribute("coupon", dto);
-		}
-		return "adminCouponUpdate";
-	}
-
-	/**
-	 * 쿠폰 수정
-	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.PUT)
-	public String couponUpdate(CouponDTO dto, HttpSession session, RedirectAttributes attr) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		if (mDTO.getRole() == 1) {
-			System.out.println("수정할 쿠폰 번호  " + dto);
-			cService.couponUpdate(dto);
-		}
-		attr.addFlashAttribute("mesg", "쿠폰이 수정 되었습니다.");
-
-		return "redirect:/admin/coupon";
-	}
-
-	/**
-	 * 쿠폰 개별 삭제
-	 */
-	@RequestMapping(value = "/admin/coupon/{coupon_id}", method = RequestMethod.DELETE)
-	public @ResponseBody void couponDelete(@PathVariable String coupon_id) {
-		System.out.println("삭제할 쿠폰 아이디 " + coupon_id);
-		cService.couponDelete(coupon_id);
-	}
-
-	/**
-	 * 쿠폰 전체 삭제
-	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.DELETE)
-	public String couponDelAll(@RequestParam String coupon_id, RedirectAttributes attr) {
-		String[] deleteId = coupon_id.split(",");
-		List<String> delCoupon = Arrays.asList(deleteId);
-		System.out.println("삭제할 쿠폰 아이디들 " + delCoupon);
-		cService.couponAllDel(delCoupon);
-
-		attr.addFlashAttribute("mesg", "선택한 쿠폰이 삭제 되었습니다.");
-
-		return "redirect:/admin/coupon";
-	}
+	/*
+	 * @RequestMapping(value = "/admin/coupon", method = RequestMethod.GET) public
+	 * String couponSelect(@RequestParam Map<String, String> map, Model m,
+	 * HttpSession session) { MemberDTO mDTO = (MemberDTO)
+	 * session.getAttribute("login"); if (mDTO.getRole() == 1) {
+	 * System.out.println(map); System.out.println("페이지, 검색어, 유저아이디 " + map);
+	 * 
+	 * PageDTO pDTO = cService.couponSelect(map); System.out.println("쿠폰 내역 " +
+	 * pDTO);
+	 * 
+	 * m.addAttribute("coupon", pDTO); m.addAttribute("search", map);
+	 * m.addAttribute("mDTO", session.getAttribute("login")); } return
+	 * "adminCoupon"; }
+	 * 
+	 *//**
+		 * 쿠폰 추가 페이지 가기
+		 */
+	/*
+	 * @RequestMapping(value = "/admin/coupon/write", method = RequestMethod.GET)
+	 * public String couponInsertPage(HttpSession session) { MemberDTO mDTO =
+	 * (MemberDTO) session.getAttribute("login"); return "adminCouponInsert"; }
+	 * 
+	 *//**
+		 * 쿠폰 등록
+		 */
+	/*
+	 * @RequestMapping(value = "/admin/coupon", method = RequestMethod.POST) public
+	 * String couponInsert(HttpSession session, CouponDTO dto, RedirectAttributes
+	 * attr) { MemberDTO mDTO = (MemberDTO) session.getAttribute("login"); if
+	 * (mDTO.getRole() == 1) { System.out.println("등록할 쿠폰 내용 " + dto);
+	 * cService.couponInsert(dto);
+	 * 
+	 * attr.addFlashAttribute("mesg", "쿠폰이 등록 되었습니다."); } return
+	 * "redirect:/admin/coupon"; }
+	 * 
+	 *//**
+		 * 쿠폰 수정 페이지 가기
+		 */
+	/*
+	 * @RequestMapping(value = "/admin/coupon/{coupon_id}", method =
+	 * RequestMethod.GET) public String couponUpatePage(@PathVariable String
+	 * coupon_id, HttpSession session, Model m) { MemberDTO mDTO = (MemberDTO)
+	 * session.getAttribute("login"); if (mDTO.getRole() == 1) {
+	 * System.out.println("수정할 쿠폰  " + coupon_id); CouponDTO dto =
+	 * cService.couponOneSelect(coupon_id); System.out.println("수정할 쿠폰 내용 " + dto);
+	 * 
+	 * m.addAttribute("coupon", dto); } return "adminCouponUpdate"; }
+	 * 
+	 *//**
+		 * 쿠폰 수정
+		 */
+	/*
+	 * @RequestMapping(value = "/admin/coupon", method = RequestMethod.PUT) public
+	 * String couponUpdate(CouponDTO dto, HttpSession session, RedirectAttributes
+	 * attr) { MemberDTO mDTO = (MemberDTO) session.getAttribute("login"); if
+	 * (mDTO.getRole() == 1) { System.out.println("수정할 쿠폰 번호  " + dto);
+	 * cService.couponUpdate(dto); } attr.addFlashAttribute("mesg",
+	 * "쿠폰이 수정 되었습니다.");
+	 * 
+	 * return "redirect:/admin/coupon"; }
+	 * 
+	 *//**
+		 * 쿠폰 개별 삭제
+		 */
+	/*
+	 * @RequestMapping(value = "/admin/coupon/{coupon_id}", method =
+	 * RequestMethod.DELETE) public @ResponseBody void couponDelete(@PathVariable
+	 * String coupon_id) { System.out.println("삭제할 쿠폰 아이디 " + coupon_id);
+	 * cService.couponDelete(coupon_id); }
+	 * 
+	 *//**
+		 * 쿠폰 전체 삭제
+		 *//*
+			 * @RequestMapping(value = "/admin/coupon", method = RequestMethod.DELETE)
+			 * public String couponDelAll(@RequestParam String coupon_id, RedirectAttributes
+			 * attr) { String[] deleteId = coupon_id.split(","); List<String> delCoupon =
+			 * Arrays.asList(deleteId); System.out.println("삭제할 쿠폰 아이디들 " + delCoupon);
+			 * cService.couponAllDel(delCoupon);
+			 * 
+			 * attr.addFlashAttribute("mesg", "선택한 쿠폰이 삭제 되었습니다.");
+			 * 
+			 * return "redirect:/admin/coupon"; }
+			 */
 
 }

@@ -74,21 +74,6 @@ public class AdminService {
 	public void insertProduct(HashMap<String, String> map) {
 		dao.insertProduct(map);
 	}
-	
-	//상품관리 : 상품 수정
-	public void updateProduct(HashMap<String, String> map) {
-		dao.updateProduct(map);
-	}
-	
-	//상품관리 : 상품 수정(기존 이미지 삭제)
-	public void deleteImages(HashMap<String, String> map) {
-		dao.deleteImages(map);
-	}
-	
-	//상품관리 : 상품 수정(새 이미지 등록)
-	public void insertImages(HashMap<String, String> map) {
-		dao.insertImages(map);
-	}
 
 	//신고관리 : 전체 조회
 	public PageDTO selectAllReport(HashMap<String, String> map) {
@@ -111,6 +96,17 @@ public class AdminService {
 		
 		//챌린지 게시글 추가
 		dao.insertAdminChallenge(map);
+	}
+	
+	//상품관리 : 상품 수정
+	@Transactional
+	public void productUpdate(HashMap<String, String> map) {
+		//DB 이미지 삭제
+		dao.deleteImages(map);
+		//DB 상품 수정
+		dao.updateProduct(map);
+		//DB 이미지 등록
+		dao.insertImages(map);
 	}
 
 	

@@ -31,12 +31,15 @@ import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
 import com.service.AdminService;
+import com.service.CouponService;
 
 @Controller
 public class AdminController {
 	
 	@Autowired
 	private AdminService service;
+	@Autowired
+	CouponService cService;
 	
 	/**
 	 * 메인 화면

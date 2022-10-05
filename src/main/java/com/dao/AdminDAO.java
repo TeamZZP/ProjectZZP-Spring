@@ -16,6 +16,8 @@ import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
 import com.dto.ProductDTO;
+import com.dto.ProductOrderImagesDTO;
+import com.dto.ReportDTO;
 
 @Repository
 public class AdminDAO {
@@ -140,6 +142,67 @@ public class AdminDAO {
 	public void insertImages(HashMap<String, String> map) {
 		int num = session.insert("AdminMapper.insertImages", map);
 		System.out.println("insertImages num : "+num);
+	}
+	
+	//신고관리 : 전체 조회
+	public PageDTO selectAllReport(HashMap<String, String> map) {
+		int curPage = Integer.parseInt(
+				  Optional.ofNullable(map.get("page"))
+				  .orElse(("1"))
+		);
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(10);
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage-1)*perPage;
+		
+		List<ReportDTO> list = session.selectList("AdminMapper.selectAllReport", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalReport(map));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
+	}
+	private int countTotalReport(HashMap<String, String> map) {
+		return session.selectOne("AdminMapper.countTotalReport", map);
+	}
+	
+	//주문관리 : 전체 조회
+	public PageDTO selectAllOrders(HashMap<String, String> map) {
+		int curPage = Integer.parseInt(
+				  Optional.ofNullable(map.get("page"))
+				  .orElse(("1"))
+		);
+		PageDTO pDTO = new PageDTO();
+		pDTO.setPerPage(10);
+		int perPage = pDTO.getPerPage();
+		int offset = (curPage-1)*perPage;
+		
+		List<ProductOrderImagesDTO> list = session.selectList("AdminMapper.selectAllOrders", map, new RowBounds(offset, perPage));
+		
+		pDTO.setPage(curPage);
+		pDTO.setList(list);
+		pDTO.setTotalCount(countTotalOrders(map));
+		
+		pDTO.setStartEndPages();
+		
+		return pDTO;
+	}
+	private int countTotalOrders(HashMap<String, String> map) {
+		return session.selectOne("AdminMapper.countTotalOrders", map);
+	}
+	
+	//챌린지관리 : 챌린지 등록
+	public void updateChallThisMonth(HashMap<String, Integer> map) {
+		int n = session.update("ChallengeMapper.updateChallThisMonth", map);
+		System.out.println(n+"개의 이달의 챌린지 레코드 상태 변경");
+	}
+
+	public void insertAdminChallenge(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertAdminChallenge", map);
+		System.out.println(n+"개의 챌린지와 도장 레코드 추가");
 	}
 
 }

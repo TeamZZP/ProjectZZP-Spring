@@ -423,10 +423,12 @@
 	where chall_id=#{chall_id}
 </update>
 
+
 <update id="updateOrder">
 	update orders
 	set order_state=#{status}
 	where concat(order_id, p_id)=#{id}
 </update>
+
 
 </mapper>

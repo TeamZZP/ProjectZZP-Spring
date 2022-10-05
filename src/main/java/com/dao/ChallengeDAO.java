@@ -241,10 +241,12 @@ public class ChallengeDAO {
 		System.out.println("update된 도장 수 "+n);
 	}
 
+
 	public void updateOrder(HashMap<String, String> map) {
 		int n = session.update("ChallengeMapper.updateOrder", map);
 		System.out.println("update된 주문 수 "+n);
 	}
+
 
 	
 

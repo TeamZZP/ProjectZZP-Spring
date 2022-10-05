@@ -25,13 +25,16 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
+import com.dto.ChallengeDTO;
 import com.dto.CouponDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
 import com.service.AdminService;
+import com.service.ChallengeService;
 import com.service.CouponService;
+import com.util.Upload;
 
 @Controller
 public class AdminController {
@@ -39,7 +42,9 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	@Autowired
-	CouponService cService;
+	private CouponService cService;
+	@Autowired
+	private ChallengeService chService;
 	
 	/**
 	 * 메인 화면
@@ -59,6 +64,7 @@ public class AdminController {
 		model.addAttribute("searchName", map.get("searchName"));
 		model.addAttribute("searchValue", map.get("searchValue"));
 		model.addAttribute("sortBy", map.get("sortBy"));
+		model.addAttribute("status", map.get("status"));
 		
 		String url = null;
 		PageDTO pDTO = null;
@@ -72,6 +78,7 @@ public class AdminController {
 			model.addAttribute("category", "member");//카테고리를 member로 저장
 			url = "adminMember";
 		} 
+		
 		//전체 상품 목록
 		else if (category.equals("product")) {
 			pDTO = service.selectAllProduct(map);
@@ -80,21 +87,30 @@ public class AdminController {
 			model.addAttribute("category", "product");
 			url = "adminProduct";
 		} 
-		//관리자 작성 챌린지 목록
-		else if (category.equals("challenge")) {
-			
+		
+		//주문 목록
+		else if (category.equals("order")) {
+			pDTO = service.selectAllOrders(map);
+			url = "adminOrder";
 		}
-		//전체 신고 목록
-		else if (category.equals("report")) {
-			
-		}
+		
 		//쿠폰 목록
 		else if (category.equals("coupon")) {
 			
 		}
-		//주문 목록
-		else if (category.equals("order")) {
+		
+		//관리자 작성 챌린지 목록
+		else if (category.equals("challenge")) {
+			map.put("userid", "admin1");
 			
+			pDTO = chService.selectChallengeByUserid(map, 10);
+			url = "adminChallenge";
+		}
+		
+		//전체 신고 목록
+		else if (category.equals("report")) {
+			pDTO = service.selectAllReport(map);
+			url = "adminReport";
 		}
 		
 		model.addAttribute("pDTO", pDTO);
@@ -391,4 +407,51 @@ public class AdminController {
 		return "redirect:/admin/coupon";
 	}
 	
+	/**
+	 * 관리자 챌린지 상세보기
+	 */
+	@RequestMapping(value = "/admin/challenge/{chall_id}", method = RequestMethod.GET)
+	public String detailChallenge(@PathVariable String chall_id, Model model) {
+		ChallengeDTO dto = chService.selectOneChallenge(chall_id);
+		model.addAttribute("dto", dto);
+		return "adminChallengeDetail";
+	}
+	/**
+	 * 관리자 챌린지 작성 페이지
+	 */
+	@RequestMapping(value = "/admin/challenge/write", method = RequestMethod.GET)
+	public String writeChallenge() {
+		return "adminChallengeWrite";
+	}
+	/**
+	 * 관리자 챌린지 업로드
+	 */
+	@RequestMapping(value = "/admin/challenge", method = RequestMethod.POST)
+	public String uploadChallenge(
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile chall_img,
+			@RequestParam("stamp_img") CommonsMultipartFile stamp_img) {
+		String challOriginalFileName= chall_img.getOriginalFilename();
+		String stampOriginalFileName= stamp_img.getOriginalFilename();
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		
+		Upload.uploadFile(location, chall_img);
+		Upload.uploadFile(location, stamp_img);
+		
+		map.put("chall_img", challOriginalFileName);
+		map.put("stamp_img", stampOriginalFileName);
+		System.out.println(map);
+		service.addAdminChallenge(map);
+		
+		return "redirect:/admin/challenge";
+	}
+	/**
+	 * 관리자 챌린지 수정 페이지
+	 */
+	@RequestMapping(value = "/admin/challenge/write/{chall_id}", method = RequestMethod.GET)
+	public String updateChallenge(@PathVariable String chall_id, Model model) {
+		ChallengeDTO dto = chService.selectOneChallenge(chall_id);
+		model.addAttribute("dto", dto);
+		return "adminChallengeWrite";
+	}
 }

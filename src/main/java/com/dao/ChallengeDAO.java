@@ -98,7 +98,7 @@ public class ChallengeDAO {
 		return pDTO;
 	}
 	
-	private int countTotalUserChallenge(HashMap<String, String> map) {
+	public int countTotalUserChallenge(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.countTotalUserChallenge", map);
 	}
 
@@ -234,6 +234,11 @@ public class ChallengeDAO {
 
 	public int countTotalStamp(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.countTotalStamp", map);
+	}
+
+	public void updateStamp(HashMap<String, String> map) {
+		int n = session.update("ChallengeMapper.updateStamp", map);
+		System.out.println("update된 도장 수 "+n);
 	}
 
 	

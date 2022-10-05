@@ -74,6 +74,11 @@ public class StoreService {
 		return list;
 	}
 
+	public String getFirstImage(int p_id) {
+		String firstImage = dao.getFirstImage(p_id);
+		System.out.println("Service : getFirstImage : "+firstImage);
+		return firstImage;
+	}
 
 
 	

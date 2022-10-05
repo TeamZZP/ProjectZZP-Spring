@@ -128,11 +128,47 @@
                    <td></td>
                </tr>
                <tr>
-                <td>
+                <td>     <!-- 상세주소로 변경하기 -->
+                         <c:forEach items="${addrList}" var="addr">
+                         <c:if test="${addr.default_chk==1}" >
+                         
                          <input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control" value="${addr.addr1}"></td>
-                      <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control" value="${addr.addr2}">
-                        <span id="guide" style="color:#999"></span></td>
-                        <td><button>다른배송지</button></td>
+                         <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control" value="${addr.addr2}">
+                         <span id="guide" style="color:#999"></span></td>
+                         
+                         </c:if>
+                         </c:forEach>
+                         
+                         
+                         <td><button type="button" class=" btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#otherAddr" >다른배송지</button></td>
+                        
+                <!-- 다른배송지 modal -->
+				<!-- Modal -->
+				<div class="modal fade" id="otherAddr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  					<div class="modal-dialog">
+    					<div class="modal-content">
+    					
+      						<div class="modal-header">
+        						<h5 class="modal-title" id="otherAddr">${mdto.userid}님의 다른 배송지</h5>
+        							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      						</div>
+      						
+     			 			<div class="modal-body">
+        					<c:forEach items="${addrList}" var="addr">
+        					주소별명 : ${addr.address_name}<br>
+        					주소 : ${addr.addr1} <br>
+        					</c:forEach>
+     			 			</div>
+     			 			
+     			 			<div class="modal-footer">
+       					    <button type="button" class=" btn btn-outline-success" data-bs-dismiss="modal">선택한주소로 배송</button>
+      						</div>
+      						
+    					</div>
+  					</div>
+				</div>
+			<!-- 배송지modal끝 -->
+			
                </tr>
                <tr>
                   <th style="padding-left: 50px;">배송시요청사항</th>
@@ -203,12 +239,12 @@
                   <p>총결제금액 &nbsp;</p>
                   </div>
             
-               <div style="float: right;"><span  style="font-size:20px; font-weight: bold;">총 주문금액</span></div>
+               <div style="float: right;"><span style="font-size:20px; font-weight: bold;">총 주문금액</span></div>
                
          </div>
       <div class="form-group" style="margin-top: 150px; text-align: center;">
            <input type="submit" value="결제하기" id="addOrder" class="btn btn-success">  
-              <input type="button" onclick="javascript:history.back();" value="취소" class="btn">
+              <input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
        </div>
           </form>
        </div> 
@@ -256,6 +292,11 @@
             event.preventDefault();
          } 
       });//end submit
+      
+      //다른배송지 선택
+      $("#otherAddr").on("click", function() {
+		
+	})
       
       
    })//end 

@@ -18,7 +18,7 @@
 	<div class="container justify-content-center">
 	<div class="row">
 		<input type="hidden" name="nId" value="${dto.notice_id}">
-		<table border="1" style="border-collapse: collapse;">
+		<table style="border-collapse: collapse;">
 			<tr>
 				<td colspan="2"> 
 					<div class="input-group">
@@ -29,10 +29,16 @@
 			</tr>
 			<tr>
 				<td>
-					 작성일 <input type="text" class="form-control" value="${dto.notice_created.substring(0,10)}">
+					<div class="input-group">
+						 <span class="input-group-text"> 작성일</span>
+						 <input type="text" class="form-control" value="${dto.notice_created.substring(0,10)}">
+					 </div>
 				</td>
 				<td>
-					조회수 <input type="text" class="form-control" value="${dto.notice_hits}">
+					<div class="input-group">
+						 <span class="input-group-text"> 조회수</span>
+						 <input type="text" class="form-control" value="${dto.notice_hits}">
+					</div>
 				</td>
 			</tr>
 			<tr>

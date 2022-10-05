@@ -25,13 +25,16 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
+import com.dto.ChallengeDTO;
 import com.dto.CouponDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
 import com.service.AdminService;
+import com.service.ChallengeService;
 import com.service.CouponService;
+import com.util.Upload;
 
 @Controller
 public class AdminController {
@@ -39,7 +42,9 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 	@Autowired
-	CouponService cService;
+	private CouponService cService;
+	@Autowired
+	private ChallengeService chService;
 	
 	/**
 	 * 메인 화면
@@ -59,6 +64,7 @@ public class AdminController {
 		model.addAttribute("searchName", map.get("searchName"));
 		model.addAttribute("searchValue", map.get("searchValue"));
 		model.addAttribute("sortBy", map.get("sortBy"));
+		model.addAttribute("status", map.get("status"));
 		
 		String url = null;
 		PageDTO pDTO = null;
@@ -72,29 +78,37 @@ public class AdminController {
 			model.addAttribute("category", "member");//카테고리를 member로 저장
 			url = "adminMember";
 		} 
+		
 		//전체 상품 목록
 		else if (category.equals("product")) {
 			pDTO = service.selectAllProduct(map);
 			System.out.println("product pDTO : "+pDTO);
-			
-			model.addAttribute("category", "product");
 			url = "adminProduct";
 		} 
-		//관리자 작성 챌린지 목록
-		else if (category.equals("challenge")) {
-			
+		
+		//주문 목록
+		else if (category.equals("order")) {
+			pDTO = service.selectAllOrders(map);
+			url = "adminOrder";
 		}
-		//전체 신고 목록
-		else if (category.equals("report")) {
-			
-		}
+		
 		//쿠폰 목록
 		else if (category.equals("coupon")) {
 			
 		}
-		//주문 목록
-		else if (category.equals("order")) {
+		
+		//관리자 작성 챌린지 목록
+		else if (category.equals("challenge")) {
+			map.put("userid", "admin1");
 			
+			pDTO = chService.selectChallengeByUserid(map, 10);
+			url = "adminChallenge";
+		}
+		
+		//전체 신고 목록
+		else if (category.equals("report")) {
+			pDTO = service.selectAllReport(map);
+			url = "adminReport";
 		}
 		
 		model.addAttribute("pDTO", pDTO);
@@ -209,58 +223,33 @@ public class AdminController {
 	@RequestMapping(value = "/admin/product/{p_id}", method = RequestMethod.POST)
 	public String updateProduct (@RequestParam HashMap<String, String> map, @RequestParam("old_image_route") String [] old_image_routes,
 			@RequestParam("image_route") CommonsMultipartFile [] uploadFiles) {
-		/*
-		 * for (int i = 0; i < uploadFiles.length; i++) {
-		 * System.out.println("length "+uploadFiles.length); if
-		 * (uploadFiles[0].getOriginalFilename().equals("")) {
-		 * System.out.println("비어있음"); for (int j = 0; j < old_image_routes.length; j++)
-		 * { System.out.println(old_image_routes[j]); } } }
-		 */
-		
-		if (uploadFiles[0].getOriginalFilename().equals("")) {
-			System.out.println("비어있음");
-		}
 		
 		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
 		
-		/*
-		 * for (CommonsMultipartFile uploadFile : uploadFiles) { if (uploadFile==null) {
-		 * service.updateProduct(map); //product만 수정 } else { //기존 파일 삭제 for (int i = 0;
-		 * i < old_image_routes.length; i++) {
-		 * System.out.println("old_image_routes : "+old_image_routes[i]);
-		 * deleteFile(location, old_image_routes[i]); } //새 파일 업로드 for (int i = 1; i <=
-		 * uploadFiles.length; i++) {
-		 * System.out.println("uploadFiles : "+uploadFiles[i-1].getOriginalFilename());
-		 * map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
-		 * map.put("image_rnk"+i, Integer.toString(i));
-		 * 
-		 * uploadFile = uploadFiles[i-1]; uploadFile(location, uploadFile); }
-		 * System.out.println(map); service.deleteImages(map);
-		 * service.updateProduct(map); service.insertImages(map); } }
-		 */
+		for (int i = 1; i <= old_image_routes.length; i++) {
+			//이미지 새로 등록하지 않은 경우
+			if (uploadFiles[i-1].getOriginalFilename().equals("") || uploadFiles[i-1].getOriginalFilename()==null) {
+				//기존 파일 map에 저장
+				 map.put("image_route_"+i, old_image_routes[i-1]);
+				 map.put("image_rnk"+i, Integer.toString(i));
+			} 
+			//이미지 새로 등록한 경우
+			else {
+				//새 파일 map에 저장
+				 map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
+				 map.put("image_rnk"+i, Integer.toString(i));
+				 //기존 파일 삭제
+				 deleteFile(location, old_image_routes[i-1]);
+				 //새 파일 등록
+				 CommonsMultipartFile uploadFile = uploadFiles[i-1]; 
+				 uploadFile(location, uploadFile); 
+			}
+		}
 		
+		System.out.println("updateProduct : "+map);
+		//product+images 수정
+		service.productUpdate(map);
 		
-		/*
-		 * //1.이미지 수정 안 하는 경우 if (uploadFiles[0]==null && old_image_routes.length==4) {
-		 * service.updateProduct(map); //product만 수정 } //2.이미지 수정하는 경우 else { String
-		 * location =
-		 * "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
-		 * //2-1.전체 파일 수정 if (uploadFiles.length==4) { //기존 파일 삭제 for (int i = 0; i <
-		 * old_image_routes.length; i++) {
-		 * System.out.println("old_image_routes : "+old_image_routes[i]);
-		 * deleteFile(location, old_image_routes[i]); } //새 파일 업로드 for (int i = 1; i <=
-		 * uploadFiles.length; i++) {
-		 * System.out.println("uploadFiles : "+uploadFiles[i-1].getOriginalFilename());
-		 * map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
-		 * map.put("image_rnk"+i, Integer.toString(i));
-		 * 
-		 * CommonsMultipartFile uploadFile = uploadFiles[i-1]; uploadFile(location,
-		 * uploadFile); } System.out.println(map); service.deleteImages(map);
-		 * service.updateProduct(map); service.insertImages(map); } //2-2. 일부 파일 수정 else
-		 * {
-		 * 
-		 * } }
-		 */
 		return "redirect:/admin/product";
 	}
 	/**
@@ -391,4 +380,51 @@ public class AdminController {
 		return "redirect:/admin/coupon";
 	}
 	
+	/**
+	 * 관리자 챌린지 상세보기
+	 */
+	@RequestMapping(value = "/admin/challenge/{chall_id}", method = RequestMethod.GET)
+	public String detailChallenge(@PathVariable String chall_id, Model model) {
+		ChallengeDTO dto = chService.selectOneChallenge(chall_id);
+		model.addAttribute("dto", dto);
+		return "adminChallengeDetail";
+	}
+	/**
+	 * 관리자 챌린지 작성 페이지
+	 */
+	@RequestMapping(value = "/admin/challenge/write", method = RequestMethod.GET)
+	public String writeChallenge() {
+		return "adminChallengeWrite";
+	}
+	/**
+	 * 관리자 챌린지 업로드
+	 */
+	@RequestMapping(value = "/admin/challenge", method = RequestMethod.POST)
+	public String uploadChallenge(
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile chall_img,
+			@RequestParam("stamp_img") CommonsMultipartFile stamp_img) {
+		String challOriginalFileName= chall_img.getOriginalFilename();
+		String stampOriginalFileName= stamp_img.getOriginalFilename();
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		
+		Upload.uploadFile(location, chall_img);
+		Upload.uploadFile(location, stamp_img);
+		
+		map.put("chall_img", challOriginalFileName);
+		map.put("stamp_img", stampOriginalFileName);
+		System.out.println(map);
+		service.addAdminChallenge(map);
+		
+		return "redirect:/admin/challenge";
+	}
+	/**
+	 * 관리자 챌린지 수정 페이지
+	 */
+	@RequestMapping(value = "/admin/challenge/write/{chall_id}", method = RequestMethod.GET)
+	public String updateChallenge(@PathVariable String chall_id, Model model) {
+		ChallengeDTO dto = chService.selectOneChallenge(chall_id);
+		model.addAttribute("dto", dto);
+		return "adminChallengeWrite";
+	}
 }

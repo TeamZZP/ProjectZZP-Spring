@@ -25,5 +25,6 @@ public class ChallengeDTO {
 	private int chall_this_month;
 	private String profile_img;
 	private String stamp_img;
+	private String stamp_name;
 	private String stamp_content;
 }

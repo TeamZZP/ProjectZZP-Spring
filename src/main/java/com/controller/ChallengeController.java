@@ -30,6 +30,7 @@ import com.dto.CommentsDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.service.ChallengeService;
+import com.util.Upload;
 
 @Controller
 public class ChallengeController {
@@ -107,30 +108,13 @@ public class ChallengeController {
 		String originalFileName= uploadFile.getOriginalFilename();
 		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
 		
-		uploadFile(location, uploadFile);
+		Upload.uploadFile(location, uploadFile);
 		
 		map.put("chall_img", originalFileName);
 		int n = service.insertChallenge(map);
 		System.out.println("insert 개수 : "+n);
 		
 		return "redirect:/challenge";
-	}
-	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
-		long size = uploadFile.getSize();
-		String name= uploadFile.getName();
-		String originalFileName= uploadFile.getOriginalFilename();
-		String contentType= uploadFile.getContentType();
-		System.out.println("size:  "+ size);
-		System.out.println("name:  "+ name);
-		System.out.println("originalFileName:  "+ originalFileName);
-		System.out.println("contentType:  "+ contentType);
-		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 챌린지 삭제
@@ -144,15 +128,7 @@ public class ChallengeController {
 		
 		if (n > 0) {
 			String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
-			deleteFile(location, chall_img);
-		}
-	}
-	private void deleteFile(String location, String fileName) {
-		Path file = Paths.get(location+"//"+fileName);
-		try {
-			Files.deleteIfExists(file);
-		} catch (IOException e) {
-			e.printStackTrace();
+			Upload.deleteFile(location, chall_img);
 		}
 	}
 	/**
@@ -180,8 +156,8 @@ public class ChallengeController {
 		//사진이 바뀐 경우
 		if (old_file == null || old_file.length() == 0) {
 			old_file = service.selectOneChallenge(chall_id).getChall_img();
-			deleteFile(location, old_file);
-			uploadFile(location, uploadFile);
+			Upload.deleteFile(location, old_file);
+			Upload.uploadFile(location, uploadFile);
 			
 			chall_img = originalFileName;
 		}

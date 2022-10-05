@@ -149,9 +149,12 @@
 </select>
 
 <select id="selectAllCoupon" parameterType="String" resultType="MemberCouponDTO">
-select * from membere_coupon where userid = #{userid}
+select * from member_coupon where userid = #{userid}
 </select>
   
+  <select id="getFirstImage" parameterType="int" resultType="String">
+   select image_route from images where p_id= #{p_id} and image_rnk=1
+  </select>
  
   
   </mapper>

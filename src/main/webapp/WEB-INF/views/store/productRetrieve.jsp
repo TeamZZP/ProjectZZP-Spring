@@ -20,34 +20,14 @@
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 
- function order(p_id) {
-   
-   $.ajax({
-      type: "post",
-      utl : "castingCartDTO",
-      data: {
-         p_id : p_id,
-         userid: userid,
-         p_amount : p_amount,
-         p_image : p_image,
-         p_name : p_name,
-         p_selling_price : p_selling_price,
-         userid : userid
-      },
-      dataType: "text",
-      success : function(data,status,xhr) {
-         
-      location.href="orders";
-      },
-      error : function(xhr, status,error) {
-         console.log(error);
-      }
-      
-      
-   })//end order ajax 
-   
-   
-}//end order 
+  $(function () {
+	
+	
+})
+
+
+
+
 
 </script>
 
@@ -65,7 +45,7 @@
 <c:set value="${zzim}" var="zzim" />
 
 
-   <form  name="goodRetrieveForm" action="#" method="get">
+   <form  name="goodRetrieveForm" id="goodRetrieveForm" action="${contextPath}/orders/checkout" method="post">
       <div class="row">
          <div class="col-md-1"></div>
          <div class="col-md-5">
@@ -80,6 +60,7 @@
                      src="/zzp/resources/images/product/p_image/${image.image_route}"
                      class="img-thumbnail" style="height: 500; width: 600; " ></td>
                      <input type="hidden" name="p_image" id="p_image" value="${image.image_route}">
+                    
                </tr>
               </c:if>  
                <tr>
@@ -99,6 +80,9 @@
          <div class="col-md-1"></div>
          <div class="col-md-5" >
             <table class="item_info" style="line-height: 70px;">
+             <input type="hidden" name="p_id" id="p_id" value="${p.p_id}">
+             <input type="hidden" name="p_name" id="p_name" value="${p.p_name}">
+             <input type="hidden" name="p_selling_price" id="p_selling_price" value="${p.p_selling_price}">
                <!-- 상품 설명 -->
             
                <tr>
@@ -192,13 +176,13 @@
             </c:choose>
                </a></td> 
                      
-                  <td><button type="submit" class="btn btn-success" onclick="order('${p.p_id}')">주문하기</button>
+                  <td><button type="submit"  class="btn btn-success" data-p_id = "${p.p_id}" data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${imageList}" id="toOrder">주문하기</button>
                   </td>
                   
                   <td>
                   <!-- Button trigger modal -->
                   <button  type="button" class="btn btn-success" name="cart" id="cart${p.p_id}" data-P_id = "${p.p_id}"
-                  data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk==1}">
+                  data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk}">
                   장바구니
                   </button>
                   <!-- Modal -->

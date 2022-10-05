@@ -48,8 +48,8 @@
 		delete from cart where cart_id =#{cart_id}
 	</delete>
 	
-	<!-- 장바구니 비우기 -->
-	<delete id="cartAllDel" parameterType="arrayList">
+	<!-- 선택 된 상품 삭제-->
+	<delete id="chkdel" parameterType="arrayList">
 		delete from cart
 		where cart_id
 		in
@@ -83,7 +83,19 @@
 		order by p_id 
  	</select>
 	
+	<!-- 선택한 상품 주문 -->
+	<select id="orderCart" parameterType="arraylist" resultType="CartDTO">
+	select c.cart_id,p.p_name,c.p_amount,p.p_selling_price,p.p_id,c.userid, p_selling_price*p_amount money,
+		(select IMAGE_ROUTE from images where p_id = c.p_id and IMAGE_RNK = 1) as p_image 
+      	from cart c join product p 
+      	on c.p_id = p.p_id where cart_id
 	
+	 IN
+	 <foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+	 </foreach>
+	</select>
 	
 	
 	

@@ -60,9 +60,9 @@ public class CartDAO {
 		
 	}
 
-	public void cartAllDel(ArrayList<String> list) {
-		session.delete("CartMapper.cartAllDel",list);
-		System.out.println("장바구니 비우기성공");
+	public void chkdel(ArrayList<String> list) {
+		session.delete("CartMapper.chkdel",list);
+		System.out.println("선택 삭제");
 	}
 
 	public int likeCount(String userid) {
@@ -73,6 +73,11 @@ public class CartDAO {
 	public List<ProductByCategoryDTO> likeList(String userid) {
 		List<ProductByCategoryDTO> list = session.selectList("CartMapper.likeList",userid);
 		return list;
+	}
+
+	public List<CartDTO> orderCart(ArrayList<String> list) {
+		List<CartDTO> cartList = session.selectList("CartMapper.orderCart",list);
+		return cartList; 
 	}
 	
 	

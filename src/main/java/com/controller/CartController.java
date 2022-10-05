@@ -16,12 +16,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dto.AddressDTO;
 import com.dto.CartDTO;
+import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.ProductByCategoryDTO;
 import com.service.CartService;
+import com.service.MypageService;
+import com.service.OrderService;
 import com.service.StoreService;
 
 @Controller
@@ -31,13 +34,16 @@ public class CartController {
 	CartService service;
 	@Autowired
 	StoreService storeservice;
+	@Autowired
+	MypageService myService;
+	@Autowired
+	OrderService orderservice ;
 
 	/**
 	 * 장바구니추가
 	 */
 	
 	  @RequestMapping(value = "/cart/{userid}", method = RequestMethod.POST)
-	  
 	  @ResponseBody
 	  public String AddCart(@ModelAttribute CartDTO cart, @PathVariable("userid") String userid, HttpSession session, int p_id,String p_name,int p_amount) {
 		System.out.println(userid+p_id+p_name+p_amount);
@@ -103,17 +109,17 @@ public class CartController {
 	}
 
 	 /**
-	 * 장바구니 상품 전체 삭제
+	 * 장바구니 상품 선택 삭제
 	 */
 	
 	 @RequestMapping(value = "/cart", method = RequestMethod.DELETE)
-	  public String  cartAllDel(@RequestParam("check") ArrayList<String> list, HttpSession session, RedirectAttributes attr ) {
+	  public String  chkdel(@RequestParam("check") ArrayList<String> list, HttpSession session ) {
 		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
 		 String userid = mDTO.getUserid();
-		 attr.addAttribute("userid", userid);
 		 System.out.println(list);
-		 service.cartAllDel(list); 
-	  return "redirect:/cart/{userid}"; 
+		 service.chkdel(list); 
+	  return "redirect:/cart/"+userid; 
+	  
 	  } 
 	  
 		/**
@@ -128,8 +134,6 @@ public class CartController {
 		 MemberDTO mDTO = (MemberDTO)session.getAttribute("login");
 		 String userid = mDTO.getUserid();
 		 
-		 //int sum_money = service.sum_money(userid);
-		 //return sum_money;
 		 }
 	
 	 /**
@@ -153,4 +157,26 @@ public class CartController {
 		return mav;
 		 }
 	 
+	 /** 
+	  *  주문하기
+	  */
+	 @RequestMapping(value = "orders/cart", method = RequestMethod.POST)
+	 @ResponseBody
+	  public ModelAndView orders(@RequestParam("check") ArrayList<String> list, HttpSession session, ModelAndView mav) {
+		  System.out.println("주문!"+list);
+		  MemberDTO mdto = (MemberDTO)session.getAttribute("login");
+		  //주소가져오기	
+		  AddressDTO addrdto = myService.selectDefaultAddress(mdto.getUserid());  
+		  //쿠폰가져오기
+		 // List<MemberCouponDTO> couponList = orderservice.selectAllCoupon(mdto.getUserid()); 
+		  //주문하기 리스트
+		  List<CartDTO> cartList = service.orderCart(list); 
+		  
+		  mav.addObject("cartList", cartList);
+		  mav.addObject("mdto", mdto);
+		  mav.addObject("addrdto", addrdto);
+		 // mav.addObject("couponList", couponList);
+		  mav.setViewName("checko");
+		  return mav;
+	  }
 }

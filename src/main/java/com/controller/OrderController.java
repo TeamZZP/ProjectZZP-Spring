@@ -33,31 +33,6 @@ public class OrderController {
 	StoreService sService;
 	
 	
-	//상품상세에서 주문할 때 CartDTO로 캐스팅 후 orders로 전달
-	/*	@RequestMapping("/castingCartDTO")
-		public void castingCartDTO(HashMap<String, String> map, HttpSession session,
-				@RequestParam("p_selling_price") int p_selling_price, @RequestParam("p_id")int p_id, @RequestParam("p_amount")int p_amount,
-				@RequestParam("p_name") String p_name, @RequestParam("p_image") String p_image) {
-			System.out.println("castingCartDTO()컨트롤러 실행");
-			ModelAndView mav = new ModelAndView();
-			MemberDTO mdto = (MemberDTO) session.getAttribute("login");
-			CartDTO cdto = new CartDTO();
-			Date date = new Date();
-			String now = String.valueOf(date);
-			cdto.setCart_created(now);
-			cdto.setCart_id(1);
-			cdto.setMoney(p_amount*p_selling_price);
-			cdto.setP_amount(p_amount);
-			cdto.setP_id(p_id);
-			cdto.setP_image(p_image);
-			cdto.setP_name(p_name);
-			cdto.setP_selling_price(p_selling_price);
-			cdto.setUserid(mdto.getUserid());	
-			
-			orders(session, cdto);
-			
-		}*/
-		
 		//주문하기페이지
 		 @RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
 		  public ModelAndView orders(HttpSession session,CartDTO cdto,@RequestParam HashMap<String, String> map) {
@@ -81,11 +56,27 @@ public class OrderController {
 		  }
 		 
 		 //주문추가
-		 @RequestMapping("orders")
-		 public void addOrders(@PathVariable("odto") OrderDTO odto) {
+		 @RequestMapping("/orders")
+		 public void addOrders(OrderDTO odto) {
 			 ModelAndView mav = new ModelAndView();
 			 List<OrderDTO> olist = new ArrayList<OrderDTO>();
+			 HashMap<String,String> map =new HashMap<String, String>();
 			 olist.add(odto);
+			 int order_id = service.getOrderId();
+			 int n=0;
+			 int cartdel =0;
+			 for (int i = 0; i < olist.size(); i++) {
+				olist.get(i).setOrder_id(order_id);
+				n += service.addOrder(olist.get(i)) ;
+				if(n!=0) { //오더저장 성공시 카트삭제
+					map.put("p_id",String.valueOf(olist.get(i).getP_id()) );
+					map.put("userid",olist.get(i).getUserid() );
+					cartdel += service.cartDelete(map);	 
+				 }
+			 }
+			 System.out.println("주문 상품 개수 : " +n );
+			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
+			 
 			 
 		 }
 		 

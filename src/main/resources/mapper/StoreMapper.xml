@@ -155,6 +155,14 @@ select * from member_coupon where userid = #{userid}
   <select id="getFirstImage" parameterType="int" resultType="String">
    select image_route from images where p_id= #{p_id} and image_rnk=1
   </select>
+  
+<!-- zzp메인 상품 검색 -->
+<select id="searchProduct" parameterType="String" resultType="ProductByCategoryDTO">
+   select (select C_NAME from category where c_id = p.c_id) as c_name, p.P_ID,(select IMAGE_ROUTE from images where p_id = p.p_id 
+   and IMAGE_RNK = 1) as p_image,p.P_NAME,p.P_CONTENT,p.C_ID,p.P_COST_PRICE
+   ,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p 
+   where p.P_NAME like '%'||#{searchValue}||'%' OR p.P_CONTENT like '%'||#{searchValue}||'%' OR p.P_SELLING_PRICE like '%'||#{searchValue}||'%'
+</select>
  
   
   </mapper>

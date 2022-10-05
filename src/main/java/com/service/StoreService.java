@@ -80,6 +80,10 @@ public class StoreService {
 		return firstImage;
 	}
 
+	public PageDTO searchProduct(String searchValue) {
+		return dao.searchProduct(searchValue);
+	}
+
 
 	
 }

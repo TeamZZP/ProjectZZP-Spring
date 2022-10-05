@@ -1,5 +1,6 @@
 package com.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dao.OrderDAO;
 import com.dto.MemberCouponDTO;
+import com.dto.OrderDTO;
 import com.dto.PageDTO;
 
 @Service
@@ -25,5 +27,20 @@ public class OrderService {
 		List<MemberCouponDTO> couponList = dao.selectAllCoupon(userid);
 		return couponList;
 	}
-	
+
+	public int getOrderId() {
+		int n = dao.getOrderId();
+		return n;
+	}
+
+	public int addOrder(OrderDTO orderDTO) {
+		int n = dao.addOrder(orderDTO);
+		return n;
+	}
+
+	public int cartDelete(HashMap<String,String> map) {
+		int n = dao.cartDelete(map);
+		return n;
+	}
+
 }

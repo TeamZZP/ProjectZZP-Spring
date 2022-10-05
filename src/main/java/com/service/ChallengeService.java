@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dao.AdminDAO;
 import com.dao.ChallengeDAO;
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
@@ -16,6 +17,8 @@ import com.dto.PageDTO;
 public class ChallengeService {
 	@Autowired
 	private ChallengeDAO dao;
+	@Autowired
+	AdminDAO adao;
 
 	public List<ChallengeDTO> getList() {
 		return dao.getList();
@@ -72,6 +75,10 @@ public class ChallengeService {
 	
 	public PageDTO selectChallengeByUserid(HashMap<String, String> map, int perPage) {
 		return dao.selectChallengeByUserid(map, perPage);
+	}
+	
+	public int countTotalUserChallenge(HashMap<String, String> map) {
+		return dao.countTotalUserChallenge(map);
 	}
 
 	@Transactional
@@ -157,8 +164,35 @@ public class ChallengeService {
 		return dao.countTotalStamp(map);
 	}
 
+	@Transactional
+	public void updateAdminChallenge(HashMap<String, String> map) {
+		//챌린지 업데이트
+		dao.updateChallenge(map);
+		//도장 업데이트
+		dao.updateStamp(map);
+	}
+
+	@Transactional
+	public void deleteAdminChallenge(String chall_id) {
+		//챌린지 삭제
+		dao.deleteChallenge(chall_id);
+
+		//해당 게시글을 제외하고 가장 마지막에 작성한 게시글의 chall_this_month 값 1로 설정 
+		HashMap<String, Integer> updateMap = new HashMap<String, Integer>();
+		updateMap.put("before", 0);
+		updateMap.put("after", 1);
+		adao.updateChallThisMonth(updateMap);
+	}
+
+
+	public void updateOrder(HashMap<String, String> map) {
+		dao.updateOrder(map);
+	}
+
+
 	
 
+	
 
 
 }

@@ -15,6 +15,26 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">   
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 
+<style>
+	a{
+		text-decoration: none;
+	}
+	.paging {
+	    cursor: pointer;
+	    color: green;
+	}
+	table {
+		border: 1px solid #24855B;
+		vertical-align: middle;
+		text-align: center;
+	}
+	table tr {
+		border: 1px solid green;
+	}
+	.paging {
+		   cursor: pointer;
+	}
+</style>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
@@ -31,17 +51,14 @@
 			});
 		})//end ready
 	</script>
-	<style type="text/css">
-		.paging {
-		   cursor: pointer;
-		}
-	</style>
 </head>
 <body>
 	<form action="/zzp/qna/search" method="get">
+	<div class="container justify-content-center">
+	<div class="row">
 	<input type="hidden" name="page" value="1" id="page">
 	<c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
-	<table border="1" style="border-collapse: collapse; border: 1px solid green;">
+	<table>
 		<tr>
 			<td>
 				<select  name="category" id="category" class="form-select">
@@ -58,7 +75,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td style="color: blue;" colspan="2">
+			<td style="color: blue; text-align: left;" colspan="2">
 				<c:choose>
 					<c:when test="${prodSelectCount != null}">
 						${prodSelectCount} 개의 상품이 검색되었습니다.
@@ -83,7 +100,7 @@
 		<c:forEach var="list" items="${prodSelect.list}">
 		<tr>
 			<td> <img alt="상품사진" src="${contextPath}/resources/images/product/p_image/${list.image_route}" width="100px" height="100px"></td>
-			<td> ${list.p_name} <br> ${list.p_content} <br> ${list.p_cost_price}원 </td>
+			<td style="text-align: left;"> ${list.p_name} <br> ${list.p_content} <br> ${list.p_cost_price}원 </td>
 			<td> <button class="btn btn-outline-success check" data-pID="${list.p_id}" data-pName="${list.p_name}" >선택</button> </td>
 		</tr>
 		</c:forEach>
@@ -109,6 +126,8 @@
 			</td>
 		</tr>
 	</table>
+	</div>
+	</div>
 </form>
 </body>
 </html>

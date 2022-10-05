@@ -353,6 +353,10 @@
 
 
 
+
+
+
+
 <insert id="insertAdminChallenge" parameterType="hashmap">
 	insert all 
 	into challenge (chall_id, 
@@ -417,6 +421,12 @@
 		stamp_name=#{stamp_name},
 		stamp_content=#{stamp_content}
 	where chall_id=#{chall_id}
+</update>
+
+<update id="updateOrder">
+	update orders
+	set order_state=#{status}
+	where concat(order_id, p_id)=#{id}
 </update>
 
 </mapper>

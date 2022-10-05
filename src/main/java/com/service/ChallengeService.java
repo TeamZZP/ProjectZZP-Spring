@@ -184,6 +184,10 @@ public class ChallengeService {
 		adao.updateChallThisMonth(updateMap);
 	}
 
+	public void updateOrder(HashMap<String, String> map) {
+		dao.updateOrder(map);
+	}
+
 	
 
 	

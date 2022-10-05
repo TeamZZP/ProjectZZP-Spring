@@ -62,13 +62,6 @@
 		update cart set p_amount = #{p_amount} where cart_id = #{cart_id}
 	</update>
 	
-	<select id="selectCart" parameterType="hashMap" resultType="CartDTO">
-		select c.cart_id,p.p_name,c.p_amount,p.p_selling_price,p.p_id,c.userid, p_selling_price*p_amount money,
-		(select IMAGE_ROUTE from images where p_id = c.p_id and IMAGE_RNK = 1) as p_image 
-      	from cart c join product p 
-      	on c.p_id = p.p_id where c.p_id = #{p_id} and c.userid= #{userid}
-	</select>
-	
 	<!-- 찜목록갯수 -->
  	<select id="likeCount" parameterType="String" resultType="int">
 		select count(*) from product_liked where userid = #{userid}
@@ -88,13 +81,14 @@
 	select c.cart_id,p.p_name,c.p_amount,p.p_selling_price,p.p_id,c.userid, p_selling_price*p_amount money,
 		(select IMAGE_ROUTE from images where p_id = c.p_id and IMAGE_RNK = 1) as p_image 
       	from cart c join product p 
-      	on c.p_id = p.p_id where cart_id
+      	on c.p_id = p.p_id where cart_id 
 	
 	 IN
 	 <foreach item="item" index="index" collection="list" open="("
 			separator="," close=")">
 			#{item}
 	 </foreach>
+	 order by cart_id desc
 	</select>
 	
 	

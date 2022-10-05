@@ -7,6 +7,8 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.HashMap"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 
 <style>
    .imagediv{
@@ -25,9 +27,7 @@
 <script type="text/javascript">
    $(function() {
       
-      var list_size = $("#list_size").val();
-      console.log(list_size);   
-      $("#orderCount").text(" 총"+list_size+"개"); 
+ 
       
       
       $("#AddOrder").on("click", function() {
@@ -41,27 +41,28 @@
       
    });
 </script>
-<div class="container">
+<div class="container ">
    <div class="row">
       <div class="imagediv" style="text-align: center;">
-            <img class="image" src="/zzp/resources/images/product/ordering.jpg" height="500" width="900">
+            <img class="image" src="/zzp/resources/images/product/ordering.jpg"  >
       </div>
          
-      <form action="AddOrder" method="post">
+      <form action="/zzp/orders" method="post">
           <table style=" border-collapse: collapse;" class="table">
                <h4 style="font-weight: bold; display:inline-block;">주문상품 정보</h4>
                
-               <span style="float : right; font-weight: bold;"><span  id=total2 style="font-size:20px;  color: green;"></span>원</span>
-               <span style="float : right; padding-right:10px; font-weight: bold;" name="orderCount"  id="orderCount"></span>
+               <span style="float : right; font-weight: bold;"><span id=total2 style="font-size:20px; color: green;"></span>원</span>
+               <span style="float : right; padding-right:10px; padding-top:5px; font-weight: bold;" id="orderCount">${fn:length(cartList)}개</span>
                <tr style="border-top-width: 5px; border-color: black;">
                   <th scope="col">상품정보</th>
                   <th scope="col"></th>
-                  <th scope="col" >수량</th>
+                  <th scope="col" >수량</th> 
                   <th scope="col">상품가격</th>
                </tr>
-                  
-            <c:forEach var="cList" items="${cartList}">
                
+            <c:set var="sum" value="0" />      
+            <c:forEach var="cList" items="${cartList}">
+             	
                <tr class="order_content">
                   <!-- 이미지사진  -->
                   <td >
@@ -74,18 +75,19 @@
                      <span id="cartAmount"  name="p_amount"
                       style=" font-weight: bold; font-size: 20px; vertical-align: middele; ">${cList.p_amount}개</span></td>
                      <!-- 개별 총 가격 -->
-                  <td style="line-height: 100px;"><span id="item_price"
-                     name="item_price" style="font-weight: bold; font-size: 20px; "
-                     class="item_price">${cList.p_selling_price}원</span></td>   
-                     <c:set var="sum_money" value="${cList.p_selling_price*cList.p_amount}"></c:set>
+                 <td style="line-height: 100px;"><div style="font-weight: bold; font-size: 20px; "><span id="item_price"
+                	class="item_price">${cList.money}</span>원</div></td>   
+                    <%--  <c:set var="sum_money" value="${cList.p_selling_price*cList.p_amount}"></c:set> --%>
                </tr>
+               	<c:set var="sum" value="${sum+cList.money}" />
                </c:forEach>
                
             </table>
                  
             <c:set value="${mdto}" var="m" />     
             <c:set value="${addrdto}" var="addr" />     
-                 
+             <c:forEach items="${addrList}" var="addr">
+            <c:if test="${addr.default_chk==1}" >    
             <table style=" border-collapse: collapse; border-bottom: #ffffff" class="table" >
                <tr class="delivery" style="border-bottom-width: 5px; border-color: black;">
                <th colspan="4" style="font-size:20px; font-weight: bold;">배송 정보</th>
@@ -128,17 +130,15 @@
                    <td></td>
                </tr>
                <tr>
-                <td>     <!-- 상세주소로 변경하기 -->
-                         <c:forEach items="${addrList}" var="addr">
-                         <c:if test="${addr.default_chk==1}" >
-                         
-                         <input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control" value="${addr.addr1}"></td>
-                         <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="지번주소" class="form-control" value="${addr.addr2}">
-                         <span id="guide" style="color:#999"></span></td>
-                         
+              
+             
+ 				<td><input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control" value="${addr.addr1}"> </td>
+                  <td><input type="text" name="addr2" id="sample4_jibunAddress" placeholder="상세주소를 입력해주세요" class="form-control"  value="${addr.addr2}">	</td>  
+										    
+                       
                          </c:if>
                          </c:forEach>
-                         
+                          
                          
                          <td><button type="button" class=" btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#otherAddr" >다른배송지</button></td>
                         
@@ -204,63 +204,95 @@
                    -->
                <!-- 총 주문금액 -->
                
-            <div>
-               <input type="hidden" id="list_size" value="">  <!-- 여기 -->
-               <input type="hidden" id="Last_sum_money" name="Last_sum_money" value="">  <!-- 여기 -->
-               
-               <%-- <c:if test="${sum_money}>= 50000">
-               <c:choose>
-               <c:set var="fee" value="0"></c:set>
-               </c:choose>
-               <c:otherwise>
-               <c:set var="fee" value="3000"></c:set>
-               </c:otherwise>
-               </c:if> --%>
-               
-               <input type="hidden" id="fee" name="fee" value="${fee}">
-               <input type="hidden" id="Last_total" name="Last_total" value="">   <!-- 여기 -->
-            
+           		 <div style="font-size:large;">
+              
             	<!-- 쿠폰  -->
-            	 <c:set value="${couponList}" var="coupon" />  
+           		<c:set value="${couponList}" var="coupon" />  
             	 
             	
                <div style="float: right; padding-right:100px; ">
-                  <span></span>
-                  <span >${sum_money}원</span>
-                  <p>${fee}원</p>
+               	  <!-- 총 상품가격 -->
+                  <div  ><span class="price" id="sum_money" >${sum}</span>원</div>
+                  <!-- 배송비 -->
+                  <div><span class="price" id="fee"></span>원 </div>
+                  <!-- 쿠폰 -->
+                  <div><span></span>
+                  <button style="padding-top: 11px;" type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="couponModal">
+					  쿠폰사용
+					</button></div>
                   <hr>
-                  <p style="color: green; font-weight: bold;"><span >${sum_money+fee}</span>원</p>
+                  <!-- 총합계(배송비+총상품가격)  -->
+				  <div style="color: green; font-weight: bolder;"><span class="price" id="total" ></span>원</div> 
                </div> 
-               
+               	
                   <div style="font-weight:bold; padding-left:100px; float: right;" >
                   <span>주문금액</span>
                   <p>배송비</p>
+                  <p>쿠폰</p>
                   <hr>
                   <p>총결제금액 &nbsp;</p>
                   </div>
-            
+            		
                <div style="float: right;"><span style="font-size:20px; font-weight: bold;">총 주문금액</span></div>
                
          </div>
-      <div class="form-group" style="margin-top: 150px; text-align: center;">
+      <div class="form-group" style="margin-top: 200px; text-align: center;">
            <input type="submit" value="결제하기" id="addOrder" class="btn btn-success">  
               <input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
        </div>
           </form>
+          </div>
        </div> 
-   </div>
+       <!-- Modal -->
+<div class="modal fade" id="couponModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Understood</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+ function totalprice(){
+	var sum_money= parseInt($("#sum_money").text());
+	var fee = sum_money >= 50000 ? 0 : 3000;
+	var total = sum_money + fee; // 총금액 + 배송비
+	var item = 0;
+	
+	$(".item_price").each(function(){
+		item =parseInt($(this).text());
+		$(this).text(item.toLocaleString('ko-KR')); //개별 상품금액
+	});
+	
+	$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
+	$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
+	$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
+	$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
+} 
    $(function() {
-      
-      var Last_total = $("#Last_sum_money").val();
-      var fee =  $("#fee").val();
-      var Last_total =  $("#Last_total").val();
-      
-      $("#total2").text(Last_total);
-      console.log(Last_total+" "+fee+" "+Last_total);
-      
+	  totalprice();
+     	
+		//이메일 select
+		$("#emailSel").on("change", function() {
+			$("#email2").val($(this).val());
+		});//end fn
+		
+		//우편번호 찾기 클릭시 기존 입력 데이터 초기화
+		$("#findPost").on("click", function() {
+			$("#sample4_jibunAddress").val("");
+		});//end fn
+		
       $("form").on("submit", function() {
          var receiver_name=$("#receiver_name").val();
          var email1 = $("#email1").val();
@@ -269,7 +301,6 @@
          
       /*    var address_name=$("#inputAddressName").val(); */
       
-         
          var post_num=$("#sample4_postcode").val();
          var addr1=$("#sample4_roadAddress").val();
          var addr2=$("#sample4_jibunAddress").val();

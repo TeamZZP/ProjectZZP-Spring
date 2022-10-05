@@ -166,17 +166,18 @@ public class CartController {
 		  System.out.println("주문!"+list);
 		  MemberDTO mdto = (MemberDTO)session.getAttribute("login");
 		  //주소가져오기	
-		  AddressDTO addrdto = myService.selectDefaultAddress(mdto.getUserid());  
+		  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
 		  //쿠폰가져오기
-		 // List<MemberCouponDTO> couponList = orderservice.selectAllCoupon(mdto.getUserid()); 
+		  List<MemberCouponDTO> couponList = orderservice.selectAllCoupon(mdto.getUserid()); 
 		  //주문하기 리스트
 		  List<CartDTO> cartList = service.orderCart(list); 
 		  
+			
 		  mav.addObject("cartList", cartList);
 		  mav.addObject("mdto", mdto);
-		  mav.addObject("addrdto", addrdto);
-		 // mav.addObject("couponList", couponList);
-		  mav.setViewName("checko");
+		  mav.addObject("addrList", addrList);
+		  mav.addObject("couponList", couponList);
+		  mav.setViewName("orders");
 		  return mav;
 	  }
 }

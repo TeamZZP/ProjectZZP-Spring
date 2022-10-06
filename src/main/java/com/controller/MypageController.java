@@ -1,6 +1,11 @@
 package com.controller;
 
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,12 +21,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
+import com.dto.ProfileDTO;
 import com.dto.ReviewDTO;
 import com.service.AnswerService;
 import com.service.CouponService;
@@ -52,6 +59,8 @@ public class MypageController {
 	public ModelAndView mypage(@PathVariable("userid") String userid) {
 		//interceptor 인증 후
 		System.out.println("마이페이지 메인 userid : "+userid);
+		ProfileDTO profile=service.selectProfile(userid);
+		System.out.println("프로필 >>> "+profile);
 		//review, member_coupon, member_stamp, challenge
 		int myReview=service.countReview(userid);
 		int myCoupon=service.countCoupon(userid);
@@ -67,6 +76,7 @@ public class MypageController {
 		System.out.println("map>>>"+map);
 		
 		ModelAndView mav=new ModelAndView();
+		mav.addObject("profile", profile);
 		mav.addObject("map", map);
 		mav.setViewName("mypage");//mypage.jsp 요청
 		return mav;
@@ -334,5 +344,72 @@ public class MypageController {
 		m.addAttribute("search", map);
 		m.addAttribute("mDTO", session.getAttribute("login"));
 		return "myCoupon";
+	}
+	/**
+	 * 마이페이지 프로필 수정
+	 */
+	@RequestMapping(value = "/mypage/{userid}/profile", method = RequestMethod.POST)
+	public String updateProfile(@PathVariable("userid") String userid,
+			@RequestParam HashMap<String, String> map,//모든 name, value 값을 map으로 받아옴
+			@RequestParam("imgFile") CommonsMultipartFile uploadFile,
+			RedirectAttributes m) {
+		System.out.println(userid+" 프로필 수정 "+map);
+		String originalFileName= uploadFile.getOriginalFilename();//업로드 한 파일명
+		String old_file=map.get("old_file");//기존 파일
+		String profile_txt=map.get("profile_txt");
+		String profile_img="";
+		System.out.println(
+				"uploadFile : "+uploadFile
+				+" originalFileName : "+originalFileName
+				+" oldfile : "+old_file
+				+" profile_txt : "+profile_txt);
+		//업로드 파일 저장 location
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//profile";
+		
+		if (originalFileName==null || originalFileName.length()==0) {//파일 업로드가 없는 경우
+			//이미지 변경 없음
+			profile_img=old_file;//기존 파일을 그대로 유지
+		} else {
+			//이미지 변경
+			profile_img=originalFileName;//새로운 파일로 변경
+			uploadFile(location, uploadFile);//해당 위치에 파일을 업로드
+			if (!old_file.equals("user.png")) {//기존 이미지가 기본 설정이 아닌 경우--삭제
+				deleteFile(location, old_file);
+			}
+		}
+		map.put("userid", userid);
+		map.put("profile_img", profile_img);//파일명을 map 저장
+		map.put("profile_txt", profile_txt);
+		System.out.println("업데이트 map >>> "+map);
+		service.updateProfile(map);
+		//ProfileDTO profile=service.selectProfile(userid);
+		//m.addFlashAttribute("profile", profile);//유무 상관없이 랜덤으로 이미지 엑박 문제 발생
+		m.addFlashAttribute("mesg", "프로필이 수정되었습니다.");
+		return "redirect:/mypage/"+userid;
+	}
+	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
+		long size = uploadFile.getSize();
+		String name= uploadFile.getName();
+		String originalFileName= uploadFile.getOriginalFilename();
+		String contentType= uploadFile.getContentType();
+		System.out.println("size:  "+ size);
+		System.out.println("name:  "+ name);
+		System.out.println("originalFileName:  "+ originalFileName);
+		System.out.println("contentType:  "+ contentType);
+		
+		File f= new File(location, originalFileName);
+		try {
+			uploadFile.transferTo(f);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	private void deleteFile(String location, String fileName) {
+		Path file = Paths.get(location+"//"+fileName);
+		try {
+			Files.deleteIfExists(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

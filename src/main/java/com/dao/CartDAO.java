@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.dto.CartDTO;
+import com.dto.MemberCouponDTO;
 import com.dto.ProductByCategoryDTO;
 
 @Repository("CartDAO")
@@ -78,6 +79,11 @@ public class CartDAO {
 	public List<CartDTO> orderCart(ArrayList<String> list) {
 		List<CartDTO> cartList = session.selectList("CartMapper.orderCart",list);
 		return cartList; 
+	}
+
+	public List<MemberCouponDTO> selectAllCoupon1(String userid) {
+		List<MemberCouponDTO> couponList = session.selectList("CartMapper.selectAllCoupon1", userid);
+		return couponList;
 	}
 	
 	

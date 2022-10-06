@@ -57,7 +57,8 @@ public class OrderController {
 		 
 		 //주문추가
 		 @RequestMapping("/orders")
-		 public void addOrders(OrderDTO odto) {
+		 public void addOrders(OrderDTO odto, HttpSession session) {
+			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 ModelAndView mav = new ModelAndView();
 			 List<OrderDTO> olist = new ArrayList<OrderDTO>();
 			 HashMap<String,String> map =new HashMap<String, String>();
@@ -66,11 +67,12 @@ public class OrderController {
 			 int n=0;
 			 int cartdel =0;
 			 for (int i = 0; i < olist.size(); i++) {
+				olist.get(i).setUserid(mdto.getUserid());
 				olist.get(i).setOrder_id(order_id);
 				n += service.addOrder(olist.get(i)) ;
 				if(n!=0) { //오더저장 성공시 카트삭제
 					map.put("p_id",String.valueOf(olist.get(i).getP_id()) );
-					map.put("userid",olist.get(i).getUserid() );
+					map.put("userid",mdto.getUserid());
 					cartdel += service.cartDelete(map);	 
 				 }
 			 }

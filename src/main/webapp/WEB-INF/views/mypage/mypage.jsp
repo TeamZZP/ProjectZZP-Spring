@@ -1,12 +1,7 @@
-<%@page import="com.dto.MemberDTO"%>
-<%-- <%@page import="com.dto.ProfileDTO"%> --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script type="text/javascript" src="resources/js/mypage.js"></script>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -206,8 +201,8 @@
 
 </style>
 <div class="container col-md-10">
-<form action="/zzp/subin" method="post" enctype="multipart/form-data">
-<input type="hidden" name="userid" id="userid" value="${login.userid}">
+<form action="/zzp/mypage/${login.userid}/profile" method="post" enctype="multipart/form-data">
+<input type="hidden" name="old_file" id="old_file" value="${profile.profile_img}">
 
 <div class="justify-content-center">
 <div class="row">
@@ -224,7 +219,7 @@
 	  <div class="card-body">
 	    <div class="card-title" style="padding-top: 10px;"><b>${login.username}님</b></div>
 	    <div class="profileTxt">${profile.profile_txt}</div>
-	    <img id="changeTxt" src="images/edit.png" width="20;" style="margin-top: 10px; padding-bottom: 5px; float: right;">
+	    <img id="changeTxt" src="/zzp/resources/images/mypage/edit.png" width="20;" style="margin-top: 10px; padding-bottom: 5px; float: right;">
 	  </div>
 	</div>
 	<div class="col-md-6">
@@ -268,7 +263,7 @@
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body" style="text-align: center;">
-							<textarea class="profileTxt" id="profile_txt" name="profile_txt" style="resize: none" cols="55" rows="4">프 로 필 텍 스 트</textarea>
+							<textarea class="profileTxt" id="profile_txt" name="profile_txt" style="resize: none" cols="55" rows="4">${profile.profile_txt}</textarea>
 						</div>
 						<div class="modal-footer">
 							<button id="submitTxt" class="btn btn-success">수정</button>
@@ -405,3 +400,60 @@
     </div>
   </div>
 </div>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+	
+		$("#changeImg").on("click", function() {
+			$("#openImgModal").trigger("click");
+		});//end fn
+		$("#changeTxt").on("click", function() {
+			$("#openTxtModal").trigger("click");
+		});//end fn
+		$("#profile_txt").on("click", function() {
+			$(this).val("");
+		});//end fn
+		$("#cancleChangTxt").on("click", function() {
+			$("#profile_txt").val("${profile.profile_txt}");
+		});//end fn
+		
+		//프로필 텍스트 수정 클릭
+		$("#submitTxt").on("click", function() {
+			var profile_txt=$("#profile_txt").val();//왜 text()는 안 넘어올까
+				if (profile_txt.length == 0) {
+				event.preventDefault();
+				$("#openModal").trigger("click");
+				$("#modalMesg").text("변경할 프로필 메세지를 입력하세요.");
+			}
+		});//end txt
+		
+		//프로필 이미지 수정 클릭
+		$("#submitImg").on("click", function() {
+			if ($("#imgFile").val() == "null" || $("#imgFile").val().length == 0) {//이미지 파일이 없을 때
+				event.preventDefault();
+				$("#openModal").trigger("click");
+				$("#modalMesg").text("사진을 업로드해 주세요.");
+			} else if ($("#imgFile").val() != 0 && !checkFileExtension()) {
+				console.log("이미지 확장자 검사");
+			} else {
+				console.log($("#imgFile").val());
+				$("form").submit();
+			}
+		});//end img
+		
+	});//end ready
+	
+	//이미지 확장자 검사
+	function checkFileExtension(){ 
+		let imgFile = $("#imgFile").val(); 
+		let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
+		if (imgFile.match(reg)) {
+			return true;
+		} else {
+			$("#openModal").trigger("click");
+			$("#modalMesg").text("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
+			$("#imgFile").val("");//입력 내용 삭제
+			return false;
+		}
+	}
+</script>

@@ -156,8 +156,6 @@ a:hover {
 						</div>
 						<div style="float: right;">
 							<input type="submit" id="order" class="orderBtn btn btn-success" value="주문하기" >
-							<%-- <button type="button" class="delCheckBtn btn btn-success" id="delAllCart" data-bs-toggle="modal" 
-							data-bs-target="#deleteModal" data-bs-id="${cart.cart_id}">상품삭제</button> --%>
 							<input type="submit" id="chkdelCart" class="delAllCart btn btn-success"  value="상품삭제">
 						
 						</div> 

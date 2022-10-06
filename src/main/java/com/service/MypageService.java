@@ -85,4 +85,8 @@ public class MypageService {
 		return dao.selectProfile(userid);
 	}
 
+	public void updateProfile(HashMap<String, String> map) {
+		dao.updateProfile(map);
+	}
+
 }

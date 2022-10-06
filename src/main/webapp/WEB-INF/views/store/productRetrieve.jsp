@@ -12,32 +12,32 @@
 <style>
    .item_info td{
       padding-left: 10px;
-   }
+    }
 
+	table {
+  		 font-family: sans-serif;
+   		}
 </style>
-
 
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-
   $(function () {
 	
-	
+	  //이미지 변경
+	   $(".anotheImage").mouseover(function () {
+	      var src2 = $(this).attr("src");
+	       $("#firstImage").attr("src", src2);
+	       
+	   });
+	      
+	  	$(".anotheImage").mouseout(function () {
+	  		var src2 = $("#img").val();
+	  		$("#firstImage").attr("src",src2);
+	   }); 
 })
 
 
-
-
-
 </script>
-
-
-
-<style>
-   table {
-   font-family: sans-serif;
-   }
-</style>
 
 <!-- 넘어온데이터 -->
 <c:set value="${pdto}" var="p" />
@@ -52,29 +52,37 @@
             <table>
           
               <c:forEach var="image" items="${imageList}">
-                 <c:if test="${image.image_rnk==1}">  
-              
-               <tr>
-                  <td colspan="5">
+              	<c:choose>
+              	  <c:when test="${image.image_rnk==1}">
+                 <tr>
+                  <td >
                     <img id="firstImage" name="p_image"
                      src="/zzp/resources/images/product/p_image/${image.image_route}"
-                     class="img-thumbnail" style="height: 500; width: 600; " ></td>
-                     <input type="hidden" name="p_image" id="p_image" value="${image.image_route}">
-                    
-               </tr>
-              </c:if>  
+                     class="img-thumbnail" style="height: 500px; width: 600px; "  >
+                      <input type="hidden" name="p_image" id="p_image" value="${image.image_route}">
+                      <input type="hidden" id="img" value="/zzp/resources/images/product/p_image/${image.image_route}">
+                     </td>
+                  </tr>
+              </c:when>
+              
+              <c:otherwise>
                <tr>
-                  <table style="display: inline;">
-                     <tr>
-                        <td colspan="5">
-                           <img class="imageChange"
+               
+                <table style="display: inline; ">
+                      <tr>
+                        <td >
+                           <img id="anotheImage" value="${image.image_route}"
                               src="/zzp/resources/images/product/p_image/${image.image_route}"
-                              class="img-thumbnail" style="height: 100; width: 100;" > 
+                           	 class="anotheImage" style="width: 100px; height: 100px;"  > 
                         </td>
-                     </tr>
-                  </table>
-               </tr>
+                    </tr>
+                   </table>
+                    
+   				</tr>
+             </c:otherwise>
+               </c:choose>
           </c:forEach>
+          	
             </table>
          </div>
          <div class="col-md-1"></div>
@@ -108,7 +116,7 @@
                <tr>
                   <th>상품가격</th>
                   <td></td>
-                  <td><span id="price${p.p_id}" name="p_selling_price">${p.p_selling_price}</span>원</td>
+                  <td><span id="price${p.p_id}"><fmt:formatNumber pattern="###,###,###">${p.p_selling_price}</fmt:formatNumber></span>원</td>
                   
                </tr>
 
@@ -149,7 +157,7 @@
                <tr>
                   <th>총 상품가격</th>
                   <td></td>
-                  <td style="font-size: 20px; font-weight: bold;"><span id="total${p.p_id}">${p.p_selling_price}</span>원</td>
+                  <td style="font-size: 20px; font-weight: bold; color: green;"><span id="total${p.p_id}"><fmt:formatNumber pattern="###,###,###"> ${p.p_selling_price}</fmt:formatNumber></span>원</td>
                </tr>
 
                <tr>
@@ -183,26 +191,10 @@
                   <!-- Button trigger modal -->
                   <button  type="button" class="btn btn-success" name="cart" id="cart${p.p_id}" data-P_id = "${p.p_id}"
                   data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk}">
-                  장바구니
+                  			장바구니
                   </button>
-                  <!-- Modal -->
-                  <button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartCkeck" style="display: none;">modal</button>
-                  <div class="modal fade" id="cartCkeck" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" style="text-align: center;">
-                            장바구니에 저장되었습니다.
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">쇼핑계속하기</button>
-                          <button type="button" class="btn btn-success" onclick="location.href='${contextPath}/cart/${login.userid}';" >장바구니보기</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  
+                 
                   </td>
                </tr>
                
@@ -213,7 +205,7 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-
+	
    $(function() {
       
       var count = "1";
@@ -227,8 +219,9 @@
          count = $("#p_amount"+p_id).val();
          
          var price = $("#price"+p_id).text();
-         console.log(price);
-         var total = $("#total"+p_id).text(count*price);
+         	price =parseInt(price.replace(/,/g, ""));//콤마 제거 문자열 변환
+        	
+         var total = $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
          
       });//end up
 
@@ -243,7 +236,9 @@
          count = $("#p_amount"+p_id).val();
          console.log(count);
          var price = $("#price"+p_id).text();
-         var total = $("#total"+p_id).text(count*price);
+        	 price =parseInt(price.replace(/,/g, ""));//콤마 제거 문자열 변환
+         var total = $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
+         
          }
          
       });//end down 
@@ -286,14 +281,27 @@
    })//cart 
    
 
-   
-   $(".imageChange").mouseover(function () {
-      var src2 = $(this).attr("src");
-       $("#firstImage").attr("src", src2);
-   });
+ 
       
    });//end ready
    
     
 </script>
-
+ <!-- Modal -->
+                  <button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cartCkeck" style="display: none;">modal</button>
+                  <div class="modal fade" id="cartCkeck" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" style="text-align: center;">
+                            	장바구니에 저장되었습니다.
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">쇼핑계속하기</button>
+                          <button type="button" class="btn btn-success" onclick="location.href='${contextPath}/cart/${login.userid}';" >장바구니보기</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>

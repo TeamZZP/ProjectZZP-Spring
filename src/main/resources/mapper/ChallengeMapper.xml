@@ -430,5 +430,15 @@
 	where concat(order_id, p_id)=#{id}
 </update>
 
+<select id="selectOneReport" resultType="ReportDTO">
+	select * from report
+	where report_id=#{report_id}
+</select>
+
+<select id="selectChallIdFromComment" resultType="int">
+	select chall_id from comments
+	where comment_id=#{comment_id}
+</select>
+
 
 </mapper>

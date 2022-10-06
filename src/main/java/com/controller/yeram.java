@@ -14,6 +14,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ChallengeDTO;
+import com.dto.ReportDTO;
 import com.service.AdminService;
 import com.service.ChallengeService;
 import com.util.Upload;
@@ -97,4 +98,24 @@ public class yeram {
 		chservice.updateOrder(map);
 	}
 	
+	/**
+	 * 신고관리 : 신고 상세 보기
+	 */
+	@RequestMapping(value = "/admin/report/{id}", method = RequestMethod.GET)
+	public String detailReport(@PathVariable String id) {
+		ReportDTO dto = chservice.selectOneReport(id);
+		String url = null;
+		
+		//신고된 글이 게시글인 경우 - 해당 게시글로 이동
+		if (dto.getChall_id() != 0) {
+			url = "/challenge/"+dto.getChall_id();
+			
+		//신고된 글이 댓글인 경우 - 해당 게시글의 해당 댓글 위치로 이동
+		} else {
+			int chall_id = chservice.selectChallIdFromComment(dto.getComment_id());
+			url = "/challenge/"+chall_id+"#commentTime"+dto.getComment_id();
+			
+		}
+		return "redirect:"+url;
+	}
 }

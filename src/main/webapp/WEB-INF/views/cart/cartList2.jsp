@@ -197,7 +197,7 @@ function totalprice(){
 	var item = 0;
 	
 	$(".item_price").each(function(){
-		item =parseInt($(this).text());
+		item =parseInt($(this).text())
 		$(this).text(item.toLocaleString('ko-KR')); //개별 상품금액
 	});
 	

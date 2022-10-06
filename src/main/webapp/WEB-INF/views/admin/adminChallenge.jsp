@@ -8,6 +8,9 @@
 	</script>
 
 <style>
+	.paging {
+		cursor: pointer;
+	}
 	.form-select {
 		width: 140px; 
 		display: inline;
@@ -28,7 +31,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function () {
-	
+	//페이징
+	$('.paging').on('click', function() {
+		$('#page').val($(this).attr('data-page'));
+		$('form').attr('action', '/zzp/admin/challenge').submit();
+	})
 	//챌린지 작성
 	$(".writeBtn").on("click", function () {
 		location.href = "/zzp/admin/challenge/write";

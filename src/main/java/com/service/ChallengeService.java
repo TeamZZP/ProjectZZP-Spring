@@ -198,6 +198,14 @@ public class ChallengeService {
 		return dao.selectChallIdFromComment(comment_id);
 	}
 
+	public void deleteReport(List<Integer> ids) {
+		dao.deleteReport(ids);
+	}
+
+	public void updateReport(HashMap<String, String> map) {
+		dao.updateReport(map);
+	}
+
 
 	
 

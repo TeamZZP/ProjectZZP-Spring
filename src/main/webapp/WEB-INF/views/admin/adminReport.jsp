@@ -43,7 +43,7 @@ $(document).ready(function () {
 	//페이징
 	$('.paging').on('click', function() {
 		$('#page').val($(this).attr('data-page'));
-		$('#sortForm').attr('action', '/zzp/admin/report').submit();
+		$('#sortForm').submit();
 	})
 	//정렬 기준 선택시 form 제출
 	$("#status").on("change", function () {
@@ -64,12 +64,41 @@ $(document).ready(function () {
  		let button = e.relatedTarget
  		if (button) {
  			let id = button.getAttribute("data-bs-id")
- 			$("#delreport_id").val(id);
+ 			$("#deleteOne").val(id);
 		}
+	});
+	//신고 삭제 모달 끄면 저장된 id 값 삭제
+	$('#deleteModal').on('hidden.bs.modal', function () {
+		$('#deleteOne').val('');
 	});
 	//신고 삭제
 	$(".delReportBtn").on("click", function (e) {
-		$('#reportForm').attr('action', 'ReportDeleteServlet').submit()
+		let id = [];
+		
+		//신고 1개 삭제
+		if ($('#deleteOne').val()) {
+			id.push($('#deleteOne').val())
+			
+		//신고 여러개 삭제
+		} else {
+			$('.delCheck:checked').each(function(idx, elem) {
+				id.push(elem.value)
+			})
+		}
+		$.ajax({
+			url: '/zzp/admin/report',
+			type: 'POST',
+			traditional: true,
+			data: {
+				'id':id
+			},
+			success: function () {
+				location.reload();
+			},
+			error: function () {
+				alert('문제가 발생했습니다. 다시 시도해 주세요.');
+			}
+		})
 	});
 	//전체 선택 체크박스
 	$('#checkAll').on('click', function () {
@@ -77,23 +106,36 @@ $(document).ready(function () {
 	})
 	//체크박스 선택 검사
 	$('.delCheckBtn').on('click', function () {
-		//data-bs-toggle="modal" 
 		if ($('.delCheck:checked').length == 0) {
-			//alert('삭제할 신고를 선택해 주세요.')
 			$("#modalBtn").trigger("click");
 			$("#mesg").text("삭제할 신고를 선택해 주세요.");
 		} else {
-			//$('#deleteModal').modal('toggle')
-			$("#modalBtn").trigger("click");
-			$("#mesg").html("선택한 신고 기록을 삭제하시겠습니까? <br>(게시글은 삭제되지 않습니다.)");
+			$('#deleteModal').modal('toggle')
 		}
 	})
 	//신고 상태 변경
 	$('.statusChange').on('change', function () {
 		let id = $(this).attr('data-id')
-		$('#statusChangeId').val(id)
-		$('#statusChange').val($('#status'+id).val())
-		$('#reportForm').attr('action', 'ReportUpdateServlet').submit()
+		$.ajax({
+			type:"put",
+			url:"/zzp/admin/report/"+id,
+			headers: {
+				"Content-Type":"application/json"
+			},
+			data: JSON.stringify( 
+					{
+						'id':id,
+						'status':$("#status"+id).val()
+					} 
+			),
+			dataType:"text",
+			success: function () {
+				location.reload();
+			},
+			error: function () {
+				alert("문제가 발생했습니다. 다시 시도해 주세요.");
+			}
+		});
 	})
 	
 });
@@ -102,7 +144,7 @@ $(document).ready(function () {
 
 
 <div class="container mt-2 mb-2">
-	<form id="sortForm">
+	<form id="sortForm" action="/zzp/admin/report">
 	<input type="hidden" name="page" value="1" id="page">
 	<input type="hidden" name="category" value="report">
 		<div class="row">
@@ -134,7 +176,7 @@ $(document).ready(function () {
 <c:set var="list" value="${pDTO.list}" />
 <div class="container col-md-auto">
 <div class="row justify-content-md-center">
-
+<input type="hidden" name="report_id" id="deleteOne">
 
 <table class="table table-hover table-sm">
 	<tr>
@@ -233,8 +275,7 @@ $(document).ready(function () {
         <p id="mesg"></p>
       </div>
       <div class="modal-footer">
-       <!--  <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button> -->
-        <button type="button" class="delReportBtn btn btn-success" data-bs-dismiss="modal">확인</button>
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">확인</button>
 		<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
       </div>
     </div>

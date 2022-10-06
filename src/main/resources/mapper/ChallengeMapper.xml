@@ -435,6 +435,21 @@
 	where report_id=#{report_id}
 </select>
 
+<delete id="deleteReport" parameterType="list">
+	delete from report
+	where report_id in
+	<foreach item="id" collection="list" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</delete>
+
+<update id="updateReport" parameterType="hashmap">
+	update report
+	set report_status=#{status}
+	where report_id=#{id}
+</update>
+
+
 <select id="selectChallIdFromComment" resultType="int">
 	select chall_id from comments
 	where comment_id=#{comment_id}

@@ -8,6 +8,9 @@
 	</script>
 
 <style>
+	.paging {
+		cursor: pointer;
+	}
 	.form-select {
 		width: 140px; 
 		display: inline;
@@ -28,7 +31,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function () {
-	
+	//페이징
+	$('.paging').on('click', function() {
+		$('#page').val($(this).attr('data-page'));
+		$('form').attr('action', '/zzp/admin/challenge').submit();
+	})
 	//챌린지 작성
 	$(".writeBtn").on("click", function () {
 		location.href = "/zzp/admin/challenge/write";
@@ -73,7 +80,7 @@ $(document).ready(function () {
 <div class="container mt-2 mb-2">
 	<div class="row">
 		  <div class="col">
-		    <form action="AdminCategoryServlet">
+		    <form action="/zzp/admin/challenge">
 		    	<input type="hidden" name="page" value="1" id="page">
 		  		<input type="hidden" name="category" value="challenge">
 				  <select name="searchName" class="form-select searchName" data-style="btn-info" id="inputGroupSelect01">

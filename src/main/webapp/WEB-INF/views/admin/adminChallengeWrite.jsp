@@ -43,6 +43,10 @@
 				history.back();
 			}
 		});
+		//수정하기 클릭시 주소 변경
+		$('.update').on("click", function () {
+			$('form').attr('action', '/zzp/admin/challenge/${dto.chall_id}')
+		});
 		//폼 제출시 조건 검사
 		$("form").on("submit", function () {
 			if ($("#chall_title").val().length == 0) {
@@ -259,7 +263,7 @@
 	 		<input type="submit" class="btn btn-success" value="글쓰기">
 	  	</c:when>
 	    <c:otherwise>
-	  		<input type="submit" class="btn btn-success" value="수정하기">
+	  		<input type="submit" class="btn btn-success update" value="수정하기">
 	  	</c:otherwise>
 	  </c:choose>
 	  </div>

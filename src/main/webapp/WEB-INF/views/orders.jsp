@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>zzp</title>
+
 <c:if test="${not empty mesg}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -16,6 +17,7 @@
 	});
 </script>
 </c:if>
+
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>

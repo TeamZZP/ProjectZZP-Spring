@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
 import com.dto.PageDTO;
+import com.dto.ReportDTO;
 import com.dto.StampDTO;
 
 @Repository
@@ -24,19 +25,16 @@ public class ChallengeDAO {
 	}
 
 	public PageDTO selectAllChallenge(HashMap<String, String> map) {
-		int curPage = Integer.parseInt(
-				Optional.ofNullable(map.get("page"))
-				.orElse(("1"))
-				);
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		PageDTO pDTO = new PageDTO();
+		pDTO.setPage(curPage);
 		pDTO.setPerPage(8);
 		int perPage = pDTO.getPerPage();
 		int offset = (curPage - 1)*perPage;
 		
 		List<ChallengeDTO> list = session.selectList("ChallengeMapper.selectAllChallenge", map, new RowBounds(offset, perPage));
 		
-		pDTO.setPage(curPage);
 		pDTO.setList(list);
 		pDTO.setTotalCount(countTotalChall(map));
 		
@@ -78,10 +76,7 @@ public class ChallengeDAO {
 	}
 	
 	public PageDTO selectChallengeByUserid(HashMap<String, String> map, int perPage) {
-		int curPage = Integer.parseInt(
-				Optional.ofNullable(map.get("page"))
-				.orElse(("1"))
-				);
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(perPage);
@@ -103,10 +98,7 @@ public class ChallengeDAO {
 	}
 
 	public PageDTO selectAllComments(HashMap<String, String> map) {
-		int curPage = Integer.parseInt(
-				Optional.ofNullable(map.get("page"))
-				.orElse(("1"))
-				);
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(5);
@@ -208,10 +200,7 @@ public class ChallengeDAO {
 	}
 
 	public PageDTO selectMemberStampByUserid(HashMap<String, String> map, int perPage) {
-		int curPage = Integer.parseInt(
-				Optional.ofNullable(map.get("page"))
-				.orElse(("1"))
-				);
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(perPage);
@@ -245,6 +234,14 @@ public class ChallengeDAO {
 	public void updateOrder(HashMap<String, String> map) {
 		int n = session.update("ChallengeMapper.updateOrder", map);
 		System.out.println("update된 주문 수 "+n);
+	}
+
+	public ReportDTO selectOneReport(String id) {
+		return session.selectOne("ChallengeMapper.selectOneReport", id);
+	}
+
+	public int selectChallIdFromComment(int comment_id) {
+		return session.selectOne("ChallengeMapper.selectChallIdFromComment", comment_id);
 	}
 
 

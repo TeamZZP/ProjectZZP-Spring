@@ -159,7 +159,6 @@ $(document).ready(function () {
 
 	<!-- 페이징 -->
 	<div class="container">
-	  <!-- 페이징 -->
 	  <div class="p-2 text-center orderPage">
 		  <c:if test="${pDTO.prev}">
 		  	<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>

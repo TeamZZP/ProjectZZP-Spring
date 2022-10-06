@@ -87,4 +87,10 @@
 			select userid, profile_img, profile_txt from profile
 			where userid = #{userid}
 		</select>
+		<update id="updateProfile" parameterType="hashmap">
+			update profile
+			set profile_img = #{profile_img},
+				profile_txt = #{profile_txt}
+			where userid = #{userid}
+		</update>
 </mapper>

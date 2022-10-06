@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dao.CartDAO;
 import com.dto.CartDTO;
+import com.dto.MemberCouponDTO;
 import com.dto.ProductByCategoryDTO;
 
 @Service
@@ -71,6 +72,11 @@ public class CartService {
 
 	public List<CartDTO> orderCart(ArrayList<String> list) {
 		return dao.orderCart(list);
+	}
+
+	public List<MemberCouponDTO> selectAllCoupon1(String userid) {
+		List<MemberCouponDTO> couponList = dao.selectAllCoupon1(userid);
+		return couponList;
 	}
 
 	

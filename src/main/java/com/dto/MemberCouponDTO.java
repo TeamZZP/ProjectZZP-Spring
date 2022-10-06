@@ -23,5 +23,7 @@ public class MemberCouponDTO {
 	String coupon_validity;
 	String coupon_status;
 	String coupon_used;
-
+	//의정 추가
+	String coupon_name; 
+	int coupon_discount;
 }

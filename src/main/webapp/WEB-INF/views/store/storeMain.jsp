@@ -7,12 +7,12 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 
 <style>
-.container {
+/* .container {
    padding-right: 15px;
    padding-left: 15px;
    margin-right: auto;
    margin-left: auto;
-}
+} */
 
 a {
    color: #646464;

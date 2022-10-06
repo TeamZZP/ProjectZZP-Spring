@@ -222,7 +222,7 @@
 			start with comment_id=#{comment_id}
 			connect by prior comment_id=parent_id
 		)
-</delete>
+</delete>  
 
 <update id="updateComment" parameterType="com.dto.CommentsDTO">
 	update comments

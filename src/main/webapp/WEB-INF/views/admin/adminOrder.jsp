@@ -42,7 +42,7 @@ $(document).ready(function () {
 	//페이징
 	$('.paging').on('click', function() {
 		$('#page').val($(this).attr('data-page'));
-		$('#sortForm').attr('action', '/zzp/admin/order').submit();
+		$('#sortForm').submit();
 	})
 	//정렬 기준 선택시 form 제출
 	$("#status").on("change", function () {
@@ -79,7 +79,7 @@ $(document).ready(function () {
 
 
 <div class="container mt-2 mb-2">
-	<form id="sortForm">
+	<form id="sortForm" action="/zzp/admin/order">
 	<input type="hidden" name="page" value="1" id="page">
 	<input type="hidden" name="category" value="order">
 		<div class="row">

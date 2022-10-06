@@ -244,6 +244,16 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectChallIdFromComment", comment_id);
 	}
 
+	public void deleteReport(List<Integer> ids) {
+		int n = session.delete("ChallengeMapper.deleteReport", ids);
+		System.out.println("delete된 신고 수 "+n);
+	}
+
+	public void updateReport(HashMap<String, String> map) {
+		int n = session.update("ChallengeMapper.updateReport", map);
+		System.out.println("update된 신고 수 "+n);
+	}
+
 
 	
 

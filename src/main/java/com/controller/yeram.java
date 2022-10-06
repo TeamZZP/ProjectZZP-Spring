@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -94,7 +95,6 @@ public class yeram {
 	@RequestMapping(value = "/admin/order/{id}", method = RequestMethod.PUT)
 	@ResponseBody
 	public void updateOrder(@PathVariable String id, @RequestBody HashMap<String, String> map) {
-		System.out.println(map);
 		chservice.updateOrder(map);
 	}
 	
@@ -110,12 +110,29 @@ public class yeram {
 		if (dto.getChall_id() != 0) {
 			url = "/challenge/"+dto.getChall_id();
 			
-		//신고된 글이 댓글인 경우 - 해당 게시글의 해당 댓글 위치로 이동
+		//신고된 글이 댓글인 경우 - 해당 게시글의 해당 댓글 위치로 이동(?)
 		} else {
 			int chall_id = chservice.selectChallIdFromComment(dto.getComment_id());
 			url = "/challenge/"+chall_id+"#commentTime"+dto.getComment_id();
 			
 		}
 		return "redirect:"+url;
+	}
+	/**
+	 * 신고관리 : 신고 삭제
+	 */
+	@RequestMapping(value = "/admin/report", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteReport(@RequestParam("id") List<Integer> ids) {
+		chservice.deleteReport(ids);
+	}
+	/**
+	 * 신고관리 : 신고 상태 변경
+	 */
+	@RequestMapping(value = "/admin/report/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public void updateReport(@PathVariable String id, @RequestBody HashMap<String, String> map) {
+		System.out.println(map);
+		chservice.updateReport(map);
 	}
 }

@@ -34,7 +34,7 @@ $(document).ready(function () {
 	//페이징
 	$('.paging').on('click', function() {
 		$('#page').val($(this).attr('data-page'));
-		$('form').attr('action', '/zzp/admin/challenge').submit();
+		$('form').submit();
 	})
 	//챌린지 작성
 	$(".writeBtn").on("click", function () {

@@ -68,66 +68,66 @@ public class LoginController {
 	/**
 	 * 아이디 찾기 화면
 	 */
-	@RequestMapping(value = "/loginid" , method = RequestMethod.GET)
+	@RequestMapping(value = "/id" , method = RequestMethod.GET)
 	public String findIdView() {
 		return "findIdForm";
 	}
 	/**
 	 * 아이디 찾기 
 	 */
-	@RequestMapping(value = "/loginid" , method = RequestMethod.POST)
+	@RequestMapping(value = "/id" , method = RequestMethod.POST)
 	public String findId(@RequestParam HashMap<String, String> map, RedirectAttributes m) {
 		System.out.println("findId map : "+map);
 		MemberDTO dto = service.findId(map);
 		System.out.println("findId dto : "+dto);
 		if (dto!=null) {
 			m.addFlashAttribute("idDTO", dto);
-			return "redirect:/findIdresult";
+			return "redirect:/id/result";
 		} else {
 			m.addFlashAttribute("mesg", "해당 회원 정보가 없습니다:(");
-			return "redirect:/loginid";
+			return "redirect:/id";
 		}
 	}
 	/**
 	 * 아이디 찾기 결과 화면
 	 */
-	@RequestMapping(value = "/findIdresult" , method = RequestMethod.GET)
+	@RequestMapping(value = "/id/result" , method = RequestMethod.GET)
 	public String findIdResultView() {
 		return "findIdresult";
 	}
 	/**
 	 * 비밀번호 찾기 화면
 	 */
-	@RequestMapping(value = "/loginpw" , method = RequestMethod.GET)
+	@RequestMapping(value = "/passwd" , method = RequestMethod.GET)
 	public String findPwView() {
 		return "findpwForm";
 	}
 	/**
 	 * 비밀번호 찾기
 	 */
-	@RequestMapping(value = "/loginpw" , method = RequestMethod.POST)
+	@RequestMapping(value = "/passwd" , method = RequestMethod.POST)
 	public String findPw(@RequestParam HashMap<String, String> map, RedirectAttributes m) {
 		System.out.println("findPw map : "+map);
 		MemberDTO dto = service.findPw(map);
 		if (dto!=null) {
 			m.addFlashAttribute("pwDTO", dto);
-			return "redirect:/findPwresult";
+			return "redirect:/passwd/result";
 		} else {
 			m.addFlashAttribute("mesg", "해당 회원 정보가 없습니다:(");
-			return "redirect:/loginpw";
+			return "redirect:/passwd";
 		}
 	}
 	/**
 	 * 비밀번호 찾기 결화 화면
 	 */
-	@RequestMapping(value = "/findPwresult" , method = RequestMethod.GET)
+	@RequestMapping(value = "/passwd/result" , method = RequestMethod.GET)
 	public String findPwResult() {
 		return "findPwResult";
 	}
 	/**
 	 * 새 비밀번호 중복 확인
 	 */
-	@RequestMapping(value = "/pwcheck" , method = RequestMethod.POST)
+	@RequestMapping(value = "/passwd/check" , method = RequestMethod.POST)
 	public String pwcheck(@RequestParam HashMap<String, String> map, RedirectAttributes m) {
 		System.out.println("pwcheck map : "+map);
 		MemberDTO dto = service.pwcheck(map);
@@ -136,7 +136,7 @@ public class LoginController {
 		//기존과 동일한 비밀번호 입력할 경우
 		if (passwd.equals(map.get("changedPasswd"))) {
 			m.addFlashAttribute("mesg", "기존 비밀번호와 동일합니다. 다시 입력해주세요.");
-			return "redirect:/findPwresult";
+			return "redirect:/passwd/result";
 		} 
 		//새 비밀번호 변경
 		else {

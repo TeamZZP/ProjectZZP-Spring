@@ -28,6 +28,16 @@
 	    	and o.order_date like '%${search}%'
 	    </if>
 	</select>
+	
+	<select id="getOrderId" resultType="int">
+		select orders_order_id_seq.NEXTVAL from dual
+	</select>
+	
+	<insert id="addOrder" parameterType="OrderDTO">
+		insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_loc, delivery_req, order_date,order_state,p_amount)
+		values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_loc}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
+	</insert>	
+
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">
 		select o.order_id, o.userid, o.p_id, o.total_price, o.delivery_address, o.delivery_loc, o.delivery_req, o.order_date,
 			   (select IMAGE_ROUTE from images where p_id = o.p_id and IMAGE_RNK = 1) as p_image,p.p_name, p.p_selling_price,
@@ -67,16 +77,11 @@ where p.p_id in
 	</select>
 	
 
-<select id="getOrderid" resultType="int">
-select orders_order_id_seq.NEXTVAL from dual
-</select>	
+	
 	
 	
 
-<insert id="addOrder" parameterType="OrderDTO">
-insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_loc, delivery_req, order_date,order_state,p_amount)
-values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_loc}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
-</insert>	
+
 
 
  -->

@@ -149,7 +149,7 @@
 </select>
 
 <select id="selectAllCoupon" parameterType="String" resultType="MemberCouponDTO">
-select * from member_coupon where userid = #{userid}
+select * from member_coupon m join coupon c on c.coupon_id = m.coupon_id  where userid = #{userid}
 </select>
   
   <select id="getFirstImage" parameterType="int" resultType="String">

@@ -35,6 +35,7 @@ public class OrderService {
 
 	public int addOrder(OrderDTO orderDTO) {
 		int n = dao.addOrder(orderDTO);
+		System.out.println("orderService: addOrder 실행()=====");
 		return n;
 	}
 

@@ -17,7 +17,6 @@ public class OrderDTO {
 	private int p_id;
 	private int total_price;
 	private String delivery_address;
-	private String delivery_loc;
 	private String delivery_req;
 	private String order_date;
 	private int order_quantity;

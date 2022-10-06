@@ -37,8 +37,8 @@
          $("form").attr("action", "addOrder");
       });
  
-      $("#delivery_loc").on("change", function() {
-         console.log($("#delivery_loc").val());
+      $("#delivery_req").on("change", function() {
+         console.log($("#delivery_req").val());
       });
    
       
@@ -52,6 +52,9 @@
 		</div>
 
 		<form action="/zzp/orders" method="post">
+	 <input type="hidden" id="userid" name="userid" value="${mdto.userid}">
+
+		
 			<table style="border-collapse: collapse;" class="table">
 				<h4 style="font-weight: bold; display: inline-block;">주문상품 정보</h4>
 
@@ -69,7 +72,7 @@
 
 				<c:set var="sum" value="0" />
 				<c:forEach var="cList" items="${cartList}">
-
+	            <input type="hidden" id="p_id" name="p_id" value="${cList.p_id}">
 					<tr class="order_content">
 						<!-- 이미지사진  -->
 						<td><img
@@ -79,8 +82,9 @@
 						<td style="line-height: 100px;"><span
 							style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
 						<!-- 수량  -->
-						<td style="line-height: 100px;"><span id="cartAmount"
-							style="font-weight: bold; font-size: 20px; vertical-align: middele;">${cList.p_amount}개</span></td>
+						<td style="line-height: 100px;"><span id="order_amount" name="order_amount"
+							style="font-weight: bold; font-size: 20px; vertical-align: middele;" value="${cList.p_amount}">${cList.p_amount}개</span></td>
+						<input type="hidden" id="order_quantity" name="order_quantity" value="${cList.p_amount}">
 						<!-- 개별 총 가격 -->
 						<td style="line-height: 100px;"><div
 								style="font-weight: bold; font-size: 20px;">
@@ -160,9 +164,13 @@
 							<td><input type="text" name="addr2"
 								id="sample4_jibunAddress" placeholder="상세주소를 입력해주세요"
 								class="form-control" value="${addr.addr2}"></td>
+								
+						<input type="hidden" id="delivery_address" name="delivery_address" value="${addr.addr1}${addr.addr2}">
+								
 							<td><button type="button" class=" btn btn-outline-success"
 									data-bs-toggle="modal" data-bs-target="#otherAddr">다른배송지</button></td>
 						</tr>
+						
 
 
 						<!-- 다른배송지 modal -->
@@ -199,7 +207,7 @@
 
 						<tr>
 							<th style="padding-left: 50px;">배송시요청사항</th>
-							<td><select id="delivery_loc" name="delivery_loc"
+							<td><select id="delivery_req" name="delivery_req"
 								class="form-select" aria-label="Default select example">
 									<option value="" selected disabled hidden>요청사항을 선택하세요</option>
 									<option value="frontDoor">문앞</option>
@@ -277,6 +285,7 @@
 					<td></td>
 					<td style="color: green; font-weight: bolder;"><span
 						class="price" id="total"></span>원</td>
+						<input type="hidden" id="total_price" name="total_price">
 				</tr>
 
 				</tbody>
@@ -312,6 +321,7 @@
 		$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
 		$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 		$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
+		$("#total_price").val(fee);
 	}
 	$(function() {
 		totalprice();

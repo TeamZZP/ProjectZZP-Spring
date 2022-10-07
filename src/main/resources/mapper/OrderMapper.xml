@@ -34,8 +34,8 @@
 	</select>
 	
 	<insert id="addOrder" parameterType="OrderDTO">
-		insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_loc, delivery_req, order_date,order_state,p_amount)
-		values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_loc}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
+		insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_req, order_date,order_state,p_amount)
+		values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
 	</insert>	
 
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">

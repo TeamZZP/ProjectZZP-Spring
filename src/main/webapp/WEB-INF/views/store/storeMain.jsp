@@ -124,13 +124,13 @@ a {
       <div class="col-lg-3 col-md-4 col-sm-6">
       
          <div class="hover-zoomin">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
          <div class="p-2 text-center">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <span  style="margin-bottom: 0.3em; font-weight: normal; color: #646464; font-size: 25px;">${pList.p_name}</span>
             </a>
          </div>

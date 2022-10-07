@@ -12,6 +12,7 @@ import com.dao.ChallengeDAO;
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
 import com.dto.PageDTO;
+import com.dto.ReportDTO;
 
 @Service
 public class ChallengeService {
@@ -187,6 +188,22 @@ public class ChallengeService {
 
 	public void updateOrder(HashMap<String, String> map) {
 		dao.updateOrder(map);
+	}
+
+	public ReportDTO selectOneReport(String id) {
+		return dao.selectOneReport(id);
+	}
+
+	public int selectChallIdFromComment(int comment_id) {
+		return dao.selectChallIdFromComment(comment_id);
+	}
+
+	public void deleteReport(List<Integer> ids) {
+		dao.deleteReport(ids);
+	}
+
+	public void updateReport(HashMap<String, String> map) {
+		dao.updateReport(map);
 	}
 
 

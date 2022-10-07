@@ -51,6 +51,7 @@ public class OrderDAO {
 	}
 	public int addOrder(OrderDTO orderDTO) {
 		int n = template.insert("OrderMapper.addOrder", orderDTO);
+		System.out.println("orderDAO: addOrder 실행()=====");
 		return n;
 	}
 	public int cartDelete(HashMap<String,String> map) {

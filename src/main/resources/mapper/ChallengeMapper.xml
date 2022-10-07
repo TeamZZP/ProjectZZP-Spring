@@ -74,7 +74,9 @@
 </select>
 
 <select id="selectChallThisMonth" resultType="ChallengeDTO">
-	select * from challenge
+	select * 
+	from challenge
+	JOIN stamp USING(chall_id)
 	where chall_this_month=1
 </select>
 
@@ -123,6 +125,8 @@
 	select * 
 	from challenge c
 	LEFT OUTER JOIN profile p on c.userid=p.userid
+	LEFT OUTER JOIN member_stamp m on c.chall_id=m.chall_id
+	LEFT OUTER JOIN stamp s on m.stamp_id=s.stamp_id
 	where c.userid=#{userid}
 	<if test='searchName!=null and !searchName.equals("")'>
 	and ${searchName} like '%${searchValue}%'
@@ -131,7 +135,7 @@
 	<if test="sortBy!=null">
 		${sortBy} desc,
 	</if>
-	chall_id desc
+	c.chall_id desc
 </select>
 
 <select id="countTotalUserChallenge" resultType="int">

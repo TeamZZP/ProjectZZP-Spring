@@ -62,8 +62,8 @@ public class ChallengeService {
 		return dao.countLikedByMap(map);
 	}
 
-	public int insertChallenge(HashMap<String, String> map) {
-		return dao.insertChallenge(map);
+	public void insertChallenge(HashMap<String, String> map) {
+		dao.insertChallenge(map);
 	}
 
 	public int deleteChallenge(String chall_id) {

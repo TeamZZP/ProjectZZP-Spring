@@ -1,5 +1,8 @@
 package com.controller;
 
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,8 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.ProductOrderImagesDTO;
+import com.dto.QuestionDTO;
 import com.dto.ReportDTO;
 import com.service.AdminService;
 import com.service.ChallengeService;
@@ -45,7 +50,59 @@ public class AdminController {
 	 * 메인 화면
 	 */
 	@RequestMapping(value = "/admin")
-	public String admin() {
+	public String admin(Model model) {
+		//총 판매액
+		double sales = service.getTotalSales();
+		DecimalFormat df = new DecimalFormat("\u00A4 #,###");
+		//판매액 증가율
+		double origin = sales - service.getTodaySales();
+		double increase = (sales-origin)/origin*100;
+		String salesIncrease 
+			= ( (increase >= 0)? "+" : "" ) + String.format("%.2f%%", increase);
+		
+		//회원수
+		int member = service.getTotalMember();
+		//회원 증가율
+		double originM = member - service.getTodayMember();
+		double increaseM = (member-originM)/originM*100;
+		String memberIncrease
+			= ( (increaseM >= 0)? "+" : "" ) + String.format("%.2f%%", increaseM);
+		
+		//오늘 방문자수
+		int todayVisit = service.countVisitToday();
+		//어제 방문자수
+		double yesterdayVisit = service.countVisitYesterday();
+		if (yesterdayVisit == 0) yesterdayVisit = 1;
+		//증감율
+		double increaseV = (todayVisit-yesterdayVisit)/yesterdayVisit*100;
+		String visitIncrease
+			= ( (increaseV >= 0)? "+" : "" ) + String.format("%.2f%%", increaseV);
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
+		String date = LocalDate.now().format(formatter); //오늘 날짜
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("date", date);
+		
+		//신규 주문
+		List<ProductOrderImagesDTO> orderList = service.selectNewOrders(map);
+		//신규 회원
+		List<MemberDTO> memberList = service.selectNewMembers(map);
+		//답변대기 문의
+		List<QuestionDTO> questionList = service.selectNewQuestion();
+		
+		model.addAttribute("sales", df.format(sales));
+		model.addAttribute("salesIncrease", salesIncrease);
+		
+		model.addAttribute("member", member+" 명");
+		model.addAttribute("memberIncrease", memberIncrease);
+		
+		model.addAttribute("todayVisit", todayVisit);
+		model.addAttribute("visitIncrease", visitIncrease);
+		
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("questionList", questionList);
+		
 		return "adminMain";
 	}
 	/**

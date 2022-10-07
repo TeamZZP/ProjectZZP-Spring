@@ -57,6 +57,7 @@
 <div class="row">
  <input type="hidden" name="q_id" value="${dto.q_id}">
  <input type="hidden" name="userid" value="${dto.userid}">
+ <input type="hidden" name="oldFile" id="oldFile" value="${dto.q_img}">
 		<table>
 			<tr>
 				<td colspan="2">

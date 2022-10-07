@@ -81,6 +81,14 @@ public class ReviewController {
 		String originalFileName= uploadFile.getOriginalFilename();
 		String location = "review";
 		
+		String oldFile = map.get("oldFile");
+		
+		if(oldFile == null || oldFile.length() == 0) {
+			Upload.uploadFile(location, uploadFile);
+			map.put("review_img", originalFileName);
+		} else {
+			map.put("review_img", oldFile);
+		}
 		Upload.uploadFile(location, uploadFile);
 		map.put("review_img", originalFileName);
 		

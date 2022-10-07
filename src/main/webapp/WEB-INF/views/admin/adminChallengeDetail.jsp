@@ -85,13 +85,13 @@ a {
 		<div class="row p-3">
 			<div class="col">
 				<a href="/zzp/profile/${dto.userid}">
-				   <img src="/zzp/resources/upload/profile/${dto.profile_img}" width="50" height="50"></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				   <img src="/upload/profile/${dto.profile_img}" width="50" height="50"></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="/zzp/profile/${dto.userid}">${dto.userid}</a>
 			</div>
 		</div>
 		<div class="row p-3">
 			<div class="col">
-				<img src="/zzp/resources/upload/challenge/${dto.chall_img}" class="img"
+				<img src="/upload/challenge/${dto.chall_img}" class="img"
 					onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'" width="600" height="600">
 			</div>
 		</div>
@@ -113,7 +113,7 @@ a {
 		
 		<div class="row pt-5 pl-5 pb-5">
 		  <div class="col-6 m-0 text-center">
-			<img src="/zzp/resources/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
+			<img src="/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
 		  
 		  </div>
 		  <div class="col-6 m-0 my-auto">

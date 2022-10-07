@@ -22,7 +22,7 @@
 				</c:when>
 				<c:otherwise>
 					<div class="uploadBtu">
-						<img class="upload" alt="" src="/zzp/resources/upload/review/${r.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
+						<img class="upload" alt="" src="/upload/review/${r.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
 					</div>
 				</c:otherwise>
 			</c:choose>

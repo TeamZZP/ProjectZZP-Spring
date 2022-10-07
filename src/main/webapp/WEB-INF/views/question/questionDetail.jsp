@@ -28,7 +28,6 @@
 			$("#pId").val("");
 		}//
 		$("#answerBtn").click(function() {
-			console.log($("#answer").val());
 			$.ajax({
 				type:"post",
 				url:"../qna/${qDTO.q_id}/answer",
@@ -39,7 +38,7 @@
 				success: function (data, status, xhr) {
 					alert("답변 성공");
 					$("#answerCheck").text($("#answer").val());
-					$("#answer").text(data.answer);
+					$("#answer").val("");
 				},
 				error: function (xhr, status, error) {
 
@@ -139,8 +138,8 @@
 			<tr>
 				<td colspan="2">
 					<div class="input-group"> 
-					  <textarea class="form-control" id="answer"><c:if test="${!empty aDTO}">${aDTO.answer_content}</c:if></textarea>
-					  <button class="btn btn-outline-secondary" type="button" id="answerBtn" data-qid="${qDTO.q_id}">답글 올리기</button>
+					  <textarea class="form-control" id="answer"></textarea>
+					  <button class="btn btn-outline-secondary" type="button" id="answerBtn" data-qid="${qDTO.q_id}">답변하기</button>
 					</div>
 				</td>
 			</tr>

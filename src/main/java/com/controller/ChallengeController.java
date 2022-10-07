@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ChallengeDTO;
 import com.dto.CommentsDTO;
@@ -104,15 +105,19 @@ public class ChallengeController {
 	@RequestMapping(value = "/challenge", method = RequestMethod.POST)
 	public String upload(
 			@RequestParam HashMap<String, String> map, 
-			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
+			@RequestParam("chall_img") CommonsMultipartFile uploadFile,
+			RedirectAttributes rttr) {
 		String originalFileName= uploadFile.getOriginalFilename();
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		String location = "challenge";
 		
 		Upload.uploadFile(location, uploadFile);
 		
 		map.put("chall_img", originalFileName);
-		int n = service.insertChallenge(map);
-		System.out.println("insert 개수 : "+n);
+		service.insertChallenge(map);
+		
+		if (map.get("chall_category").equals("이 달의 챌린지")) {
+			rttr.addFlashAttribute("stampMesg", "stampMesg");
+		}
 		
 		return "redirect:/challenge";
 	}
@@ -127,7 +132,7 @@ public class ChallengeController {
 		System.out.println("delete 개수 : "+n);
 		
 		if (n > 0) {
-			String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+			String location = "challenge";
 			Upload.deleteFile(location, chall_img);
 		}
 	}
@@ -149,7 +154,7 @@ public class ChallengeController {
 			@RequestParam HashMap<String, String> map, 
 			@RequestParam("chall_img") CommonsMultipartFile uploadFile) {
 		String originalFileName= uploadFile.getOriginalFilename();
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		String location = "challenge";
 		String old_file = map.get("old_file");
 		String chall_img = old_file;
 		

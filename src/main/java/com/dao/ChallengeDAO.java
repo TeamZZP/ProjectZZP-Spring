@@ -63,8 +63,9 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectOneChallenge", chall_id);
 	}
 	
-	public int insertChallenge(HashMap<String, String> map) {
-		return session.insert("ChallengeMapper.insertChallenge", map);
+	public void insertChallenge(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertChallenge", map);
+		System.out.println("insert 개수 : "+n);
 	}
 
 	public int deleteChallenge(String chall_id) {

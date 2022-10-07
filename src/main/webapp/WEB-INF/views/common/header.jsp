@@ -76,7 +76,7 @@
 			<c:otherwise>
 				<button type="button" onclick="location.href='${contextPath}/login';"  class="btn btn-success" id="button_login">로그인</button>
 		      	<button type="button" onclick="location.href='${contextPath}/join';"  class="btn btn-success" id="button_signin">회원가입</button>
-		      	<button type="button" onclick="location.href='${contextPath}/cart/${login.userid}';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
+		      	<button type="button" onclick="location.href='${contextPath}/cart/notLogin';" class="btn btn-success" style="margin-right: 13px;">장바구니</button>
 			</c:otherwise>
 		</c:choose>
 	</div>

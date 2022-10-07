@@ -12,7 +12,7 @@
                       </c:if>
                     	<div class="profile">
                     		<a href="/zzp/profile/${c.userid}">
-                    			<img src="/zzp/resources/upload/profile/${c.profile_img}" width="30" height="30" class="rounded-circle mr-3"></a>
+                    			<img src="/upload/profile/${c.profile_img}" width="30" height="30" class="rounded-circle mr-3"></a>
                         </div>
                         <div class="w-100">
                             <div class="d-flex justify-content-between align-items-center">
@@ -55,7 +55,7 @@
 	                    <div class="d-flex flex-row p-3">
 	                    	<div style="width: 60px;"></div>
 	                    	<div class="profile">
-	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
+	                    		<img src="/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
 	                    	</div>
 	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
 	                    		<input type="text" class="reply_content form-control" name="comment_content" id="reply_content${c.comment_id}"> 
@@ -79,7 +79,7 @@
 	                    <div class="d-flex flex-row p-3">
 	                    	<div style="width: 60px;"></div>
 	                    	<div class="profile">
-	                    		<img src="/zzp/resources/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
+	                    		<img src="/upload/profile/${currProfile}" width="30" height="30" class="rounded-circle mr-3">
 	                    	</div>
 	                    	<div class="reply_box d-flex flex-row align-items-center w-100 text-justify mb-0">
 	                    		<input type="text" class="update_content form-control" name="comment_content" id="update_content${c.comment_id}"> 

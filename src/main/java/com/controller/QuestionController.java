@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -147,6 +146,9 @@ public class QuestionController {
 		} else {
 			map.put("qna_img", oldFile);
 		}
+		
+		Upload.uploadFile(location, uploadFile);
+		map.put("qna_img", originalFileName);
 		
 		qService.questionUPdate(map);
 		

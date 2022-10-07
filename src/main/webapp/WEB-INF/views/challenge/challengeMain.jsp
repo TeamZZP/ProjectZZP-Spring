@@ -165,14 +165,14 @@
 					
      <div class="col-lg-3 col-md-4 col-sm-6">
        <div class="p-3">
-	       <a href="profile/${c.userid}"><img src="resources/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
+	       <a href="profile/${c.userid}"><img src="/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
 	       <a href="profile/${c.userid}">${c.userid}</a><br>
        </div>
        <div class="hover-zoomin">
 	       <a href="challenge/${c.chall_id}"> 
-			<img src="resources/upload/challenge/${c.chall_img}" border="0" onerror="this.src='resources/images/challenge/uploadarea.png'">
+			<img src="/upload/challenge/${c.chall_img}" border="0" onerror="this.src='resources/images/challenge/uploadarea.png'">
 			<c:if test="${!empty c.stamp_img}">
-				<img src="resources/upload/challenge/${c.stamp_img}" class="stamp">
+				<img src="/upload/challenge/${c.stamp_img}" class="stamp">
 			</c:if>
 		   </a>
 	   </div>
@@ -243,11 +243,11 @@
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">도장을 획득했습니다! <${challThisMonth.stamp_img}></h5>
+	        <h5 class="modal-title" id="exampleModalLabel">도장을 획득했습니다! <${challThisMonth.stamp_name}></h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body text-center">
-	      <img src="resources/upload/${challThisMonth.stamp_img}" width="400">
+	      <img src="/upload/challenge/${challThisMonth.stamp_img}" width="400">
 	      </div>
 	      <div class="modal-footer mb-3 text-center">
 	       ${challThisMonth.stamp_content}
@@ -255,3 +255,9 @@
 	    </div>
 	  </div>
 	 </div>
+
+	<script type="text/javascript">
+	 if ('${empty stampMesg}'=='false') {
+		 $('#stampBtn').trigger('click')
+	 }
+	</script>

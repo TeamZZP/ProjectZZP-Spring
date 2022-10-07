@@ -64,7 +64,7 @@
     <div class="col-lg-3 p-5">
 		<div class="card" style="width: 100%; height: 22rem;">
 		  <div class="text-center">
-	      <img class="card-img-top w-50 pt-4" src="/zzp/resources/upload/profile/${profile.profile_img}"><br>
+	      <img class="card-img-top w-50 pt-4" src="/upload/profile/${profile.profile_img}"><br>
 	      </div>
 	        <div class="card-body mt-4">
 		      <h3 class="card-title text-center fw-bold">${profile.userid}</h3>
@@ -111,7 +111,7 @@
 		  <div class="text-center mt-2">
 		        <c:forEach var="c" items="${cPDTO.list}">
 		        <a href="/zzp/challenge/${c.chall_id}"> 
-					<img src="/zzp/resources/upload/challenge/${c.chall_img}" border="0" align="middle" class="img"
+					<img src="/upload/challenge/${c.chall_img}" border="0" align="middle" class="img"
 						width="200" height="200" onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'"></a>
 		        </c:forEach> 
 			    <c:set var="cLength" value="${fn:length(cPDTO.list)}"/>
@@ -132,7 +132,7 @@
 		  </div>
 		  <div class="text-center mt-2">
 		        <c:forEach var="s" items="${sPDTO.list}">
-					<img src="/zzp/resources/upload/challenge/${s.stamp_img}" border="0" align="middle" class="img"
+					<img src="/upload/challenge/${s.stamp_img}" border="0" align="middle" class="img"
 						width="200" height="200" onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'"
 						 data-bs-toggle="modal" data-bs-target="#stampModal${s.stamp_id}">
 						<!-- Modal -->
@@ -144,7 +144,7 @@
 							        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							      </div>
 							      <div class="modal-body text-center">
-							      <img src="/zzp/resources/upload/challenge/${s.stamp_img}" width="400">
+							      <img src="/upload/challenge/${s.stamp_img}" width="400">
 							      </div>
 							      <div class="modal-footer mb-3 text-center">
 							       ${s.stamp_content}

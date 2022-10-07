@@ -75,9 +75,8 @@ public class StoreController {
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
 		if(c_id==6) {
-			banner = "<div style='text-align: center;'>\r\n" + 
-					"              <img id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>    \r\n" + 
-					"        </div>";
+			banner = 
+					"<img style='position: relative; left: 150px; bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
 		}
 		
 		mav.addObject("c_id",c_id);  

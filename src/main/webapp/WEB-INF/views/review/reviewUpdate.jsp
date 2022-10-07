@@ -59,6 +59,7 @@
 
 <form id="reviewUpdateForm" encType="multipart/form-data" method="post">
 <input type="hidden" name="userid" value="${mDTO.userid}">
+<input type="hidden" name="oldFile" id="oldFile" value="${review.review_img}">
 <div class="container justify-content-center">
 <div class="row">
 		<table>

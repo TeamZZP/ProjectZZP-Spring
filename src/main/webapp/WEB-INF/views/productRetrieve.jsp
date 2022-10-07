@@ -14,10 +14,6 @@
 	<jsp:include page="store/productRetrieve.jsp" flush="true"></jsp:include><br>
 </div>
 
-<div id="prodDetail">
-	<jsp:include page="store/productRetrieve.jsp" flush="true"></jsp:include><br>
-</div>
-
 <div class="row">
 	<div class="btn-group" role="group" aria-label="Basic example">
 		<a class="btn btn-outline-success" href="#prodDetail" role="button" style="text-decoration: none; color: green;">제품상세</a>
@@ -25,12 +21,6 @@
 		<a class="btn btn-outline-success" href="#prodQA" role="button" style="text-decoration: none; color: green;">QnA</a>
 	</div>
 </div>
-<div id="prodReview">
-	<jsp:include page="store/productRetrieve.jsp" flush="true"></jsp:include><br>
-</div>
-<%-- <div id="prodReview">
-	<jsp:include page="store/productRetrieve.jsp" flush="true"></jsp:include><br>
-</div> --%>
 <div id="prodQA">
 	<jsp:include page="store/prodQA.jsp" flush="true"></jsp:include><br>
 </div>

@@ -103,7 +103,7 @@
 				<td>
 					<div>
 					  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-					  	<img id="upload" alt="" src="/zzp/resources/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+					  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
 					</div>
 				</td>
 			</c:if> 

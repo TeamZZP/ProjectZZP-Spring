@@ -28,7 +28,6 @@
 			$("#pId").val("");
 		}//
 		$("#answerBtn").click(function() {
-			console.log($("#answer").val());
 			$.ajax({
 				type:"post",
 				url:"../qna/${qDTO.q_id}/answer",
@@ -39,8 +38,7 @@
 				success: function (data, status, xhr) {
 					alert("답변 성공");
 					$("#answerCheck").text($("#answer").val());
-					$("#answer").text(data.answer);
-					$("#answer").text("");
+					$("#answer").val("");
 				},
 				error: function (xhr, status, error) {
 

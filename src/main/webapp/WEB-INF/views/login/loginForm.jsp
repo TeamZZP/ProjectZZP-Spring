@@ -14,8 +14,8 @@
       <button type="reset" id="resetBtn">취소</button>
       <p class="message">Not registered? <a href="join">Create an account</a></p>
       <p class="message" id="link">
-     	<a href="loginid">아이디찾기</a>
-      	<a href="loginpw">비밀번호찾기</a>
+     	<a href="id">아이디찾기</a>
+      	<a href="passwd">비밀번호찾기</a>
       </p>
     </form>
       <!-- 카카오 -->

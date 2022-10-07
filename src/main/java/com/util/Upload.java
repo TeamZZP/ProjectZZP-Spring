@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Upload {
+	private static final String filePath = "C://eclipse//upload//";
+	
 	/**
 	 * 파일 업로드
 	 */
@@ -26,7 +28,7 @@ public class Upload {
 		System.out.println("originalFileName:  "+ originalFileName);
 		System.out.println("contentType:  "+ contentType);
 		
-		File f= new File(location, originalFileName);
+		File f= new File(filePath+location, originalFileName);
 		try {
 			uploadFile.transferTo(f);
 		} catch (Exception e) {
@@ -38,11 +40,12 @@ public class Upload {
 	 * 파일 삭제
 	 */
 	public static void deleteFile(String location, String fileName) {
-		Path file = Paths.get(location+"//"+fileName);
+		Path file = Paths.get(filePath+location+"//"+fileName);
 		try {
 			Files.deleteIfExists(file);
 		} catch (IOException e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 }

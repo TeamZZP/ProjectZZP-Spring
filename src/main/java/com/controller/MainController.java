@@ -14,12 +14,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.AddressDTO;
+import com.dto.CartDTO;
 import com.dto.CategoryDTO;
 import com.dto.ChallengeDTO;
+import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductByCategoryDTO;
+import com.service.CartService;
 import com.service.ChallengeService;
+import com.service.MypageService;
+import com.service.OrderService;
 import com.service.StoreService;
 
 @Controller
@@ -29,6 +35,14 @@ public class MainController {
 	private ChallengeService cService;
 	@Autowired
 	private StoreService sService;
+	@Autowired
+	CartService service;
+	@Autowired
+	StoreService storeservice;
+	@Autowired
+	MypageService myService;
+	@Autowired
+	OrderService orderservice ;
 	
 	/**
 	 * 메인 화면
@@ -66,7 +80,7 @@ public class MainController {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		PageDTO pDTO = new PageDTO();
     	pDTO = sService.searchProduct(searchValue); //검색 상품 리스트
-    	System.out.println(pDTO);
+    	System.out.println(pDTO.getList());
     	if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=sService.zzimAllCheck(mdto.getUserid());
 		}
@@ -80,5 +94,38 @@ public class MainController {
 		
 		return mav;
     }
-	 
+    /**
+	 * 토스 페이먼츠 테스트 화면
+	 */
+    @RequestMapping(value = "/toss" , method = RequestMethod.GET) 
+    public ModelAndView toss_test(HttpSession session, ModelAndView mav) {
+    	MemberDTO mdto = (MemberDTO)session.getAttribute("login");
+    	   System.out.println(mdto);
+		  //주소가져오기	
+		  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
+		  //쿠폰가져오기
+		  List<MemberCouponDTO> couponList = service.selectAllCoupon1(mdto.getUserid()); 
+		  //주문하기 리스트
+		  ArrayList<String> list = new ArrayList<String>();
+		  list.add("412");
+		  List<CartDTO> cartList = service.orderCart(list); 
+		  
+			
+		  mav.addObject("cartList", cartList);
+		  mav.addObject("mdto", mdto);
+		  mav.addObject("addrList", addrList);
+		  mav.addObject("couponList", couponList);
+		  mav.setViewName("orders2");
+		  return mav;
+    }
+    /**
+	 * 토스 페이먼츠 테스트 결제
+	 */
+    @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
+    public String toss_test_success() {
+    	//ortable 결제완료
+		return "Toss_Test_success";
+    }
+    
+    
 }

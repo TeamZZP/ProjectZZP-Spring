@@ -156,7 +156,7 @@
 	  	    <input type="file" accept="image/*" name="chall_img" id="chall_img" style="display: none;">
 	    </c:when>
 	    <c:otherwise>
-	 		<img src="/zzp/resources/upload/challenge/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
+	 		<img src="/upload/challenge/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
 	 		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
 	 		<input type="file" accept="image/*" name="chall_img" id="chall_img" value="${cDTO.chall_img}" style="display: none;">

@@ -20,6 +20,10 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.QuestionDTO;
+import com.dto.ReviewProfileDTO;
+import com.service.QuestionService;
+import com.service.ReviewService;
 import com.service.StoreService;
 
 @Controller
@@ -27,6 +31,10 @@ public class StoreController {
 	
 	@Autowired
 	StoreService service;
+	@Autowired
+	QuestionService qService;
+	@Autowired
+	ReviewService rService;
 	
 	//스토어메인
 	@RequestMapping(value = "/store")
@@ -67,9 +75,8 @@ public class StoreController {
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
 		if(c_id==6) {
-			banner = "<div style='text-align: center;'>\r\n" + 
-					"              <img id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>    \r\n" + 
-					"        </div>";
+			banner = 
+					"<img style='position: relative; left: 150px; bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
 		}
 		
 		mav.addObject("c_id",c_id);  
@@ -129,6 +136,16 @@ public class StoreController {
 			zzimList=service.zzimAllCheck(mdto.getUserid());
 		}
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
+		
+		List<QuestionDTO> prodQuestion = qService.prodQuestion(Integer.toString(p_id));
+		System.out.println("상품 문의 " + prodQuestion); // Question
+
+		List<ReviewProfileDTO> prodReview = rService.prodReview(Integer.toString(p_id));
+		System.out.println("상품 리뷰 " + prodReview); // 리뷰
+
+		mav.addObject("prodQuestion", prodQuestion);
+		mav.addObject("prodReview", prodReview);
+		
 		mav.addObject("categoryList", categoryList);
 		mav.addObject("pdto",pdto);
 		mav.addObject("imageList",imageList);

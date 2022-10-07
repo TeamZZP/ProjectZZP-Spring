@@ -21,7 +21,9 @@
 		<interceptor>
 			<mapping path="/logout/**"/>
 			<mapping path="/mypage/**"/>
-			<mapping path="/cart/**"/>
+			<mapping path="/cart/**"/> 
+			<mapping path="/orders/**"/> 
+			<mapping path="/challenge/write/**"/> 
 			<mapping path="/qna/*"/>
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>

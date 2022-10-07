@@ -382,8 +382,8 @@ public class MypageController {
 		map.put("profile_txt", profile_txt);
 		System.out.println("업데이트 map >>> "+map);
 		service.updateProfile(map);
-		//ProfileDTO profile=service.selectProfile(userid);
-		//m.addFlashAttribute("profile", profile);//유무 상관없이 랜덤으로 이미지 엑박 문제 발생
+		ProfileDTO profile=service.selectProfile(userid);
+		m.addFlashAttribute("profile", profile);//유무 상관없이 랜덤으로 이미지 엑박 문제 발생
 		m.addFlashAttribute("mesg", "프로필이 수정되었습니다.");
 		return "redirect:/mypage/"+userid;
 	}

@@ -48,22 +48,20 @@ public class seungYeon {
 	/**
 	 * 상품 상세보기 qna, review
 	 */
-	@RequestMapping(value = "/product/{p_id}/qna")
-	public String prodDetailQna(Model m) {
-		String p_id = "9";
-		////////////////////
-		List<QuestionDTO> prodQuestion = qService.prodQuestion(p_id);
-		System.out.println("상품 문의 " + prodQuestion); // Question
-
-		List<ReviewProfileDTO> prodReview = rService.prodReview(p_id);
-		System.out.println("상품 리뷰 " + prodReview); // 리뷰
-
-		m.addAttribute("prodQuestion", prodQuestion);
-		m.addAttribute("prodReview", prodReview);
-		/////////////////////
-		return "store/prodReview"; // prodQA.jsp,prodReview.jsp -- include 필요
-	}
-
+	//@RequestMapping(value = "/product/{p_id}/qna")
+	/*
+	 * public String prodDetailQna(Model m) { String p_id = "9";
+	 * //////////////////// List<QuestionDTO> prodQuestion =
+	 * qService.prodQuestion(p_id); System.out.println("상품 문의 " + prodQuestion); //
+	 * Question
+	 * 
+	 * List<ReviewProfileDTO> prodReview = rService.prodReview(p_id);
+	 * System.out.println("상품 리뷰 " + prodReview); // 리뷰
+	 * 
+	 * m.addAttribute("prodQuestion", prodQuestion); m.addAttribute("prodReview",
+	 * prodReview); ///////////////////// return "store/prodReview"; //
+	 * prodQA.jsp,prodReview.jsp -- include 필요 }
+	 */
 	/**
 	 * 상품 상세보기 qna 답변보기
 	 */

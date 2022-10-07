@@ -1,14 +1,8 @@
 package com.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,6 +25,7 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.ReportDTO;
 import com.service.AdminService;
 import com.service.ChallengeService;
 import com.service.CouponService;
@@ -264,6 +259,14 @@ public class AdminController {
 		return "redirect:../admin/product";
 	}
 	/**
+	 * 주문관리 : 주문 상태 변경
+	 */
+	@RequestMapping(value = "/admin/order/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public void updateOrder(@PathVariable String id, @RequestBody HashMap<String, String> map) {
+		service.updateOrder(map);
+	}
+	/**
 	 * 쿠폰 추가 페이지 가기
 	 */
 	@RequestMapping(value = "/admin/coupon/write", method = RequestMethod.GET)
@@ -271,7 +274,6 @@ public class AdminController {
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
 		return "adminCouponInsert";
 	}
-
 	/**
 	 * 쿠폰 등록
 	 */
@@ -286,7 +288,6 @@ public class AdminController {
 		}
 		return "redirect:/admin/coupon";
 	}
-
 	/**
 	 * 쿠폰 수정 페이지 가기
 	 */
@@ -302,7 +303,6 @@ public class AdminController {
 		}
 		return "adminCouponUpdate";
 	}
-
 	/**
 	 * 쿠폰 수정
 	 */
@@ -317,7 +317,6 @@ public class AdminController {
 
 		return "redirect:/admin/coupon";
 	}
-
 	/**
 	 * 쿠폰 개별 삭제
 	 */
@@ -326,7 +325,6 @@ public class AdminController {
 		System.out.println("삭제할 쿠폰 아이디 " + coupon_id);
 		cService.couponDelete(coupon_id);
 	}
-
 	/**
 	 * 쿠폰 전체 삭제
 	 */
@@ -341,7 +339,6 @@ public class AdminController {
 
 		return "redirect:/admin/coupon";
 	}
-	
 	/**
 	 * 관리자 챌린지 상세보기
 	 */
@@ -388,5 +385,103 @@ public class AdminController {
 		ChallengeDTO dto = chService.selectOneChallenge(chall_id);
 		model.addAttribute("dto", dto);
 		return "adminChallengeWrite";
+	}
+	/**
+	 * 챌린지 수정 업로드
+	 */
+	@RequestMapping(value = "/admin/challenge/{chall_id}", method = RequestMethod.POST)
+	public String updateUploadChallenge(
+			@PathVariable String chall_id,
+			@RequestParam HashMap<String, String> map, 
+			@RequestParam("chall_img") CommonsMultipartFile chall_img,
+			@RequestParam("stamp_img") CommonsMultipartFile stamp_img) {
+		String challOriginalFileName= chall_img.getOriginalFilename();
+		String stampOriginalFileName= stamp_img.getOriginalFilename();
+		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		
+		String old_file = map.get("old_file");
+		String old_stamp = map.get("old_stamp");
+		
+		//챌린지 사진이 바뀐 경우
+		if (old_file == null || old_file.length() == 0) {
+			old_file = chService.selectOneChallenge(chall_id).getChall_img();
+			Upload.deleteFile(location, old_file);
+			Upload.uploadFile(location, chall_img);
+			map.put("chall_img", challOriginalFileName);
+		} else {
+			map.put("chall_img", old_file);
+		}
+		//도장 사진이 바뀐 경우
+		if (old_stamp == null || old_stamp.length() == 0) {
+			old_stamp = chService.selectOneChallenge(chall_id).getStamp_img();
+			Upload.deleteFile(location, old_stamp);
+			Upload.uploadFile(location, stamp_img);
+			map.put("stamp_img", stampOriginalFileName);
+		} else {
+			map.put("stamp_img", old_stamp);
+		}
+		
+		service.updateAdminChallenge(map);
+		
+		return "redirect:/admin/challenge/"+chall_id;
+	}
+	/**
+	 * 챌린지 삭제
+	 */
+	@RequestMapping(value = "/admin/challenge/{chall_id}", method = RequestMethod.DELETE)
+	@ResponseBody
+	public void deleteChallenge(@PathVariable String chall_id, RedirectAttributes rttr) {
+		//관리자가 작성한 이달의 챌린지 개수 가져오기
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userid", "admin1");
+		int challNum = chService.countTotalUserChallenge(map);
+		
+		//유일한 이달의 챌린지 게시글인 경우 삭제 불가
+		if (challNum == 1) {
+			rttr.addFlashAttribute("mesg", "다른 챌린지 게시글을 작성한 후 삭제 가능합니다.");
+		} else {
+			String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+			ChallengeDTO dto = chService.selectOneChallenge(chall_id);
+			Upload.deleteFile(location, dto.getChall_img());
+			Upload.deleteFile(location, dto.getStamp_img());
+			service.deleteAdminChallenge(chall_id);
+		}
+	}
+	/**
+	 * 신고관리 : 신고 상세 보기
+	 */
+	@RequestMapping(value = "/admin/report/{id}", method = RequestMethod.GET)
+	public String detailReport(@PathVariable String id) {
+		ReportDTO dto = service.selectOneReport(id);
+		String url = null;
+		
+		//신고된 글이 게시글인 경우 - 해당 게시글로 이동
+		if (dto.getChall_id() != 0) {
+			url = "/challenge/"+dto.getChall_id();
+			
+		//신고된 글이 댓글인 경우 - 해당 게시글의 해당 댓글 위치로 이동(?)
+		} else {
+			int chall_id = service.selectChallIdFromComment(dto.getComment_id());
+			url = "/challenge/"+chall_id+"#commentTime"+dto.getComment_id();
+			
+		}
+		return "redirect:"+url;
+	}
+	/**
+	 * 신고관리 : 신고 삭제
+	 */
+	@RequestMapping(value = "/admin/report", method = RequestMethod.POST)
+	@ResponseBody
+	public void deleteReport(@RequestParam("id") List<Integer> ids) {
+		service.deleteReport(ids);
+	}
+	/**
+	 * 신고관리 : 신고 상태 변경
+	 */
+	@RequestMapping(value = "/admin/report/{id}", method = RequestMethod.PUT)
+	@ResponseBody
+	public void updateReport(@PathVariable String id, @RequestBody HashMap<String, String> map) {
+		System.out.println(map);
+		service.updateReport(map);
 	}
 }

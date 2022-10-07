@@ -64,7 +64,7 @@ public class CartController {
 	/**
 	 * 장바구니 리스트화면
 	 */
-	@RequestMapping(value = "/cart/{userid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cart/{userid}")
 	public ModelAndView cartList(@PathVariable("userid") String userid, ModelAndView mav) {
 		HashMap<String, Object> totalMap = new HashMap<String, Object>();
 		// 장바구니 List

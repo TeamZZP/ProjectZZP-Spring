@@ -66,7 +66,7 @@ public class MainController {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		PageDTO pDTO = new PageDTO();
     	pDTO = sService.searchProduct(searchValue); //검색 상품 리스트
-    	System.out.println(pDTO);
+    	System.out.println(pDTO.getList());
     	if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=sService.zzimAllCheck(mdto.getUserid());
 		}
@@ -80,5 +80,22 @@ public class MainController {
 		
 		return mav;
     }
-	 
+    /**
+	 * 토스 페이먼츠 테스트 화면
+	 */
+    @RequestMapping(value = "/toss" , method = RequestMethod.GET) 
+    public String toss_test() {
+    	
+		return "Toss_Test";
+    }
+    /**
+	 * 토스 페이먼츠 테스트 결제
+	 */
+    @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
+    public String toss_test_success() {
+    	//ortable 결제완료
+		return "Toss_Test_success";
+    }
+    
+    
 }

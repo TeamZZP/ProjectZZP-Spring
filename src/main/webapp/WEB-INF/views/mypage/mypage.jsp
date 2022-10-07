@@ -349,7 +349,7 @@
 		</div>
 	</div>
 	<div class="listContainer">
-		<a href="/zzp/mypage/${login.userid}/orde" class="item">
+		<a href="/zzp/mypage/${login.userid}/order" class="item">
 			<div class="icon">1.</div>
 			<div class="text">주문 내역<span class="circle"></span></div>
 			<div class="right">></div>

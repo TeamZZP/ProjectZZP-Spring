@@ -6,8 +6,7 @@
 	</div>
 
 <div style="padding-top: 10px;  background-color: #8FBC8F; text-align: center;">
-	<!-- <span style="padding-bottom: 2rem; padding-bottom: 2rem; font-size: 1.5rem; display: inline-block;"> <b>F&A</b> </span> -->
-	<img alt="F&A" src="resources/images/question/FA.png" width="43px" height="25px">  
+	<!-- <img alt="F&A" src="resources/images/question/FA.png" width="43px" height="25px">  --> 
 	<div style="padding: 15px;"></div>
 	<div class="row">
 		<div class="col-md-1"></div>

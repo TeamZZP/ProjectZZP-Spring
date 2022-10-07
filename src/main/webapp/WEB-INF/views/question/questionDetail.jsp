@@ -40,6 +40,7 @@
 					alert("답변 성공");
 					$("#answerCheck").text($("#answer").val());
 					$("#answer").text(data.answer);
+					$("#answer").text("");
 				},
 				error: function (xhr, status, error) {
 
@@ -140,7 +141,7 @@
 				<td colspan="2">
 					<div class="input-group"> 
 					  <textarea class="form-control" id="answer"><c:if test="${!empty aDTO}">${aDTO.answer_content}</c:if></textarea>
-					  <button class="btn btn-outline-secondary" type="button" id="answerBtn" data-qid="${qDTO.q_id}">답글 올리기</button>
+					  <button class="btn btn-outline-secondary" type="button" id="answerBtn" data-qid="${qDTO.q_id}">답변하기</button>
 					</div>
 				</td>
 			</tr>

@@ -258,9 +258,11 @@
 							<c:forEach items="${couponList}" var="coupon" varStatus="status">
 								<option hidden id="xxx${status.index}"
 									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}"></option>
+									data-rate="${coupon.coupon_discount}" value="${coupon.coupon_id}"></option>
 								<option value="${status.index}">${coupon.coupon_name}</option>
+													
 							</c:forEach>
+							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
 					</select></td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
@@ -339,6 +341,7 @@
 			//할인율
 			var idx = $(this).val();
 			var cou_id = $("#xxx" + idx).attr("data-id");
+			$("#coupon_id").val(cou_id);
 			var rate = $("#xxx" + idx).attr("data-rate");
 			var discount = sum_money / 100 * rate;
 			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
@@ -369,6 +372,7 @@
 		$("form").on(
 				"submit",
 				function() {
+					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();
 					var email2 = $("#email2").val();

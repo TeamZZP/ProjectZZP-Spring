@@ -35,12 +35,36 @@ public class OrderService {
 
 	public int addOrder(OrderDTO orderDTO) {
 		int n = dao.addOrder(orderDTO);
-		System.out.println("orderService: addOrder 실행()=====");
 		return n;
 	}
 
 	public int cartDelete(HashMap<String,String> map) {
 		int n = dao.cartDelete(map);
+		return n;
+	}
+
+	public int selectCart(HashMap<String, String> map) {
+		int count = dao.selectCart(map);
+		return count;
+	}
+
+	public int deleteCoupon(HashMap<String, String> couponMap) {
+		int n = dao.deleteCoupon(couponMap);
+		return n;
+	}
+
+	public List<OrderDTO> getOrderInfo(int order_id) {
+		List<OrderDTO> orderList= dao.getOrderInfo(order_id);
+		return orderList;
+	}
+
+	public int selectSameCouponCount(HashMap<String, String> couponMap) {
+		int n = dao.selectSameCouponCount(couponMap);
+		return n;
+	}
+
+	public int couponMinus(HashMap<String, String> couponMap) {
+		int n = dao.couponMinus(couponMap);
 		return n;
 	}
 

@@ -52,7 +52,6 @@
 			let image_rnk_2 = $("#image_route_2").val();
 			let image_rnk_3 = $("#image_route_3").val();
 			let image_rnk_4 = $("#image_route_4").val();
-			let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
 			
 			if (c_id=='none') {
 				$("#modalBtn").click();
@@ -94,7 +93,7 @@
 			let image_rnk_2 = $("#image_route_2").val();
 			let image_rnk_3 = $("#image_route_3").val();
 			let image_rnk_4 = $("#image_route_4").val();
-			let reg = /(.*?)\.(jpg|jpeg|png|gif)$/;
+			let reg = /(.*?)\.(jpg|jpeg|png|gif|PNG)$/;
 			
 			if (image_rnk_1.match(reg) && image_rnk_2.match(reg) && image_rnk_3.match(reg) && image_rnk_4.match(reg)) {
 				return true;

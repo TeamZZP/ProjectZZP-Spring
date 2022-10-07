@@ -214,7 +214,7 @@
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
 	  	</c:when>
 	    <c:otherwise>
-	 		<img src="/zzp/resources/upload/challenge/${dto.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
+	 		<img src="/upload/challenge/${dto.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
 	 		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
 	  	</c:otherwise>
@@ -239,7 +239,7 @@
 			<img src="/zzp/resources/images/challenge/stamp.png" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
 	  	</c:when>
 	    <c:otherwise>
-	    	<img src="/zzp/resources/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
+	    	<img src="/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
 	  	</c:otherwise>
 	  </c:choose>
 	  	<input type="file" accept="image/*" name="stamp_img" id="stamp_img" style="display: none;">

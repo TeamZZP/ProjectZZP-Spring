@@ -27,16 +27,30 @@
 </style>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://js.tosspayments.com/v1"></script>
 <script type="text/javascript">
    $(function() {
       
  
       
-      
-      $("#AddOrder").on("click", function() {
+      //결제하기 Btn
+     /*  $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
+      }); */
+      var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+      var tossPayments = TossPayments(clientKey)
+      $("#addOrder").on("click", function(){
+    	  tossPayments.requestPayment('카드', {
+              amount: 15000,
+              orderId: 'RPisbZLV__YDoyI_eOLak',
+              //날짜+userid
+              orderName: '토스 티셔츠 외 2건',
+              customerName: '박토스',
+              successUrl: 'http://localhost:8102/zzp/toss/success',
+              failUrl: 'http://localhost:8102/zzp/toss',
+            })
       });
- 
+ 	  //배송 요청사항
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
@@ -258,11 +272,9 @@
 							<c:forEach items="${couponList}" var="coupon" varStatus="status">
 								<option hidden id="xxx${status.index}"
 									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}" value="${coupon.coupon_id}"></option>
+									data-rate="${coupon.coupon_discount}"></option>
 								<option value="${status.index}">${coupon.coupon_name}</option>
-													
 							</c:forEach>
-							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
 					</select></td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
@@ -341,7 +353,6 @@
 			//할인율
 			var idx = $(this).val();
 			var cou_id = $("#xxx" + idx).attr("data-id");
-			$("#coupon_id").val(cou_id);
 			var rate = $("#xxx" + idx).attr("data-rate");
 			var discount = sum_money / 100 * rate;
 			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
@@ -369,10 +380,9 @@
 			$("#sample4_jibunAddress").val("");
 		});//end fn
 
-		$("form").on(
+		/* $("form").on(
 				"submit",
 				function() {
-					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();
 					var email2 = $("#email2").val();
@@ -405,12 +415,8 @@
 						$("#receiver_name").focus();
 						event.preventDefault();
 					}
-				});//end submit
+				});//end submit */
 
-		//다른배송지 선택
-		$("#otherAddr").on("click", function() {
-
-		})
 
 	})//end
 	</script>

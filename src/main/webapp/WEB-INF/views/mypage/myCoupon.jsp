@@ -92,7 +92,6 @@
 		<th>쿠폰이미지</th>
 		<th>쿠폰명</th>
 		<th>할인율</th>
-		<th>사용여부</th>
 		<th>만료일</th>
 	</tr>
 	<c:forEach var="list" items="${myCoupon.list}">
@@ -101,16 +100,6 @@
 	    <td> <img alt="쿠폰" src="/zzp/resources/images/coupon/${list.coupon_img}" width="50" height="50"> </td>
 		<td> ${list.coupon_name} </td>
 		<td> ${list.coupon_discount} </td>
-		<td> 
-			<c:choose>
-				<c:when test="${list.coupon_used == null}">
-					미사용
-				</c:when>
-				<c:otherwise>
-					사용
-				</c:otherwise>
-			</c:choose>
-		</td>
 		<td> ${list.coupon_validity.substring(0,10)} </td>
 	</tr>
 	</c:forEach>

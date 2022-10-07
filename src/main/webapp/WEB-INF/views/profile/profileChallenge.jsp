@@ -156,14 +156,14 @@
 <c:forEach var="c" items="${pDTO.list}">			
      <div class="challengePost col-xl-4 col-md-6">
        <div class="p-3">
-	       <a href="/zzp/profile/${c.userid}"><img src="/zzp/resources/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
+	       <a href="/zzp/profile/${c.userid}"><img src="/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
 	       <a href="/zzp/profile/${c.userid}">${c.userid}</a><br>
        </div>
        <div class="hover-zoomin">
 	       <a href="/zzp/challenge/${c.chall_id}"> 
-			<img src="/zzp/resources/upload/challenge/${c.chall_img}" border="0" onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'">
+			<img src="/upload/challenge/${c.chall_img}" border="0" onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'">
 			<c:if test="${!empty c.stamp_img}">
-				<img src="/zzp/resources/upload/challenge/${c.stamp_img}" class="stamp">
+				<img src="/upload/challenge/${c.stamp_img}" class="stamp">
 			</c:if>
 		   </a>
 	   </div>

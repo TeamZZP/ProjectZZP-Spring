@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -11,10 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,6 +26,7 @@ import com.dto.QuestionDTO;
 import com.dto.QuestionProductDTO;
 import com.service.AnswerService;
 import com.service.QuestionService;
+import com.util.Upload;
 
 @Controller
 public class QuestionController {
@@ -107,23 +104,10 @@ public class QuestionController {
 	public String questionInsert (@RequestParam HashMap<String, String> map, 
 			@RequestParam("qna_img") CommonsMultipartFile uploadFile, RedirectAttributes attr) {
 		
-		long size = uploadFile.getSize();
-		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
-		String contentType= uploadFile.getContentType();
-		System.out.println("size:  "+ size);
-		System.out.println("name:  "+ name);
-		System.out.println("originalFileName:  "+ originalFileName);
-		System.out.println("contentType:  "+ contentType);
+		String location = "qna";
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//qna";
-		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Upload.uploadFile(location, uploadFile);
 		map.put("qna_img", originalFileName);
 		
 		qService.questionInsert(map);
@@ -151,23 +135,10 @@ public class QuestionController {
 		
 		System.out.println("수정할 게시글 " + map);
 		
-		long size = uploadFile.getSize();
-		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
-		String contentType= uploadFile.getContentType();
-		System.out.println("size:  "+ size);
-		System.out.println("name:  "+ name);
-		System.out.println("originalFileName:  "+ originalFileName);
-		System.out.println("contentType:  "+ contentType);
+		String location = "qna";
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//qna";
-		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Upload.uploadFile(location, uploadFile);
 		map.put("qna_img", originalFileName);
 		
 		qService.questionUPdate(map);
@@ -214,6 +185,16 @@ public class QuestionController {
 		System.out.println("삭제할 게시글 번호 " + q_id);
 		qService.questionDelete(q_id);
 		attr.addFlashAttribute("mesg", "게시글이 삭제 되었습니다.");
+		
+		QuestionProductDTO dto = qService.questionDetail(q_id);
+		String qna_img = dto.getQ_img();
+		
+		if(qna_img != null) {
+			System.out.println("리뷰 사진 삭제");
+			String location = "qna";
+			Upload.deleteFile(location, qna_img);
+		}
+		
 		return "redirect:../qna";
 	}
 	/**

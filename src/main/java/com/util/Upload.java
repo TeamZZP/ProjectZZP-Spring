@@ -43,6 +43,7 @@ public class Upload {
 			Files.deleteIfExists(file);
 		} catch (IOException e) {
 			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 	}
 }

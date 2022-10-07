@@ -26,7 +26,10 @@ a:hover {
 	justify-content: space-evenly;
 }
 
-
+	.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
+}
 </style>
 <div id="outer">
 	<header>
@@ -47,6 +50,9 @@ a:hover {
 			</button>
 		</div>
 	</div>
+	<div style="text-align: center; display: flex; justify-content: center; height: 260px; ">
+			<img alt="장바구니로고" src="../resources/images/cart/cart3.jpg" >
+		</div>	
 	<c:choose>
 		<c:when test="${fn:length(map.cartList)==0}">
 				<div class="no_item_cart"
@@ -68,9 +74,9 @@ a:hover {
 			 
 			 	
 				<div style="padding-top: 30px;">
-					<table class="table table-hover">
+					<table id="cartTable" class="table table-hover">
 						<thead>
-							<tr class="table-success">
+							<tr class="tableTop">
 								<th><input type="checkbox" name="allCheck" id="allCheck"
 									checked="checked"></th>
 								<th scope="col">주문번호</th>
@@ -156,8 +162,6 @@ a:hover {
 						</div>
 						<div style="float: right;">
 							<input type="submit" id="order" class="orderBtn btn btn-success" value="주문하기" >
-							<%-- <button type="button" class="delCheckBtn btn btn-success" id="delAllCart" data-bs-toggle="modal" 
-							data-bs-target="#deleteModal" data-bs-id="${cart.cart_id}">상품삭제</button> --%>
 							<input type="submit" id="chkdelCart" class="delAllCart btn btn-success"  value="상품삭제">
 						
 						</div> 
@@ -224,14 +228,7 @@ function itemSum(frm) {
 	$("#total").text(total.toLocaleString('ko-KR'));
 }
 
-/* function goOrder() {
-	//1.장바구니에 담긴 상품이 없는 경우
-	var chk=$('input[name="check"]');
-	if(chk.length==0){
-		console.log("장바구니에 담긴상품이 없습니다.");
-		return;
-	}
-} */
+
 $(function() {
 	
 	totalprice();

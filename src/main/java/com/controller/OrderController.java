@@ -46,6 +46,8 @@ public class OrderController {
 			  System.out.println("address : "+ addrList);
 			  List<MemberCouponDTO> couponList = service.selectAllCoupon(mdto.getUserid()); //쿠폰가져오기
 			  System.out.println("coupon : "+couponList);
+			  int money = cdto.getP_amount()*cdto.getP_selling_price();
+			  cdto.setMoney(money);
 			  list.add(cdto);  //카트 리스트로 담기(여러개일경우의수를 생각하여)
 			  mav.addObject("cartList", list);
 			  mav.addObject("mdto", mdto);
@@ -57,12 +59,15 @@ public class OrderController {
 		 
 		 //주문추가
 		 @RequestMapping("/orders")
-		 public void addOrders(OrderDTO odto) {
+		 public void addOrders(OrderDTO odto, HttpSession session) {
+			 System.out.println(odto);
+			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 ModelAndView mav = new ModelAndView();
 			 List<OrderDTO> olist = new ArrayList<OrderDTO>();
 			 HashMap<String,String> map =new HashMap<String, String>();
 			 olist.add(odto);
 			 int order_id = service.getOrderId();
+			 System.out.println("order_id: "+order_id);
 			 int n=0;
 			 int cartdel =0;
 			 for (int i = 0; i < olist.size(); i++) {
@@ -70,7 +75,8 @@ public class OrderController {
 				n += service.addOrder(olist.get(i)) ;
 				if(n!=0) { //오더저장 성공시 카트삭제
 					map.put("p_id",String.valueOf(olist.get(i).getP_id()) );
-					map.put("userid",olist.get(i).getUserid() );
+					map.put("userid",mdto.getUserid());
+					System.out.println(map);
 					cartdel += service.cartDelete(map);	 
 				 }
 			 }

@@ -9,7 +9,7 @@
 			<h2 class="card-title" id="h2tag"><img alt="로고" src="resources/images/header/main.png" width="50" height="50">
 			<span id="main" style="color: green;">ZZP</span> </h2>
 		</div>
-	      <form action="loginid" class="find" method="POST">
+	      <form action="/zzp/id" class="find" method="POST">
 	        <div class="checkbox">
 	            <label>
 		            <input type="radio" class="type" name="type" value="phone" checked="checked"> 전화번호
@@ -35,6 +35,6 @@
 	      </form>
 	   </div>
         <div class="links">
-            <a class="atag" href="login">로그인</a> | <a class="atag" href="join">회원가입</a> | <a class="atag" href="loginpw">비밀번호 찾기</a>
+            <a class="atag" href="login">로그인</a> | <a class="atag" href="join">회원가입</a> | <a class="atag" href="passwd">비밀번호 찾기</a>
         </div>
 </div>  

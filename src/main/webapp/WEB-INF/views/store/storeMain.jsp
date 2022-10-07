@@ -81,14 +81,9 @@ a {
 </script>
 
 
-
-
    <!-- 세일배너 -->  
-    ${banner}
+	${banner}
     
-
-<%--  ${mdto}<br>
- ${zzimList}<br> --%>
  
 <c:set value="${pDTO.list}" var="Productlist" />
 
@@ -124,22 +119,24 @@ a {
       <div class="col-lg-3 col-md-4 col-sm-6">
       
          <div class="hover-zoomin">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
          <div class="p-2 text-center">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <span  style="margin-bottom: 0.3em; font-weight: normal; color: #646464; font-size: 25px;">${pList.p_name}</span>
+
             </a>
          </div>
          
          <div>
-            <p style="color: green; font-size: 20px;"><fmt:formatNumber pattern="###,###,###" >${pList.p_selling_price}</fmt:formatNumber>원</p>
+            <p style="text-align:center;  color: green; font-size: 23px;"><fmt:formatNumber pattern="###,###,###" >${pList.p_selling_price}</fmt:formatNumber>원</p>
          </div> 
          
          <!-- 찜 -->
+        <div style="text-align:center;">
          <a id="zzim" href="javascript:zzimFunc(${pList.p_id})"> 
          
          <c:if test="${!empty zzimList}">
@@ -162,11 +159,11 @@ a {
 					data-bs-target="#addcart${pList.p_id}" style="border: 0; outline: 0;">
 					<img src="/zzp/resources/images/product/cart.png" width="25" height="25" >
 				</button>
-				
+			</div>	
 				<!-- Modal -->
 				<form action="/cart/{userid}" method="post">
 
-					<input type="hidden" name="p_id" value="${pList.p_id}"> 
+					<input type="hidden" id="p_id" name="p_id" value="${pList.p_id}"> 
 					<input type="hidden" name="p_image" value="${pList.p_image}"> 
 					<input type="hidden" name="p_name" value="${pList.p_name}">
 				
@@ -221,7 +218,7 @@ a {
 
 					</form>
 				<!-- 장바구니 모달안에 모달 -->
-						<button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chkmodal${pList.p_id}" style="display: none;">modal</button>
+						<button type="button" id="modalBtn2${pList.p_id}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chkmodal${pList.p_id}" style="display: none;">modal</button>
 						<div class="modal fade doublemodal" id="chkmodal${pList.p_id}"
 						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 						aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -252,14 +249,7 @@ a {
             		   
    
           </c:forEach>
-       
-          
-          
-         
-          
-
-          
-       </div>
+	</div>
       </div>
           <!-- 페이징 -->
       	  <div class="p-2 text-center">
@@ -276,7 +266,7 @@ a {
 		  	<a class="paging" data-page="${pDTO.endPage+1}"  id="page" >next</a> <!-- boolean타입 변수 next가 true일 경우 (next = endPage < realEnd;) -->
 		  </c:if>
 </div>
-      
+   </div>   
 </form>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -293,8 +283,8 @@ a {
          count=$("#p_amount"+p_id).val();
          var price = parseInt($("#price"+p_id).val());
          
-          $("#total"+p_id).text(count*price);
-      
+          $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
+      		console.log( $("#total"+p_id).text());
          //총합 구하기
       })//end up
       
@@ -310,10 +300,12 @@ a {
          count=$("#p_amount"+p_id).val();
          var price = parseInt($("#price"+p_id).val());
          
-         $("#total"+p_id).text(count*price);
+         $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
          
          }
       })//end down
+      	 
+    
          $("button[name=saveCart]").on("click",function(){
          console.log("saveCart클릭됨");
          
@@ -341,7 +333,7 @@ a {
                }
             }); //end ajax
             
-            $("#modalBtn2").trigger("click");
+            $("#modalBtn2"+p_id).trigger("click");
          }else{
             $("#modalBtn").trigger("click");
             $("#mesg").text("로그인이 필요합니다.");

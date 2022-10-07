@@ -51,11 +51,30 @@ public class OrderDAO {
 	}
 	public int addOrder(OrderDTO orderDTO) {
 		int n = template.insert("OrderMapper.addOrder", orderDTO);
-		System.out.println("orderDAO: addOrder 실행()=====");
 		return n;
 	}
 	public int cartDelete(HashMap<String,String> map) {
 		int n = template.delete("OrderMapper.cartDelete",map);
+		return n;
+	}
+	public int selectCart(HashMap<String, String> map) {
+		int count = template.selectOne("OrderMapper.selectCart", map);
+		return count;
+	}
+	public int deleteCoupon(HashMap<String, String> couponMap) {
+		int n = template.delete("OrderMapper.deleteCoupon",couponMap);
+		return n;
+	}
+	public List<OrderDTO> getOrderInfo(int order_id) {
+		List<OrderDTO> orderList = template.selectList("OrderMapper.getOrderInfo", order_id);
+		return orderList;
+	}
+	public int selectSameCouponCount(HashMap<String, String> couponMap) {
+		int n = template.selectOne("OrderMapper.selectSameCouponCount", couponMap);
+		return n;
+	}
+	public int couponMinus(HashMap<String, String> couponMap) {
+		int n = template.update("OrderMapper.couponMinus", couponMap);
 		return n;
 	}
 	

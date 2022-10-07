@@ -181,33 +181,20 @@ public class AdminController {
 	@RequestMapping(value = "/admin/product", method = RequestMethod.POST)
 	public String addProduct (@RequestParam HashMap<String, String> map, @RequestParam("image_route") CommonsMultipartFile [] uploadFiles) {
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		String location = "product";
 		for (int i = 1; i <= uploadFiles.length; i++) {
 			System.out.println(uploadFiles[i-1].getOriginalFilename());
 			map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
 			map.put("image_rnk"+i, Integer.toString(i));
 			
 			CommonsMultipartFile uploadFile = uploadFiles[i-1];
-			uploadFile(location, uploadFile);
+			Upload.uploadFile(location, uploadFile);
 		}
 		
 		System.out.println("addProduct map : "+map);
 		service.insertProduct(map);
 		
 		return "redirect:../admin/product";
-	}
-	/**
-	 * 상품 등록(upload폴더 이미지 등록)
-	 */
-	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
-		String originalFileName= uploadFile.getOriginalFilename();
-		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 상품 상세페이지(수정페이지)
@@ -230,7 +217,7 @@ public class AdminController {
 	public String updateProduct (@RequestParam HashMap<String, String> map, @RequestParam("old_image_route") String [] old_image_routes,
 			@RequestParam("image_route") CommonsMultipartFile [] uploadFiles) {
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		String location = "product";
 		
 		for (int i = 1; i <= old_image_routes.length; i++) {
 			//이미지 새로 등록하지 않은 경우
@@ -245,10 +232,10 @@ public class AdminController {
 				 map.put("image_route_"+i, uploadFiles[i-1].getOriginalFilename());
 				 map.put("image_rnk"+i, Integer.toString(i));
 				 //기존 파일 삭제
-				 deleteFile(location, old_image_routes[i-1]);
+				 Upload.deleteFile(location, old_image_routes[i-1]);
 				 //새 파일 등록
 				 CommonsMultipartFile uploadFile = uploadFiles[i-1]; 
-				 uploadFile(location, uploadFile); 
+				 Upload.uploadFile(location, uploadFile);
 			}
 		}
 		
@@ -266,26 +253,15 @@ public class AdminController {
 		System.out.println(ids);
 		List <ImagesDTO> imageList = service.productImages(ids);
 		System.out.println(imageList);
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//product";
+		String location = "product";
 		
 		int num = service.deleteProduct(ids);
 		if (num > 0) {
 			for (ImagesDTO imagesDTO : imageList) {
-				deleteFile(location, imagesDTO.getImage_route());//폴더에서 파일 삭제
+				Upload.deleteFile(location, imagesDTO.getImage_route());//폴더에서 파일 삭제
 			}
 		}
 		return "redirect:../admin/product";
-	}
-	/**
-	 * 상품 삭제(upload폴더 이미지 삭제)
-	 */
-	private void deleteFile(String location, String fileName) {
-		Path file = Paths.get(location+"//"+fileName);
-		try {
-			Files.deleteIfExists(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	/**
 	 * 쿠폰 추가 페이지 가기

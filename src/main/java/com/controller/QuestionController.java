@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -138,8 +139,14 @@ public class QuestionController {
 		String originalFileName= uploadFile.getOriginalFilename();
 		String location = "qna";
 		
-		Upload.uploadFile(location, uploadFile);
-		map.put("qna_img", originalFileName);
+		String oldFile = map.get("oldFile");
+		
+		if(oldFile == null || oldFile.length() == 0) {
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName);
+		} else {
+			map.put("qna_img", oldFile);
+		}
 		
 		qService.questionUPdate(map);
 		

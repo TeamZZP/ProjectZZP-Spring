@@ -48,7 +48,7 @@ public class seungYeon {
 	/**
 	 * 상품 상세보기 qna, review
 	 */
-	@RequestMapping(value = "/product/{p_id}/qna")
+	//@RequestMapping(value = "/product/{p_id}/qna")
 	public String prodDetailQna(Model m) {
 		String p_id = "9";
 		////////////////////

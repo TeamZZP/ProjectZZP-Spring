@@ -486,16 +486,16 @@ function displayedAt(createdAt) {
 		<tr>
 			<td colspan="2">
 			    <a href="/zzp/profile/${cDTO.userid}">
-				   <img src="/zzp/resources/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3"></a>
+				   <img src="/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3"></a>
 				<a href="/zzp/profile/${cDTO.userid}">${cDTO.userid}</a>
 			</td>
 		</tr>
 		<tr id="img_area">
 			<td colspan="3">
-				<img src="/zzp/resources/upload/challenge/${cDTO.chall_img}" class="img"
+				<img src="/upload/challenge/${cDTO.chall_img}" class="img"
 					onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'" width="80%">
 				<c:if test="${!empty cDTO.stamp_img}">
-					<img src="/zzp/resources/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
+					<img src="/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
 				</c:if>
 			</td>
 		</tr>
@@ -541,7 +541,7 @@ function displayedAt(createdAt) {
                     <h6><b>댓글</b></h6>
                 </div>
                 <div class="mt-3 d-flex flex-row align-items-center p-3 form-color"> 
-                	<img src="/zzp/resources/upload/profile/${currProfile}" width="50" class="rounded-circle mr-2" > &nbsp;&nbsp;&nbsp;
+                	<img src="/upload/profile/${currProfile}" width="50" class="rounded-circle mr-2" > &nbsp;&nbsp;&nbsp;
                 	<input type="text" class="comment_content form-control" name="comment_content"
                 		placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"> 
                 	<button class="commentBtn commentAddBtn">입력</button>

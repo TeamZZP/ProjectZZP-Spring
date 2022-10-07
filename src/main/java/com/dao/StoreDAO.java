@@ -143,13 +143,19 @@ public class StoreDAO {
 			pDTO.setPerPage(12);
 			int perPage = pDTO.getPerPage();
 			int offset = (curPage-1)*perPage;
-			List<ProductByCategoryDTO> list= template.selectList("StoreMapper.searchProduct",searchValue,new RowBounds(offset, perPage));
+			List<ProductByCategoryDTO> list 
+				= template.selectList("StoreMapper.searchProduct",searchValue,new RowBounds(offset, perPage));
 			pDTO.setPage(curPage);
 			pDTO.setList(list);
-			pDTO.setTotalCount(countAllProduct());
+			pDTO.setTotalCount(searchProductCount(searchValue));
 			pDTO.setStartEndPages();
 			System.out.println("searchProduct list : "+list.size());
 		 return pDTO;
+	}
+	
+	public int searchProductCount(String searchValue) {
+		int count = template.selectOne("StoreMapper.searchProductCount",searchValue);
+	return count;
 	}
 
 	

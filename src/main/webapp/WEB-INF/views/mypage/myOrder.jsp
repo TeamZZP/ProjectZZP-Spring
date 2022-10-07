@@ -142,9 +142,9 @@
 	<c:forEach var="list" items="${myOrder.list}">
 	<tr>
 	    <td> 
-	    	<a href="ProductRetrieveServlet?p_id=${list.p_id}"> 
-	   		<img alt="상품사진" src="/zzp/resources/images/product/p_image/${list.image_route}" width="100px" height="100px"> 
-	    	<br> ${list.p_name}
+	    	<a href="/zzp/product/${list.p_id}"> 
+		   		<img alt="상품사진" src="/zzp/resources/images/product/p_image/${list.image_route}" width="100px" height="100px"> 
+		    	<br> ${list.p_name}
 	    	</a>
 	    </td>
 	    <td> ${list.total_price} </td>

@@ -94,7 +94,13 @@ public class AdminController {
 		
 		//쿠폰 목록
 		else if (category.equals("coupon")) {
-			
+			pDTO = cService.couponSelect(map);
+			System.out.println("쿠폰 내역 " + pDTO);
+
+			model.addAttribute("coupon", pDTO);
+			model.addAttribute("search", map);
+			model.addAttribute("mDTO", session.getAttribute("login"));
+			url = "adminCoupon";
 		}
 		
 		//관리자 작성 챌린지 목록
@@ -281,26 +287,6 @@ public class AdminController {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * 관리자 페이지 쿠폰 조회
-	 */
-	@RequestMapping(value = "/admin/coupon", method = RequestMethod.GET)
-	public String couponSelect(@RequestParam Map<String, String> map, Model m, HttpSession session) {
-		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		if (mDTO.getRole() == 1) {
-			System.out.println(map);
-			System.out.println("페이지, 검색어, 유저아이디 " + map);
-
-			PageDTO pDTO = cService.couponSelect(map);
-			System.out.println("쿠폰 내역 " + pDTO);
-
-			m.addAttribute("coupon", pDTO);
-			m.addAttribute("search", map);
-			m.addAttribute("mDTO", session.getAttribute("login"));
-		}
-		return "adminCoupon";
-	}
-
 	/**
 	 * 쿠폰 추가 페이지 가기
 	 */

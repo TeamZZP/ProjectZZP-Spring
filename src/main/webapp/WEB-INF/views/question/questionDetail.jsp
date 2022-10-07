@@ -138,7 +138,7 @@
 			<tr>
 				<td colspan="2">
 					<div class="input-group"> 
-					  <textarea class="form-control" id="answer"><c:if test="${!empty aDTO}">${aDTO.answer_content}</c:if></textarea>
+					  <textarea class="form-control" id="answer"></textarea>
 					  <button class="btn btn-outline-secondary" type="button" id="answerBtn" data-qid="${qDTO.q_id}">답변하기</button>
 					</div>
 				</td>

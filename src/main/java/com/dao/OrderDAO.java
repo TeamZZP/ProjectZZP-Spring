@@ -73,9 +73,13 @@ public class OrderDAO {
 		int n = template.selectOne("OrderMapper.selectSameCouponCount", couponMap);
 		return n;
 	}
-	public int couponMinus(HashMap<String, String> couponMap) {
-		int n = template.update("OrderMapper.couponMinus", couponMap);
+	public int deleteOneCoupon(HashMap<String, String> couponMap) {
+		int n = template.update("OrderMapper.deleteOneCoupon", couponMap);
 		return n;
+	}
+	public List<ProductOrderImagesDTO> selectOrderProd(int order_id) {
+		List<ProductOrderImagesDTO> prodList = template.selectList("OrderMapper.selectOrderProd", order_id);
+		return prodList;
 	}
 	
 }

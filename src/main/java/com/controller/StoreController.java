@@ -73,6 +73,7 @@ public class StoreController {
 		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
 		}
 		if(c_id==6) {
 			banner = 

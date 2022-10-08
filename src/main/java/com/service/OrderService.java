@@ -11,6 +11,7 @@ import com.dao.OrderDAO;
 import com.dto.MemberCouponDTO;
 import com.dto.OrderDTO;
 import com.dto.PageDTO;
+import com.dto.ProductOrderImagesDTO;
 
 @Service
 public class OrderService {
@@ -63,9 +64,14 @@ public class OrderService {
 		return n;
 	}
 
-	public int couponMinus(HashMap<String, String> couponMap) {
-		int n = dao.couponMinus(couponMap);
+	public int deleteOneCoupon(HashMap<String, String> couponMap) {
+		int n = dao.deleteOneCoupon(couponMap);
 		return n;
+	}
+
+	public List<ProductOrderImagesDTO> selectOrderProd(int order_id) {
+		List<ProductOrderImagesDTO> prodList = dao.selectOrderProd(order_id);
+		return prodList;
 	}
 
 }

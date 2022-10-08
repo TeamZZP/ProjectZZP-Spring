@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +18,7 @@ import com.dto.CartDTO;
 import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.OrderDTO;
+import com.dto.ProductOrderImagesDTO;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.StoreService;
@@ -59,7 +59,7 @@ public class OrderController {
 		 
 		 //주문추가
 		 @RequestMapping("/orders")
-		 public void addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
+		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
 			int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id ) {
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");	
 			 OrderDTO odto = new OrderDTO();
@@ -90,9 +90,9 @@ public class OrderController {
 			 
 			 int cartdel =0; //카트 삭제 회수
 			 
-			 if(n!=0) { //오더저장 성공시 카트삭제
+			 if(n!=0) { //오더저장 성공시 
 					 
-				 for(int i = 0; i < p_id.length; i++) {
+				 for(int i = 0; i < p_id.length; i++) {  //주문한 상품 카트 삭제
 					System.out.println("삭제되는카트 상품 :"+ p_id[i]); 
 					map.put("p_id",String.valueOf(p_id[i]) );
 					map.put("userid",mdto.getUserid());
@@ -101,10 +101,8 @@ public class OrderController {
 					if(countCart!=0) {						
 						cartdel += service.cartDelete(map);	
 					} 
+				 }//end 주문한 상품 카트 삭제
 
-				 }
-				 
-				 
 				 //오더저장 성공시 쿠폰 삭제
 				 HashMap<String,String> couponMap =new HashMap<String, String>();
 				 if(coupon_id==null) {
@@ -116,27 +114,33 @@ public class OrderController {
 					 
 					 //쿠폰 중복체크
 					int sameCoupon = service.selectSameCouponCount(couponMap);
-					if(sameCoupon!=1) {//중복쿠폰이 있을 경우 개수 차감
-						int minus = service.couponMinus(couponMap);
-					}else if(sameCoupon==1) {
+					if(sameCoupon!=1) {//중복쿠폰이 있을 경우
+						int delOneCoupon = service.deleteOneCoupon(couponMap);
+						System.out.println("중복쿠폰 중 "+delOneCoupon+"개 삭제");
+					}else if(sameCoupon==1) {//중복쿠폰이 없을 경우
 						int delCoupon =  service.deleteCoupon(couponMap);
 						System.out.println("쿠폰"+delCoupon+"개 삭제");
-					}
-					
-				 }
-				 
-				 
+					}					
+				 }//end 쿠폰삭제
+
 				 //주문성공시 orderDTO저장(jsp보낼거)
-				/* List<OrderDTO> orderList= service.getOrderInfo(order_id);
-				 System.out.println(orderList);*/
+				/* List<OrderDTO> orderList= new ArrayList<OrderDTO>();
+				 orderList=service.getOrderInfo(order_id);
+				 System.out.println(orderList);
+				 mav.addObject("orderList", orderList);*/
+			   // List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
+				//mav.addObject("prodList", prodList);
+				 
 				 
 			 }
-			 
-			 
-			
+
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
+			 mav.addObject("payment", payment);
+			 mav.setViewName("orderSuccess");
+			 
+			 return mav;
 			 
 		 }
 		 

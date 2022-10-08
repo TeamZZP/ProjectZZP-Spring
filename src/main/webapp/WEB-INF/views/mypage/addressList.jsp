@@ -38,30 +38,34 @@
 <div class="row">
 <div class="col-lg-2">
 		<div class="col">
-			<a href="">마이페이지 홈</a>
-		</div>
-	   <div class="col">주문 내역</div>
-	   <div class="col">반품/취소/교환 목록</div>
-	   <div class="col">
-	   		<a href="">내 구매후기</a>
+			<a href="/zzp/mypage/${login.userid}">마이페이지 홈</a>
 	   </div>
 	   <div class="col">
-	   		<a href="">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${login.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">
-	   		<a href="">내 챌린지</a>
+	  		<a href="/zzp/mypage/${login.userid}/cancel">반품/취소/교환 목록</a>
 	   </div>
 	   <div class="col">
-	   		<a href="">내 도장</a>
+	   		<a href="/zzp/mypage/${login.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	      <a href="">내 문의 내역</a>
+	   		<a href="/zzp/mypage/${login.userid}/coupon">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
-	      <a href="" class="currCategory">배송지 관리</a>
+	   		<a href="/zzp/mypage/${login.userid}/challenge">내 챌린지</a>
 	   </div>
 	   <div class="col">
-	      <a href="">계정 관리</a>
+	   		<a href="/zzp/mypage/${login.userid}/stamp">내 도장</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/question">내 문의 내역</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/address" class="currCategory">배송지 관리</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/check">계정 관리</a>
 	   </div>
 </div>
 <div class="col-lg-10">

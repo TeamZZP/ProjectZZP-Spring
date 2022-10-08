@@ -68,7 +68,6 @@ a:hover {
 		</c:when>
 			<c:otherwise>
 		
-			<%-- <form id="cartListForm" action="cart/${login.userid}/" method="post"> --%>
 			<form method="post" name="form" id="cartform" action="${contextPath}/orders/cart"> 
 			 	<input type="hidden" name="_method" value="delete">
 			 

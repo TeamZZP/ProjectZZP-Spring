@@ -6,6 +6,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
+	<style type="text/css">
+		img {
+			text-align: center;
+			vertical-align: middle;
+			background-size: cover;
+			width: 100%;
+			height: auto;
+		}
+	</style>
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script>
 		$(document).ready(function () {
@@ -15,18 +24,11 @@
 	</script>
 </head>
 <body>
-	<table>
-		<tr>
-			<td>
-				<b>내 첨부파일</b>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				<img alt="첨부파일" src='<c:if test="${img != null}">${img}</c:if>' id="upload" width="380px" height="500px" title="첨부파일">
-			</td>
-		</tr>
-	</table>
+	<div>
+		<b>내 첨부파일</b>
+	</div >
+	<div id="img">
+		<img alt="첨부파일" src='<c:if test="${img != null}">${img}</c:if>' id="upload" width="380px" height="500px" title="첨부파일">
+	</div>	
 </body>
 </html>

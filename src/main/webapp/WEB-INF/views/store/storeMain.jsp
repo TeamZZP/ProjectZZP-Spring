@@ -52,7 +52,7 @@ a {
 	function zzimFunc(p_id) {
 		
 		$.ajax({
-			type: "get",
+			type: "post",
 			url : "zzim",
 			data : {
 				p_id:p_id

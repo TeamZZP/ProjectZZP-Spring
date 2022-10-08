@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -120,8 +122,8 @@ public class StoreController {
 	
 	//제품상세
 	@RequestMapping(value = "/product/{p_id}")
-	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id, ModelAndView mav) {
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
@@ -150,14 +152,14 @@ public class StoreController {
 		mav.addObject("pdto",pdto);
 		mav.addObject("imageList",imageList);
 		mav.addObject("mdto", mdto);
-		mav.addObject("zzim", zzimList);
+		mav.addObject("zzimList", zzimList);
 		mav.setViewName("productRetrieve");
 		
 		return mav;
 	}
 	
 	//찜기능
-	@RequestMapping("/zzim")
+	@RequestMapping(value = "/zzim", method = RequestMethod.POST)
 	public @ResponseBody int zzim(@RequestParam("p_id") int p_id , HttpSession session) {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		HashMap<String,String> map = new HashMap<String,String>();

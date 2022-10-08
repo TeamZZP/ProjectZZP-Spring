@@ -236,8 +236,7 @@
 				</c:if>
 			</c:forEach>
 
-			<!-- 쿠폰  -->
-			<c:set value="${couponList}" var="cou" />
+			
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
 
@@ -250,17 +249,26 @@
 					<td><span class="price" id="sum_money">${sum}</span>원</td>
 				</tr>
 				<tr>
+					<!-- 쿠폰  -->
+						<c:set value="${couponList}" var="cou" />
 					<th>쿠폰</th>
 					<td></td>
 					<td><select id="sel_coupon" name="sel_coupon"
 						class="form-select" aria-label="Default select example">
 							<option value="" selected disabled hidden>쿠폰을 선택하세요</option>
-							<c:forEach items="${couponList}" var="coupon" varStatus="status">
-								<option hidden id="xxx${status.index}"
-									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}"></option>
-								<option value="${status.index}">${coupon.coupon_name}</option>
-							</c:forEach>
+							<c:choose>
+								<c:when test="${fn:length(cou)==0}">
+									<option disabled="disabled">적용할 쿠폰이  없습니다.</option>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${couponList}" var="coupon" varStatus="status">
+										<option hidden id="xxx${status.index}"
+											data-id="${coupon.coupon_id}"
+											data-rate="${coupon.coupon_discount}"></option>
+										<option value="${status.index}">${coupon.coupon_name}</option>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 					</select></td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
@@ -293,7 +301,7 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="결제하기" id="addOrder"
+				<input type="submit" value="주문하기" id="addOrder"
 					class="btn btn-success"> <input type="button"
 					onclick="javascript:history.back();" value="취소"
 					class="btn btn-success">

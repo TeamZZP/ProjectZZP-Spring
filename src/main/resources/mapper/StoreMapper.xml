@@ -163,6 +163,10 @@ select * from member_coupon m join coupon c on c.coupon_id = m.coupon_id  where 
    ,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p 
    where p.P_NAME like '%'||#{searchValue}||'%' OR p.P_CONTENT like '%'||#{searchValue}||'%' OR p.P_SELLING_PRICE like '%'||#{searchValue}||'%'
 </select>
+<select id="searchProductCount" parameterType="String" resultType="int">
+   select count(*) from product p 
+   where p.P_NAME like '%'||#{searchValue}||'%' OR p.P_CONTENT like '%'||#{searchValue}||'%' OR p.P_SELLING_PRICE like '%'||#{searchValue}||'%'
+</select>
  
   
   </mapper>

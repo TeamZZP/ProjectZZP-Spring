@@ -64,7 +64,7 @@ public class CartController {
 	/**
 	 * 장바구니 리스트화면
 	 */
-	@RequestMapping(value = "/cart/{userid}", method = RequestMethod.GET)
+	@RequestMapping(value = "/cart/{userid}")
 	public ModelAndView cartList(@PathVariable("userid") String userid, ModelAndView mav) {
 		HashMap<String, Object> totalMap = new HashMap<String, Object>();
 		// 장바구니 List
@@ -148,10 +148,13 @@ public class CartController {
 		int likeCount = service.likeCount(userid);	
 		 //장바구니 담긴 갯수
 		int cartCount = service.cartCount(userid);
+		//찜 정보 가져오기
+		List<Integer> zzimList = storeservice.zzimAllCheck(userid);
 		
 		mav.addObject("likeCount", likeCount); 	
 		mav.addObject("cartCount", cartCount);
 		mav.addObject("likeList", likeList);
+		mav.addObject("zzimList", zzimList);
 		mav.setViewName("likeList");
 			
 		return mav;

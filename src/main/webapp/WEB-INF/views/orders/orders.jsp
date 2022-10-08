@@ -223,11 +223,11 @@
 						<tr style="border-bottom-width: 5px; border-color: green;">
 							<th style="font-size: 20px; font-weight: bold;">결제 정보</th>
 						</tr>
-						<tr style="border-bottom-width: 1px; border-color: green;">
+						<tr style="border-bottom-width: 1px; border-color: green; ">
 
-							<td><label><input type="radio" name="payment"
+							<td><label><input type="radio" name="payment"  style="accent-color:green;"  
 									value="card" checked>카드결제</label></td>
-							<td><label><input type="radio" name="payment"
+							<td><label><input type="radio" name="payment"  style="accent-color:green;" 
 									value="transfer">계좌이체</label></td>
 						</tr>
 
@@ -253,9 +253,11 @@
 						<c:set value="${couponList}" var="cou" />
 					<th>쿠폰</th>
 					<td></td>
-					<td><select id="sel_coupon" name="sel_coupon"
+					<td>
+					<select id="sel_coupon" name="sel_coupon"
 						class="form-select" aria-label="Default select example">
 							<option value="" selected disabled hidden>쿠폰을 선택하세요</option>
+
 							<c:choose>
 								<c:when test="${fn:length(cou)==0}">
 									<option disabled="disabled">적용할 쿠폰이  없습니다.</option>
@@ -269,7 +271,11 @@
 									</c:forEach>
 								</c:otherwise>
 							</c:choose>
-					</select></td>
+
+							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
+
+					</select>
+					</td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
 					<th>할인 금액</th>
@@ -314,6 +320,7 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
 	function totalprice() {
 		var sum_money = parseInt($("#sum_money").text());
 		var fee = sum_money >= 50000 ? 0 : 3000;
@@ -347,6 +354,7 @@
 			//할인율
 			var idx = $(this).val();
 			var cou_id = $("#xxx" + idx).attr("data-id");
+			$("#coupon_id").val(cou_id);
 			var rate = $("#xxx" + idx).attr("data-rate");
 			var discount = sum_money / 100 * rate;
 			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
@@ -377,6 +385,7 @@
 		$("form").on(
 				"submit",
 				function() {
+					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();
 					var email2 = $("#email2").val();

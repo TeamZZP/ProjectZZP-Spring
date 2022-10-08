@@ -20,6 +20,9 @@ public class ChallengeDAO {
 	@Autowired
 	private SqlSessionTemplate session;
 
+	/**
+	 * 챌린지 게시글
+	 */
 	public List<ChallengeDTO> getList() {
 		return session.selectList("ChallengeMapper.getList");
 	}
@@ -51,10 +54,6 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectChallThisMonth");
 	}
 
-	public List<Integer> selectLikedChall(String userid) {
-		return session.selectList("ChallengeMapper.selectLikedChall", userid);
-	}
-
 	public void updateChallHits(String chall_id) {
 		session.update("ChallengeMapper.updateChallHits", chall_id);
 	}
@@ -63,8 +62,9 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.selectOneChallenge", chall_id);
 	}
 	
-	public int insertChallenge(HashMap<String, String> map) {
-		return session.insert("ChallengeMapper.insertChallenge", map);
+	public void insertChallenge(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertChallenge", map);
+		System.out.println("insert 개수 : "+n);
 	}
 
 	public int deleteChallenge(String chall_id) {
@@ -96,7 +96,15 @@ public class ChallengeDAO {
 	public int countTotalUserChallenge(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.countTotalUserChallenge", map);
 	}
-
+	
+	public List<ChallengeDTO> selectNewChallenge() {
+		return session.selectList("ChallengeMapper.selectNewChallenge");
+	}
+	
+	
+	/**
+	 * 댓글
+	 */
 	public PageDTO selectAllComments(HashMap<String, String> map) {
 		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
@@ -120,39 +128,7 @@ public class ChallengeDAO {
 		
 		return pDTO;
 	}
-
-	public String selectProfileImg(String userid) {
-		return session.selectOne("ChallengeMapper.selectProfileImg", userid);
-	}
-
-	public int countLikedByMap(HashMap<String, String> map) {
-		return session.selectOne("ChallengeMapper.countLikedByMap", map);
-	}
 	
-	//메인 - 뉴 챌린지
-	public List<ChallengeDTO> selectNewChallenge() {
-		return session.selectList("ChallengeMapper.selectNewChallenge");
-	}
-
-	public void insertLike(HashMap<String, String> map) {
-		int n = session.insert("ChallengeMapper.insertLike", map);
-		System.out.println("insert된 좋아요 수 "+n);
-	}
-
-	public void deleteLike(HashMap<String, String> map) {
-		int n = session.delete("ChallengeMapper.deleteLike", map);
-		System.out.println("delete된 좋아요 수 "+n);
-	}
-
-	public void updateChallLiked(String chall_id) {
-		int n = session.update("ChallengeMapper.updateChallLiked", chall_id);
-		System.out.println("update된 게시글 수 "+n);
-	}
-
-	public int countLiked(String chall_id) {
-		return session.selectOne("ChallengeMapper.countLiked", chall_id);
-	}
-
 	public void insertComment(CommentsDTO dto) {
 		int n = session.insert("ChallengeMapper.insertComment", dto);
 		System.out.println("insert된 댓글 수 "+n);
@@ -189,7 +165,50 @@ public class ChallengeDAO {
 		int n = session.update("ChallengeMapper.updateComment", dto);
 		System.out.println("update된 댓글 수 "+n);
 	}
+	
 
+	/**
+	 * 좋아요
+	 */
+	public List<Integer> selectLikedChall(String userid) {
+		return session.selectList("ChallengeMapper.selectLikedChall", userid);
+	}
+	
+	public int countLikedByMap(HashMap<String, String> map) {
+		return session.selectOne("ChallengeMapper.countLikedByMap", map);
+	}
+
+	public void insertLike(HashMap<String, String> map) {
+		int n = session.insert("ChallengeMapper.insertLike", map);
+		System.out.println("insert된 좋아요 수 "+n);
+	}
+
+	public void deleteLike(HashMap<String, String> map) {
+		int n = session.delete("ChallengeMapper.deleteLike", map);
+		System.out.println("delete된 좋아요 수 "+n);
+	}
+
+	public void updateChallLiked(String chall_id) {
+		int n = session.update("ChallengeMapper.updateChallLiked", chall_id);
+		System.out.println("update된 게시글 수 "+n);
+	}
+
+	public int countLiked(String chall_id) {
+		return session.selectOne("ChallengeMapper.countLiked", chall_id);
+	}
+
+	
+	/**
+	 * 프로필
+	 */
+	public String selectProfileImg(String userid) {
+		return session.selectOne("ChallengeMapper.selectProfileImg", userid);
+	}
+	
+	
+	/**
+	 * 신고
+	 */
 	public int checkReportExist(HashMap<String, String> map) {
 		return session.selectOne("ChallengeMapper.checkReportExist", map);
 	}
@@ -198,7 +217,11 @@ public class ChallengeDAO {
 		int n = session.insert("ChallengeMapper.insertReport", map);
 		System.out.println("insert된 신고 수 "+n);
 	}
-
+	
+	
+	/**
+	 * 도장
+	 */
 	public PageDTO selectMemberStampByUserid(HashMap<String, String> map, int perPage) {
 		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
@@ -225,40 +248,5 @@ public class ChallengeDAO {
 		return session.selectOne("ChallengeMapper.countTotalStamp", map);
 	}
 
-	public void updateStamp(HashMap<String, String> map) {
-		int n = session.update("ChallengeMapper.updateStamp", map);
-		System.out.println("update된 도장 수 "+n);
-	}
-
-
-	public void updateOrder(HashMap<String, String> map) {
-		int n = session.update("ChallengeMapper.updateOrder", map);
-		System.out.println("update된 주문 수 "+n);
-	}
-
-	public ReportDTO selectOneReport(String id) {
-		return session.selectOne("ChallengeMapper.selectOneReport", id);
-	}
-
-	public int selectChallIdFromComment(int comment_id) {
-		return session.selectOne("ChallengeMapper.selectChallIdFromComment", comment_id);
-	}
-
-	public void deleteReport(List<Integer> ids) {
-		int n = session.delete("ChallengeMapper.deleteReport", ids);
-		System.out.println("delete된 신고 수 "+n);
-	}
-
-	public void updateReport(HashMap<String, String> map) {
-		int n = session.update("ChallengeMapper.updateReport", map);
-		System.out.println("update된 신고 수 "+n);
-	}
-
-
-	
-
-	
-
-	
 
 }

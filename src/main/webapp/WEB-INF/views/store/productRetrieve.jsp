@@ -23,32 +23,44 @@
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 function zzimFunc(p_id) {
-	
-	$.ajax({
-		type: "post",
-		url : "/zzp/zzim",
-		data : {
-			p_id:p_id
-		},
-		dataType: "text" ,
-		success : function(data,status,xhr) {
-			console.log("찜ajax");
-			console.log(data);
-			if(data==0){
-				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
-			}else{
-				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+
+	if("${mdto}".length != 0){
+		
+			$.ajax({
+			type: "post",
+			url : "/zzp/zzim",
+			data : {
+				p_id:p_id
+			},
+			dataType: "text" ,
+			success : function(data,status,xhr) {
+				console.log("찜ajax");
+				console.log(data);
+				if(data==0){
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+				}else{
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+				}
+				
+			},
+			error : function(xhr, status,error) {
+				console.log(error);
 			}
-			
-		},
-		error : function(xhr, status,error) {
-			console.log(error);
-		}
 		
 		
 	}) //end ajax
+		}else{
+			
+		        $("#modalBtn").trigger("click");
+		        $("#mesg").text("로그인이 필요합니다.");
+		        
+		        $("#closemodal").click(function() {
+		          location.href="/login";
+		       });
+		          
+		     }
 
-}
+}//end func
 
   $(function () {
 	
@@ -63,8 +75,22 @@ function zzimFunc(p_id) {
 	  		var src2 = $("#img").val();
 	  		$("#firstImage").attr("src",src2);
 	   }); 
+	
 	  	
-})
+		$("#toOrder").click(function() {
+			
+			if("${mdto}".length != 0){
+				$("#modalBtn").trigger("click");
+		        $("#mesg").text("로그인이 필요합니다.");
+		        
+		        $("#closemodal").click(function() {
+		          location.href="/login";
+		       });    
+		     }
+
+			}); //end toOrder
+	  	
+});//end func
 
 
 </script>

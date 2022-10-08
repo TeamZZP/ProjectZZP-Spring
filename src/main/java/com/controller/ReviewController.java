@@ -18,7 +18,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ProductOrderReviewDTO;
+import com.dto.ReviewDTO;
 import com.service.ReviewService;
+import com.util.Upload;
 
 @Controller
 public class ReviewController {
@@ -43,23 +45,10 @@ public class ReviewController {
 	public String reviewInsert(@RequestParam HashMap<String, String> map, @RequestParam String userid,
 			@RequestParam("review_img") CommonsMultipartFile uploadFile, RedirectAttributes attr) {
 		
-		long size = uploadFile.getSize();
-		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
-		String contentType= uploadFile.getContentType();
-		System.out.println("size:  "+ size);
-		System.out.println("name:  "+ name);
-		System.out.println("originalFileName:  "+ originalFileName);
-		System.out.println("contentType:  "+ contentType);
+		String location = "review";
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//review";
-		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		Upload.uploadFile(location, uploadFile);
 		map.put("review_img", originalFileName);
 		
 		rService.reviewInsert(map);
@@ -89,23 +78,18 @@ public class ReviewController {
 	public String reviewUpdate(@RequestParam HashMap<String, String> map, @RequestParam String userid,
 			@RequestParam("review_img") CommonsMultipartFile uploadFile, RedirectAttributes attr) {
 		
-		long size = uploadFile.getSize();
-		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
-		String contentType= uploadFile.getContentType();
-		System.out.println("size:  "+ size);
-		System.out.println("name:  "+ name);
-		System.out.println("originalFileName:  "+ originalFileName);
-		System.out.println("contentType:  "+ contentType);
+		String location = "review";
 		
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//review";
+		String oldFile = map.get("oldFile");
 		
-		File f= new File(location, originalFileName);
-		try {
-			uploadFile.transferTo(f);
-		} catch (Exception e) {
-			e.printStackTrace();
+		if(oldFile == null || oldFile.length() == 0) {
+			Upload.uploadFile(location, uploadFile);
+			map.put("review_img", originalFileName);
+		} else {
+			map.put("review_img", oldFile);
 		}
+		Upload.uploadFile(location, uploadFile);
 		map.put("review_img", originalFileName);
 		
 		rService.reviewUpate(map);
@@ -123,6 +107,14 @@ public class ReviewController {
 		int num = rService.reviewDelete(review_id);
 		System.out.println("삭제된 리뷰 갯수 " + num);
 		
+		ProductOrderReviewDTO dto = rService.reviewOneSelect(review_id);
+		String review_img = dto.getReview_img();
+		
+		if(review_img != null) {
+			System.out.println("리뷰 사진 삭제");
+			String location = "review";
+			Upload.deleteFile(location, review_img);
+		}
 		return num;
 	}
 	

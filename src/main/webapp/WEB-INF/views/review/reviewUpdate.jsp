@@ -59,6 +59,7 @@
 
 <form id="reviewUpdateForm" encType="multipart/form-data" method="post">
 <input type="hidden" name="userid" value="${mDTO.userid}">
+<input type="hidden" name="oldFile" id="oldFile" value="${review.review_img}">
 <div class="container justify-content-center">
 <div class="row">
 		<table>
@@ -109,7 +110,7 @@
 					<td colspan="2">
 						<div>
 						  <button class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-						  	<img id="upload" alt="" src="/zzp/resources/upload/review/${review.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
+						  	<img id="upload" alt="" src="/upload/review/${review.review_img}" width="100px" height="100px" style="border: 1px solid gray;">
 						  	<input class="form-control" type="file" accept="image/*" name="review_img">
 						</div>
 					</td>

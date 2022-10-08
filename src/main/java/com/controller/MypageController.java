@@ -1,11 +1,7 @@
 package com.controller;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,11 +27,13 @@ import com.dto.PageDTO;
 import com.dto.ProfileDTO;
 import com.dto.ReviewDTO;
 import com.service.AnswerService;
+import com.service.ChallengeService;
 import com.service.CouponService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.QuestionService;
 import com.service.ReviewService;
+import com.util.Upload;
 
 
 @Controller
@@ -52,6 +50,9 @@ public class MypageController {
 	OrderService oService;
 	@Autowired
 	CouponService cService;
+	@Autowired
+	ChallengeService chService;
+	
 	/**
 	 * 마이페이지 메인
 	 */
@@ -346,6 +347,49 @@ public class MypageController {
 		return "myCoupon";
 	}
 	/**
+	 * 마이페이지 내 챌린지
+	 */
+	@RequestMapping(value = "/mypage/{userid}/challenge", method = RequestMethod.GET)
+	public String myChallenge(
+			@PathVariable String userid, 
+			@RequestParam HashMap<String, String> map,
+			Model model,
+			HttpSession session) {
+		//회원의 챌린지 목록 가져오기
+		map.put("userid", userid);
+		PageDTO pDTO = chService.selectChallengeByUserid(map, 6);
+		model.addAttribute("pDTO", pDTO);
+		
+		//회원이 좋아요 누른 게시글 가져오기
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		List<Integer> likedList = new ArrayList<Integer>();
+		if (mDTO != null) {
+			likedList = chService.selectLikedChall(mDTO.getUserid());
+		}
+		model.addAttribute("likedList", likedList);
+		
+		return "myChallenge";
+	}
+	/**
+	 * 마이페이지 내 도장
+	 */
+	@RequestMapping(value = "/mypage/{userid}/stamp", method = RequestMethod.GET)
+	public String myStamp(
+			@PathVariable String userid, 
+			@RequestParam HashMap<String, String> map,
+			Model model) {
+		//회원의 도장 목록 가져오기
+		map.put("userid", userid);
+		PageDTO pDTO = chService.selectMemberStampByUserid(map, 6);
+		model.addAttribute("pDTO", pDTO);
+		
+		//전체 도장 개수
+		int stampTotalNum = chService.countTotalStamp(map);
+		model.addAttribute("stampTotalNum", stampTotalNum);
+		
+		return "myStamp";
+	}
+	/**
 	 * 마이페이지 프로필 수정
 	 */
 	@RequestMapping(value = "/mypage/{userid}/profile", method = RequestMethod.POST)
@@ -364,7 +408,8 @@ public class MypageController {
 				+" oldfile : "+old_file
 				+" profile_txt : "+profile_txt);
 		//업로드 파일 저장 location
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//profile";
+//		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//profile";
+		String location = "profile";
 		
 		if (originalFileName==null || originalFileName.length()==0) {//파일 업로드가 없는 경우
 			//이미지 변경 없음
@@ -372,9 +417,11 @@ public class MypageController {
 		} else {
 			//이미지 변경
 			profile_img=originalFileName;//새로운 파일로 변경
-			uploadFile(location, uploadFile);//해당 위치에 파일을 업로드
+//			uploadFile(location, uploadFile);//해당 위치에 파일을 업로드
+			Upload.uploadFile(location, uploadFile);
 			if (!old_file.equals("user.png")) {//기존 이미지가 기본 설정이 아닌 경우--삭제
-				deleteFile(location, old_file);
+//				deleteFile(location, old_file);
+				Upload.deleteFile(location, old_file);
 			}
 		}
 		map.put("userid", userid);
@@ -387,7 +434,7 @@ public class MypageController {
 		m.addFlashAttribute("mesg", "프로필이 수정되었습니다.");
 		return "redirect:/mypage/"+userid;
 	}
-	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
+/*	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
 		long size = uploadFile.getSize();
 		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
@@ -411,5 +458,6 @@ public class MypageController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}	*/
+
 }

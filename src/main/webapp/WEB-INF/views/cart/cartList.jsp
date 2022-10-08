@@ -76,7 +76,7 @@ a:hover {
 					<table id="cartTable" class="table table-hover">
 						<thead>
 							<tr class="tableTop">
-								<th><input type="checkbox" name="allCheck" id="allCheck"
+								<th><input type="checkbox" name="allCheck" id="allCheck"  style="accent-color:green;" 
 									checked="checked"></th>
 								<th scope="col">주문번호</th>
 								<th scope="col">상품정보</th>
@@ -97,9 +97,8 @@ a:hover {
 									<td style="padding-top: 35px;">
 										<!-- 체크박스  --> 
 										<input type="checkbox" name="check"
-										id="check${cart.cart_id}" checked="checked"  
+										id="check${cart.cart_id}" checked="checked"  style="accent-color:green;" 
 										 class="individual_cart_checkbox"  data-cart_id="${cart.cart_id}" value="${cart.money}" 
-										<%-- class="individual_cart_checkbox" value="${cart.cart_id}" data-money="${cart.money}" --%>
 										data-p_id="${cart.p_id}" onclick="itemSum(this.form);">
 										
 									</td>

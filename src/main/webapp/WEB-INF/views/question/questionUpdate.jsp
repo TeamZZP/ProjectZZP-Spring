@@ -57,6 +57,7 @@
 <div class="row">
  <input type="hidden" name="q_id" value="${dto.q_id}">
  <input type="hidden" name="userid" value="${dto.userid}">
+ <input type="hidden" name="oldFile" id="oldFile" value="${dto.q_img}">
 		<table>
 			<tr>
 				<td colspan="2">
@@ -116,7 +117,7 @@
 						<td colspan="2">
 							<div>
 							  <button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-							  	<img id="upload" alt="" src="/zzp/resources/upload/qna/${dto.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+							  	<img id="upload" alt="" src="/upload/qna/${dto.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
 							  	<input class="form-control" type="file" accept="image/*" name="qna_img">
 							</div>
 						</td>

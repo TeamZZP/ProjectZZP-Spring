@@ -4,44 +4,88 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="AdminMapper">
   
-<!-- 상품관리 : 전체 상품 목록 -->
-<select id="selectAllProduct" parameterType="hashmap" resultType="ProductByCategoryDTO">
- 	select (select C_NAME from category where c_id = product.c_id) as c_name, P_ID,(select IMAGE_ROUTE from images where p_id = product.p_id 
-	and IMAGE_RNK = 1) as p_image, P_NAME, P_CONTENT, C_ID, P_COST_PRICE
-	, P_SELLING_PRICE, P_DISCOUNT, to_char(P_CREATED,'yyyy-mm-dd') P_CREATED, P_STOCK from product
-	<where>
-		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
-		</if>
-		<if test='searchName=="p_created"'>
-			to_char(product.p_created,'yyyy-mm-dd') like '%${searchValue}%'
-		</if>
-		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and searchName!="c_id"  and !searchName.equals("p_created") and searchName!="p_created"'>
-			${searchName} like '%${searchValue}%'
-		</if>
-	</where>
-	order by
-		<if test='sortBy!=null and !sortBy.equals("")'>
-			${sortBy} desc,
-		</if>
-	 p_id desc
+<!-- 총 판매액 -->
+<select id="getTotalSales" resultType="double">
+	select NVL(sum(total_price),0) from orders
 </select>
-  
-<!-- 상품관리 : 전체 상품 목록 페이징 countTotal -->
-<select id="countTotalAdmin" resultType="int" parameterType="hashmap">
- select count(*) from product 
-	<where>
-		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
-		</if>
-		<if test='searchName=="p_created"'>
-			to_char(product.p_created,'yyyy-mm-dd') like upper('%${searchValue}%')
-		</if>
-		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and !searchName.equals("p_created") and searchName!="p_created"'>
-			${searchName} like '%${searchValue}%'
-		</if>
-	</where>
+<!-- 오늘 판매액 -->
+<select id="getTodaySales" resultType="double">
+	select NVL(sum(total_price),0) from orders
+	where TO_CHAR(order_date,'YY/MM/DD') = TO_CHAR(CURRENT_TIMESTAMP, 'YY/MM/DD')
 </select>
+<!-- 총 회원 -->
+<select id="getTotalMember" resultType="int">
+	select count(*) from member
+</select>
+<!-- 오늘 가입한 회원 -->
+<select id="getTodayMember" resultType="int">
+	select count(*) from member
+	where TO_CHAR(created_at,'YY/MM/DD') = TO_CHAR(CURRENT_TIMESTAMP, 'YY/MM/DD')
+</select>
+
+<!-- 오늘 방문자수 -->
+<select id="countVisitToday" resultType="int">
+	select NVL(
+		(select count from counter 
+		where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')), 0)
+    from dual
+</select>
+<!-- 총 방문자 -->
+<select id="getTotalVisitor" resultType="int">
+	select sum(count) from counter
+</select>
+<!-- 어제 방문자수 -->
+<select id="countVisitYesterday" resultType="int">
+	select NVL(
+		(select count from counter 
+		where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE-1,'YY/MM/DD')), 0)
+    from dual
+</select>
+<!-- 방문자수 추가 -->
+<insert id="addVisit">
+	insert into counter (count, count_date) 
+	values (1, CURRENT_DATE)
+</insert>
+<!-- 방문자수 수정 -->
+<update id="updateVisit">
+	update counter 
+	set count=count+1
+	where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</update>
+
+<!-- 신규 주문 -->
+<select id="selectNewOrders" resultType="ProductOrderImagesDTO">
+	select * from orders o join product p using(p_id)
+	where to_char(order_date, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</select>
+<!-- 신규 회원 -->
+<select id="selectNewMembers" resultType="MemberDTO">
+	select * from member
+	where to_char(created_at, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</select>
+<!-- 답변대기 문의 -->
+<select id="selectNewQuestion" resultType="QuestionDTO">
+	select * from question
+	where q_status='답변대기'
+	order by q_id desc
+</select>
+
+<!-- 월별 실적 -->
+<select id="getMonthlySales" resultType="hashmap">
+	select TO_CHAR(order_date, 'YYYY.MM') as month, SUM(total_price) as sum from orders
+	group by TO_CHAR(order_date, 'YYYY.MM')
+	having TO_CHAR(order_date, 'YYYY.MM') > TO_CHAR(ADD_MONTHS(CURRENT_TIMESTAMP, -4), 'YYYY.MM')
+	order by TO_CHAR(order_date, 'YYYY.MM')
+</select>
+<!-- 카테고리별 판매 비율 -->
+<select id="getSalesCategory" resultType="hashmap">
+	select c_name as category, sum(total_price) as sum
+	from orders o join product p using(p_id)
+	join category c using(c_id)
+	group by c_name
+	order by sum desc
+</select>
+
 
 <!-- 회원관리 : 전체 회원 목록 -->
 <select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">
@@ -81,6 +125,46 @@
 		phone = #{phone}
 	where userid = #{userid}
 </update>
+
+
+<!-- 상품관리 : 전체 상품 목록 -->
+<select id="selectAllProduct" parameterType="hashmap" resultType="ProductByCategoryDTO">
+ 	select (select C_NAME from category where c_id = product.c_id) as c_name, P_ID,(select IMAGE_ROUTE from images where p_id = product.p_id 
+	and IMAGE_RNK = 1) as p_image, P_NAME, P_CONTENT, C_ID, P_COST_PRICE
+	, P_SELLING_PRICE, P_DISCOUNT, to_char(P_CREATED,'yyyy-mm-dd') P_CREATED, P_STOCK from product
+	<where>
+		<if test='searchName=="c_id"'>
+			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
+		</if>
+		<if test='searchName=="p_created"'>
+			to_char(product.p_created,'yyyy-mm-dd') like '%${searchValue}%'
+		</if>
+		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and searchName!="c_id"  and !searchName.equals("p_created") and searchName!="p_created"'>
+			${searchName} like '%${searchValue}%'
+		</if>
+	</where>
+	order by
+		<if test='sortBy!=null and !sortBy.equals("")'>
+			${sortBy} desc,
+		</if>
+	 p_id desc
+</select>
+  
+<!-- 상품관리 : 전체 상품 목록 페이징 countTotal -->
+<select id="countTotalAdmin" resultType="int" parameterType="hashmap">
+ select count(*) from product 
+	<where>
+		<if test='searchName=="c_id"'>
+			upper((select C_NAME from category where c_id = product.C_ID)) like upper('%${searchValue}%')
+		</if>
+		<if test='searchName=="p_created"'>
+			to_char(product.p_created,'yyyy-mm-dd') like upper('%${searchValue}%')
+		</if>
+		<if test='searchName!=null and !searchName.equals("") and !searchName.equals("c_id") and !searchName.equals("p_created") and searchName!="p_created"'>
+			${searchName} like '%${searchValue}%'
+		</if>
+	</where>
+</select>
 
 <!-- 상품 삭제 -->
 <delete id="deleteProduct" parameterType="list">
@@ -218,6 +302,109 @@ insert all
 </insert>
 
 
+<!-- 주문 상태 변경 -->
+<update id="updateOrder">
+	update orders
+	set order_state=#{status}
+	where concat(order_id, p_id)=#{id}
+</update>
+
+<!-- 주문 관리 : 전체 조회 -->
+<select id="selectAllOrders" parameterType="hashmap" resultType="ProductOrderImagesDTO">
+	select * from orders o join product p using(p_id)
+	<where>
+	  <if test='searchName!=null and !searchName.equals("null")'>
+	 	${searchName} like '%${searchValue}%'
+	  </if>
+	  <if test='status!=null and !status.equals("null")'> 
+ 	  	and order_state=#{status}
+	  </if>
+	</where>
+	order by order_id desc
+</select>
+<select id="countTotalOrders" parameterType="hashmap" resultType="int">
+	select count(*) from orders o join product p using(p_id)
+	<where>
+	  <if test='searchName!=null and !searchName.equals("null")'>
+	 	${searchName} like '%${searchValue}%'
+	  </if>
+	  <if test='status!=null and !status.equals("null")'> 
+ 	  	and order_state=#{status}
+	  </if>
+	</where>
+</select>
+
+
+<!-- 챌린지 등록 -->
+<insert id="insertAdminChallenge" parameterType="hashmap">
+	insert all 
+	into challenge (chall_id, 
+			userid, 
+			chall_title, 
+			chall_content, 
+			chall_category, 
+			chall_hits, 
+			chall_liked, 
+			chall_created, 
+			chall_img,
+			chall_comments,
+			chall_this_month)
+	    values 
+			(challenge_chall_id_seq.NEXTVAL, 
+			#{userid}, 
+			#{chall_title}, 
+			#{chall_content}, 
+			#{chall_category}, 
+			0, 
+			0, 
+			CURRENT_TIMESTAMP, 
+			#{chall_img},
+			0,
+			1)
+	into stamp (stamp_id,
+			chall_id,
+			stamp_img,
+			stamp_name,
+			stamp_content)
+		values
+			(stamp_stamp_id_seq.NEXTVAL,
+			challenge_chall_id_seq.NEXTVAL,
+			#{stamp_img},
+			#{stamp_name},
+			#{stamp_content})
+	into member_stamp (userid,
+			stamp_id,
+			chall_id,
+			stamp_created)
+	values
+			(#{userid},
+			stamp_stamp_id_seq.NEXTVAL,
+			challenge_chall_id_seq.NEXTVAL,
+			CURRENT_TIMESTAMP)
+	select * from dual
+</insert>
+
+<!-- 이달의 챌린지 변경 -->
+<update id="updateChallThisMonth" parameterType="hashmap">
+	update challenge
+	set chall_this_month=${after}
+	where chall_this_month=${before}
+	<if test="before == 0">
+	and chall_id=(select max(chall_id) from challenge
+					where userid='admin1')
+	</if>
+</update>
+
+<!-- 도장 수정 -->
+<update id="updateStamp" parameterType="hashmap">
+	update stamp
+	set stamp_img=#{stamp_img},
+		stamp_name=#{stamp_name},
+		stamp_content=#{stamp_content}
+	where chall_id=#{chall_id}
+</update>
+
+
 <!-- 신고 관리(전체 조회) -->
 <select id="selectAllReport" parameterType="hashmap" resultType="com.dto.ReportDTO">
 	select r.report_id,
@@ -267,30 +454,32 @@ insert all
 	  </if>
 </select>
 
-
-<!-- 주문 관리 : 전체 조회 -->
-<select id="selectAllOrders" parameterType="hashmap" resultType="ProductOrderImagesDTO">
-	select * from orders o join product p using(p_id)
-	<where>
-	  <if test='searchName!=null and !searchName.equals("null")'>
-	 	${searchName} like '%${searchValue}%'
-	  </if>
-	  <if test='status!=null and !status.equals("null")'> 
- 	  	and order_state=#{status}
-	  </if>
-	</where>
-	order by order_id desc
+<!-- 신고 상세 보기 -->
+<select id="selectOneReport" resultType="ReportDTO">
+	select * from report
+	where report_id=#{report_id}
 </select>
-<select id="countTotalOrders" parameterType="hashmap" resultType="int">
-	select count(*) from orders o join product p using(p_id)
-	<where>
-	  <if test='searchName!=null and !searchName.equals("null")'>
-	 	${searchName} like '%${searchValue}%'
-	  </if>
-	  <if test='status!=null and !status.equals("null")'> 
- 	  	and order_state=#{status}
-	  </if>
-	</where>
+
+<!-- 신고 삭제 -->
+<delete id="deleteReport" parameterType="list">
+	delete from report
+	where report_id in
+	<foreach item="id" collection="list" open="(" separator="," close=")">
+		#{id}
+	</foreach>
+</delete>
+
+<!-- 신고 상태 변경 -->
+<update id="updateReport" parameterType="hashmap">
+	update report
+	set report_status=#{status}
+	where report_id=#{id}
+</update>
+
+<!-- 신고된 댓글의 챌린지 게시글 번호 구하기 -->
+<select id="selectChallIdFromComment" resultType="int">
+	select chall_id from comments
+	where comment_id=#{comment_id}
 </select>
 
 

@@ -34,32 +34,34 @@
 <div class="row">
 <div class="col-lg-2">
 		<div class="col">
-			<a href="MypageServlet">마이페이지 홈</a>
-		</div>
-	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/order">주문 내역</a>
-	   </div>
-	   <div class="col">반품/취소/교환 목록</div>
-	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/review">내 구매후기</a>
+			<a href="/zzp/mypage/${login.userid}">마이페이지 홈</a>
 	   </div>
 	   <div class="col">
-	   		<a href="/zzp/mypage/${mDTO.userid}/coupon" class="currCategory">내 쿠폰함</a>
+	   		<a href="/zzp/mypage/${login.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">
-	   		<a href="ProfileCategoryServlet?category=mychallenge&userid=${mDTO.userid}">내 챌린지</a>
+	  		<a href="/zzp/mypage/${login.userid}/cancel">반품/취소/교환 목록</a>
 	   </div>
 	   <div class="col">
-	   		<a href="ProfileCategoryServlet?category=mystamp&userid=${mDTO.userid}">내 도장</a>
+	   		<a href="/zzp/mypage/${login.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">
-	      <a href="/zzp/mypage/${mDTO.userid}/question">내 문의 내역</a>
+	   		<a href="/zzp/mypage/${login.userid}/coupon" class="currCategory">내 쿠폰함</a>
 	   </div>
 	   <div class="col">
-	      <a href="AddressListServlet">배송지 관리</a>
+	   		<a href="/zzp/mypage/${login.userid}/challenge">내 챌린지</a>
 	   </div>
 	   <div class="col">
-	      <a href="checkPasswd.jsp">계정 관리</a>
+	   		<a href="/zzp/mypage/${login.userid}/stamp">내 도장</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/question">내 문의 내역</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/address">배송지 관리</a>
+	   </div>
+	   <div class="col">
+	      	<a href="/zzp/mypage/${login.userid}/check">계정 관리</a>
 	   </div>
 </div>
 
@@ -92,7 +94,6 @@
 		<th>쿠폰이미지</th>
 		<th>쿠폰명</th>
 		<th>할인율</th>
-		<th>사용여부</th>
 		<th>만료일</th>
 	</tr>
 	<c:forEach var="list" items="${myCoupon.list}">
@@ -101,16 +102,6 @@
 	    <td> <img alt="쿠폰" src="/zzp/resources/images/coupon/${list.coupon_img}" width="50" height="50"> </td>
 		<td> ${list.coupon_name} </td>
 		<td> ${list.coupon_discount} </td>
-		<td> 
-			<c:choose>
-				<c:when test="${list.coupon_used == null}">
-					미사용
-				</c:when>
-				<c:otherwise>
-					사용
-				</c:otherwise>
-			</c:choose>
-		</td>
 		<td> ${list.coupon_validity.substring(0,10)} </td>
 	</tr>
 	</c:forEach>

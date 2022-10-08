@@ -111,7 +111,7 @@
      <div class="oneStamp col-xl-4 col-md-6">
        <div class="position-relative">
 	       <div class="hover-zoomin">
-				<img src="/zzp/resources/upload/challenge/${s.stamp_img}" border="0" 
+				<img src="/upload/challenge/${s.stamp_img}" border="0" 
 						 data-bs-toggle="modal" data-bs-target="#stampModal${s.stamp_id}">
 		   </div>
 		   <span class="translate-middle badge rounded-pill bg-danger stamp-num">
@@ -129,7 +129,7 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body text-center">
-	      <img src="/zzp/resources/upload/challenge/${s.stamp_img}" width="400">
+	      <img src="/upload/challenge/${s.stamp_img}" width="400">
 	      </div>
 	      <div class="modal-footer mb-3 text-center">
 	       ${s.stamp_content}

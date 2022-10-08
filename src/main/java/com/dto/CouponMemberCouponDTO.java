@@ -23,5 +23,6 @@ public class CouponMemberCouponDTO {
 	String coupon_created;
 	String coupon_validity;
 	String coupon_name;
+	int coupon_give_id;
 	
 }

@@ -16,14 +16,11 @@
 </script>
 </c:if>
 <style type="text/css">
-.store {
+.member {
 	background-color: #EBFFED;
 	color: green !important;
 }
-.product {
-	color: green !important;
-}
-.productPage:after{
+.memberPage:after{
 	content:'';
 	display:block;
 	clear:both;

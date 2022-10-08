@@ -37,6 +37,46 @@
 		insert into orders (order_id, userid, p_id, total_price, delivery_address, delivery_req, order_date,order_state,p_amount)
 		values(#{order_id}, #{userid}, #{p_id}, #{total_price}, #{delivery_address}, #{delivery_req},sysdate,'주문완료', #{order_quantity})
 	</insert>	
+	
+	<delete id="cartDelete" parameterType="hashmap">
+		delete from cart where userid = #{userid} and p_id=#{p_id}
+	</delete>
+	
+	<select id="selectCart" parameterType="hashmap" resultType="int">
+	select count(*) from cart where userid = #{userid} and p_id=#{p_id}
+	</select>
+	
+	<delete id="deleteCoupon" parameterType="hashmap">
+	delete from member_coupon where userid = #{userid} and coupon_id=#{coupon_id}
+	</delete>
+	
+	<select id="selectSameCouponCount" parameterType="hashmap" resultType="int">
+	select count(*) from member_coupon where userid = #{userid} and coupon_id=#{coupon_id}
+	</select>
+	
+
+	<delete id="deleteOneCoupon" parameterType="hashmap">
+	delete from member_coupon where coupon_give_id =
+		(select coupon_give_id from 
+			(select coupon_give_id, userid,coupon_id,coupon_get,coupon_validity,coupon_status , row_number() over(order by coupon_validity) as r
+			 from member_coupon where userid = #{userid} and coupon_id=#{coupon_id})
+		where r=1)
+	</delete>
+	
+	<select id="getOrderInfo" parameterType="int" resultType="OrderDTO">
+	select * from orders where order_id = #{order_id}
+	</select>
+	
+	<select id="selectOrderProd" parameterType="int" resultType="ProductOrderImagesDTO">
+	select o.order_id, o.userid, o.p_id, o.total_price, o.delivery_address, o.delivery_req, o.order_date,o.order_state, o.p_amount,
+			 p.p_name,p.p_content,p.c_id,p.p_cost_price, p.p_selling_price,p.p_discount,p.p_created,p.p_stock,
+			 i.image_rnk , i.image_route, i.update_date 
+		 from orders o,  product p, images i 
+			where o.p_id = p.p_id and p.p_id = i.p_id
+			and o.order_id = #{order_id};
+	</select>
+
+	
 
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">
 		select o.order_id, o.userid, o.p_id, o.total_price, o.delivery_address, o.delivery_loc, o.delivery_req, o.order_date,

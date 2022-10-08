@@ -161,7 +161,7 @@ a {
 				</button>
 			</div>	
 				<!-- Modal -->
-				<form action="/cart/{userid}" method="post">
+				<form action="/zzp/cart/{userid}" method="post">
 
 					<input type="hidden" id="p_id" name="p_id" value="${pList.p_id}"> 
 					<input type="hidden" name="p_image" value="${pList.p_image}"> 
@@ -318,7 +318,7 @@ a {
          if ("${mdto.userid}" != "") {
             $.ajax({
                type : "post",
-               url : "${contextPath}/cart/${mdto.userid}",
+               url : "/zzp/cart/${mdto.userid}",
                data : {
                   p_id : p_id,
                   p_name : p_name, 

@@ -80,6 +80,7 @@ public class StoreController {
 					"<img style='position: relative; left: 150px; bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
 		}
 		
+		mav.addObject("mdto", mdto);
 		mav.addObject("c_id",c_id);  
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 

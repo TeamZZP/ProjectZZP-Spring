@@ -76,10 +76,6 @@
 			and o.order_id = #{order_id};
 	</select>
 
-	<select id="getOrderInfo" parameterType="int" resultType="list">
-	select * from orders where order_id = #{order_id}
-	</select>
-	
 	
 
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">

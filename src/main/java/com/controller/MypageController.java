@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,16 +27,20 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.AddressDTO;
+import com.dto.CartDTO;
+import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProfileDTO;
 import com.dto.ReviewDTO;
 import com.service.AnswerService;
+import com.service.CartService;
 import com.service.CouponService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.QuestionService;
 import com.service.ReviewService;
+import com.util.Upload;
 
 
 @Controller
@@ -52,6 +57,7 @@ public class MypageController {
 	OrderService oService;
 	@Autowired
 	CouponService cService;
+	
 	/**
 	 * 마이페이지 메인
 	 */
@@ -364,7 +370,8 @@ public class MypageController {
 				+" oldfile : "+old_file
 				+" profile_txt : "+profile_txt);
 		//업로드 파일 저장 location
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//profile";
+//		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//profile";
+		String location = "profile";
 		
 		if (originalFileName==null || originalFileName.length()==0) {//파일 업로드가 없는 경우
 			//이미지 변경 없음
@@ -372,9 +379,11 @@ public class MypageController {
 		} else {
 			//이미지 변경
 			profile_img=originalFileName;//새로운 파일로 변경
-			uploadFile(location, uploadFile);//해당 위치에 파일을 업로드
+//			uploadFile(location, uploadFile);//해당 위치에 파일을 업로드
+			Upload.uploadFile(location, uploadFile);
 			if (!old_file.equals("user.png")) {//기존 이미지가 기본 설정이 아닌 경우--삭제
-				deleteFile(location, old_file);
+//				deleteFile(location, old_file);
+				Upload.deleteFile(location, old_file);
 			}
 		}
 		map.put("userid", userid);
@@ -387,7 +396,7 @@ public class MypageController {
 		m.addFlashAttribute("mesg", "프로필이 수정되었습니다.");
 		return "redirect:/mypage/"+userid;
 	}
-	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
+/*	private void uploadFile(String location, CommonsMultipartFile uploadFile) {
 		long size = uploadFile.getSize();
 		String name= uploadFile.getName();
 		String originalFileName= uploadFile.getOriginalFilename();
@@ -411,5 +420,6 @@ public class MypageController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
+	}	*/
+
 }

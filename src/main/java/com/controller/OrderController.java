@@ -89,11 +89,10 @@ public class OrderController {
 			 System.out.println("오더저장 "+n+"번 성공");
 			 
 			 int cartdel =0; //카트 삭제 회수
-			 
-			 if(n!=0) { //오더저장 성공시 
+			 if(n!=0) { //오더저장 성공시 카트삭제
 					 
-				 for(int i = 0; i < p_id.length; i++) {  //주문한 상품 카트 삭제
-					System.out.println("삭제되는카트 상품 :"+ p_id[i]); 
+				 for(int i = 0; i < p_id.length; i++) {   
+					 System.out.println("삭제되는카트 상품 :"+ p_id[i]);
 					map.put("p_id",String.valueOf(p_id[i]) );
 					map.put("userid",mdto.getUserid());
 					System.out.println(map);
@@ -101,7 +100,9 @@ public class OrderController {
 					if(countCart!=0) {						
 						cartdel += service.cartDelete(map);	
 					} 
+
 				 }//end 주문한 상품 카트 삭제
+ 
 
 				 //오더저장 성공시 쿠폰 삭제
 				 HashMap<String,String> couponMap =new HashMap<String, String>();
@@ -114,6 +115,7 @@ public class OrderController {
 					 
 					 //쿠폰 중복체크
 					int sameCoupon = service.selectSameCouponCount(couponMap);
+
 					if(sameCoupon!=1) {//중복쿠폰이 있을 경우
 						int delOneCoupon = service.deleteOneCoupon(couponMap);
 						System.out.println("중복쿠폰 중 "+delOneCoupon+"개 삭제");
@@ -132,7 +134,10 @@ public class OrderController {
 				//mav.addObject("prodList", prodList);
 				 
 				 
-			 }
+			 }//end 오더저장 성공시 카트삭제
+
+	
+			
 
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);

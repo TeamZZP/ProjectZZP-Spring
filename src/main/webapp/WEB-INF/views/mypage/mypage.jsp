@@ -211,7 +211,7 @@
 	  <div class="img">
 	  	<a>
 	  		<figure>
-	  			<img src="/zzp/resources/upload/profile/${profile.profile_img}" class="card-img-top">
+	  			<img src="/upload/profile/${profile.profile_img}" class="card-img-top">
 	  			<figcaption id="changeImg"><b>프로필 이미지 변경</b></figcaption>
 	  		</figure>
 	  	</a>

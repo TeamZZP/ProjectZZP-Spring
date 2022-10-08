@@ -64,6 +64,7 @@ public class OrderService {
 		return n;
 	}
 
+
 	public int deleteOneCoupon(HashMap<String, String> couponMap) {
 		int n = dao.deleteOneCoupon(couponMap);
 		return n;
@@ -72,6 +73,12 @@ public class OrderService {
 	public List<ProductOrderImagesDTO> selectOrderProd(int order_id) {
 		List<ProductOrderImagesDTO> prodList = dao.selectOrderProd(order_id);
 		return prodList;
+	}
+
+
+	public int couponMinus(HashMap<String, String> couponMap) {
+		int n = dao.couponMinus(couponMap);
+		return n;
 	}
 
 }

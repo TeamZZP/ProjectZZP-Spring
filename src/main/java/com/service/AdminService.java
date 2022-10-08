@@ -14,6 +14,8 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.ProductOrderImagesDTO;
+import com.dto.QuestionDTO;
 import com.dto.ReportDTO;
 
 @Service
@@ -24,6 +26,56 @@ public class AdminService {
 	@Autowired
 	private ChallengeDAO chDao;
 
+	/**
+	 * 메인화면
+	 */
+	//총 판매액
+	public double getTotalSales() {
+		return dao.getTotalSales();
+	}
+	//오늘 판매액
+	public double getTodaySales() {
+		return dao.getTodaySales();
+	}
+	//총 회원
+	public int getTotalMember() {
+		return dao.getTotalMember();
+	}
+	//오늘 가입 회원
+	public int getTodayMember() {
+		return dao.getTodayMember();
+	}
+	
+	//오늘 방문자
+	public int countVisitToday() {
+		return dao.countVisitToday();
+	}
+	//방문자수 추가
+	public int addVisit() {
+		return dao.addVisit();
+	}
+	//방문자수 수정
+	public int updateVisit() {
+		return dao.updateVisit();
+	}
+	//어제 방문자수
+	public int countVisitYesterday() {
+		return dao.countVisitYesterday();
+	}
+
+	//신규 주문
+	public List<ProductOrderImagesDTO> selectNewOrders(HashMap<String, String> map) {
+		return dao.selectNewOrders(map);
+	}
+	//신규 회원
+	public List<MemberDTO> selectNewMembers(HashMap<String, String> map) {
+		return dao.selectNewMembers(map);
+	}
+	//답변대기 문의
+	public List<QuestionDTO> selectNewQuestion() {
+		return dao.selectNewQuestion();
+	}
+	
 	
 	/**
 	 * 회원관리

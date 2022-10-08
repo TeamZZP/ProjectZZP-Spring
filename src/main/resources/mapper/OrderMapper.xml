@@ -54,6 +54,7 @@
 	select count(*) from member_coupon where userid = #{userid} and coupon_id=#{coupon_id}
 	</select>
 	
+
 	<delete id="deleteOneCoupon" parameterType="hashmap">
 	delete from member_coupon where coupon_give_id =
 		(select coupon_give_id from 
@@ -74,6 +75,11 @@
 			where o.p_id = p.p_id and p.p_id = i.p_id
 			and o.order_id = #{order_id};
 	</select>
+
+	<select id="getOrderInfo" parameterType="int" resultType="list">
+	select * from orders where order_id = #{order_id}
+	</select>
+	
 	
 
 	<!-- <select id="selectOrders" parameterType="String" resultType="OrderDTO">

@@ -51,12 +51,12 @@ public class AdminService {
 		return dao.countVisitToday();
 	}
 	//방문자수 추가
-	public int addVisit() {
-		return dao.addVisit();
+	public void addVisit() {
+		dao.addVisit();
 	}
 	//방문자수 수정
-	public int updateVisit() {
-		return dao.updateVisit();
+	public void updateVisit() {
+		dao.updateVisit();
 	}
 	//어제 방문자수
 	public int countVisitYesterday() {
@@ -74,6 +74,15 @@ public class AdminService {
 	//답변대기 문의
 	public List<QuestionDTO> selectNewQuestion() {
 		return dao.selectNewQuestion();
+	}
+	
+	//월별 실적
+	public List<HashMap<String, Object>> getMonthlySales() {
+		return dao.getMonthlySales();
+	}
+	//카테고리별 판매 비율
+	public List<HashMap<String, Object>> getSalesCategory() {
+		return dao.getSalesCategory();
 	}
 	
 	
@@ -237,7 +246,6 @@ public class AdminService {
 	public void updateReport(HashMap<String, String> map) {
 		dao.updateReport(map);
 	}
-	
 	
 
 }

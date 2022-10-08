@@ -1,9 +1,13 @@
 package com.controller;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,6 +109,23 @@ public class AdminController {
 		
 		return "adminMain";
 	}
+	/**
+	 * 월별 매출
+	 */
+	@RequestMapping(value = "/admin/sales", method = RequestMethod.GET)
+	@ResponseBody
+	public List<HashMap<String, Object>> getSales(Model model) {
+		return service.getMonthlySales();
+	}
+	/**
+	 * 카테고리별 판매 비율
+	 */
+	@RequestMapping(value = "/admin/sales/category", method = RequestMethod.GET)
+	@ResponseBody
+	public List<HashMap<String, Object>> getSalesCategory(Model model) {
+		return service.getSalesCategory();
+	}
+	
 	/**
 	 * 카테고리
 	 */

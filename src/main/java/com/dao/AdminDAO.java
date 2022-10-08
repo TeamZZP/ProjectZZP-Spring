@@ -49,12 +49,14 @@ public class AdminDAO {
 		return session.selectOne("AdminMapper.countVisitToday");
 	}
 	//방문자수 추가
-	public int addVisit() {
-		return session.insert("AdminMapper.addVisit");
+	public void addVisit() {
+		int n = session.insert("AdminMapper.addVisit");
+		System.out.println(n+"개의 counter 레코드 추가");
 	}
 	//방문자수 수정
-	public int updateVisit() {
-		return session.update("AdminMapper.updateVisit");
+	public void updateVisit() {
+		int n = session.update("AdminMapper.updateVisit");
+		System.out.println(n+"개의 counter 레코드 업데이트");
 	}
 	//어제 방문자수
 	public int countVisitYesterday() {
@@ -72,6 +74,15 @@ public class AdminDAO {
 	//답변대기 문의
 	public List<QuestionDTO> selectNewQuestion() {
 		return session.selectList("AdminMapper.selectNewQuestion");
+	}
+	
+	//월별 실적
+	public List<HashMap<String, Object>> getMonthlySales() {
+		return session.selectList("AdminMapper.getMonthlySales");
+	}
+	//카테고리별 판매 비율
+	public List<HashMap<String, Object>> getSalesCategory() {
+		return session.selectList("AdminMapper.getSalesCategory");
 	}
 
 	
@@ -310,6 +321,7 @@ public class AdminDAO {
 		int n = session.update("AdminMapper.updateReport", map);
 		System.out.println("update된 신고 수 "+n);
 	}
+	
 
 
 }

@@ -66,6 +66,22 @@
 	order by q_id desc
 </select>
 
+<!-- 월별 실적 -->
+<select id="getMonthlySales" resultType="hashmap">
+	select TO_CHAR(order_date, 'YYYY.MM') as month, SUM(total_price) as sum from orders
+	group by TO_CHAR(order_date, 'YYYY.MM')
+	having TO_CHAR(order_date, 'YYYY.MM') > TO_CHAR(ADD_MONTHS(CURRENT_TIMESTAMP, -4), 'YYYY.MM')
+	order by TO_CHAR(order_date, 'YYYY.MM')
+</select>
+<!-- 카테고리별 판매 비율 -->
+<select id="getSalesCategory" resultType="hashmap">
+	select c_name as category, sum(total_price) as sum
+	from orders o join product p using(p_id)
+	join category c using(c_id)
+	group by c_name
+	order by sum desc
+</select>
+
 
 <!-- 회원관리 : 전체 회원 목록 -->
 <select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">

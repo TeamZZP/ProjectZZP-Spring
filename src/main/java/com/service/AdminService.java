@@ -50,6 +50,10 @@ public class AdminService {
 	public int countVisitToday() {
 		return dao.countVisitToday();
 	}
+	//총 방문자
+	public int getTotalVisitor() {
+		return dao.getTotalVisitor();
+	}
 	//방문자수 추가
 	public void addVisit() {
 		dao.addVisit();
@@ -64,12 +68,12 @@ public class AdminService {
 	}
 
 	//신규 주문
-	public List<ProductOrderImagesDTO> selectNewOrders(HashMap<String, String> map) {
-		return dao.selectNewOrders(map);
+	public List<ProductOrderImagesDTO> selectNewOrders() {
+		return dao.selectNewOrders();
 	}
 	//신규 회원
-	public List<MemberDTO> selectNewMembers(HashMap<String, String> map) {
-		return dao.selectNewMembers(map);
+	public List<MemberDTO> selectNewMembers() {
+		return dao.selectNewMembers();
 	}
 	//답변대기 문의
 	public List<QuestionDTO> selectNewQuestion() {
@@ -246,6 +250,7 @@ public class AdminService {
 	public void updateReport(HashMap<String, String> map) {
 		dao.updateReport(map);
 	}
+	
 	
 
 }

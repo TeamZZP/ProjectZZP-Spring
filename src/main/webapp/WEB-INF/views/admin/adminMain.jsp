@@ -8,11 +8,8 @@
 		text-decoration: none;
 		color: black;
 	}
-	.percent[data-n^='+'] {
+	.percent {
 		color: green;
-	}
-	.percent[data-n^='-'] {
-		color: red;
 	}
 	.oneOrder:hover, .oneMember:hover, .oneQuestion:hover {
 		cursor: pointer;
@@ -80,9 +77,9 @@ $(document).ready(function () {
   <div class="col-md-4">
 	<div class="card">
 	  <div class="card-body text-center">
-	    <h5 class="card-title">오늘 방문자수</h5>
-	    <h2 class="card-text">${todayVisit}</h2>
-	    <h6 class="card-text percent" data-n="${visitIncrease}">${visitIncrease}</h6>
+	    <h5 class="card-title">총 방문자수</h5>
+	    <h2 class="card-text">${visitor}</h2>
+	    <h6 class="card-text percent" data-n="${visitorIncrease}">${visitorIncrease}</h6>
 	  </div>
 	</div>
   </div>

@@ -53,7 +53,7 @@ a {
 		
 		$.ajax({
 			type: "get",
-			url : "zzim",
+			url : "/zzp/zzim",
 			data : {
 				p_id:p_id
 			},
@@ -62,9 +62,9 @@ a {
 				console.log("찜ajax");
 				console.log(data);
 				if(data==0){
-					$("#zzimImage"+p_id).attr("src","resources/images/product/emptyHeart.png");
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
 				}else{
-					$("#zzimImage"+p_id).attr("src","resources/images/product/fullHeart.png");
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
 				}
 				
 			},

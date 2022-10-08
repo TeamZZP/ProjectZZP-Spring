@@ -25,21 +25,6 @@
 	margin: 0;
 }
 </style>
-<%
-	String mesg=(String) session.getAttribute("mesg");
-	if (mesg != null && mesg.length() != 0){
-%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-	$("#modalBtn").trigger("click");
-	$("#mesg").text("<%= mesg %>");
-});
-</script>
-<%
-		session.removeAttribute("mesg");
-	}
-%>
 </head>
 <body>
 <div class="modal" id="checkVal">
@@ -58,6 +43,14 @@ $(document).ready(function() {
   </div>
 </div>
 <button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript">
+if ('${empty mesg}'=='false') {
+	$("#modalBtn").trigger("click");
+	$("#mesg").text("${mesg}");
+}
+</script>
 
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>
 <jsp:include page="admin/adminCategory.jsp" flush="true"></jsp:include>

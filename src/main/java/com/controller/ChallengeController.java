@@ -1,10 +1,5 @@
 package com.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,11 +7,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -88,6 +80,10 @@ public class ChallengeController {
 			likedMap.put("userid", userid);
 			int likedIt = service.countLikedByMap(likedMap);
 			model.addAttribute("likedIt", likedIt);
+			
+			//프로필 이미지 가져오기
+			String currProfile = service.selectProfileImg(userid);
+			model.addAttribute("currProfile", currProfile);
 		}
 		
 		return "challengeDetail";

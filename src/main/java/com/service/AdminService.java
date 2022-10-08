@@ -251,6 +251,5 @@ public class AdminService {
 		dao.updateReport(map);
 	}
 	
-	
 
 }

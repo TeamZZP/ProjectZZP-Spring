@@ -326,7 +326,6 @@ public class AdminDAO {
 		System.out.println("update된 신고 수 "+n);
 	}
 	
-	
 
 
 }

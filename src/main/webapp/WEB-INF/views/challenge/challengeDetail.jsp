@@ -547,6 +547,7 @@ function displayedAt(createdAt) {
                 	<button class="commentBtn commentAddBtn">입력</button>
                 </div>
                 
+                <%-- 댓글 목록  비동기로 추가 --%>	
                 <div class="mt-2" id="comment_area"> 
                 
                 </div>

@@ -298,11 +298,11 @@
 			<div class="number">${map.myCoupon}</div>
 			<div>내 쿠폰함</div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/challenge" class="item">
 			<div class="number">${map.myChallenge}</div>
 			<div>내 챌린지</div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/stamp" class="item">
 			<div class="number">${map.myStamp}</div>
 			<div>내 도장</div>
 		</a>			

@@ -23,6 +23,7 @@
 <jsp:include page="main/popup.jsp" flush="true"></jsp:include><br>
 <jsp:include page="main/mainview.jsp" flush="true"></jsp:include><br>
 <jsp:include page="common/footer.jsp"></jsp:include>
+<jsp:include page="main/counter.jsp" flush="true"></jsp:include>
 
 <!-- modal -->
 <div class="modal" id="checkVal" data-bs-backdrop="static">

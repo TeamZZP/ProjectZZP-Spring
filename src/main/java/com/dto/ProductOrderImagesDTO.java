@@ -18,11 +18,10 @@ public class ProductOrderImagesDTO {
 	private int p_id;
 	private int total_price;
 	private String delivery_address;
-	private String delivery_loc;
 	private String delivery_req;
 	private String order_date;
 	private String order_state;
-	private int order_quantity;
+	private int p_amount;
 	private String p_name;
 	private String p_content;
 	private int c_id;

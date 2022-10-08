@@ -73,12 +73,14 @@ public class StoreController {
 		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
 		}
 		if(c_id==6) {
 			banner = 
 					"<img style='position: relative; left: 150px; bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
 		}
 		
+		mav.addObject("mdto", mdto);
 		mav.addObject("c_id",c_id);  
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
@@ -96,7 +98,6 @@ public class StoreController {
 		System.out.println("curPage :"+ curPage);
 		System.out.println("sortBy :"+ sortBy);
 		System.out.println("c_id :"+ c_id);
-		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -113,6 +114,14 @@ public class StoreController {
 			System.out.println(pDTO.getList());
 			mav.addObject("pDTO", pDTO);
 		}
+		
+		List<Integer> zzimList = new ArrayList<Integer>();
+		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
+			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
+		}
+		mav.addObject("zzimList", zzimList);
+		mav.addObject("mdto", mdto);
 		mav.setViewName("productPaging");
 		
 		return mav;		

@@ -30,6 +30,10 @@
 		where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')), 0)
     from dual
 </select>
+<!-- 총 방문자 -->
+<select id="getTotalVisitor" resultType="int">
+	select sum(count) from counter
+</select>
 <!-- 어제 방문자수 -->
 <select id="countVisitYesterday" resultType="int">
 	select NVL(
@@ -50,20 +54,36 @@
 </update>
 
 <!-- 신규 주문 -->
-<select id="selectNewOrders" parameterType="hashmap" resultType="ProductOrderImagesDTO">
+<select id="selectNewOrders" resultType="ProductOrderImagesDTO">
 	select * from orders o join product p using(p_id)
-	where to_char(order_date, 'YY/MM/DD') like #{date}
+	where to_char(order_date, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
 </select>
 <!-- 신규 회원 -->
-<select id="selectNewMembers" parameterType="hashmap" resultType="MemberDTO">
+<select id="selectNewMembers" resultType="MemberDTO">
 	select * from member
-	where to_char(created_at, 'YY/MM/DD') like #{date}
+	where to_char(created_at, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
 </select>
 <!-- 답변대기 문의 -->
 <select id="selectNewQuestion" resultType="QuestionDTO">
 	select * from question
 	where q_status='답변대기'
 	order by q_id desc
+</select>
+
+<!-- 월별 실적 -->
+<select id="getMonthlySales" resultType="hashmap">
+	select TO_CHAR(order_date, 'YYYY.MM') as month, SUM(total_price) as sum from orders
+	group by TO_CHAR(order_date, 'YYYY.MM')
+	having TO_CHAR(order_date, 'YYYY.MM') > TO_CHAR(ADD_MONTHS(CURRENT_TIMESTAMP, -4), 'YYYY.MM')
+	order by TO_CHAR(order_date, 'YYYY.MM')
+</select>
+<!-- 카테고리별 판매 비율 -->
+<select id="getSalesCategory" resultType="hashmap">
+	select c_name as category, sum(total_price) as sum
+	from orders o join product p using(p_id)
+	join category c using(c_id)
+	group by c_name
+	order by sum desc
 </select>
 
 

@@ -18,6 +18,7 @@
 		cursor: pointer;
 	}
 </style>
+
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function () {
@@ -85,6 +86,17 @@ $(document).ready(function () {
 	  </div>
 	</div>
   </div>
+
+
+<!-- 차트 -->
+<div class="col-xl-6 mt-5">
+	<div id="columnchart_material" style="width: 600px; height: 400px;"></div>
+</div>
+<div class="col-xl-6 mt-5">
+	<div id="piechart" style="width: 800px; height: 400px;"></div>
+</div>
+
+
   
   <div class="col-md-4 mt-5">
     <div class="card">
@@ -194,8 +206,81 @@ $(document).ready(function () {
 	</div>
   </div>
   
-  
-  
+
+
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+    //월별 매출 그래프
+    $.ajax({
+    	url:"/zzp/admin/sales",
+    	type:"GET",
+    	dataType:"json",
+    	success: function (data) {
+			let arr = [];
+			$(data).each(function(idx, elem) {
+				arr.push([elem.MONTH, elem.SUM])
+			});
+			
+		  google.charts.load('current', {'packages':['bar']});
+	      google.charts.setOnLoadCallback(drawChart);
+	
+	      function drawChart() {
+	        var data = google.visualization.arrayToDataTable([
+	          ['Month', '매출'],
+	          ...arr
+	        ]);
+	
+	        var options = {
+	          chart: {
+	            title: 'ZZP 월별 매출'
+	          },
+	          vAxis: {format: 'decimal'}
+	        };
+	
+	        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+	        chart.draw(data, google.charts.Bar.convertOptions(options));
+	      }
+		}//end ajax success
+    })//end ajax
+    
+     //카테고리별 판매 비율
+     $.ajax({
+    	url:"/zzp/admin/sales/category",
+    	type:"GET",
+    	dataType:"json",
+    	success: function (data) {
+			let arr = [];
+			$(data).each(function(idx, elem) {
+				arr.push([elem.CATEGORY, elem.SUM])
+			});
+		    google.charts.load('current', {'packages':['corechart']});
+		    google.charts.setOnLoadCallback(drawChart);
+		
+		    function drawChart() {
+		
+		      var data = google.visualization.arrayToDataTable([
+		        ['Task', 'Hours per Day'],
+		        ...arr
+		      ]);
+		
+		      var options = {
+		        title: '카테고리별 판매 비율',
+		        titleTextStyle: {
+		        	color: 'gray',
+		        	bold: false,
+		        	fontSize: 16
+		        	}
+		      };
+		
+		      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+		      chart.draw(data, options);
+		    }
+    	}//end ajax success
+     })//end ajax
+     
+</script>
   
 </div>
 </div>

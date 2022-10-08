@@ -25,14 +25,11 @@
 	}
    
 </style>
+<script src="https://js.tosspayments.com/v1"></script>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
    $(function() {
-      
- 
-      
-      
       $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
       });
@@ -40,8 +37,36 @@
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
-   
-      
+
+		$("#payment-button").on("click", function() {
+			var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+			var tossPayments = TossPayments(clientKey)
+			//상품금액
+			var total = $("#total").text();
+			total = total.replace(/,/g, "");//콤마 제거 문자열 변환
+			total = parseInt(total);//정수로
+			//첫번째 상품명
+			var first=$("#first").text();
+			//상품 갯수
+			var size='${fn:length(cartList)}';
+			var mesg='';
+			if (size==1) {
+				mesg=size;
+			} else {
+				mesg='외 '+(size-1);
+			}
+			
+			tossPayments.requestPayment('카드', {
+			amount: total,//숫자
+			orderId: '${login.userid}'+'-9f5XaL',
+			orderName: first+" "
+						+mesg
+						+'건',
+			customerName: '${login.username}',
+			successUrl: 'http://localhost:8100/zzp/subinx/orders/${login.userid}',
+			failUrl: 'http://localhost:8100/fail'
+			})
+		});//end payment
    });
 </script>
 <div class="container ">
@@ -71,7 +96,7 @@
 				</tr>
 
 				<c:set var="sum" value="0" />
-				<c:forEach var="cList" items="${cartList}">
+				<c:forEach var="cList" items="${cartList}" varStatus="status">
 	            <input type="hidden" id="p_id" name="p_id" value="${cList.p_id}">
 					<tr class="order_content">
 						<!-- 이미지사진  -->
@@ -79,7 +104,7 @@
 							src="/zzp/resources/images/product/p_image/${cList.p_image}"
 							width="100" style="border: 10px;" height="100"></td>
 						<!-- 상품명  -->
-						<td style="line-height: 100px;"><span
+						<td style="line-height: 100px;"><span id="first"
 							style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
 						<!-- 수량  -->
 						<td style="line-height: 100px;"><span id="order_amount" name="order_amount"
@@ -258,11 +283,9 @@
 							<c:forEach items="${couponList}" var="coupon" varStatus="status">
 								<option hidden id="xxx${status.index}"
 									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}" value="${coupon.coupon_id}"></option>
+									data-rate="${coupon.coupon_discount}"></option>
 								<option value="${status.index}">${coupon.coupon_name}</option>
-													
 							</c:forEach>
-							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
 					</select></td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
@@ -295,7 +318,7 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="결제하기" id="addOrder"
+				<input type="button" value="결제하기" id="payment-button"
 					class="btn btn-success"> <input type="button"
 					onclick="javascript:history.back();" value="취소"
 					class="btn btn-success">
@@ -341,7 +364,6 @@
 			//할인율
 			var idx = $(this).val();
 			var cou_id = $("#xxx" + idx).attr("data-id");
-			$("#coupon_id").val(cou_id);
 			var rate = $("#xxx" + idx).attr("data-rate");
 			var discount = sum_money / 100 * rate;
 			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
@@ -372,7 +394,6 @@
 		$("form").on(
 				"submit",
 				function() {
-					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();
 					var email2 = $("#email2").val();

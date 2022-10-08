@@ -98,7 +98,6 @@ public class StoreController {
 		System.out.println("curPage :"+ curPage);
 		System.out.println("sortBy :"+ sortBy);
 		System.out.println("c_id :"+ c_id);
-		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -115,6 +114,14 @@ public class StoreController {
 			System.out.println(pDTO.getList());
 			mav.addObject("pDTO", pDTO);
 		}
+		
+		List<Integer> zzimList = new ArrayList<Integer>();
+		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
+			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
+		}
+		mav.addObject("zzimList", zzimList);
+		mav.addObject("mdto", mdto);
 		mav.setViewName("productPaging");
 		
 		return mav;		

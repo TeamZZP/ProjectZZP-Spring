@@ -60,48 +60,35 @@ public class AdminController {
 		DecimalFormat df = new DecimalFormat("\u00A4 #,###");
 		//판매액 증가율
 		double origin = sales - service.getTodaySales();
-		double increase = (sales-origin)/origin*100;
-		String salesIncrease 
-			= ( (increase >= 0)? "+" : "" ) + String.format("%.2f%%", increase);
+		double salesIncrease = (sales-origin)/origin*100;
 		
 		//회원수
 		int member = service.getTotalMember();
 		//회원 증가율
 		double originM = member - service.getTodayMember();
-		double increaseM = (member-originM)/originM*100;
-		String memberIncrease
-			= ( (increaseM >= 0)? "+" : "" ) + String.format("%.2f%%", increaseM);
+		double memberIncrease = (member-originM)/originM*100;
 		
-		//오늘 방문자수
-		int todayVisit = service.countVisitToday();
-		//어제 방문자수
-		double yesterdayVisit = service.countVisitYesterday();
-		if (yesterdayVisit == 0) yesterdayVisit = 1;
-		//증감율
-		double increaseV = (todayVisit-yesterdayVisit)/yesterdayVisit*100;
-		String visitIncrease
-			= ( (increaseV >= 0)? "+" : "" ) + String.format("%.2f%%", increaseV);
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd");
-		String date = LocalDate.now().format(formatter); //오늘 날짜
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("date", date);
+		//총 방문자수
+		int visitor = service.getTotalVisitor();
+		//방문자수 증가율
+		double originV = visitor - service.countVisitToday();
+		double visitorIncrease = (visitor-originV)/originV*100;
 		
 		//신규 주문
-		List<ProductOrderImagesDTO> orderList = service.selectNewOrders(map);
+		List<ProductOrderImagesDTO> orderList = service.selectNewOrders();
 		//신규 회원
-		List<MemberDTO> memberList = service.selectNewMembers(map);
+		List<MemberDTO> memberList = service.selectNewMembers();
 		//답변대기 문의
 		List<QuestionDTO> questionList = service.selectNewQuestion();
 		
 		model.addAttribute("sales", df.format(sales));
-		model.addAttribute("salesIncrease", salesIncrease);
+		model.addAttribute("salesIncrease", String.format("+%.2f%%", salesIncrease));
 		
 		model.addAttribute("member", member+" 명");
-		model.addAttribute("memberIncrease", memberIncrease);
+		model.addAttribute("memberIncrease", String.format("+%.2f%%", memberIncrease));
 		
-		model.addAttribute("todayVisit", todayVisit);
-		model.addAttribute("visitIncrease", visitIncrease);
+		model.addAttribute("visitor", visitor+" 명");
+		model.addAttribute("visitorIncrease", String.format("+%.2f%%", visitorIncrease));
 		
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("memberList", memberList);

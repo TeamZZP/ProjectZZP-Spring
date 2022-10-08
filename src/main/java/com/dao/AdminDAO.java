@@ -48,6 +48,10 @@ public class AdminDAO {
 	public int countVisitToday() {
 		return session.selectOne("AdminMapper.countVisitToday");
 	}
+	//총 방문자
+	public int getTotalVisitor() {
+		return session.selectOne("AdminMapper.getTotalVisitor");
+	}
 	//방문자수 추가
 	public void addVisit() {
 		int n = session.insert("AdminMapper.addVisit");
@@ -64,12 +68,12 @@ public class AdminDAO {
 	}
 	
 	//신규 주문
-	public List<ProductOrderImagesDTO> selectNewOrders(HashMap<String, String> map) {
-		return session.selectList("AdminMapper.selectNewOrders", map);
+	public List<ProductOrderImagesDTO> selectNewOrders() {
+		return session.selectList("AdminMapper.selectNewOrders");
 	}
 	//신규 회원
-	public List<MemberDTO> selectNewMembers(HashMap<String, String> map) {
-		return session.selectList("AdminMapper.selectNewMembers", map);
+	public List<MemberDTO> selectNewMembers() {
+		return session.selectList("AdminMapper.selectNewMembers");
 	}
 	//답변대기 문의
 	public List<QuestionDTO> selectNewQuestion() {

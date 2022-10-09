@@ -171,8 +171,7 @@ public class CartController {
 		  //주소가져오기	
 		  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
 		  //쿠폰가져오기
-		  //List<MemberCouponDTO> couponList = orderservice.selectAllCoupon(mdto.getUserid()); 
-		  List<MemberCouponDTO> couponList = service.selectAllCoupon1(mdto.getUserid()); 
+		  List<MemberCouponDTO> couponList = orderservice.selectAllCoupon(mdto.getUserid()); 
 		  //주문하기 리스트
 		  List<CartDTO> cartList = service.orderCart(list); 
 		  

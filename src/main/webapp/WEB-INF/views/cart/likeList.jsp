@@ -50,33 +50,43 @@ a {
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-function zzimFunc(p_id) {
-	
-	$.ajax({
-		type: "post",
-		url : "/zzp/zzim",
-		data : {
-			p_id:p_id
-		},
-		dataType: "text" ,
-		success : function(data,status,xhr) {
-			console.log("찜ajax");
-			console.log(data);
-			if(data==0){
-				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
-			}else{
-				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
-			}
-			
-		},
-		error : function(xhr, status,error) {
-			console.log(error);
-		}
-		
-		
-	}) //end ajax
 
-}
+
+	$(document).ready(function () {
+		
+		
+		//좋아요 추가 삭제
+		$(".zzim_area").on("click",".zzimImage",function(){
+			var p_id = $(this).attr("data-pid");
+			var xxx= $(this);
+			console.log(p_id);
+			$.ajax({
+				type: "post",
+				url : "/zzp/zzim",
+				data : {
+					p_id:p_id
+				},
+				dataType: "text" ,
+				success : function(data,status,xhr) {
+					if(data==0){
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+						//xxx.parents().filter("div").remove();
+					}else{
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+					}
+					
+
+					
+				},
+				error : function(xhr, status,error) {
+					console.log(error);
+				}
+				
+				
+			}) //end ajax 
+		})//end zzim_area
+		
+	});//end ready
 </script>
 <div id="outer">
 	<div
@@ -114,7 +124,7 @@ function zzimFunc(p_id) {
 				<c:forEach var="like" items="${likeList}">
 					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="p-3">
-							<div style="text-align: center;">
+							<div style="text-align: center;"  id="likediv">
 								<div class="hover-zoomin">
 									<a href="${contextPath}/product/${like.p_id}"> <img
 										src="${contextPath}/resources/images/product/p_image/${like.p_image}"
@@ -123,9 +133,8 @@ function zzimFunc(p_id) {
 								
 								<div style="text-align: center;">
 								<!-- 찜 -->
-									<a id="zzim" href="javascript:zzimFunc(${like.p_id})"> 
-         
-							         <c:if test="${!empty zzimList}">
+								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline;">
+									<c:if test="${!empty zzimList}">
 								   	 	 <spring:eval var="zzim" expression="zzimList.contains(${like.p_id})" />
 								   	   </c:if>
 								   	   <c:choose>
@@ -138,7 +147,8 @@ function zzimFunc(p_id) {
 								   	     	<img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${like.p_id}" id="zzimImage${like.p_id}">
 								   	     </c:otherwise>
 								   	   </c:choose>
-							            </a>
+								</div>
+							
 								<!-- 장바구니 모달창 -->
 									<button type="button" class="btn" data-bs-toggle="modal"
 										data-bs-target="#addcart${like.p_id}"

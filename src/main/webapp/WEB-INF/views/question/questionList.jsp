@@ -17,9 +17,13 @@
    	 	cursor: pointer;
    	}
    	.tableTop {
-	border-bottom-color: #24855B;
-	border-bottom-width: 2.5px;
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
 	} 	
+	.userChk {
+		text-decoration: none; 
+		color: black;
+	}
 </style>
 
 <c:if test="${!empty mesg}">
@@ -27,40 +31,62 @@
 		alert("${mesg}");
 	</script>
 </c:if>
-	
-    <table  style="text-align: center;" class="table table-hover">
-    	<tr class="tableTop">
-    		<td>번호</td>
-    		<td>상품명</td>
-    		<td>카테고리</td>
-    		<td>제목</td>
-    		<td>작성일</td>
-    		<td>작성자</td>
-    		<td>답변상태</td>
-    	</tr>
-	 <c:forEach var="list" items="${pDTO.list}">
-	 	<tr>
-    		<td> ${list.q_id} </td>
-    		<c:if test="${list.p_name == null}">
-	    		<td> - </td>
-	    	</c:if>
-	    	<c:if test="${list.p_name != null}">
-	    		<td> ${list.p_name} </td>
-    		</c:if>
-    		<td>  ${list.q_category} </td>
-    		<td> <a style="text-decoration: none; color: black;" 
-    			href="qna/${list.q_id}?userid=${list.userid}&before=quesrionList"> ${list.q_title} </a> </td>
-    		<td> ${list.q_created.substring(0,10)} </td>
-    		<td> 
-    			${list.userid.substring(0,2)}****${list.userid.substring(6)}
-    		</td>
-    		<td <c:if test="${list.q_status == '답변완료'}">style="color: green;"</c:if>> ${list.q_status} </td>
-    	</tr>
-    </c:forEach>
-    </table>
-    <div style="text-align: right;">
-    	<button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
-    </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$(".userChk").click(function () {
+			var writer = $(this).attr("data-writer");
+			var loginUser = $(this).attr("data-userid");
+			var manager = $(this).attr("data-manager");
+			var q_id = $(this).attr("data-q_id");
+			if (writer == loginUser || manager == 1){
+				$(this).attr("href", "/zzp/qna/"+q_id);
+			} else {
+				alert("권한이 없습니다.");
+			}
+		});//
+	}); //end ready
+</script>
+
+<table style="text-align: center;" class="table table-hover">
+	<tr class="tableTop">
+		<td>번호</td>
+		<td>상품명</td>
+		<td>카테고리</td>
+		<td>제목</td>
+		<td>작성일</td>
+		<td>작성자</td>
+		<td>답변상태</td>
+	</tr>
+	<c:forEach var="list" items="${pDTO.list}">
+		<tr>
+			<td>${list.q_id}</td>
+			<c:if test="${list.p_name == null}">
+				<td>-</td>
+			</c:if>
+			<c:if test="${list.p_name != null}">
+				<td>${list.p_name}</td>
+			</c:if>
+			<td>${list.q_category}</td>
+			<td><a class="userChk" data-writer="${list.userid}"
+				data-userid="${mDTO.userid}" data-manager="${mDTO.role}" data-q_id="${list.q_id}"> ${list.q_title} </a>
+			</td>
+			<td>${list.q_created.substring(0,10)}</td>
+			<td>
+				${list.userid.substring(0,2)}****${list.userid.substring(6)}
+			</td>
+			<td
+				<c:if test="${list.q_status == '답변완료'}">style="color: green;"</c:if>>
+				${list.q_status}
+			</td>
+		</tr>
+	</c:forEach>
+</table>
+<div style="text-align: right;">
+    <button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
+</div>
+
 <div class="p-2 text-center">
 	<c:if test="${pDTO.prev}">
 		<a class="paging" data-page="${pDTO.startPage-1}">prev&nbsp;&nbsp;</a>

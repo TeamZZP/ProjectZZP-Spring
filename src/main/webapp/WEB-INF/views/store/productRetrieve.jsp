@@ -10,17 +10,58 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 <style>
-   .item_info td{
-      padding-left: 10px;
-    }
-
+  
 	table {
   		 font-family: sans-serif;
    		}
+   		
+   	.item_info  td {
+   		padding-left: 50px;
+   	}	
 </style>
 
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+function zzimFunc(p_id) {
+
+	if("${mdto}".length != 0){
+		
+			$.ajax({
+			type: "post",
+			url : "/zzp/zzim",
+			data : {
+				p_id:p_id
+			},
+			dataType: "text" ,
+			success : function(data,status,xhr) {
+				console.log("찜ajax");
+				console.log(data);
+				if(data==0){
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+				}else{
+					$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+				}
+				
+			},
+			error : function(xhr, status,error) {
+				console.log(error);
+			}
+		
+		
+	}) //end ajax
+		}else{
+			
+		        $("#modalBtn").trigger("click");
+		        $("#mesg").text("로그인이 필요합니다.");
+		        
+		        $("#closemodal").click(function() {
+		          location.href="/login";
+		       });
+		          
+		     }
+
+}//end func
+
   $(function () {
 	
 	  //이미지 변경
@@ -34,16 +75,30 @@
 	  		var src2 = $("#img").val();
 	  		$("#firstImage").attr("src",src2);
 	   }); 
-})
+	
+	  	
+		$("#toOrder").click(function() {
+			
+			if("${mdto}".length != 0){
+				$("#modalBtn").trigger("click");
+		        $("#mesg").text("로그인이 필요합니다.");
+		        
+		        $("#closemodal").click(function() {
+		          location.href="/login";
+		       });    
+		     }
+
+			}); //end toOrder
+	  	
+});//end func
 
 
 </script>
 
 <!-- 넘어온데이터 -->
 <c:set value="${pdto}" var="p" />
-<%-- <c:set value="${mdto}" var="m" /> --%>
-<c:set value="${zzim}" var="zzim" />
-
+<%-- <c:set value="${mdto}" var="m" /> 
+<c:set value="${zzimList}" var="zzim" />--%>
 
    <form  name="goodRetrieveForm" id="goodRetrieveForm" action="${contextPath}/orders/checkout" method="post">
       <div class="row">
@@ -95,7 +150,7 @@
             
                <tr>
                   <th>상품명</th>
-                  <td></td>
+                
                   <td style="font-size: 20px; font-weight: bold;">${p.p_name}</td>
                </tr>
 
@@ -105,17 +160,17 @@
 
                <tr>
                   <th>설명</th>
-                  <td></td>
+                 
                   <td>${p.p_content}</td>
                </tr>
 
                <tr>
-                  <td></td>
+       
                </tr>
 
                <tr>
                   <th>상품가격</th>
-                  <td></td>
+              
                   <td><span id="price${p.p_id}"><fmt:formatNumber pattern="###,###,###">${p.p_selling_price}</fmt:formatNumber></span>원</td>
                   
                </tr>
@@ -126,7 +181,7 @@
 
                <tr>
                   <th>배송비</th>
-                  <td></td>
+               
                   <td>3,000원(50,000원 이상 무료배송)</td>
                </tr>
 
@@ -136,7 +191,6 @@
 
                <tr>
                   <th>수량</th>
-                  <td></td>
                   <td>
                   <input id="p_amount${p.p_id}" name="p_amount" value="1" class="form-control"
                   style=" text-align; right; margin-top: -4px; height:39px; width:80px; display: inline;  " maxlength="3"
@@ -156,7 +210,6 @@
 
                <tr>
                   <th>총 상품가격</th>
-                  <td></td>
                   <td style="font-size: 20px; font-weight: bold; color: green;"><span id="total${p.p_id}"><fmt:formatNumber pattern="###,###,###"> ${p.p_selling_price}</fmt:formatNumber></span>원</td>
                </tr>
 
@@ -167,27 +220,28 @@
                <tr >
                
                <!-- 찜  -->
-               <td><a id="productChoice"  href="javascript:zzimCheck(${p.p_id})">
-                <c:if test="${!empty zzim}">
-                    <spring:eval var="zzim" expression="zzim.contains(${p.p_id})" />
-                  </c:if>
-            
-            <c:choose>
-              <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
-              <c:when test="${zzim}">
-                 <img src="/zzp/resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
-              </c:when>
-              <%-- 그외의 경우 --%>
-              <c:otherwise>
-                 <img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${pList.p_id}" id="zzimImage${pList.p_id}">
-              </c:otherwise>
-            </c:choose>
-               </a></td> 
-                     
-                  <td><button type="submit"  class="btn btn-success" data-p_id = "${p.p_id}" data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${imageList}" id="toOrder">주문하기</button>
-                  </td>
-                  
+               <td>
+	               <a id="productChoice"  href="javascript:zzimFunc(${p.p_id})">
+	               
+	                <c:if test="${!empty zzimList}">
+	                    <spring:eval var="zzim" expression="zzimList.contains(${p.p_id})" />
+	                </c:if>
+	            
+		            <c:choose>
+		              <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
+		              <c:when test="${zzim}">
+		                 <img src="/zzp/resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${p.p_id}" id="zzimImage${p.p_id}">
+		              </c:when>
+		              <%-- 그외의 경우 --%>
+		              <c:otherwise>
+		                 <img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${p.p_id}" id="zzimImage${p.p_id}">
+		              </c:otherwise>
+		            </c:choose>
+		               </a>
+               </td> 
+                 
                   <td>
+                  <button type="submit"  class="btn btn-success" data-p_id = "${p.p_id}" data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${imageList}" id="toOrder">주문하기</button>
                   <!-- Button trigger modal -->
                   <button  type="button" class="btn btn-success" name="cart" id="cart${p.p_id}" data-P_id = "${p.p_id}"
                   data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk}">

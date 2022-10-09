@@ -150,6 +150,13 @@ public class QuestionController {
 		} else { //사진 첫 업로드
 			map.put("qna_img", oldFile);
 		}
+<<<<<<< HEAD
+=======
+		
+		Upload.uploadFile(location, uploadFile);
+		map.put("qna_img", originalFileName);
+		
+>>>>>>> a05c2834c21aba9d260f3e9e155057e943f60bf1
 		qService.questionUPdate(map);
 		
 		attr.addFlashAttribute("mesg", "게시글이 수정 되었습니다.");

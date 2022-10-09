@@ -9,8 +9,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -73,12 +75,14 @@ public class StoreController {
 		System.out.println(pDTO.getList());
 		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
 		}
 		if(c_id==6) {
 			banner = 
 					"<img style='position: relative; left: 150px; bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
 		}
 		
+		mav.addObject("mdto", mdto);
 		mav.addObject("c_id",c_id);  
 		mav.addObject("pDTO",pDTO);  
 		List<CategoryDTO> categoryList = service.category(); //카테고리 List 
@@ -96,7 +100,6 @@ public class StoreController {
 		System.out.println("curPage :"+ curPage);
 		System.out.println("sortBy :"+ sortBy);
 		System.out.println("c_id :"+ c_id);
-		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		ModelAndView mav = new ModelAndView();
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -113,6 +116,14 @@ public class StoreController {
 			System.out.println(pDTO.getList());
 			mav.addObject("pDTO", pDTO);
 		}
+		
+		List<Integer> zzimList = new ArrayList<Integer>();
+		if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
+			zzimList=service.zzimAllCheck(mdto.getUserid());
+			System.out.println(zzimList);
+		}
+		mav.addObject("zzimList", zzimList);
+		mav.addObject("mdto", mdto);
 		mav.setViewName("productPaging");
 		
 		return mav;		
@@ -120,8 +131,8 @@ public class StoreController {
 	
 	//제품상세
 	@RequestMapping(value = "/product/{p_id}")
-	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id, ModelAndView mav) {
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
@@ -150,14 +161,14 @@ public class StoreController {
 		mav.addObject("pdto",pdto);
 		mav.addObject("imageList",imageList);
 		mav.addObject("mdto", mdto);
-		mav.addObject("zzim", zzimList);
+		mav.addObject("zzimList", zzimList);
 		mav.setViewName("productRetrieve");
 		
 		return mav;
 	}
 	
 	//찜기능
-	@RequestMapping("/zzim")
+	@RequestMapping(value = "/zzim", method = RequestMethod.POST)
 	public @ResponseBody int zzim(@RequestParam("p_id") int p_id , HttpSession session) {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		HashMap<String,String> map = new HashMap<String,String>();

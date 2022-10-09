@@ -51,38 +51,32 @@
 		$("form").on("submit", function () {
 			if ($("#chall_title").val().length == 0) {
 				event.preventDefault();
-				//alert("제목을 입력해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("제목을 입력해 주세요.");
-			} else if (($("#old_file").val() == "null" || $("#old_file").val().length == 0) 
+			} else if (($("#old_file").val() == "" || $("#old_file").val().length == 0) 
 						&& $("#chall_img")[0].files[0] == null) {
 				event.preventDefault();
-				//alert("사진을 업로드해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("사진을 업로드해 주세요.");
-			} else if (($("#old_stamp").val() == "null" || $("#old_stamp").val().length == 0) 
+			} else if (($("#old_stamp").val() == "" || $("#old_stamp").val().length == 0) 
 						&& $("#stamp_img")[0].files[0] == null) {
 				event.preventDefault();
-				//alert("도장 사진을 업로드해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("도장 사진을 업로드해 주세요.");
-			} else if ($("#chall_img").val() != 0 && !checkFileExtension()) {
+			} else if ($("#chall_img").val().length != 0 && !checkFileExtension()) {
 				event.preventDefault();
-			} else if ($("#stamp_img").val() != 0 && !checkStampExtension()) {
+			} else if ($("#stamp_img").val().length != 0 && !checkStampExtension()) {
 				event.preventDefault();
 			} else if ($("#chall_content").val().length == 0) {
 				event.preventDefault();
-				//alert("본문을 입력해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("본문을 입력해 주세요.");
 			} else if ($("#stamp_name").val().length == 0) {
 				event.preventDefault();
-				//alert("도장 이름을 입력해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("도장 이름을 입력해 주세요.");
 			} else if ($("#stamp_content").val().length == 0) {
 				event.preventDefault();
-				//alert("도장 설명을 입력해 주세요.");
 				$("#modalBtn").trigger("click");
 				$("#mesg").text("도장 설명을 입력해 주세요.");
 			}
@@ -152,7 +146,6 @@
 		if (fileValue.match(reg)) {
 			return true;
 		} else {
-			//alert("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
 			$("#modalBtn").trigger("click");
 			$("#mesg").text("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
 			return false;
@@ -165,7 +158,6 @@
 		if (fileValue.match(reg)) {
 			return true;
 		} else {
-			//alert("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
 			$("#modalBtn").trigger("click");
 			$("#mesg").text("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
 			return false;
@@ -214,7 +206,7 @@
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
 	  	</c:when>
 	    <c:otherwise>
-	 		<img src="/zzp/resources/upload/challenge/${dto.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
+	 		<img src="/upload/challenge/${dto.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
 	 		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
 	  	</c:otherwise>
@@ -239,7 +231,7 @@
 			<img src="/zzp/resources/images/challenge/stamp.png" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
 	  	</c:when>
 	    <c:otherwise>
-	    	<img src="/zzp/resources/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
+	    	<img src="/upload/challenge/${dto.stamp_img}" class="thumb-stamp uploadBtn-stamp" id="uploadarea-stamp" width="300" height="300">
 	  	</c:otherwise>
 	  </c:choose>
 	  	<input type="file" accept="image/*" name="stamp_img" id="stamp_img" style="display: none;">

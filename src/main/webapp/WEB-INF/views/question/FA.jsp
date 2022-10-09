@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
-		<img src="resources/images/question/question.png" alt="..." style="width: auto;">
+		<img src="/zzp/resources/images/question/question.png" alt="..." style="width: auto;">
 	</div>
 
 <div style="padding-top: 10px;  background-color: #8FBC8F; text-align: center;">

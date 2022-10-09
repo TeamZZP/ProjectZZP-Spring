@@ -11,7 +11,12 @@
 <script>
 	$(document).ready(function () {
 		$("#questionList").click(function () {
-			$("#detailForm").attr("method", "get").attr("action", "../qna");
+			var preUrl = document.referrer; //이전페이지 url정보
+			if (preUrl.includes("qna")) {
+				 $("#detailForm").attr("method", "get").attr("action", "/zzp/qna");
+			} else {
+				 $("#detailForm").attr("method", "get").attr("action", "/zzp/mypage/${qDTO.userid}/question");
+			}
 		});//
 		$("#questionUpdate").click(function () {
 			location.href = "/zzp/qna/write/${qDTO.q_id}";
@@ -118,16 +123,9 @@
 			</tr>
 			<tr>
 				<c:if test="${mDTO.userid == qDTO.userid}">
-					<c:if test="${before eq 'myQuestion'}">
-					<td>
-						 <button class="btn btn-outline-success" id="before">이전</button> 
-					</td>
-					</c:if>
-					<c:if test="${before eq 'quesrionList'}">
 					<td>
 					 	<button id="questionList" class="btn btn-outline-success" >목록</button> 
 					</td>
-					</c:if>
 				<td style="text-align: right;">
 					<button id="questionUpdate" class="btn btn-outline-success" >수정</button> 
 				 	<button id="questionDelete" class="btn btn-outline-success" >삭제</button>

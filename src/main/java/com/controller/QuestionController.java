@@ -22,7 +22,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dto.AnswerDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
-import com.dto.QuestionDTO;
 import com.dto.QuestionProductDTO;
 import com.service.AnswerService;
 import com.service.QuestionService;
@@ -40,7 +39,7 @@ public class QuestionController {
 	 * 큐엔에이 리스트 출력
 	 */
 	@RequestMapping(value = "/qna", method = RequestMethod.GET)
-	public String questionList(@RequestParam Map<String, String> map, Model m, HttpServletRequest request) {
+	public String questionList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
 		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
 		
@@ -48,6 +47,7 @@ public class QuestionController {
 		System.out.println("pDTO " + pDTO);
 		
 		m.addAttribute("pDTO", pDTO);
+		m.addAttribute("mDTO", session.getAttribute("login"));
 		
 		return "question";
 	}
@@ -140,16 +140,23 @@ public class QuestionController {
 		
 		String oldFile = map.get("oldFile");
 		
-		if(oldFile == null || oldFile.length() == 0) {
+		if(oldFile == null || oldFile.length() == 0) { //사진을 업로드 하는 경우 : 추가
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName); 
+		} else if (originalFileName != oldFile) { //사진을 업로드 했었고 수정하는 경우 : 수정
+			Upload.uploadFile(location, uploadFile);
 			Upload.uploadFile(location, uploadFile);
 			map.put("qna_img", originalFileName);
-		} else {
+		} else { //사진 첫 업로드
 			map.put("qna_img", oldFile);
 		}
+<<<<<<< HEAD
+=======
 		
 		Upload.uploadFile(location, uploadFile);
 		map.put("qna_img", originalFileName);
 		
+>>>>>>> a05c2834c21aba9d260f3e9e155057e943f60bf1
 		qService.questionUPdate(map);
 		
 		attr.addFlashAttribute("mesg", "게시글이 수정 되었습니다.");
@@ -160,31 +167,20 @@ public class QuestionController {
 	 * 큐엔에이 상세보기
 	 */
 	@RequestMapping(value = "/qna/{q_id}", method = RequestMethod.GET)
-	public String questionDetail(@PathVariable String q_id, String userid, String before, HttpSession session,
-			RedirectAttributes attr, Model m) {
-		System.out.println("상세보기할 정보 " + q_id + "\t" + userid + "\t" + before);
+	public String questionDetail(@PathVariable String q_id, HttpSession session, RedirectAttributes attr, Model m) {
+		System.out.println("상세보기할 정보 " + q_id);
 		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
-		String loginUser = mDTO.getUserid();
 		
-		String url = "";
-		if (userid.equals(loginUser) || mDTO.getRole() == 1) {
-			QuestionProductDTO qDTO = qService.questionDetail(q_id);
-			AnswerDTO aDTO = aService.answerSelect(q_id);
-			System.out.println("상세보기할 게시글 " + qDTO);
-			System.out.println("게시글 답변 " + aDTO);
+		QuestionProductDTO qDTO = qService.questionDetail(q_id);
+		AnswerDTO aDTO = aService.answerSelect(q_id);
+		System.out.println("상세보기할 게시글 " + qDTO);
+		System.out.println("게시글 답변 " + aDTO);
 			
-			m.addAttribute("qDTO", qDTO);
-			m.addAttribute("aDTO", aDTO);
-			m.addAttribute("mDTO", mDTO);
-			m.addAttribute("before", before);
+		m.addAttribute("qDTO", qDTO);
+		m.addAttribute("aDTO", aDTO);
+		m.addAttribute("mDTO", mDTO);
 			
-			url = "questionDetail";
-		} else {
-			attr.addFlashAttribute("mesg", "권한이 없습니다.");
-			url = "redirect:../qna";
-		}
-		attr.addFlashAttribute("before", before);
-		return url;
+		return "questionDetail";
 	}
 	/**
 	 * 큐엔에이 삭제
@@ -196,14 +192,15 @@ public class QuestionController {
 		attr.addFlashAttribute("mesg", "게시글이 삭제 되었습니다.");
 		
 		QuestionProductDTO dto = qService.questionDetail(q_id);
-		String qna_img = dto.getQ_img();
-		
-		if(qna_img != null) {
-			System.out.println("리뷰 사진 삭제");
-			String location = "qna";
-			Upload.deleteFile(location, qna_img);
+		if(dto != null) {
+			String qna_img = dto.getQ_img();
+			
+			if(qna_img != null) {
+				System.out.println("리뷰 사진 삭제");
+				String location = "qna";
+				Upload.deleteFile(location, qna_img);
+			}
 		}
-		
 		return "redirect:../qna";
 	}
 	/**
@@ -231,10 +228,7 @@ public class QuestionController {
 				attr.addFlashAttribute("dto", dto);
 				
 				data = dto.getAnswer_content();
-			} /*else { 
-				attr.addFlashAttribute("mesg", "권한이 없습니다");
-				url = "redirect:../qna";
-			}*/
+			} 
 		} else {//달린 댓글이 없으면 추가
 			if (mDTO.getRole() == 1) {
 				AnswerDTO dto = new AnswerDTO();
@@ -246,10 +240,7 @@ public class QuestionController {
 				attr.addFlashAttribute("dto", dto);
 				
 				data = dto.getAnswer_content();
-			} /*else { 
-				attr.addFlashAttribute("mesg", "권한이 없습니다");
-				url = "redirect:../qna";
-			}*/
+			} 
 		}
 		qService.questionStatus(q_id); //답변 상태 수정
 		return data; 

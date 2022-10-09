@@ -86,6 +86,10 @@ public class ReviewController {
 		if(oldFile == null || oldFile.length() == 0) {
 			Upload.uploadFile(location, uploadFile);
 			map.put("review_img", originalFileName);
+		} else if (originalFileName != oldFile) {
+			Upload.uploadFile(location, uploadFile);
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName);
 		} else {
 			map.put("review_img", oldFile);
 		}
@@ -106,12 +110,14 @@ public class ReviewController {
 		System.out.println("삭제된 리뷰 갯수 " + num);
 		
 		ProductOrderReviewDTO dto = rService.reviewOneSelect(review_id);
-		String review_img = dto.getReview_img();
-		
-		if(review_img != null) {
-			System.out.println("리뷰 사진 삭제");
-			String location = "review";
-			Upload.deleteFile(location, review_img);
+		if(dto != null) {
+			String review_img = dto.getReview_img();
+			
+			if(review_img != null) {
+				System.out.println("리뷰 사진 삭제");
+				String location = "review";
+				Upload.deleteFile(location, review_img);
+			}
 		}
 		return num;
 	}

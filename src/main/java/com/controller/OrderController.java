@@ -1,16 +1,21 @@
 package com.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.AddressDTO;
@@ -19,6 +24,7 @@ import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.OrderDTO;
 import com.dto.ProductOrderImagesDTO;
+import com.service.CartService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.StoreService;
@@ -31,6 +37,8 @@ public class OrderController {
 	MypageService myService;
 	@Autowired
 	StoreService sService;
+	@Autowired
+	CartService cService;
 	
 	
 		//주문하기페이지
@@ -132,22 +140,14 @@ public class OrderController {
 					}					
 				 }//end 쿠폰삭제
 
-				 //주문성공시 orderDTO저장(jsp보낼거)
-				/* List<OrderDTO> orderList= new ArrayList<OrderDTO>();
-				 orderList=service.getOrderInfo(order_id);
-				 System.out.println(orderList);
-				 mav.addObject("orderList", orderList);*/
-				 
+				 //주문성공시 orderDTO저장(jsp보낼거) 
 				 List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
 				 mav.addObject("prodList", prodList);
 				 
 				 System.out.println("prodList>>>"+prodList);
-			 }//end 오더저장 성공시 카트삭제
-
-			
+			 }//end 오더저장 성공시 카트삭제	
 			 
-			 System.out.println("olist>>>"+olist);
-			
+			 System.out.println("olist>>>"+olist);			
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
@@ -158,11 +158,51 @@ public class OrderController {
 			  
 		 }
 		 
-		 
-		 //주문완료
-		 @RequestMapping("orders/{review_id}")
-		 public void orderSuccess() {
-			 
-		 }
+		 /**
+			 * 토스 페이먼츠 테스트 화면
+			 */
+		    @RequestMapping(value = "/toss2" , method = RequestMethod.GET) 
+		    public ModelAndView toss_test2(HttpSession session, ModelAndView mav) {
+		    	MemberDTO mdto = (MemberDTO)session.getAttribute("login");
+		    	   System.out.println(mdto);
+				  //주소가져오기	
+				  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
+				  //쿠폰가져오기
+				  List<MemberCouponDTO> couponList = service.selectAllCoupon(mdto.getUserid()); 
+				  //주문하기 리스트
+				  ArrayList<String> list = new ArrayList<String>();
+				  list.add("412");
+				  List<CartDTO> cartList = cService.orderCart(list); 
+				  
+					
+				  mav.addObject("cartList", cartList);
+				  mav.addObject("mdto", mdto);
+				  mav.addObject("addrList", addrList);
+				  mav.addObject("couponList", couponList);
+				  mav.setViewName("orders");
+				  return mav;
+		    }
+		    /**
+			 * 토스 페이먼츠 테스트 결제
+			 */
+		    @RequestMapping(value = "/toss/success2" , method = RequestMethod.GET)
+		    @ResponseBody
+		    public void toss_test_success2(@RequestParam("customerName") String name, Model model, HttpServletResponse response) {
+		    	
+		    	System.out.println("Toss success=====");
+		    	System.out.println("name====="+name);
+		    	
+		    	try {
+		            PrintWriter out = response.getWriter();
+		            out.println("<script>window.opener.document.getElementById('myForm').action = '/zzp/orders';</script>");
+		            out.println("<script>window.opener.document.getElementById('myForm').submit();</script>");
+		            out.println("<script>window.close();</script>");
+		         } catch (IOException e) {
+		            // TODO Auto-generated catch block
+		            e.printStackTrace();
+		         }
+
+		    }
+		    
 
 }

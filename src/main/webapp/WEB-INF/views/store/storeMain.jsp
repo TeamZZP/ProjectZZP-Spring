@@ -48,13 +48,13 @@ a {
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-
+	
 	function zzimFunc(p_id) {
 		
-		if(${mdto!=null}){
+		if("${mdto}".length != 0){
 			
 			$.ajax({
-				type: "get",
+				type: "post",
 				url : "/zzp/zzim",
 				data : {
 					p_id:p_id
@@ -77,7 +77,7 @@ a {
 				
 			}) //end ajax
 
-			
+			 
 		}else{
             $("#modalBtn").trigger("click");
             $("#mesg").text("로그인이 필요합니다.");
@@ -92,7 +92,7 @@ a {
 	}
 	
 
-</script>
+</script>	
 
 
    <!-- 세일배너 -->  
@@ -286,6 +286,7 @@ a {
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script  type="text/javascript">
    $(function() {
+	
       //UP버튼 수량 변화   
       var count="1";
       $("button[name=up]").on("click", function() {

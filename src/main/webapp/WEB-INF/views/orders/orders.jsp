@@ -223,11 +223,11 @@
 						<tr style="border-bottom-width: 5px; border-color: green;">
 							<th style="font-size: 20px; font-weight: bold;">결제 정보</th>
 						</tr>
-						<tr style="border-bottom-width: 1px; border-color: green;">
+						<tr style="border-bottom-width: 1px; border-color: green; ">
 
-							<td><label><input type="radio" name="payment"
+							<td><label><input type="radio" name="payment"  style="accent-color:green;"  
 									value="card" checked>카드결제</label></td>
-							<td><label><input type="radio" name="payment"
+							<td><label><input type="radio" name="payment"  style="accent-color:green;" 
 									value="transfer">계좌이체</label></td>
 						</tr>
 
@@ -236,8 +236,7 @@
 				</c:if>
 			</c:forEach>
 
-			<!-- 쿠폰  -->
-			<c:set value="${couponList}" var="cou" />
+			
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
 
@@ -250,20 +249,33 @@
 					<td><span class="price" id="sum_money">${sum}</span>원</td>
 				</tr>
 				<tr>
+					<!-- 쿠폰  -->
+						<c:set value="${couponList}" var="cou" />
 					<th>쿠폰</th>
 					<td></td>
-					<td><select id="sel_coupon" name="sel_coupon"
+					<td>
+					<select id="sel_coupon" name="sel_coupon"
 						class="form-select" aria-label="Default select example">
 							<option value="" selected disabled hidden>쿠폰을 선택하세요</option>
-							<c:forEach items="${couponList}" var="coupon" varStatus="status">
-								<option hidden id="xxx${status.index}"
-									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}" value="${coupon.coupon_id}"></option>
-								<option value="${status.index}">${coupon.coupon_name}</option>
-													
-							</c:forEach>
+
+							<c:choose>
+								<c:when test="${fn:length(cou)==0}">
+									<option disabled="disabled">적용할 쿠폰이  없습니다.</option>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${couponList}" var="coupon" varStatus="status">
+										<option hidden id="xxx${status.index}"
+											data-id="${coupon.coupon_id}"
+											data-rate="${coupon.coupon_discount}"></option>
+										<option value="${status.index}">${coupon.coupon_name}</option>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+
 							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
-					</select></td>
+
+					</select>
+					</td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
 					<th>할인 금액</th>
@@ -295,7 +307,7 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="결제하기" id="addOrder"
+				<input type="submit" value="주문하기" id="addOrder"
 					class="btn btn-success"> <input type="button"
 					onclick="javascript:history.back();" value="취소"
 					class="btn btn-success">
@@ -308,6 +320,7 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
 	function totalprice() {
 		var sum_money = parseInt($("#sum_money").text());
 		var fee = sum_money >= 50000 ? 0 : 3000;

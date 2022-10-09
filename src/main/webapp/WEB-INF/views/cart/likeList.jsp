@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 <style>
 .container {
@@ -49,9 +50,33 @@ a {
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	$(function() {
+function zzimFunc(p_id) {
+	
+	$.ajax({
+		type: "post",
+		url : "/zzp/zzim",
+		data : {
+			p_id:p_id
+		},
+		dataType: "text" ,
+		success : function(data,status,xhr) {
+			console.log("찜ajax");
+			console.log(data);
+			if(data==0){
+				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+			}else{
+				$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+			}
+			
+		},
+		error : function(xhr, status,error) {
+			console.log(error);
+		}
+		
+		
+	}) //end ajax
 
-	})//end
+}
 </script>
 <div id="outer">
 	<div
@@ -95,6 +120,25 @@ a {
 										src="${contextPath}/resources/images/product/p_image/${like.p_image}"
 										width="300" height="300"></a>
 								</div>
+								
+								<div style="text-align: center;">
+								<!-- 찜 -->
+									<a id="zzim" href="javascript:zzimFunc(${like.p_id})"> 
+         
+							         <c:if test="${!empty zzimList}">
+								   	 	 <spring:eval var="zzim" expression="zzimList.contains(${like.p_id})" />
+								   	   </c:if>
+								   	   <c:choose>
+								   	     <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
+								   	     <c:when test="${zzim}">
+								   	     	<img src="/zzp/resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${like.p_id}" id="zzimImage${like.p_id}">
+								   	     </c:when>
+								   	     <%-- 그외의 경우 --%>
+								   	     <c:otherwise>
+								   	     	<img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${like.p_id}" id="zzimImage${like.p_id}">
+								   	     </c:otherwise>
+								   	   </c:choose>
+							            </a>
 								<!-- 장바구니 모달창 -->
 									<button type="button" class="btn" data-bs-toggle="modal"
 										data-bs-target="#addcart${like.p_id}"
@@ -102,6 +146,7 @@ a {
 										<img src="${contextPath}/resources/images/product/cart.png"
 											width="25" height="25">
 									</button>
+								</div>	
 								<div>
 									<a href="${contextPath}/product/${like.p_id}"> <span
 										style="margin-bottom: 0.3em; font-weight: normal; color: #646464; font-size: 25px;">${like.p_name}</span></a>

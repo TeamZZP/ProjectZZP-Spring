@@ -11,6 +11,7 @@
 	
 		float: left;
 		padding-left: 50px;
+		padding-right: 50px;
 		text-decoration: none;
 		font-size: 20px;
 		

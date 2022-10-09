@@ -29,10 +29,25 @@
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://js.tosspayments.com/v1"></script>
 <script type="text/javascript">
+function totalprice() {
+	var sum_money = parseInt($("#sum_money").text());
+	var fee = sum_money >= 50000 ? 0 : 3000;
+	var total = sum_money + fee; // 총금액 + 배송비
+	var item = 0;
+
+	$(".item_price").each(function() {
+		item = parseInt($(this).text());
+		$(this).text(item.toLocaleString('ko-KR')); //개별 상품금액
+	});
+
+	$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
+	$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
+	$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
+	$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
+	$("#total_price").val(fee);
+	$("#addOrder").attr("data-price", total);
+}
    $(function() {
-      
- 
-      
       //결제하기 Btn
      /*  $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
@@ -40,20 +55,72 @@
       var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
       var tossPayments = TossPayments(clientKey)
       $("#addOrder").on("click", function(){
+    	  
+    	  
+    	  let today = new Date();
+    	  let orderId = today.getTime()+"${login.userid}";
+    	  console.log( orderId );
+    	  console.log($("#addOrder").attr("data-price"));
+    	  let price = $("#addOrder").attr("data-price");
+    	  
+    	  
+    	  
+    	  
+    	  event.preventDefault();
     	  tossPayments.requestPayment('카드', {
-              amount: 15000,
-              orderId: 'RPisbZLV__YDoyI_eOLak',
-              //날짜+userid
+              amount: price,
+              orderId: orderId,//날짜+userid
               orderName: '토스 티셔츠 외 2건',
-              customerName: '박토스',
+              customerName: '${login.username}',
               successUrl: 'http://localhost:8102/zzp/toss/success',
               failUrl: 'http://localhost:8102/zzp/toss',
-            })
+            })  
       });
  	  //배송 요청사항
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
+      totalprice();
+
+		//쿠폰
+		$("#sel_coupon").on("change", function() {
+
+			//상품금액
+			var sum_money = $("#sum_money").text();
+			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
+			sum_money = parseInt(sum_money);//정수로
+
+			//
+			$(".dis").css("visibility", "visible");
+			//할인율
+			var idx = $(this).val();
+			var cou_id = $("#xxx" + idx).attr("data-id");
+			var rate = $("#xxx" + idx).attr("data-rate");
+			var discount = sum_money / 100 * rate;
+			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
+			var discounted = sum_money / 100 * (100 - rate);
+			$("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
+
+			//배송 정보
+			var sum = sum_money - discount;
+			var fee = sum >= 50000 ? 0 : 3000;
+			var total = sum_money - discount + fee; // 총금액 + 배송비
+
+			$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
+			$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
+			$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
+			$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
+		});
+
+		//이메일 select
+		$("#emailSel").on("change", function() {
+			$("#email2").val($(this).val());
+		});//end fn
+
+		//우편번호 찾기 클릭시 기존 입력 데이터 초기화
+		$("#findPost").on("click", function() {
+			$("#sample4_jibunAddress").val("");
+		});//end fn
    
       
    });
@@ -307,119 +374,13 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="결제하기" id="addOrder"
-					class="btn btn-success"> <input type="button"
-					onclick="javascript:history.back();" value="취소"
-					class="btn btn-success">
+				<input type="submit" data-price="" data-p_name="${cartList.p_name}" value="결제하기" id="addOrder" class="btn btn-success"> 
+				<input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
 			</div>
 		</form>
 	</div>
 </div>
 
-
-<script type="text/javascript"
-   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-	function totalprice() {
-		var sum_money = parseInt($("#sum_money").text());
-		var fee = sum_money >= 50000 ? 0 : 3000;
-		var total = sum_money + fee; // 총금액 + 배송비
-		var item = 0;
-
-		$(".item_price").each(function() {
-			item = parseInt($(this).text());
-			$(this).text(item.toLocaleString('ko-KR')); //개별 상품금액
-		});
-
-		$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
-		$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
-		$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
-		$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
-		$("#total_price").val(fee);
-	}
-	$(function() {
-		totalprice();
-
-		//쿠폰
-		$("#sel_coupon").on("change", function() {
-
-			//상품금액
-			var sum_money = $("#sum_money").text();
-			sum_money = sum_money.replace(/,/g, "");//콤마 제거 문자열 변환
-			sum_money = parseInt(sum_money);//정수로
-
-			//
-			$(".dis").css("visibility", "visible");
-			//할인율
-			var idx = $(this).val();
-			var cou_id = $("#xxx" + idx).attr("data-id");
-			var rate = $("#xxx" + idx).attr("data-rate");
-			var discount = sum_money / 100 * rate;
-			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
-			var discounted = sum_money / 100 * (100 - rate);
-			$("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
-
-			//배송 정보
-			var sum = sum_money - discount;
-			var fee = sum >= 50000 ? 0 : 3000;
-			var total = sum_money - discount + fee; // 총금액 + 배송비
-
-			$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
-			$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
-			$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
-			$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
-		});
-
-		//이메일 select
-		$("#emailSel").on("change", function() {
-			$("#email2").val($(this).val());
-		});//end fn
-
-		//우편번호 찾기 클릭시 기존 입력 데이터 초기화
-		$("#findPost").on("click", function() {
-			$("#sample4_jibunAddress").val("");
-		});//end fn
-
-		/* $("form").on(
-				"submit",
-				function() {
-					var receiver_name = $("#receiver_name").val();
-					var email1 = $("#email1").val();
-					var email2 = $("#email2").val();
-					var receiver_phone = $("#receiver_phone").val();
-
-					/*    var address_name=$("#inputAddressName").val(); */
-
-					var post_num = $("#sample4_postcode").val();
-					var addr1 = $("#sample4_roadAddress").val();
-					var addr2 = $("#sample4_jibunAddress").val();
-					var numChk = /^[0-9]*.{11}$/;
-					//var check=$("#gridCheck").val();
-
-					if (receiver_name == "" || receiver_phone == ""
-							|| post_num == "" || addr1 == "" || addr2 == "") {//공백 불가  
-						$("#modalBtn").trigger("click");
-						$("#mesg").text("배송 정보를 입력해주세요.");
-						event.preventDefault();
-					} else if (receiver_phone != ""
-							&& !numChk.test(receiver_phone)) {//연락처는 숫자 11자리만 가능
-						$("#modalBtn").trigger("click");
-						$("#mesg").text("11자리를  입력해주세요.");
-						$("#receiver_phone").val("");
-						$("#receiver_phone").focus();
-						event.preventDefault();
-					} else if (receiver_name.length > 5) {
-						$("#modalBtn").trigger("click");
-						$("#mesg").text("수령인은 5글자 이내로 입력해주세요.");
-						$("#receiver_name").val("");
-						$("#receiver_name").focus();
-						event.preventDefault();
-					}
-				});//end submit */
-
-
-	})//end
-	</script>
 	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 	<script>
 		//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.

@@ -223,12 +223,12 @@
 						<tr style="border-bottom-width: 5px; border-color: green;">
 							<th style="font-size: 20px; font-weight: bold;">결제 정보</th>
 						</tr>
-						<tr style="border-bottom-width: 1px; border-color: green;">
+						<tr style="border-bottom-width: 1px; border-color: green; ">
 
-							<td><label><input type="radio" name="payment"
-									value="card" checked>카드결제</label></td>
-							<td><label><input type="radio" name="payment"
-									value="transfer">계좌이체</label></td>
+							<td><label><input type="radio" name="payment"  style="accent-color:green;"  
+									value="카드결제" checked>카드결제</label></td>
+							<td><label><input type="radio" name="payment"  style="accent-color:green;" 
+									value="계좌이체">계좌이체</label></td>
 						</tr>
 
 
@@ -236,11 +236,10 @@
 				</c:if>
 			</c:forEach>
 
-			<!-- 쿠폰  -->
-			<c:set value="${couponList}" var="cou" />
+			
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
-
+				
 				<tr style="border-bottom-width: 3px; border-color: green; font-size: 20px;">
 					<th>총 주문금액</th>
 				<tr>
@@ -250,20 +249,33 @@
 					<td><span class="price" id="sum_money">${sum}</span>원</td>
 				</tr>
 				<tr>
+					<!-- 쿠폰  -->
+						<c:set value="${couponList}" var="cou" />
 					<th>쿠폰</th>
 					<td></td>
-					<td><select id="sel_coupon" name="sel_coupon"
+					<td>
+					<select id="sel_coupon" name="sel_coupon"
 						class="form-select" aria-label="Default select example">
 							<option value="" selected disabled hidden>쿠폰을 선택하세요</option>
-							<c:forEach items="${couponList}" var="coupon" varStatus="status">
-								<option hidden id="xxx${status.index}"
-									data-id="${coupon.coupon_id}"
-									data-rate="${coupon.coupon_discount}" value="${coupon.coupon_id}"></option>
-								<option value="${status.index}">${coupon.coupon_name}</option>
-													
-							</c:forEach>
+
+							<c:choose>
+								<c:when test="${fn:length(cou)==0}">
+									<option disabled="disabled">적용할 쿠폰이  없습니다.</option>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${couponList}" var="coupon" varStatus="status">
+										<option hidden id="xxx${status.index}"
+											data-id="${coupon.coupon_id}"
+											data-rate="${coupon.coupon_discount}"></option>
+										<option value="${status.index}">${coupon.coupon_name}</option>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
+
 							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
-					</select></td>
+
+					</select>
+					</td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
 					<th>할인 금액</th>
@@ -287,7 +299,9 @@
 					<td></td>
 					<td style="color: green; font-weight: bolder;"><span
 						class="price" id="total"></span>원</td>
-						<input type="hidden" id="total_price" name="total_price">
+						<input type="hidden" id="sum_money2" name="sum_money" value=" " >
+						<input type="hidden" id="fee2" name="fee" value=" " >
+						<input type="hidden" id="total_price" name="total_price" value=" " >
 				</tr>
 
 				</tbody>
@@ -308,6 +322,7 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
+
 	function totalprice() {
 		var sum_money = parseInt($("#sum_money").text());
 		var fee = sum_money >= 50000 ? 0 : 3000;
@@ -323,7 +338,12 @@
 		$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
 		$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 		$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
-		$("#total_price").val(fee);
+		
+		
+		$("#sum_money2").val(sum_money);
+		$("#fee2").val(fee);
+		$("#total_price").val(total); 
+		console.log($("#sum_money2").val(),$("#fee2").val(),$("#total_price").val());
 	}
 	$(function() {
 		totalprice();
@@ -349,14 +369,18 @@
 			$("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
 
 			//배송 정보
-			var sum = sum_money - discount;
+			var sum = sum_money - discount; //할인이된 총 금액
 			var fee = sum >= 50000 ? 0 : 3000;
-			var total = sum_money - discount + fee; // 총금액 + 배송비
+			var total = sum + fee; // 총금액 + 배송비
 
 			$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
 			$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
 			$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 			$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
+		
+			$("#total_price").val(total); 
+			$("#sum_money2").val(sum_money);
+			$("#fee2").val(fee);
 		});
 
 		//이메일 select
@@ -372,6 +396,7 @@
 		$("form").on(
 				"submit",
 				function() {
+				
 					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();

@@ -7,6 +7,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"></c:set>
 <style>
 .container {
@@ -49,9 +50,43 @@ a {
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-	$(function() {
 
-	})//end
+
+	$(document).ready(function () {
+		
+		
+		//좋아요 추가 삭제
+		$(".zzim_area").on("click",".zzimImage",function(){
+			var p_id = $(this).attr("data-pid");
+			var xxx= $(this);
+			console.log(p_id);
+			$.ajax({
+				type: "post",
+				url : "/zzp/zzim",
+				data : {
+					p_id:p_id
+				},
+				dataType: "text" ,
+				success : function(data,status,xhr) {
+					if(data==0){
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+						//xxx.parents().filter("div").remove();
+					}else{
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+					}
+					
+
+					
+				},
+				error : function(xhr, status,error) {
+					console.log(error);
+				}
+				
+				
+			}) //end ajax 
+		})//end zzim_area
+		
+	});//end ready
 </script>
 <div id="outer">
 	<div
@@ -89,12 +124,31 @@ a {
 				<c:forEach var="like" items="${likeList}">
 					<div class="col-lg-3 col-md-4 col-sm-6">
 						<div class="p-3">
-							<div style="text-align: center;">
+							<div style="text-align: center;"  id="likediv">
 								<div class="hover-zoomin">
 									<a href="${contextPath}/product/${like.p_id}"> <img
 										src="${contextPath}/resources/images/product/p_image/${like.p_image}"
 										width="300" height="300"></a>
 								</div>
+								
+								<div style="text-align: center;">
+								<!-- 찜 -->
+								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline;">
+									<c:if test="${!empty zzimList}">
+								   	 	 <spring:eval var="zzim" expression="zzimList.contains(${like.p_id})" />
+								   	   </c:if>
+								   	   <c:choose>
+								   	     <%-- 해당 게시글을 현재 로그인한 회원이 좋아요했던 경우 --%>
+								   	     <c:when test="${zzim}">
+								   	     	<img src="/zzp/resources/images/product/fullHeart.png" width="30" height="30" class="zzimImage" data-pid="${like.p_id}" id="zzimImage${like.p_id}">
+								   	     </c:when>
+								   	     <%-- 그외의 경우 --%>
+								   	     <c:otherwise>
+								   	     	<img src="/zzp/resources/images/product/emptyHeart.png" width="30" height="30" class="zzimImage" data-pid="${like.p_id}" id="zzimImage${like.p_id}">
+								   	     </c:otherwise>
+								   	   </c:choose>
+								</div>
+							
 								<!-- 장바구니 모달창 -->
 									<button type="button" class="btn" data-bs-toggle="modal"
 										data-bs-target="#addcart${like.p_id}"
@@ -102,6 +156,7 @@ a {
 										<img src="${contextPath}/resources/images/product/cart.png"
 											width="25" height="25">
 									</button>
+								</div>	
 								<div>
 									<a href="${contextPath}/product/${like.p_id}"> <span
 										style="margin-bottom: 0.3em; font-weight: normal; color: #646464; font-size: 25px;">${like.p_name}</span></a>

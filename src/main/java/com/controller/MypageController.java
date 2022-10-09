@@ -35,6 +35,7 @@ import com.dto.ProfileDTO;
 import com.dto.ReviewDTO;
 import com.service.AnswerService;
 import com.service.CartService;
+import com.service.ChallengeService;
 import com.service.CouponService;
 import com.service.MypageService;
 import com.service.OrderService;
@@ -57,6 +58,8 @@ public class MypageController {
 	OrderService oService;
 	@Autowired
 	CouponService cService;
+	@Autowired
+	ChallengeService chService;
 	
 	/**
 	 * 마이페이지 메인
@@ -350,6 +353,49 @@ public class MypageController {
 		m.addAttribute("search", map);
 		m.addAttribute("mDTO", session.getAttribute("login"));
 		return "myCoupon";
+	}
+	/**
+	 * 마이페이지 내 챌린지
+	 */
+	@RequestMapping(value = "/mypage/{userid}/challenge", method = RequestMethod.GET)
+	public String myChallenge(
+			@PathVariable String userid, 
+			@RequestParam HashMap<String, String> map,
+			Model model,
+			HttpSession session) {
+		//회원의 챌린지 목록 가져오기
+		map.put("userid", userid);
+		PageDTO pDTO = chService.selectChallengeByUserid(map, 6);
+		model.addAttribute("pDTO", pDTO);
+		
+		//회원이 좋아요 누른 게시글 가져오기
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		List<Integer> likedList = new ArrayList<Integer>();
+		if (mDTO != null) {
+			likedList = chService.selectLikedChall(mDTO.getUserid());
+		}
+		model.addAttribute("likedList", likedList);
+		
+		return "myChallenge";
+	}
+	/**
+	 * 마이페이지 내 도장
+	 */
+	@RequestMapping(value = "/mypage/{userid}/stamp", method = RequestMethod.GET)
+	public String myStamp(
+			@PathVariable String userid, 
+			@RequestParam HashMap<String, String> map,
+			Model model) {
+		//회원의 도장 목록 가져오기
+		map.put("userid", userid);
+		PageDTO pDTO = chService.selectMemberStampByUserid(map, 6);
+		model.addAttribute("pDTO", pDTO);
+		
+		//전체 도장 개수
+		int stampTotalNum = chService.countTotalStamp(map);
+		model.addAttribute("stampTotalNum", stampTotalNum);
+		
+		return "myStamp";
 	}
 	/**
 	 * 마이페이지 프로필 수정

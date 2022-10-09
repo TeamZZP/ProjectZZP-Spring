@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -161,9 +162,13 @@ public class MemberController {
 	  */
 		@RequestMapping(value = "/subinx/orders/{userid}")
 		@ResponseBody
-		public void orderDone(@PathVariable("userid") String userid) {
+		public void orderDone(@PathVariable("userid") String userid,
+				String amount, String orderId, String orderName, String customerName) {
 			System.out.println("결제 성공, 주문 완료 >>>"+userid);
-			
+			System.out.println("amount >>> "+amount);
+			System.out.println("orderId >>> "+orderId);
+			System.out.println("orderName >>> "+orderName);//null
+			System.out.println("customerName >>> "+customerName);//null
 			//return mav;
 		}
 }

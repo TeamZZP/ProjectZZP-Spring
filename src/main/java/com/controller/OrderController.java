@@ -60,19 +60,26 @@ public class OrderController {
 		 //주문추가
 		 @RequestMapping("/orders")
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
-			int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id ) {
-			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");	
+			int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
+			System.out.println();
+			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
+			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
 			 List<OrderDTO> olist = new ArrayList<OrderDTO>();
 			 ModelAndView mav = new ModelAndView();
 			 HashMap<String,String> map =new HashMap<String, String>();
-			 System.out.println(olist);
+			 
 			 System.out.println("payment: "+payment);
-			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기
+			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기 //왜 따로만드는건지 궁금???
 			 System.out.println("order_id: "+order_id);
+			 
 			 int n=0;  //오더저장회수
+			 if(delivery_req == null) {
+				 delivery_req = "요청사항이 없습니다.";
+			 }
+			 
 			 for (int i = 0; i < p_id.length; i++) {
-				 System.out.println(p_id[i]);	
+				 System.out.println("p_id[i]>>>"+p_id[i]);	
 				 odto.setOrder_id(order_id);
 				 odto.setUserid(mdto.getUserid());
 				 odto.setP_id(p_id[i]);
@@ -90,7 +97,7 @@ public class OrderController {
 			 
 			 int cartdel =0; //카트 삭제 회수
 			 if(n!=0) { //오더저장 성공시 카트삭제
-					 
+				 System.out.println("length>>"+p_id.length);	 
 				 for(int i = 0; i < p_id.length; i++) {   
 					 System.out.println("삭제되는카트 상품 :"+ p_id[i]);
 					map.put("p_id",String.valueOf(p_id[i]) );
@@ -130,21 +137,23 @@ public class OrderController {
 				 orderList=service.getOrderInfo(order_id);
 				 System.out.println(orderList);
 				 mav.addObject("orderList", orderList);*/
-			   // List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
-				//mav.addObject("prodList", prodList);
 				 
+				 List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
+				 mav.addObject("prodList", prodList);
 				 
+				 System.out.println("prodList>>>"+prodList);
 			 }//end 오더저장 성공시 카트삭제
 
-	
 			
-
+			 
+			 System.out.println("olist>>>"+olist);
+			
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
 			 mav.addObject("payment", payment);
 			 mav.setViewName("orderSuccess");
-			 
+			 mav.addObject("addrList", addrList);
 			 return mav;
 			 
 		 }

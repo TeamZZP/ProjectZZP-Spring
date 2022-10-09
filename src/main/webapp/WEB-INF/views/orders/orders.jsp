@@ -226,9 +226,9 @@
 						<tr style="border-bottom-width: 1px; border-color: green; ">
 
 							<td><label><input type="radio" name="payment"  style="accent-color:green;"  
-									value="card" checked>카드결제</label></td>
+									value="카드결제" checked>카드결제</label></td>
 							<td><label><input type="radio" name="payment"  style="accent-color:green;" 
-									value="transfer">계좌이체</label></td>
+									value="계좌이체">계좌이체</label></td>
 						</tr>
 
 
@@ -239,7 +239,7 @@
 			
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
-
+				
 				<tr style="border-bottom-width: 3px; border-color: green; font-size: 20px;">
 					<th>총 주문금액</th>
 				<tr>
@@ -299,7 +299,9 @@
 					<td></td>
 					<td style="color: green; font-weight: bolder;"><span
 						class="price" id="total"></span>원</td>
-						<input type="hidden" id="total_price" name="total_price">
+						<input type="hidden" id="sum_money2" name="sum_money" value=" " >
+						<input type="hidden" id="fee2" name="fee" value=" " >
+						<input type="hidden" id="total_price" name="total_price" value=" " >
 				</tr>
 
 				</tbody>
@@ -307,7 +309,7 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="주문하기" id="addOrder"
+				<input type="submit" value="결제하기" id="addOrder"
 					class="btn btn-success"> <input type="button"
 					onclick="javascript:history.back();" value="취소"
 					class="btn btn-success">
@@ -336,7 +338,12 @@
 		$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
 		$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 		$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액
-		$("#total_price").val(fee);
+		
+		
+		$("#sum_money2").val(sum_money);
+		$("#fee2").val(fee);
+		$("#total_price").val(total); 
+		console.log($("#sum_money2").val(),$("#fee2").val(),$("#total_price").val());
 	}
 	$(function() {
 		totalprice();
@@ -362,14 +369,18 @@
 			$("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
 
 			//배송 정보
-			var sum = sum_money - discount;
+			var sum = sum_money - discount; //할인이된 총 금액
 			var fee = sum >= 50000 ? 0 : 3000;
-			var total = sum_money - discount + fee; // 총금액 + 배송비
+			var total = sum + fee; // 총금액 + 배송비
 
 			$("#sum_money").text(sum_money.toLocaleString('ko-KR')); //총 상품금액
 			$("#fee").text(fee.toLocaleString('ko-KR')); //배송비
 			$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 			$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
+		
+			$("#total_price").val(total); 
+			$("#sum_money2").val(sum_money);
+			$("#fee2").val(fee);
 		});
 
 		//이메일 select
@@ -385,6 +396,7 @@
 		$("form").on(
 				"submit",
 				function() {
+				
 					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();

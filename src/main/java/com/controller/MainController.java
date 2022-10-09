@@ -104,17 +104,18 @@ public class MainController {
 		  //주소가져오기	
 		  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
 		  //쿠폰가져오기
-		  List<MemberCouponDTO> couponList = service.selectAllCoupon1(mdto.getUserid()); 
+		  //List<MemberCouponDTO> couponList = service.selectAllCoupon1(mdto.getUserid()); 
+		  //System.out.println(couponList);
 		  //주문하기 리스트
 		  ArrayList<String> list = new ArrayList<String>();
-		  list.add("412");
+		  list.add("446");
 		  List<CartDTO> cartList = service.orderCart(list); 
 		  
-			
+		  System.out.println(cartList);
 		  mav.addObject("cartList", cartList);
 		  mav.addObject("mdto", mdto);
 		  mav.addObject("addrList", addrList);
-		  mav.addObject("couponList", couponList);
+		  //mav.addObject("couponList", couponList);
 		  mav.setViewName("orders2");
 		  return mav;
     }
@@ -122,8 +123,13 @@ public class MainController {
 	 * 토스 페이먼츠 테스트 결제
 	 */
     @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
-    public String toss_test_success() {
-    	//ortable 결제완료
+    public String toss_test_success(String orderId) {
+    	System.out.println(orderId);
+    	//1665309501015aaa
+    	
+    	
+    	
+    	//ordertable 결제완료
 		return "Toss_Test_success";
     }
     

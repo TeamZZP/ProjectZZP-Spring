@@ -103,7 +103,7 @@ a:hover {
 										
 									</td>
 									<!-- 주문번호  -->
-									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" name="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
+									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
 									<!-- 이미지사진  -->
 									<td><a href="${contextPath}/product/${cart.p_id}"> 
 										<img src="../resources/images/product/p_image/${cart.p_image}" width="100"
@@ -344,7 +344,7 @@ $(function() {
 		var xxx = $(this); //클릭된 버튼 자체
 		var item_price = parseInt($(this).attr("data-price"));
 		var sum1 =$("#sum_money").text();
-		
+		console.log(xxx);
 		//체크박스 선택된 값만 상품금액에 출력
 		if($(".individual_cart_checkbox").is(":checked")==true){
 			var sum = parseInt(sum1.replace(/,/g, ""));//콤마 제거 문자열 변환
@@ -359,6 +359,7 @@ $(function() {
 				success : function(data, status, xhr) {
 					
 					//삭제 버튼의 부모 요소 중 tr을 remove
+					
 					$("#cartCount").text(data);
 					xxx.parents().filter("tr").remove();  
 					var sum = 0;

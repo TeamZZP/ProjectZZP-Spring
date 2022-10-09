@@ -68,8 +68,9 @@ public class OrderController {
 		 //주문추가
 		 @RequestMapping("/orders")
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
-			int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
-			System.out.println();
+			 int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
+			 System.out.println("sum_money :"+sum_money);
+			 System.out.println("fee :"+fee);
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
@@ -78,7 +79,7 @@ public class OrderController {
 			 HashMap<String,String> map =new HashMap<String, String>();
 			 
 			 System.out.println("payment: "+payment);
-			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기 //왜 따로만드는건지 궁금???
+			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기 
 			 System.out.println("order_id: "+order_id);
 			 
 			 int n=0;  //오더저장회수
@@ -152,57 +153,15 @@ public class OrderController {
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
 			 mav.addObject("payment", payment);
+			 mav.addObject("sum_money", sum_money);
+			 mav.addObject("fee", fee);
 			 mav.setViewName("orderSuccess");
 			 mav.addObject("addrList", addrList);
 			 return mav;
 			  
 		 }
 		 
-		 /**
-			 * 토스 페이먼츠 테스트 화면
-			 */
-		    @RequestMapping(value = "/toss2" , method = RequestMethod.GET) 
-		    public ModelAndView toss_test2(HttpSession session, ModelAndView mav) {
-		    	MemberDTO mdto = (MemberDTO)session.getAttribute("login");
-		    	   System.out.println(mdto);
-				  //주소가져오기	
-				  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
-				  //쿠폰가져오기
-				  List<MemberCouponDTO> couponList = service.selectAllCoupon(mdto.getUserid()); 
-				  //주문하기 리스트
-				  ArrayList<String> list = new ArrayList<String>();
-				  list.add("412");
-				  List<CartDTO> cartList = cService.orderCart(list); 
-				  
-					
-				  mav.addObject("cartList", cartList);
-				  mav.addObject("mdto", mdto);
-				  mav.addObject("addrList", addrList);
-				  mav.addObject("couponList", couponList);
-				  mav.setViewName("orders");
-				  return mav;
-		    }
-		    /**
-			 * 토스 페이먼츠 테스트 결제
-			 */
-		    @RequestMapping(value = "/toss/success2" , method = RequestMethod.GET)
-		    @ResponseBody
-		    public void toss_test_success2(@RequestParam("customerName") String name, Model model, HttpServletResponse response) {
-		    	
-		    	System.out.println("Toss success=====");
-		    	System.out.println("name====="+name);
-		    	
-		    	try {
-		            PrintWriter out = response.getWriter();
-		            out.println("<script>window.opener.document.getElementById('myForm').action = '/zzp/orders';</script>");
-		            out.println("<script>window.opener.document.getElementById('myForm').submit();</script>");
-		            out.println("<script>window.close();</script>");
-		         } catch (IOException e) {
-		            // TODO Auto-generated catch block
-		            e.printStackTrace();
-		         }
-
-		    }
+		 
 		    
 
 }

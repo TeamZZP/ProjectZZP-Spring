@@ -79,7 +79,7 @@ function zzimFunc(p_id) {
 	  	
 		$("#toOrder").click(function() {
 			
-			if("${mdto}".length != 0){
+			if("${mdto}"= null){
 				$("#modalBtn").trigger("click");
 		        $("#mesg").text("로그인이 필요합니다.");
 		        

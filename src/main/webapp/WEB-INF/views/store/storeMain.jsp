@@ -48,37 +48,51 @@ a {
 <script type="text/javascript"src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-
+	
 	function zzimFunc(p_id) {
 		
-		$.ajax({
-			type: "get",
-			url : "zzim",
-			data : {
-				p_id:p_id
-			},
-			dataType: "text" ,
-			success : function(data,status,xhr) {
-				console.log("찜ajax");
-				console.log(data);
-				if(data==0){
-					$("#zzimImage"+p_id).attr("src","resources/images/product/emptyHeart.png");
-				}else{
-					$("#zzimImage"+p_id).attr("src","resources/images/product/fullHeart.png");
+		if("${mdto}".length != 0){
+			
+			$.ajax({
+				type: "post",
+				url : "/zzp/zzim",
+				data : {
+					p_id:p_id
+				},
+				dataType: "text" ,
+				success : function(data,status,xhr) {
+					console.log("찜ajax");
+					console.log(data);
+					if(data==0){
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/emptyHeart.png");
+					}else{
+						$("#zzimImage"+p_id).attr("src","/zzp/resources/images/product/fullHeart.png");
+					}
+					
+				},
+				error : function(xhr, status,error) {
+					console.log(error);
 				}
 				
-			},
-			error : function(xhr, status,error) {
-				console.log(error);
-			}
-			
-			
-		}) //end ajax
+				
+			}) //end ajax
 
+			 
+		}else{
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("로그인이 필요합니다.");
+            
+            $("#closemodal").click(function() {
+              location.href="/login";
+           });
+              
+         }
+		
+		
 	}
 	
 
-</script>
+</script>	
 
 
    <!-- 세일배너 -->  
@@ -161,7 +175,7 @@ a {
 				</button>
 			</div>	
 				<!-- Modal -->
-				<form action="/cart/{userid}" method="post">
+				<form action="/zzp/cart/{userid}" method="post">
 
 					<input type="hidden" id="p_id" name="p_id" value="${pList.p_id}"> 
 					<input type="hidden" name="p_image" value="${pList.p_image}"> 
@@ -272,6 +286,7 @@ a {
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script  type="text/javascript">
    $(function() {
+	
       //UP버튼 수량 변화   
       var count="1";
       $("button[name=up]").on("click", function() {
@@ -318,7 +333,7 @@ a {
          if ("${mdto.userid}" != "") {
             $.ajax({
                type : "post",
-               url : "${contextPath}/cart/${mdto.userid}",
+               url : "/zzp/cart/${mdto.userid}",
                data : {
                   p_id : p_id,
                   p_name : p_name, 

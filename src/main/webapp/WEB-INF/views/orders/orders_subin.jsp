@@ -25,14 +25,11 @@
 	}
    
 </style>
+<script src="https://js.tosspayments.com/v1"></script>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
    $(function() {
-      
- 
-      
-      
       $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
       });
@@ -40,8 +37,37 @@
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
-   
-      
+
+		$("#payment-button").on("click", function() {
+			var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
+			var tossPayments = TossPayments(clientKey)
+			//상품금액
+			var total = $("#total").text();
+			total = total.replace(/,/g, "");//콤마 제거 문자열 변환
+			total = parseInt(total);//정수로
+			//첫번째 상품명
+			var first=$("#first").text();
+			//상품 갯수
+			var size='${fn:length(cartList)}';
+			var mesg='';
+			if (size==1) {
+				mesg=size;
+			} else {
+				mesg='외 '+(size-1);
+			}
+			
+			tossPayments.requestPayment('카드', {
+			amount: total,//숫자
+			orderId: '${login.userid}'+'orderId',
+			orderName: first+" "
+						+mesg
+						+'건',
+						
+			customerName: '${login.username}',
+			successUrl: 'http://localhost:8100/zzp/subinx/orders/${login.userid}',
+			failUrl: 'http://localhost:8100/fail'
+			})
+		});//end payment
    });
 </script>
 <div class="container ">
@@ -71,7 +97,7 @@
 				</tr>
 
 				<c:set var="sum" value="0" />
-				<c:forEach var="cList" items="${cartList}">
+				<c:forEach var="cList" items="${cartList}" varStatus="status">
 	            <input type="hidden" id="p_id" name="p_id" value="${cList.p_id}">
 					<tr class="order_content">
 						<!-- 이미지사진  -->
@@ -79,7 +105,7 @@
 							src="/zzp/resources/images/product/p_image/${cList.p_image}"
 							width="100" style="border: 10px;" height="100"></td>
 						<!-- 상품명  -->
-						<td style="line-height: 100px;"><span
+						<td style="line-height: 100px;"><span id="first"
 							style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
 						<!-- 수량  -->
 						<td style="line-height: 100px;"><span id="order_amount" name="order_amount"
@@ -223,11 +249,11 @@
 						<tr style="border-bottom-width: 5px; border-color: green;">
 							<th style="font-size: 20px; font-weight: bold;">결제 정보</th>
 						</tr>
-						<tr style="border-bottom-width: 1px; border-color: green; ">
+						<tr style="border-bottom-width: 1px; border-color: green;">
 
-							<td><label><input type="radio" name="payment"  style="accent-color:green;"  
+							<td><label><input type="radio" name="payment"
 									value="card" checked>카드결제</label></td>
-							<td><label><input type="radio" name="payment"  style="accent-color:green;" 
+							<td><label><input type="radio" name="payment"
 									value="transfer">계좌이체</label></td>
 						</tr>
 
@@ -236,7 +262,8 @@
 				</c:if>
 			</c:forEach>
 
-			
+			<!-- 쿠폰  -->
+			<c:set value="${couponList}" var="cou" />
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
 
@@ -249,33 +276,18 @@
 					<td><span class="price" id="sum_money">${sum}</span>원</td>
 				</tr>
 				<tr>
-					<!-- 쿠폰  -->
-						<c:set value="${couponList}" var="cou" />
 					<th>쿠폰</th>
 					<td></td>
-					<td>
-					<select id="sel_coupon" name="sel_coupon"
+					<td><select id="sel_coupon" name="sel_coupon"
 						class="form-select" aria-label="Default select example">
 							<option value="" selected disabled hidden>쿠폰을 선택하세요</option>
-
-							<c:choose>
-								<c:when test="${fn:length(cou)==0}">
-									<option disabled="disabled">적용할 쿠폰이  없습니다.</option>
-								</c:when>
-								<c:otherwise>
-									<c:forEach items="${couponList}" var="coupon" varStatus="status">
-										<option hidden id="xxx${status.index}"
-											data-id="${coupon.coupon_id}"
-											data-rate="${coupon.coupon_discount}"></option>
-										<option value="${status.index}">${coupon.coupon_name}</option>
-									</c:forEach>
-								</c:otherwise>
-							</c:choose>
-
-							<input type="hidden" id="coupon_id" name="coupon_id" value="" >	
-
-					</select>
-					</td>
+							<c:forEach items="${couponList}" var="coupon" varStatus="status">
+								<option hidden id="xxx${status.index}"
+									data-id="${coupon.coupon_id}"
+									data-rate="${coupon.coupon_discount}"></option>
+								<option value="${status.index}">${coupon.coupon_name}</option>
+							</c:forEach>
+					</select></td>
 				</tr>
 				<tr class="dis" style="visibility: hidden;">
 					<th>할인 금액</th>
@@ -307,7 +319,7 @@
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" value="주문하기" id="addOrder"
+				<input type="button" value="결제하기" id="payment-button"
 					class="btn btn-success"> <input type="button"
 					onclick="javascript:history.back();" value="취소"
 					class="btn btn-success">
@@ -320,7 +332,6 @@
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-
 	function totalprice() {
 		var sum_money = parseInt($("#sum_money").text());
 		var fee = sum_money >= 50000 ? 0 : 3000;
@@ -354,7 +365,6 @@
 			//할인율
 			var idx = $(this).val();
 			var cou_id = $("#xxx" + idx).attr("data-id");
-			$("#coupon_id").val(cou_id);
 			var rate = $("#xxx" + idx).attr("data-rate");
 			var discount = sum_money / 100 * rate;
 			$("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
@@ -385,7 +395,6 @@
 		$("form").on(
 				"submit",
 				function() {
-					
 					var receiver_name = $("#receiver_name").val();
 					var email1 = $("#email1").val();
 					var email2 = $("#email2").val();

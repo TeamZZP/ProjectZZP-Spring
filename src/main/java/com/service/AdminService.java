@@ -14,6 +14,8 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.ProductOrderImagesDTO;
+import com.dto.QuestionDTO;
 import com.dto.ReportDTO;
 
 @Service
@@ -24,6 +26,69 @@ public class AdminService {
 	@Autowired
 	private ChallengeDAO chDao;
 
+	/**
+	 * 메인화면
+	 */
+	//총 판매액
+	public double getTotalSales() {
+		return dao.getTotalSales();
+	}
+	//오늘 판매액
+	public double getTodaySales() {
+		return dao.getTodaySales();
+	}
+	//총 회원
+	public int getTotalMember() {
+		return dao.getTotalMember();
+	}
+	//오늘 가입 회원
+	public int getTodayMember() {
+		return dao.getTodayMember();
+	}
+	
+	//오늘 방문자
+	public int countVisitToday() {
+		return dao.countVisitToday();
+	}
+	//총 방문자
+	public int getTotalVisitor() {
+		return dao.getTotalVisitor();
+	}
+	//방문자수 추가
+	public void addVisit() {
+		dao.addVisit();
+	}
+	//방문자수 수정
+	public void updateVisit() {
+		dao.updateVisit();
+	}
+	//어제 방문자수
+	public int countVisitYesterday() {
+		return dao.countVisitYesterday();
+	}
+
+	//신규 주문
+	public List<ProductOrderImagesDTO> selectNewOrders() {
+		return dao.selectNewOrders();
+	}
+	//신규 회원
+	public List<MemberDTO> selectNewMembers() {
+		return dao.selectNewMembers();
+	}
+	//답변대기 문의
+	public List<QuestionDTO> selectNewQuestion() {
+		return dao.selectNewQuestion();
+	}
+	
+	//월별 실적
+	public List<HashMap<String, Object>> getMonthlySales() {
+		return dao.getMonthlySales();
+	}
+	//카테고리별 판매 비율
+	public List<HashMap<String, Object>> getSalesCategory() {
+		return dao.getSalesCategory();
+	}
+	
 	
 	/**
 	 * 회원관리
@@ -185,7 +250,6 @@ public class AdminService {
 	public void updateReport(HashMap<String, String> map) {
 		dao.updateReport(map);
 	}
-	
 	
 
 }

@@ -3,6 +3,89 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <mapper namespace="AdminMapper">
+  
+<!-- 총 판매액 -->
+<select id="getTotalSales" resultType="double">
+	select NVL(sum(total_price),0) from orders
+</select>
+<!-- 오늘 판매액 -->
+<select id="getTodaySales" resultType="double">
+	select NVL(sum(total_price),0) from orders
+	where TO_CHAR(order_date,'YY/MM/DD') = TO_CHAR(CURRENT_TIMESTAMP, 'YY/MM/DD')
+</select>
+<!-- 총 회원 -->
+<select id="getTotalMember" resultType="int">
+	select count(*) from member
+</select>
+<!-- 오늘 가입한 회원 -->
+<select id="getTodayMember" resultType="int">
+	select count(*) from member
+	where TO_CHAR(created_at,'YY/MM/DD') = TO_CHAR(CURRENT_TIMESTAMP, 'YY/MM/DD')
+</select>
+
+<!-- 오늘 방문자수 -->
+<select id="countVisitToday" resultType="int">
+	select NVL(
+		(select count from counter 
+		where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')), 0)
+    from dual
+</select>
+<!-- 총 방문자 -->
+<select id="getTotalVisitor" resultType="int">
+	select sum(count) from counter
+</select>
+<!-- 어제 방문자수 -->
+<select id="countVisitYesterday" resultType="int">
+	select NVL(
+		(select count from counter 
+		where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE-1,'YY/MM/DD')), 0)
+    from dual
+</select>
+<!-- 방문자수 추가 -->
+<insert id="addVisit">
+	insert into counter (count, count_date) 
+	values (1, CURRENT_DATE)
+</insert>
+<!-- 방문자수 수정 -->
+<update id="updateVisit">
+	update counter 
+	set count=count+1
+	where TO_CHAR(count_date,'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</update>
+
+<!-- 신규 주문 -->
+<select id="selectNewOrders" resultType="ProductOrderImagesDTO">
+	select * from orders o join product p using(p_id)
+	where to_char(order_date, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</select>
+<!-- 신규 회원 -->
+<select id="selectNewMembers" resultType="MemberDTO">
+	select * from member
+	where to_char(created_at, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+</select>
+<!-- 답변대기 문의 -->
+<select id="selectNewQuestion" resultType="QuestionDTO">
+	select * from question
+	where q_status='답변대기'
+	order by q_id desc
+</select>
+
+<!-- 월별 실적 -->
+<select id="getMonthlySales" resultType="hashmap">
+	select TO_CHAR(order_date, 'YYYY.MM') as month, SUM(total_price) as sum from orders
+	group by TO_CHAR(order_date, 'YYYY.MM')
+	having TO_CHAR(order_date, 'YYYY.MM') > TO_CHAR(ADD_MONTHS(CURRENT_TIMESTAMP, -4), 'YYYY.MM')
+	order by TO_CHAR(order_date, 'YYYY.MM')
+</select>
+<!-- 카테고리별 판매 비율 -->
+<select id="getSalesCategory" resultType="hashmap">
+	select c_name as category, sum(total_price) as sum
+	from orders o join product p using(p_id)
+	join category c using(c_id)
+	group by c_name
+	order by sum desc
+</select>
+
 
 <!-- 회원관리 : 전체 회원 목록 -->
 <select id="selectAllMember" resultType="AddressDTO" parameterType="hashmap">

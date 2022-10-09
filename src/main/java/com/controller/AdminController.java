@@ -1,6 +1,13 @@
 package com.controller;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -25,6 +32,8 @@ import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.ProductDTO;
+import com.dto.ProductOrderImagesDTO;
+import com.dto.QuestionDTO;
 import com.dto.ReportDTO;
 import com.service.AdminService;
 import com.service.ChallengeService;
@@ -45,9 +54,65 @@ public class AdminController {
 	 * 메인 화면
 	 */
 	@RequestMapping(value = "/admin")
-	public String admin() {
+	public String admin(Model model) {
+		//총 판매액
+		double sales = service.getTotalSales();
+		DecimalFormat df = new DecimalFormat("\u00A4 #,###");
+		//판매액 증가율
+		double origin = sales - service.getTodaySales();
+		double salesIncrease = (sales-origin)/origin*100;
+		
+		//회원수
+		int member = service.getTotalMember();
+		//회원 증가율
+		double originM = member - service.getTodayMember();
+		double memberIncrease = (member-originM)/originM*100;
+		
+		//총 방문자수
+		int visitor = service.getTotalVisitor();
+		//방문자수 증가율
+		double originV = visitor - service.countVisitToday();
+		double visitorIncrease = (visitor-originV)/originV*100;
+		
+		//신규 주문
+		List<ProductOrderImagesDTO> orderList = service.selectNewOrders();
+		//신규 회원
+		List<MemberDTO> memberList = service.selectNewMembers();
+		//답변대기 문의
+		List<QuestionDTO> questionList = service.selectNewQuestion();
+		
+		model.addAttribute("sales", df.format(sales));
+		model.addAttribute("salesIncrease", String.format("+%.2f%%", salesIncrease));
+		
+		model.addAttribute("member", member+" 명");
+		model.addAttribute("memberIncrease", String.format("+%.2f%%", memberIncrease));
+		
+		model.addAttribute("visitor", visitor+" 명");
+		model.addAttribute("visitorIncrease", String.format("+%.2f%%", visitorIncrease));
+		
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("questionList", questionList);
+		
 		return "adminMain";
 	}
+	/**
+	 * 월별 매출
+	 */
+	@RequestMapping(value = "/admin/sales", method = RequestMethod.GET)
+	@ResponseBody
+	public List<HashMap<String, Object>> getSales(Model model) {
+		return service.getMonthlySales();
+	}
+	/**
+	 * 카테고리별 판매 비율
+	 */
+	@RequestMapping(value = "/admin/sales/category", method = RequestMethod.GET)
+	@ResponseBody
+	public List<HashMap<String, Object>> getSalesCategory(Model model) {
+		return service.getSalesCategory();
+	}
+	
 	/**
 	 * 카테고리
 	 */

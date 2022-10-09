@@ -11,6 +11,7 @@ import com.dao.OrderDAO;
 import com.dto.MemberCouponDTO;
 import com.dto.OrderDTO;
 import com.dto.PageDTO;
+import com.dto.ProductOrderImagesDTO;
 
 @Service
 public class OrderService {
@@ -35,12 +36,48 @@ public class OrderService {
 
 	public int addOrder(OrderDTO orderDTO) {
 		int n = dao.addOrder(orderDTO);
-		System.out.println("orderService: addOrder 실행()=====");
 		return n;
 	}
 
 	public int cartDelete(HashMap<String,String> map) {
 		int n = dao.cartDelete(map);
+		return n;
+	}
+
+	public int selectCart(HashMap<String, String> map) {
+		int count = dao.selectCart(map);
+		return count;
+	}
+
+	public int deleteCoupon(HashMap<String, String> couponMap) {
+		int n = dao.deleteCoupon(couponMap);
+		return n;
+	}
+
+	public List<OrderDTO> getOrderInfo(int order_id) {
+		List<OrderDTO> orderList= dao.getOrderInfo(order_id);
+		return orderList;
+	}
+
+	public int selectSameCouponCount(HashMap<String, String> couponMap) {
+		int n = dao.selectSameCouponCount(couponMap);
+		return n;
+	}
+
+
+	public int deleteOneCoupon(HashMap<String, String> couponMap) {
+		int n = dao.deleteOneCoupon(couponMap);
+		return n;
+	}
+
+	public List<ProductOrderImagesDTO> selectOrderProd(int order_id) {
+		List<ProductOrderImagesDTO> prodList = dao.selectOrderProd(order_id);
+		return prodList;
+	}
+
+
+	public int couponMinus(HashMap<String, String> couponMap) {
+		int n = dao.couponMinus(couponMap);
 		return n;
 	}
 

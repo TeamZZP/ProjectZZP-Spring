@@ -211,7 +211,7 @@
 	  <div class="img">
 	  	<a>
 	  		<figure>
-	  			<img src="/zzp/resources/upload/profile/${profile.profile_img}" class="card-img-top">
+	  			<img src="/upload/profile/${profile.profile_img}" class="card-img-top">
 	  			<figcaption id="changeImg"><b>프로필 이미지 변경</b></figcaption>
 	  		</figure>
 	  	</a>
@@ -298,11 +298,11 @@
 			<div class="number">${map.myCoupon}</div>
 			<div>내 쿠폰함</div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/challenge" class="item">
 			<div class="number">${map.myChallenge}</div>
 			<div>내 챌린지</div>
 		</a>
-		<a href="" class="item">
+		<a href="/zzp/mypage/${login.userid}/stamp" class="item">
 			<div class="number">${map.myStamp}</div>
 			<div>내 도장</div>
 		</a>			

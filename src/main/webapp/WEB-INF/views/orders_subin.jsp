@@ -1,29 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ZZP</title>
-<!-- <link rel="stylesheet" type="text/css" href="zzp/resources/css/cart/cartList.css"> -->
+<title>zzp</title>
 
 <c:if test="${not empty mesg}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	$(document).ready(function() {
+		
 		$("#modalBtn").trigger("click");
 		$("#mesg").text("${mesg}");
 	});
 </script>
 </c:if>
+
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>
-<jsp:include page="store/category.jsp" flush="true"></jsp:include>
-<jsp:include page="store/storeMain.jsp" flush="true"></jsp:include>
+<jsp:include page="orders/orders_subin.jsp" flush="true"></jsp:include><br>
 <jsp:include page="common/footer.jsp" flush="true"></jsp:include><br>
-
 <!-- modal -->
 <div class="modal" id="checkVal" data-bs-backdrop="static">
   <div class="modal-dialog" role="document">

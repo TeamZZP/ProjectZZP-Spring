@@ -26,7 +26,15 @@
 	top: 585px;
 	left : 160px; 
 }
-
+#modalBtn{
+	display: none;
+}
+.modal-body{
+	text-align: center;
+}
+#mesg{
+	margin: 0;
+}
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -51,20 +59,24 @@
 		//폼 제출시 조건 검사
 		$("form").on("submit", function () {
 			if ($("#chall_category").val() == "none") {
-				event.preventDefault();
-				alert("카테고리를 선택해 주세요.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("카테고리를 선택해 주세요.");
+				return false;
 			} else if ($("#chall_title").val().length == 0) {
-				event.preventDefault();
-				alert("제목을 입력해 주세요.");
-			} else if (($("#old_file").val() == "null" || $("#old_file").val().length == 0) 
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("제목을 입력해 주세요.");
+				return false;
+			} else if (($("#old_file").val() == "" || $("#old_file").val().length == 0) 
 						&& $("#chall_img")[0].files[0] == null) {
-				event.preventDefault();
-				alert("사진을 업로드해 주세요.");
-			} else if ($("#chall_img").val() != 0 && !checkFileExtension()) {
-				event.preventDefault();
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("사진을 업로드해 주세요.");
+				return false;
+			} else if ($("#chall_img").val().length != 0 && !checkFileExtension()) {
+				return false;
 			} else if ($("#chall_content").val().length == 0) {
-				event.preventDefault();
-				alert("본문을 입력해 주세요.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("본문을 입력해 주세요.");
+				return false;
 			}
 		});
 		//파일업로드 이미지 클릭시 input type="file" 클릭
@@ -112,7 +124,8 @@
 		if (fileValue.match(reg)) {
 			return true;
 		} else {
-			alert("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
+			$("#modalBtn").trigger("click");
+			$("#mesg").text("jpg, jpeg, png, gif 파일만 업로드 가능합니다.");
 			return false;
 		}
 	}
@@ -124,11 +137,9 @@
 <div id="challDetailContent">
 
 <form id="uploadForm" method="post" enctype="multipart/form-data">
+<input type="hidden" name="chall_id" value="${cDTO.chall_id}">
 <input type="hidden" name="userid" value="${login.userid}">
-<c:if test="${!empty cDTO}">
-	<input type="hidden" name="chall_id" value="${cDTO.chall_id}">
-	<input type="hidden" name="old_file" id="old_file" value="${cDTO.chall_img}">
-</c:if>
+<input type="hidden" name="old_file" id="old_file" value="${cDTO.chall_img}">
 
   <div class="row">
 	<div class="d-flex w-25">
@@ -153,15 +164,14 @@
 	  		<img src="/zzp/resources/images/challenge/uploadarea.png" class="thumb uploadBtn" id="uploadarea" width="600" height="600" />
 	  		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기" style="display: none;">
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기" style="display: none;">
-	  	    <input type="file" accept="image/*" name="chall_img" id="chall_img" style="display: none;">
 	    </c:when>
 	    <c:otherwise>
 	 		<img src="/upload/challenge/${cDTO.chall_img}" class="thumb" id="uploadarea" width="600" height="600">
 	 		<img src="/zzp/resources/images/challenge/reload.png" class="uploadBtn" id="updateBtn" width="50" title="사진 다시 올리기">
 	 		<img src="/zzp/resources/images/challenge/trash.png" class="deleteBtn" id="deleteBtn" width="50" title="사진 삭제하기">
-	 		<input type="file" accept="image/*" name="chall_img" id="chall_img" value="${cDTO.chall_img}" style="display: none;">
 	    </c:otherwise>
 	  </c:choose>
+	  		<input type="file" accept="image/*" name="chall_img" id="chall_img" style="display: none;">
 	</div>
   </div>
   <div>
@@ -190,3 +200,22 @@
 </form>
 </div>
 </div>
+
+
+<!-- 모달 -->
+<div class="modal" id="checkVal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ZZP</h5>
+      </div>
+      <div class="modal-body">
+        <p id="mesg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>

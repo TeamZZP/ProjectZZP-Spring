@@ -21,6 +21,9 @@ public class ChallengeService {
 	@Autowired
 	AdminDAO adao;
 
+	/**
+	 * 챌린지 게시글
+	 */
 	public List<ChallengeDTO> getList() {
 		return dao.getList();
 	}
@@ -32,12 +35,7 @@ public class ChallengeService {
 	public ChallengeDTO selectChallThisMonth() {
 		return dao.selectChallThisMonth();
 	}
-
-	public List<Integer> selectLikedChall(String userid) {
-		return dao.selectLikedChall(userid);
-	}
 	
-	//메인 - 뉴 챌린지
 	public List<ChallengeDTO> selectNewChallenge() {
 		return dao.selectNewChallenge();
 	}
@@ -49,19 +47,7 @@ public class ChallengeService {
 	public ChallengeDTO selectOneChallenge(String chall_id) {
 		return dao.selectOneChallenge(chall_id);
 	}
-
-	public PageDTO selectAllComments(HashMap<String, String> map) {
-		return dao.selectAllComments(map);
-	}
-
-	public String selectProfileImg(String userid) {
-		return dao.selectProfileImg(userid);
-	}
-
-	public int countLikedByMap(HashMap<String, String> map) {
-		return dao.countLikedByMap(map);
-	}
-
+	
 	public void insertChallenge(HashMap<String, String> map) {
 		dao.insertChallenge(map);
 	}
@@ -82,33 +68,14 @@ public class ChallengeService {
 		return dao.countTotalUserChallenge(map);
 	}
 
-	@Transactional
-	public String like(HashMap<String, String> map) {
-		//해당 게시글에 현재 회원이 좋아요를 눌렀는지 확인
-		int likedIt = dao.countLikedByMap(map);
-		String img = null;
-		
-		//좋아요 추가
-		if (likedIt == 0) {
-			dao.insertLike(map);
-			img = "/zzp/resources/images/challenge/liked.png";
-		
-		//좋아요 삭제
-		} else if (likedIt == 1) {
-			dao.deleteLike(map);
-			img = "/zzp/resources/images/challenge/like.png";
-		}
-		
-		//해당 게시글의 좋아요 수 변경
-		dao.updateChallLiked(map.get("chall_id"));
-		
-		return img;
+	
+	/**
+	 * 댓글
+	 */
+	public PageDTO selectAllComments(HashMap<String, String> map) {
+		return dao.selectAllComments(map);
 	}
-
-	public int countLiked(String chall_id) {
-		return dao.countLiked(chall_id);
-	}
-
+	
 	@Transactional
 	public void addComment(CommentsDTO dto) {
 		//댓글 추가
@@ -149,6 +116,57 @@ public class ChallengeService {
 		dao.updateComment(dto);
 	}
 
+
+	/**
+	 * 좋아요
+	 */
+	public List<Integer> selectLikedChall(String userid) {
+		return dao.selectLikedChall(userid);
+	}
+	
+	public int countLikedByMap(HashMap<String, String> map) {
+		return dao.countLikedByMap(map);
+	}
+	
+	@Transactional
+	public String like(HashMap<String, String> map) {
+		//해당 게시글에 현재 회원이 좋아요를 눌렀는지 확인
+		int likedIt = dao.countLikedByMap(map);
+		String img = null;
+		
+		//좋아요 추가
+		if (likedIt == 0) {
+			dao.insertLike(map);
+			img = "/zzp/resources/images/challenge/liked.png";
+		
+		//좋아요 삭제
+		} else if (likedIt == 1) {
+			dao.deleteLike(map);
+			img = "/zzp/resources/images/challenge/like.png";
+		}
+		
+		//해당 게시글의 좋아요 수 변경
+		dao.updateChallLiked(map.get("chall_id"));
+		
+		return img;
+	}
+
+	public int countLiked(String chall_id) {
+		return dao.countLiked(chall_id);
+	}
+
+	
+	/**
+	 * 프로필
+	 */
+	public String selectProfileImg(String userid) {
+		return dao.selectProfileImg(userid);
+	}
+	
+
+	/**
+	 * 신고
+	 */
 	public int checkReportExist(HashMap<String, String> map) {
 		return dao.checkReportExist(map);
 	}
@@ -157,6 +175,10 @@ public class ChallengeService {
 		dao.insertReport(map);
 	}
 
+	
+	/**
+	 * 도장
+	 */
 	public PageDTO selectMemberStampByUserid(HashMap<String, String> map, int perPage) {
 		return dao.selectMemberStampByUserid(map, perPage);
 	}
@@ -164,52 +186,5 @@ public class ChallengeService {
 	public int countTotalStamp(HashMap<String, String> map) {
 		return dao.countTotalStamp(map);
 	}
-
-	@Transactional
-	public void updateAdminChallenge(HashMap<String, String> map) {
-		//챌린지 업데이트
-		dao.updateChallenge(map);
-		//도장 업데이트
-		dao.updateStamp(map);
-	}
-
-	@Transactional
-	public void deleteAdminChallenge(String chall_id) {
-		//챌린지 삭제
-		dao.deleteChallenge(chall_id);
-
-		//해당 게시글을 제외하고 가장 마지막에 작성한 게시글의 chall_this_month 값 1로 설정 
-		HashMap<String, Integer> updateMap = new HashMap<String, Integer>();
-		updateMap.put("before", 0);
-		updateMap.put("after", 1);
-		adao.updateChallThisMonth(updateMap);
-	}
-
-
-	public void updateOrder(HashMap<String, String> map) {
-		dao.updateOrder(map);
-	}
-
-	public ReportDTO selectOneReport(String id) {
-		return dao.selectOneReport(id);
-	}
-
-	public int selectChallIdFromComment(int comment_id) {
-		return dao.selectChallIdFromComment(comment_id);
-	}
-
-	public void deleteReport(List<Integer> ids) {
-		dao.deleteReport(ids);
-	}
-
-	public void updateReport(HashMap<String, String> map) {
-		dao.updateReport(map);
-	}
-
-
-	
-
-	
-
 
 }

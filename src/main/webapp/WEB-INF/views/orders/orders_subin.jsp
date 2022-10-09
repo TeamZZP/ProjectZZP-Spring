@@ -58,10 +58,11 @@
 			
 			tossPayments.requestPayment('카드', {
 			amount: total,//숫자
-			orderId: '${login.userid}'+'-9f5XaL',
+			orderId: '${login.userid}'+'orderId',
 			orderName: first+" "
 						+mesg
 						+'건',
+						
 			customerName: '${login.username}',
 			successUrl: 'http://localhost:8100/zzp/subinx/orders/${login.userid}',
 			failUrl: 'http://localhost:8100/fail'

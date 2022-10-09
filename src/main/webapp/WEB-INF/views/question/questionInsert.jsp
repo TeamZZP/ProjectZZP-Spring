@@ -21,7 +21,7 @@
  		});
 
  		$("#questionList").click(function() {
- 			$("#questionForm").attr("action", "QuestionListServlet");
+ 			$("#questionForm").attr("method", "/zzp/qna").attr("action", "/zzp/qna");
  		})
  		$("#questionInsert").click(function() {
  			$("#questionForm").attr("action", "../qna");

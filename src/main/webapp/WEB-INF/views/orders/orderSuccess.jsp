@@ -4,9 +4,12 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.dto.ProductOrderImagesDTO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-${prodList}
-
-${addrList}
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<style>
+	#p_amount :last-child {
+		border-bottom-style : none;
+	}
+</style>
 <div class="container">
 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -14,60 +17,108 @@ ${addrList}
                             <div class="card-header" style="text-align: center; font-weight: bold; font-size: x-large;">주문이 완료되었습니다.</div>
                             <div class="card-body">
                             	<div class="card">
-                            		<div class="card-body">
-                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;">주문정보</div>
-                            		<div class="card">
-                            			<div><span>주문일자</span><span>${prodList[0].order_date}</span></div>
-                            			<div><span>주문번호</span>${prodList[0].order_id}</div>
-                            			<div><span>진행상태</span>${prodList[0].order_state}</div>
-                            		</div>	
-                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;">결제정보</div>
-                            		<div class="card">
-                            			<div><span>결제방법</span>${payment}</div>
-                            			<div><span>상품금액</span><fmt:formatNumber>${prodList[0].sum_money}</fmt:formatNumber>원</div>
-                            			<div><span>배송비</span><fmt:formatNumber>${prodList[0].fee}</fmt:formatNumber>원</div>
-                            			<div><span>최종 결제 금액</span><fmt:formatNumber>${prodList[0].total_price}</fmt:formatNumber>원</div>
-                            		</div>	
-                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;">주문상품 정보</div>
-                            		<div class="card">
-                            			<c:forEach items="${prodList}" var="pList">
-                            			<div><span>상품명</span>${pList.p_name}</div>
-                            			<div><span>판매가</span>${pList.p_selling_price}</div>
-                            			<div><span>수량</span>${pList.p_amount}개</div>
-                            			</c:forEach>
+                            		<div class="card-body" >
+                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;  padding-top: 3px;">주문정보</div>
+                            		<span style="padding: 3px; 0px;"></span> 
+                            		<div class="card" style="padding: 20px; 0px;">
+                            			<table>
+                            				<tr>
+                            					<th>주문일자</th>
+                            					<td>${prodList[0].order_date}</td>
+                            				</tr>
+                            				<tr>
+                            					<th>주문번호</th>
+                            					<td>${prodList[0].order_id}</td>
+                            				</tr>
+                            				<tr>
+                            					<th>진행상태</th>
+                            					<td>${prodList[0].order_state}</td>
+                            				</tr>
+                            				
+                            			</table>
                             			
                             		</div>	
-                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;">배송정보</div>
-                            		<div class="card">
-                            			<div><span>구매자명</span>${addrList[0].receiver_name}</div>
-                            			<div><span>휴대전화</span>${addrList[0].receiver_phone}</div>
-                            			<div><span>주소</span>${addrList[0].addr1}${addrList[0].addr2}</div>
+                        
+                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;  padding-top: 3px;">결제정보</div>
+                            		<span style="padding: 3px; 0px;"></span> 
+                            		<div class="card" style="padding: 20px; 0px;">
+                            			<table>
+                            				<tr>
+                            					<th>결제방법</th>
+                            					<td>${payment}</td>
+                            				</tr>
+                            				<tr>
+                            					<th>상품금액</th>
+                            					<td><fmt:formatNumber>${prodList[0].sum_money}</fmt:formatNumber>원</td>
+                            				</tr>
+                            				<tr>
+                            					<th>배송비</th>
+                            					<td><fmt:formatNumber>${prodList[0].fee}</fmt:formatNumber>원</td>
+                            				</tr>
+                            				<tr>
+                            					<th>최종 결제 금액 </th>
+                            					<td><fmt:formatNumber>${prodList[0].total_price}</fmt:formatNumber>원</td>
+                            				</tr>
+                            			</table>
+                            		</div>	
+                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;  padding-top: 3px;">주문상품정보</div>
+                            		<span style="padding: 3px; 0px;"></span> 
+                            		<div class="card" style="padding: 20px; 0px;"  >
+                            			<c:forEach items="${prodList}" var="pList">
+                            				<table style="display: inline;">
+                            					<tr>
+                            						<td rowspan="4">
+                            							<a href="/zzp/product/${pList.p_id}" > 
+														<img src="/zzp/resources/images/product/p_image/${pList.image_route}" 
+														 style="border: 10px;" height="100" name="p_image" ></a>
+													 </td>
+												</tr>
+                            					<tr>
+                            						 <th>상품명</th><td>${pList.p_name}</td> 
+                            					</tr>
+                            					<tr>
+                            						<th>판매가</th><td><fmt:formatNumber>${pList.p_selling_price}</fmt:formatNumber>원</td>
+                            					</tr>
+                            					<tr>
+                            						<th id="p_amount" style="border-bottom-color: gray;  border-bottom-style: solid;">수량</th><td>${pList.p_amount}개</td>
+                            					</tr>
+                            				</table>
+                            			</c:forEach>
+                            		</div>	
+                            		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid; padding-top: 3px;">배송정보</div>
+                            		<span style="padding: 3px; 0px;"></span> 
+                            		<div class="card" style="padding: 20px; 0px;">
+                            			<table>
+                            				<tr>
+                            					<th>구매자명</th>
+                            					<td>${addrList[0].receiver_name}</td>
+                            				</tr>
+                            				<tr>
+                            					<th>휴대전화</th>
+                            					<td>${addrList[0].receiver_phone}</td>
+                            				</tr>
+                            				<tr>
+                            					<th>주소</th>
+                            					<td>${addrList[0].addr1}${addrList[0].addr2}</td>
+                            				</tr>
+                            			</table>
+                            			
                             		</div>	
                             		</div>
                             	</div>
                            	</div>
                         </div>
+                        <div style="text-align: center; padding-top: 20px;">
+							<input type="button" class="orderBtn btn btn-success" onclick="location.href='/zzp/store'"  value="계속 쇼핑하기" >
+							<input type="button" class="delAllCart btn btn-success" onclick="location.href='/zzp/mypage/${login.userid}/order'"  value="주문내역확인">
+						</div> 
                     </div>
                 </div>
 </div>
-<!-- <div class="container">
-  <div class="row">
-  	<table class="table" border="3">
-  <thead>
-    <tr style="font-size: 25px; background-color: #dee2e6;">
-      <th colspan="4">주문 완료</th>
-    </tr>
-  </thead>
-  <tbody >
-   	<table border="1">
-   		<tr>
-			<th style="border-bottom-color: gray;" >주문정보</th> 
-   		</tr>
-   		<tr>
-   			<td>배송지</td>
-   		</tr>
-   	</table>
-  </tbody>
-</table>
-  </div>
-</div> -->
+
+<script type="text/javascript"
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script  type="text/javascript">
+   $(function() {
+	
+</script>    

@@ -158,7 +158,7 @@ a:hover {
 								<p>총 주문금액</p>
 							</div>
 						</div>
-						<div style="float: right;">
+						<div style="text-align: center;">
 							<input type="submit" id="order" class="orderBtn btn btn-success" value="주문하기" >
 							<input type="submit" id="chkdelCart" class="delAllCart btn btn-success"  value="상품삭제">
 						

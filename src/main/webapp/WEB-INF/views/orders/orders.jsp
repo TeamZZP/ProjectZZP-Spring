@@ -378,9 +378,11 @@
 			$("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
 			$("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
 		
-			$("#total_price").val(total); 
-			$("#sum_money2").val(sum_money);
+			
+			$("#sum_money2").val(discounted);
 			$("#fee2").val(fee);
+			$("#total_price").val(total); 
+			console.log($("#sum_money2").val(),$("#fee2").val(),$("#total_price").val());
 		});
 
 		//이메일 select

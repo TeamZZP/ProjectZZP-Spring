@@ -23,24 +23,124 @@
       padding-left: 25px;
       padding-top: 10px; 
    }
-   
+   	#modalBtn{
+		display: none;
+	}
+	.modal-body{
+		text-align: center;
+	}
+	#mesg{
+		margin: 0;
+	}
 </style>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
    $(function() {
       
+<<<<<<< HEAD
  
       
       
       $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
       });
+=======
+      /* $("#AddOrder").on("click", function() {
+         $("form").attr("action", "addOrder");
+      }); */
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
  
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
+<<<<<<< HEAD
    
+=======
+      
+      //폼 제출 유효성 검사
+      function checkValidity() {
+         var receiver_name = $("#receiver_name").val();
+         var email1 = $("#email1").val();
+         var email2 = $("#email2").val();
+         var receiver_phone = $("#receiver_phone").val();
+
+         /*    var address_name=$("#inputAddressName").val(); */
+
+         var post_num = $("#sample4_postcode").val();
+         var addr1 = $("#sample4_roadAddress").val();
+         var addr2 = $("#sample4_jibunAddress").val();
+         var numChk = /^[0-9]*.{11}$/;
+         //var check=$("#gridCheck").val();
+
+         if (receiver_name == "" || receiver_phone == ""
+               || post_num == "" || addr1 == "" || addr2 == "") {//공백 불가  
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("배송 정보를 입력해주세요.");
+            return false;
+         } else if (receiver_phone != ""
+               && !numChk.test(receiver_phone)) {//연락처는 숫자 11자리만 가능
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("11자리를  입력해주세요.");
+            $("#receiver_phone").val("");
+            $("#receiver_phone").focus();
+            return false;
+         } else if (receiver_name.length > 5) {
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("수령인은 5글자 이내로 입력해주세요.");
+            $("#receiver_name").val("");
+            $("#receiver_name").focus();
+            return false;
+         }
+         return true;
+      }
+
+      //주문하기 - 결제방식에 따라
+      $("#addOrder").on("click", function () {
+    	 event.preventDefault();
+    	 
+    	 if(checkValidity()) {
+    		let payment = $(".payment:checked").val();
+    		
+    		if (payment=="계좌이체") {
+				$("#orderForm").submit();
+			}
+    		
+    		else if (payment=="카드결제") {
+    			
+    		}//end tosspay
+    		
+    		else if (payment=="카카오페이") {
+				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
+				total_amount = parseInt(total_amount);
+
+				let quantity='${fn:length(cartList)}';
+				let item_name = $(".pName:first").text(); //상품명
+				item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
+			
+				$.ajax({
+					url:"/zzp/pay/kakao",
+					type:"POST",
+					data: {
+						"total_amount":total_amount,
+						"quantity":quantity,
+						"item_name":item_name
+					},
+					success: function(data) {
+						let new_window_width = 400;
+						let new_window_height = 650;
+						let positionX = (window.screen.width/2) - (new_window_width/2);
+						let positionY = (window.screen.height/2) - (new_window_height/2);
+						window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
+					},
+					error: function() {
+						alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
+					}
+				})
+			}//end kakaopay
+    	  }//end if 
+		})//end addOrder
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
       
    });
 </script>
@@ -51,7 +151,7 @@
          <img class="image" src="/zzp/resources/images/product/ordering.jpg">
       </div>
 
-      <form action="/zzp/orders" method="post">
+      <form id="orderForm" action="/zzp/orders" method="post">
     <input type="hidden" id="userid" name="userid" value="${mdto.userid}">
 
       
@@ -79,7 +179,11 @@
                      src="/zzp/resources/images/product/p_image/${cList.p_image}"
                      width="100" style="border: 10px;" height="100"></td>
                   <!-- 상품명  -->
+<<<<<<< HEAD
                   <td style="line-height: 100px;"><span
+=======
+                  <td style="line-height: 100px;"><span class="pName"
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
                      style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
                   <!-- 수량  -->
                   <td style="line-height: 100px;"><span id="order_amount" name="order_amount"
@@ -227,10 +331,19 @@
                   </tr>
                   <tr style="border-bottom-width: 1px; border-color: green; ">
 
+<<<<<<< HEAD
                      <td><label><input type="radio" name="payment"  style="accent-color:green;"  
                            value="카드결제" checked>카드결제</label></td>
                      <td><label><input type="radio" name="payment"  style="accent-color:green;" 
                            value="계좌이체">계좌이체</label></td>
+=======
+                     <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;"  
+                           value="카드결제" checked>카드결제</label></td>
+                     <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
+                           value="계좌이체">계좌이체</label></td>
+                     <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
+                           value="카카오페이">카카오페이</label></td>
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
                   </tr>
 
 
@@ -321,6 +434,30 @@
 </div>
 
 
+<<<<<<< HEAD
+=======
+
+
+<!-- 모달 -->
+<div class="modal" id="modal" data-bs-backdrop="static">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ZZP</h5>
+      </div>
+      <div class="modal-body">
+        <p id="mesg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+
+
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -397,6 +534,7 @@
          $("#sample4_jibunAddress").val("");
       });//end fn
 
+<<<<<<< HEAD
       $("form").on(
             "submit",
             function() {
@@ -435,6 +573,8 @@
                   event.preventDefault();
                }
             });//end submit
+=======
+>>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
 
       //다른배송지 선택
       $("button[name=selbtn]").on("click", function() {
@@ -460,6 +600,7 @@
    </script>
    <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
    <script>
+
       //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
       function sample4_execDaumPostcode() {
          new daum.Postcode({

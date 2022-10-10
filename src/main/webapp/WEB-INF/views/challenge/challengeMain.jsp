@@ -165,12 +165,12 @@
 					
      <div class="col-lg-3 col-md-4 col-sm-6">
        <div class="p-3">
-	       <a href="profile/${c.userid}"><img src="/upload/profile/${c.profile_img}" width="30" height="30"></a>&nbsp;&nbsp;
+	       <a href="profile/${c.userid}"><img src="/upload/profile/${c.profile_img}" width="30" height="30" onerror="this.src='resources/images/error/user.png'"></a>&nbsp;&nbsp;
 	       <a href="profile/${c.userid}">${c.userid}</a><br>
        </div>
        <div class="hover-zoomin">
 	       <a href="challenge/${c.chall_id}"> 
-			<img src="/upload/challenge/${c.chall_img}" border="0" onerror="this.src='resources/images/challenge/uploadarea.png'">
+			<img src="/upload/challenge/${c.chall_img}" border="0" onerror="this.src='resources/images/error/salad.jpg'">
 			<c:if test="${!empty c.stamp_img}">
 				<img src="/upload/challenge/${c.stamp_img}" class="stamp">
 			</c:if>

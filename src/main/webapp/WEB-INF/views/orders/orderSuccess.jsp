@@ -64,11 +64,11 @@
                             				</tr>
                             				<tr>
                             					<th>상품금액</th>
-                            					<td><fmt:formatNumber>${prodList[0].sum_money}</fmt:formatNumber>원</td>
+                            					<td><fmt:formatNumber>${sum_money}</fmt:formatNumber>원</td>
                             				</tr>
                             				<tr>
                             					<th>배송비</th>
-                            					<td><fmt:formatNumber>${prodList[0].fee}</fmt:formatNumber>원</td>
+                            					<td><fmt:formatNumber>${fee}</fmt:formatNumber>원</td>
                             				</tr>
                             				<tr>
                             					<th>최종 결제 금액 </th>
@@ -92,7 +92,7 @@
                             						 <th>상품명</th><td>${pList.p_name}</td> 
                             					</tr>
                             					<tr>
-                            						<th>판매가</th><td><fmt:formatNumber>${pList.p_selling_price}</fmt:formatNumber>원</td>
+                            						<th>판매가</th><td><fmt:formatNumber>${pList.p_selling_price*pList.p_amount}</fmt:formatNumber>원</td>
                             					</tr>
                             					<tr>
                             						<th id="p_amount" style="border-bottom-color: gray;  border-bottom-style: solid;">수량</th><td>${pList.p_amount}개</td>

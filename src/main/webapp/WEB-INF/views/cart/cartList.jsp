@@ -112,7 +112,7 @@ a:hover {
 										<!-- 상품명  -->
 										<span name="p_name" style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
 									<!-- 수량  -->
-									<td style="padding-top: 35px;	">
+									<td style="padding-top: 35px;">
 									<input type="text" id="cartAmount${cart.cart_id}"
 										class="p_amount form-control" name="p_amount"
 										style="text-align: right; width: 80px; display: inline; "

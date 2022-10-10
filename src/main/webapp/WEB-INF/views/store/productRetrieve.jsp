@@ -24,7 +24,7 @@
 <script>
 function zzimFunc(p_id) {
 
-	if("${mdto}".length != 0){
+	if("${mdto.userid}".length != 0){
 		
 			$.ajax({
 			type: "post",
@@ -77,19 +77,7 @@ function zzimFunc(p_id) {
 	   }); 
 	
 	  	
-		$("#toOrder").click(function() {
-			
-			if("${mdto}"= null){
-				$("#modalBtn").trigger("click");
-		        $("#mesg").text("로그인이 필요합니다.");
-		        
-		        $("#closemodal").click(function() {
-		          location.href="/login";
-		       });    
-		     }
-
-			}); //end toOrder
-	  	
+		
 });//end func
 
 
@@ -302,7 +290,7 @@ function zzimFunc(p_id) {
    
          console.log("p_id",p_id,"p_name :", p_name ,"count:", count);
         
-       if ("${login.userid}" != null) {
+       if ("${mdto.userid}" != "") {
             $.ajax({
                type : "post",
                url : "${contextPath}/cart/${login.userid}",

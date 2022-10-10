@@ -167,7 +167,7 @@
                         
                   <input type="hidden" id="delivery_address" name="delivery_address" value="${addr.addr1}${addr.addr2}">
                         
-                     <td><button type="button" class=" btn btn-outline-success"
+                     <td><button type="button" class=" btn btn-outline-success" id="other"
                            data-bs-toggle="modal" data-bs-target="#otherAddr">다른배송지</button></td>
                   </tr>
                   
@@ -183,24 +183,26 @@
 
                            <div class="modal-header">
                               <h5 class="modal-title" id="otherAddr">${mdto.userid}님의
-                                 다른 배송지</h5>
+                               		  다른 배송지</h5>
                               <button type="button" class="btn-close"
                                  data-bs-dismiss="modal" aria-label="Close"></button>
                            </div>
 
                            <div class="modal-body">
-                              <c:forEach items="${addrList}" var="addr">
-                       주소별명 : ${addr.address_name}<br>
-                       주소 : ${addr.addr1} <br>
-                              </c:forEach>
-                           </div>
-
-                           <div class="modal-footer">
-                              <button type="button" class=" btn btn-outline-success"
-                                 data-bs-dismiss="modal">선택한주소로 배송</button>
-                           </div>
-
-                        </div>
+                           <c:forEach items="${addrList}" var="addr">
+                           	<div class="card" >
+                           		 <div class="card-header">
+                           		 <span style="font-weight: bold;">주소명 :</span> ${addr.address_name}
+                           		 </div> <br>
+						         <div><span id="otherPost${addr.address_id}">(${addr.post_num})</span><br>
+						         <span id="otherAddr1${addr.address_id}">${addr.addr1}</span><span id="otherAddr2${addr.address_id}">${addr.addr2}</span> </div> <br>
+						          <button type="button" id="selbtn${addr.address_id}" name="selbtn"
+						           class="selbtn btn btn-outline-success" data-addr_id="${addr.address_id}"  data-bs-dismiss="modal" >선택</button>
+                           	</div>
+                           	<span style="padding: 10px;"></span>
+                           	</c:forEach>
+                              </div>
+						</div>
                      </div>
                   </div>
                   <!-- 배송지modal끝 -->
@@ -435,12 +437,31 @@
             });//end submit
 
       //다른배송지 선택
-      $("#otherAddr").on("click", function() {
 
-      })
+      $("button[name=selbtn]").on("click", function() {
+    	  	var addr_id=$(this).attr("data-addr_id");
+    	  	console.log(addr_id,"선택");
+    	  
+			
+			var otherPost = $("#otherPost"+addr_id).text();
+			var otherAddr1 = $("#otherAddr1"+addr_id).text();
+			var otherAddr2 = $("#otherAddr2"+addr_id).text()
+			
+			console.log(otherPost,otherAddr1,otherAddr2);
+			 $("#sample4_postcode").text(otherPost); 
+			 $("#sample4_roadAddress").text(otherAddr1);
+			 $("#sample4_jibunAddress").text(otherAddr2);
+			 
+			
+			
+		
+      }); //end
 
    })//end
-   
+   </script>
+   <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+   <script>
+
       //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
       function sample4_execDaumPostcode() {
          new daum.Postcode({

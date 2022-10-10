@@ -12,7 +12,7 @@
       <div class="col-lg-3 col-md-4 col-sm-6" style="text-align: center;">
       
          <div class="hover-zoomin">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>

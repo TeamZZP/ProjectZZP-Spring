@@ -54,6 +54,7 @@ function totalprice() {
       }); */
       var clientKey = 'test_ck_D5GePWvyJnrK0W0k6q8gLzN97Eoq'
       var tossPayments = TossPayments(clientKey)
+      
       $("#addOrder").on("click", function(){
     	  
     	  
@@ -63,14 +64,20 @@ function totalprice() {
     	  console.log($("#addOrder").attr("data-price"));
     	  let price = $("#addOrder").attr("data-price");
     	  
-    	  
-    	  
+    	  let first_p_name = $("#first").text();
+    	  var size = ${fn:length(cartList)};
+    	  let mesg = '';
+    	  if (size==1) {
+			mesg=size;
+		  } else {
+			mesg='외 '+(size-1);
+		  }
     	  
     	  event.preventDefault();
     	  tossPayments.requestPayment('카드', {
               amount: price,
-              orderId: orderId,//날짜+userid
-              orderName: '토스 티셔츠 외 2건',
+              orderId: orderId,//날짜+userid : 1665310671470aaa
+              orderName: first_p_name+' '+mesg+'건',
               customerName: '${login.username}',
               successUrl: 'http://localhost:8102/zzp/toss/success',
               failUrl: 'http://localhost:8102/zzp/toss',
@@ -161,7 +168,7 @@ function totalprice() {
 							width="100" style="border: 10px;" height="100"></td>
 						<!-- 상품명  -->
 						<td style="line-height: 100px;"><span
-							style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
+							style="font-weight: bold; margin: 8px; display: line" id="first">${cList.p_name}</span></td>
 						<!-- 수량  -->
 						<td style="line-height: 100px;"><span id="order_amount" name="order_amount"
 							style="font-weight: bold; font-size: 20px; vertical-align: middele;" value="${cList.p_amount}">${cList.p_amount}개</span></td>
@@ -318,7 +325,7 @@ function totalprice() {
 			</c:forEach>
 
 			<!-- 쿠폰  -->
-			<c:set value="${couponList}" var="cou" />
+			<%-- <c:set value="${couponList}" var="cou" /> --%>
 			<!-- 총 주문금액 -->
 			<table style="float: right;" class="lastorder">
 
@@ -374,7 +381,7 @@ function totalprice() {
 
 			<div class="form-group"
 				style="margin-top: 300px; text-align: center;">
-				<input type="submit" data-price="" data-p_name="${cartList.p_name}" value="결제하기" id="addOrder" class="btn btn-success"> 
+				<input type="submit" data-price="" data-p_name="" value="결제하기" id="addOrder" class="btn btn-success"> 
 				<input type="button" onclick="javascript:history.back();" value="취소" class="btn btn-success">
 			</div>
 		</form>

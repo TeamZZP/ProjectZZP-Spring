@@ -79,7 +79,7 @@ function zzimFunc(p_id) {
 	  	
 		$("#toOrder").click(function() {
 			
-			if("${mdto}".length != 0){
+			if("${mdto}"= null){
 				$("#modalBtn").trigger("click");
 		        $("#mesg").text("로그인이 필요합니다.");
 		        
@@ -246,7 +246,7 @@ function zzimFunc(p_id) {
                   <button  type="button" class="btn btn-success" name="cart" id="cart${p.p_id}" data-P_id = "${p.p_id}"
                   data-p_name = "${p.p_name}" data-p_selling_price="${p.p_selling_price}" data-p_image="${image.image_rnk}">
                   			장바구니
-                  
+                  </button>
                  
                   </td>
                </tr>
@@ -321,6 +321,7 @@ function zzimFunc(p_id) {
         })//end ajax
         
         $("#modalBtn2").trigger("click");
+            
       }else{
             $("#modalBtn").trigger("click");
             $("#mesg").text("로그인이 필요합니다.");

@@ -484,7 +484,7 @@
          $("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
          var discounted = sum_money / 100 * (100 - rate);
          $("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
-		 
+       
          //배송 정보
          var sum = sum_money - discount; //할인이된 총 금액
          var fee = sum >= 50000 ? 0 : 3000;
@@ -497,7 +497,7 @@
          
          $("#sum_money2").val(sum_money);
          $("#discount2").val(discount);
-      	 $("#discounted").val(discounted);
+          $("#discounted").val(discounted);
          $("#fee2").val(fee);
          $("#total_price").val(total); 
        

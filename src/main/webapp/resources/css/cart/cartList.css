@@ -1,5 +1,22 @@
 @charset "UTF-8";
+
 a {
 	color: black;
 	text-decoration: none;
+}
+
+a:hover {
+	color: black;
+}
+
+
+.cart_total>div {
+	display: flex;
+	text-align: center;
+	justify-content: space-evenly;
+}
+
+	.tableTop {
+	border-bottom-color: #24855B;
+	border-bottom-width: 2.5px;
 }

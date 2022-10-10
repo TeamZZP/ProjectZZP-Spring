@@ -68,7 +68,6 @@ a:hover {
 		</c:when>
 			<c:otherwise>
 		
-			<%-- <form id="cartListForm" action="cart/${login.userid}/" method="post"> --%>
 			<form method="post" name="form" id="cartform" action="${contextPath}/orders/cart"> 
 			 	<input type="hidden" name="_method" value="delete">
 			 
@@ -77,7 +76,7 @@ a:hover {
 					<table id="cartTable" class="table table-hover">
 						<thead>
 							<tr class="tableTop">
-								<th><input type="checkbox" name="allCheck" id="allCheck"
+								<th><input type="checkbox" name="allCheck" id="allCheck"  style="accent-color:green;" 
 									checked="checked"></th>
 								<th scope="col">주문번호</th>
 								<th scope="col">상품정보</th>
@@ -98,14 +97,13 @@ a:hover {
 									<td style="padding-top: 35px;">
 										<!-- 체크박스  --> 
 										<input type="checkbox" name="check"
-										id="check${cart.cart_id}" checked="checked"  
+										id="check${cart.cart_id}" checked="checked"  style="accent-color:green;" 
 										 class="individual_cart_checkbox"  data-cart_id="${cart.cart_id}" value="${cart.money}" 
-										<%-- class="individual_cart_checkbox" value="${cart.cart_id}" data-money="${cart.money}" --%>
 										data-p_id="${cart.p_id}" onclick="itemSum(this.form);">
 										
 									</td>
 									<!-- 주문번호  -->
-									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" name="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
+									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
 									<!-- 이미지사진  -->
 									<td><a href="${contextPath}/product/${cart.p_id}"> 
 										<img src="../resources/images/product/p_image/${cart.p_image}" width="100"
@@ -114,7 +112,7 @@ a:hover {
 										<!-- 상품명  -->
 										<span name="p_name" style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
 									<!-- 수량  -->
-									<td style="padding-top: 35px;	">
+									<td style="padding-top: 35px;">
 									<input type="text" id="cartAmount${cart.cart_id}"
 										class="p_amount form-control" name="p_amount"
 										style="text-align: right; width: 80px; display: inline; "
@@ -160,7 +158,7 @@ a:hover {
 								<p>총 주문금액</p>
 							</div>
 						</div>
-						<div style="float: right;">
+						<div style="text-align: center;">
 							<input type="submit" id="order" class="orderBtn btn btn-success" value="주문하기" >
 							<input type="submit" id="chkdelCart" class="delAllCart btn btn-success"  value="상품삭제">
 						
@@ -346,7 +344,7 @@ $(function() {
 		var xxx = $(this); //클릭된 버튼 자체
 		var item_price = parseInt($(this).attr("data-price"));
 		var sum1 =$("#sum_money").text();
-		
+		console.log(xxx);
 		//체크박스 선택된 값만 상품금액에 출력
 		if($(".individual_cart_checkbox").is(":checked")==true){
 			var sum = parseInt(sum1.replace(/,/g, ""));//콤마 제거 문자열 변환
@@ -361,6 +359,7 @@ $(function() {
 				success : function(data, status, xhr) {
 					
 					//삭제 버튼의 부모 요소 중 tr을 remove
+					
 					$("#cartCount").text(data);
 					xxx.parents().filter("tr").remove();  
 					var sum = 0;

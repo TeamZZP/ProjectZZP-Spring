@@ -28,6 +28,13 @@
 			<beans:ref bean="loginInterceptor"/>
 		</interceptor>
 	</interceptors>
+	<beans:bean id="adminInterceptor" class="com.interceptor.AdminInterceptor"></beans:bean>
+	<interceptors>
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+	</interceptors>
 		
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
@@ -45,6 +52,7 @@
 	<context:component-scan base-package="com.controller" />
 	<context:component-scan base-package="com.service" />
 	<context:component-scan base-package="com.dao" />
+	<context:component-scan base-package="com.exception" />
 	
 	
 </beans:beans>

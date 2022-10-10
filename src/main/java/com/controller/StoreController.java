@@ -8,9 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,9 +19,11 @@ import com.dto.CategoryDTO;
 import com.dto.ImagesDTO;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
+import com.dto.ProductByCategoryDTO;
 import com.dto.ProductDTO;
 import com.dto.QuestionDTO;
 import com.dto.ReviewProfileDTO;
+import com.service.CartService;
 import com.service.QuestionService;
 import com.service.ReviewService;
 import com.service.StoreService;
@@ -35,6 +37,8 @@ public class StoreController {
 	QuestionService qService;
 	@Autowired
 	ReviewService rService;
+	@Autowired
+	CartService cService;
 	
 	//스토어메인
 	@RequestMapping(value = "/store")
@@ -129,8 +133,8 @@ public class StoreController {
 	
 	//제품상세
 	@RequestMapping(value = "/product/{p_id}")
-	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id) {
-		ModelAndView mav = new ModelAndView();
+	public ModelAndView productRetrieve(HttpSession session ,@PathVariable("p_id") int p_id, ModelAndView mav) {
+		
 		HashMap<String, String> map = new HashMap<String, String>();
 		List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
@@ -159,14 +163,14 @@ public class StoreController {
 		mav.addObject("pdto",pdto);
 		mav.addObject("imageList",imageList);
 		mav.addObject("mdto", mdto);
-		mav.addObject("zzim", zzimList);
+		mav.addObject("zzimList", zzimList);
 		mav.setViewName("productRetrieve");
 		
 		return mav;
 	}
 	
 	//찜기능
-	@RequestMapping("/zzim")
+	@RequestMapping(value = "/zzim", method = RequestMethod.POST)
 	public @ResponseBody int zzim(@RequestParam("p_id") int p_id , HttpSession session) {
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 		HashMap<String,String> map = new HashMap<String,String>();
@@ -184,7 +188,37 @@ public class StoreController {
 		
 		return zzimData;
 	}
+	 
+	@RequestMapping(value = "/cartzzim", method = RequestMethod.POST)
+	public @ResponseBody ModelAndView cartzzim(HttpSession session, int p_id) {
+		ModelAndView mav = new ModelAndView();
+		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
+		List<ProductByCategoryDTO> likeList = new ArrayList<ProductByCategoryDTO>();
+		List<Integer> zzimList = new ArrayList<Integer>();
+		int zzimCount =0;
+		HashMap<String,String> map = new HashMap<String,String>();
+		map.put("userid", mdto.getUserid());
+		map.put("p_id", String.valueOf(p_id));
+		//찜삭제
+		service.deleteZzim(map);
+		
+		if(mdto!=null) {//찜list 새로가져오기
+			// 찜 List
+		likeList = cService.likeList(mdto.getUserid());
+		System.out.println(likeList);
+
+		zzimList=service.zzimAllCheck(mdto.getUserid());
+		zzimCount = zzimList.size();
+		}
 	
+		
+		mav.addObject("likeList",likeList);
+		mav.addObject("likeCount",zzimCount);
+		mav.addObject("zzimList",zzimList);
+		mav.setViewName("likeListAjax");
+		
+		return mav;
+	}
 	
 	 
 	

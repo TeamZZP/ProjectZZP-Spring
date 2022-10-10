@@ -9,24 +9,24 @@
       <c:forEach var="pList" items="${pDTO.list}" varStatus="status">
 
 
-      <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-3 col-md-4 col-sm-6" style="text-align: center;">
       
          <div class="hover-zoomin">
-            <a href="product/${pList.p_id}"> 
+            <a href="/zzp/product/${pList.p_id}"> 
             <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
             </a>
          </div>
          
-         <div class="p-2 text-center">
+         <div>
             <a href="product/${pList.p_id}"> 
             <span  style="margin-bottom: 0.3em; font-weight: normal; color: #646464; font-size: 25px;">${pList.p_name}</span>
             </a>
          </div>
          
-         <div>
+         <div  >
             <p style="color: green; font-size: 20px;"><fmt:formatNumber pattern="###,###,###" >${pList.p_selling_price}</fmt:formatNumber>원</p>
          </div> 
-         
+         <div >
          <!-- 찜 -->
          <a id="zzim" href="javascript:zzimFunc(${pList.p_id})"> 
          
@@ -50,7 +50,7 @@
 					data-bs-target="#addcart${pList.p_id}" style="border: 0; outline: 0;">
 					<img src="/zzp/resources/images/product/cart.png" width="25" height="25" >
 				</button>
-				
+			</div>	
 				<!-- Modal -->
 				<form action="/cart/{userid}" method="post">
 					<input type="hidden" name="p_id" value="${pList.p_id}"> 
@@ -107,7 +107,7 @@
 
 					</form>
 				<!-- 장바구니 모달안에 모달 -->
-						<button type="button" id="modalBtn2" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chkmodal${pList.p_id}" style="display: none;">modal</button>
+						<button type="button" id="modalBtn2${pList.p_id}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#chkmodal${pList.p_id}" style="display: none;">modal</button>
 						<div class="modal fade doublemodal" id="chkmodal${pList.p_id}"
 						data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
 						aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -127,7 +127,7 @@
 									<button type="button" class="btn btn-secondary" name="back"
 										data-bs-dismiss="modal" id="back${pList.p_id}" data-p_id="${pList.p_id}">계속쇼핑하기</button>
 									<button type="button" class="btn btn-success" name="moveCart" id="moveCart${pList.p_id}" data-P_id="${pList.p_id}"
-										 onclick="location.href='${contextPath}/cart/${login.userid}';">장바구니로이동</button>
+										 onclick="location.href='/zzp/cart/${login.userid}';">장바구니로이동</button>
 								</div>
 							</div>
 						</div>
@@ -142,6 +142,97 @@
           
        </div>
        
+<script type="text/javascript"
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script  type="text/javascript">
+   $(function() {
+	
+      //UP버튼 수량 변화   
+      var count="1";
+      $("button[name=up]").on("click", function() {
+         var p_id = $(this).attr("data-p_id");
+         console.log(p_id +" up클릭");
+         
+         var p_amount = parseInt($("#p_amount"+p_id).val());
+         $("#p_amount"+p_id).val(parseInt(p_amount) + 1);
+         count=$("#p_amount"+p_id).val();
+         var price = parseInt($("#price"+p_id).val());
+         
+          $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
+      		console.log( $("#total"+p_id).text());
+         //총합 구하기
+      })//end up
+      
+      $("button[name=down]").on("click", function() {
+         var p_id = $(this).attr("data-p_id");
+         console.log(p_id +" down클릭");
+         
+         //input태그 수량변화
+         var p_amount = parseInt($("#p_amount"+p_id).val());
+         
+         if(p_amount !=1){
+         $("#p_amount"+p_id).val(parseInt(p_amount) - 1);
+         count=$("#p_amount"+p_id).val();
+         var price = parseInt($("#price"+p_id).val());
+         
+         $("#total"+p_id).text((count*price).toLocaleString('ko-KR'));
+         
+         }
+      })//end down
+      	 
     
+         $("button[name=saveCart]").on("click",function(){
+         console.log("saveCart클릭됨");
+         
+         var p_id = $(this).attr("data-P_id");
+         var p_name = $(this).attr("data-p_name");
+         var p_selling_price = $(this).attr("data-p_selling_price");
+         var p_image = $(this).attr("data-p_image");
+         console.log(p_id, p_name, p_selling_price, count, p_image);
+         
+         if ("${mdto.userid}" != "") {
+            $.ajax({
+               type : "post",
+               url : "/zzp/cart/${mdto.userid}",
+               data : {
+                  p_id : p_id,
+                  p_name : p_name, 
+                  p_amount : count,
+               },
+               dataType : "text",
+               success : function(data,status,xhr) {
+                  console.log("장바구니에 저장되었습니다.");
+               },
+               error : function(xhr, status, error) {
+                  console.log(error);
+               }
+            }); //end ajax
+            
+            $("#modalBtn2"+p_id).trigger("click");
+         }else{
+            $("#modalBtn").trigger("click");
+            $("#mesg").text("로그인이 필요합니다.");
+            
+            $("#closemodal").click(function() {
+              location.href="/login";
+           });
+              
+         }
+
+      }) 
+      
+       $("button[name=back]").on("click", function() {
+         console.log("click======");
+         var p_id=$(this).attr("data-p_id");
+         console.log(p_id);
+
+
+		});//end fn
+
+		
+		
+	}); //end function
+
+</script>          
 
        

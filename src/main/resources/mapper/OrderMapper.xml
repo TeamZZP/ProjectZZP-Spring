@@ -69,7 +69,7 @@
 	
 	<select id="selectOrderProd" parameterType="int" resultType="ProductOrderImagesDTO">
 	    select o.order_id, o.userid, o.p_id, o.total_price, o.delivery_address,
-        o.delivery_req, o.order_date ,o.order_state, o.p_amount,
+        o.delivery_req, o.order_date  ,o.order_state, o.p_amount,
         p.p_name ,p.p_content, p.c_id, p.p_cost_price, p.p_selling_price,
         p.p_discount, p.p_created, p.p_stock,
         i.image_route, i.update_date 

@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,11 +23,9 @@ import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.service.AdminService;
 import com.service.ChallengeService;
-import com.service.KakaoPay;
+import com.service.KakaoPayService;
 import com.service.MypageService;
 import com.service.OrderService;
-
-import lombok.Setter;
 
 @Controller
 public class yeram {
@@ -51,13 +48,16 @@ public class yeram {
 		}
 	}
 	
-	@Setter(onMethod_ = @Autowired)
-    private KakaoPay kakaopay;
+	
 	
 	@Autowired
 	MypageService myService;
 	@Autowired
 	OrderService oService ;
+	
+	@Autowired
+    private KakaoPayService kakaopay;
+	
 	@RequestMapping(value = "/kakaoPay", method = RequestMethod.GET)
 	public ModelAndView kakaoPay(HttpSession session,CartDTO cdto,@RequestParam HashMap<String, String> map) {
 		System.out.println(cdto.toString());
@@ -86,28 +86,5 @@ public class yeram {
 		  mav.setViewName("orders/orders_yeram");
 		  return mav;
 	}
-	@RequestMapping(value = "/kakaoPay", method = RequestMethod.POST)
-	@ResponseBody
-	public String kakaoPaytest(@RequestParam HashMap<String, String> map) {
-		System.out.println(map);
-		return kakaopay.kakaoPayReady(map);
-	}
-	@RequestMapping(value = "/kakaoPaySuccess", method = RequestMethod.GET)
-	@ResponseBody
-	public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpServletResponse response) {
-	    System.out.println("kakaoPaySuccess get............................................");
-	    System.out.println("kakaoPaySuccess pg_token : " + pg_token);
-	    
-	    model.addAttribute("info", kakaopay.kakaoPayInfo(pg_token));
-	    
-	    try {
-			PrintWriter out = response.getWriter();
-			out.println("<script>window.opener.document.getElementById('myForm').action = '/zzp/orders';</script>");
-			out.println("<script>window.opener.document.getElementById('myForm').submit();</script>");
-			out.println("<script>window.close();</script>");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+	
 }

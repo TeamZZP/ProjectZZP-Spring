@@ -29,7 +29,7 @@ $(document).ready(function () {
 	});
 	//문의 상세보기
 	$(".oneQuestion").on("click", function () {
-		location.href = "QuestionOneSelect?USERID=admin1&Q_ID="+$(this).attr("data-id")+"&before=myQuestion";
+		location.href = "/zzp/qna/"+$(this).attr("data-id");
 	});
 	
 });

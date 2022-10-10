@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +24,7 @@ import com.dto.MemberDTO;
 import com.dto.OrderDTO;
 import com.dto.ProductOrderImagesDTO;
 import com.service.CartService;
+import com.service.KakaoPayService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.StoreService;
@@ -39,10 +39,12 @@ public class OrderController {
 	StoreService sService;
 	@Autowired
 	CartService cService;
+	@Autowired
+    KakaoPayService kakaopay;
 	
 	
 		//주문하기페이지
-		 @RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
+		@RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
 		  public ModelAndView orders(HttpSession session,CartDTO cdto,@RequestParam HashMap<String, String> map) {
 			 
 			  System.out.println(cdto.toString());
@@ -162,6 +164,55 @@ public class OrderController {
 		 }
 		 
 		 
+		/**
+		 * 카카오페이 요청
+		 */
+		@RequestMapping(value = "/pay/kakao", method = RequestMethod.POST)
+		@ResponseBody
+		public String kakaoPay(@RequestParam HashMap<String, String> map) {
+			return kakaopay.payReady(map);
+		}
+		/**
+		 * 카카오페이 승인
+		 */
+		@RequestMapping(value = "/pay/kakao/success", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpServletResponse response) throws Exception {
+			kakaopay.payApprove(pg_token);
 		    
-
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('orderForm').submit();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
+		/**
+		 * 카카오페이 취소
+		 */
+		@RequestMapping(value = "/pay/kakao/cancel", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPayCancel(HttpServletResponse response) throws Exception {
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('mesg').innerText='결제가 취소되었습니다.';"
+						  + "window.opener.document.getElementById('modalBtn').click();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
+		/**
+		 * 카카오페이 실패
+		 */
+		@RequestMapping(value = "/pay/kakao/fail", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPayFail(HttpServletResponse response) throws Exception {
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('mesg').innerText='문제가 발생해 결제가 진행되지 않았습니다.';"
+						  + "window.opener.document.getElementById('modalBtn').click();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
 }

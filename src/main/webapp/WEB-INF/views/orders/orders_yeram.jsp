@@ -48,7 +48,7 @@
 				
 				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
 				total_amount = parseInt(total_amount);
-				
+				 
 				let quantity='${fn:length(cartList)}';
 				let item_name = $(".pName:first").text(); //상품명
 				item_name += (quantity > 1)? '외 '+(quantity-1)+'건' : '';

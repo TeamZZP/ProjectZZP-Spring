@@ -23,40 +23,28 @@
       padding-left: 25px;
       padding-top: 10px; 
    }
-   	#modalBtn{
-		display: none;
-	}
-	.modal-body{
-		text-align: center;
-	}
-	#mesg{
-		margin: 0;
-	}
+      #modalBtn{
+      display: none;
+   }
+   .modal-body{
+      text-align: center;
+   }
+   #mesg{
+      margin: 0;
+   }
 </style>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
    $(function() {
       
-<<<<<<< HEAD
- 
-      
-      
-      $("#AddOrder").on("click", function() {
-         $("form").attr("action", "addOrder");
-      });
-=======
       /* $("#AddOrder").on("click", function() {
          $("form").attr("action", "addOrder");
       }); */
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
  
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
-<<<<<<< HEAD
-   
-=======
       
       //폼 제출 유효성 검사
       function checkValidity() {
@@ -97,50 +85,49 @@
 
       //주문하기 - 결제방식에 따라
       $("#addOrder").on("click", function () {
-    	 event.preventDefault();
-    	 
-    	 if(checkValidity()) {
-    		let payment = $(".payment:checked").val();
-    		
-    		if (payment=="계좌이체") {
-				$("#orderForm").submit();
-			}
-    		
-    		else if (payment=="카드결제") {
-    			
-    		}//end tosspay
-    		
-    		else if (payment=="카카오페이") {
-				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
-				total_amount = parseInt(total_amount);
+        event.preventDefault();
+        
+        if(checkValidity()) {
+          let payment = $(".payment:checked").val();
+          
+          if (payment=="계좌이체") {
+            $("#orderForm").submit();
+         }
+          
+          else if (payment=="카드결제") {
+             
+          }//end tosspay
+          
+          else if (payment=="카카오페이") {
+            let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
+            total_amount = parseInt(total_amount);
 
-				let quantity='${fn:length(cartList)}';
-				let item_name = $(".pName:first").text(); //상품명
-				item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
-			
-				$.ajax({
-					url:"/zzp/pay/kakao",
-					type:"POST",
-					data: {
-						"total_amount":total_amount,
-						"quantity":quantity,
-						"item_name":item_name
-					},
-					success: function(data) {
-						let new_window_width = 400;
-						let new_window_height = 650;
-						let positionX = (window.screen.width/2) - (new_window_width/2);
-						let positionY = (window.screen.height/2) - (new_window_height/2);
-						window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
-					},
-					error: function() {
-						alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
-					}
-				})
-			}//end kakaopay
-    	  }//end if 
-		})//end addOrder
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
+            let quantity='${fn:length(cartList)}';
+            let item_name = $(".pName:first").text(); //상품명
+            item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
+         
+            $.ajax({
+               url:"/zzp/pay/kakao",
+               type:"POST",
+               data: {
+                  "total_amount":total_amount,
+                  "quantity":quantity,
+                  "item_name":item_name
+               },
+               success: function(data) {
+                  let new_window_width = 400;
+                  let new_window_height = 650;
+                  let positionX = (window.screen.width/2) - (new_window_width/2);  
+                  let positionY = (window.screen.height/2) - (new_window_height/2);
+                  window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
+               },
+               error: function() {
+                  alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
+               }
+            })
+         }//end kakaopay
+         }//end if 
+      })//end addOrder
       
    });
 </script>
@@ -179,11 +166,7 @@
                      src="/zzp/resources/images/product/p_image/${cList.p_image}"
                      width="100" style="border: 10px;" height="100"></td>
                   <!-- 상품명  -->
-<<<<<<< HEAD
-                  <td style="line-height: 100px;"><span
-=======
                   <td style="line-height: 100px;"><span class="pName"
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
                      style="font-weight: bold; margin: 8px; display: line">${cList.p_name}</span></td>
                   <!-- 수량  -->
                   <td style="line-height: 100px;"><span id="order_amount" name="order_amount"
@@ -287,26 +270,26 @@
 
                            <div class="modal-header">
                               <h5 class="modal-title" id="otherAddr">${mdto.userid}님의
-                               		  다른 배송지</h5>
+                                       다른 배송지</h5>
                               <button type="button" class="btn-close"
                                  data-bs-dismiss="modal" aria-label="Close"></button>
                            </div>
 
                            <div class="modal-body">
                            <c:forEach items="${addrList}" var="addr">
-                           	<div class="card" >
-                           		 <div class="card-header">
-                           		 <span style="font-weight: bold;">주소명 :</span> ${addr.address_name}
-                           		 </div> <br>
-						         <div><span id="otherPost${addr.address_id}">(${addr.post_num})</span><br>
-						         <span id="otherAddr1${addr.address_id}">${addr.addr1}</span><span id="otherAddr2${addr.address_id}">${addr.addr2}</span> </div> <br>
-						          <button type="button" id="selbtn${addr.address_id}" name="selbtn"
-						           class="selbtn btn btn-outline-success" data-addr_id="${addr.address_id}"  data-bs-dismiss="modal" >선택</button>
-                           	</div>
-                           	<span style="padding: 10px;"></span>
-                           	</c:forEach>
+                              <div class="card" >
+                                  <div class="card-header">
+                                  <span style="font-weight: bold;">주소명 :</span> ${addr.address_name}
+                                  </div> <br>
+                           <div><span id="otherPost${addr.address_id}">(${addr.post_num})</span><br>
+                           <span id="otherAddr1${addr.address_id}">${addr.addr1}</span><span id="otherAddr2${addr.address_id}">${addr.addr2}</span> </div> <br>
+                            <button type="button" id="selbtn${addr.address_id}" name="selbtn"
+                             class="selbtn btn btn-outline-success" data-addr_id="${addr.address_id}"  data-bs-dismiss="modal" >선택</button>
                               </div>
-						</div>
+                              <span style="padding: 10px;"></span>
+                              </c:forEach>
+                              </div>
+                  </div>
                      </div>
                   </div>
                   <!-- 배송지modal끝 -->
@@ -331,19 +314,12 @@
                   </tr>
                   <tr style="border-bottom-width: 1px; border-color: green; ">
 
-<<<<<<< HEAD
-                     <td><label><input type="radio" name="payment"  style="accent-color:green;"  
-                           value="카드결제" checked>카드결제</label></td>
-                     <td><label><input type="radio" name="payment"  style="accent-color:green;" 
-                           value="계좌이체">계좌이체</label></td>
-=======
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;"  
                            value="카드결제" checked>카드결제</label></td>
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
                            value="계좌이체">계좌이체</label></td>
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
                            value="카카오페이">카카오페이</label></td>
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
                   </tr>
 
 
@@ -362,6 +338,7 @@
                <th>주문금액</th>
                <td></td>
                <td><span class="price" id="sum_money">${sum}</span>원</td>
+               <input type="hidden" id="sum_money2" name="sum_money" value=" " >
             </tr>
             <tr>
                <!-- 쿠폰  -->
@@ -396,12 +373,14 @@
                <th>할인 금액</th>
                <td></td>
                <td><span class="price" id="discount"></span></td>
+               
             </tr>
             <tr class="dis" style="visibility: hidden;">
                <th>할인 후 금액</th>
                <td></td>
                <td style="font-weight: bold;"><span class="price"
                   id="discounted"></span></td>
+                  <input type="hidden" id="discounted" name="discounted" value="">
             </tr>
             <tr>
                <th>배송비</th>
@@ -414,9 +393,11 @@
                <td></td>
                <td style="color: green; font-weight: bolder;"><span
                   class="price" id="total"></span>원</td>
-                  <input type="hidden" id="sum_money2" name="sum_money" value=" " >
+                  
                   <input type="hidden" id="fee2" name="fee" value=" " >
                   <input type="hidden" id="total_price" name="total_price" value=" " >
+                  <input type="hidden" id="discount2" name="discount" value=""/>
+                  
             </tr>
 
             </tbody>
@@ -434,8 +415,6 @@
 </div>
 
 
-<<<<<<< HEAD
-=======
 
 
 <!-- 모달 -->
@@ -457,7 +436,6 @@
 <button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
 
 
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
@@ -506,7 +484,7 @@
          $("#discount").text("-" + discount.toLocaleString('ko-KR') + "원");
          var discounted = sum_money / 100 * (100 - rate);
          $("#discounted").text(discounted.toLocaleString('ko-KR') + "원");
-
+		 
          //배송 정보
          var sum = sum_money - discount; //할인이된 총 금액
          var fee = sum >= 50000 ? 0 : 3000;
@@ -516,12 +494,13 @@
          $("#fee").text(fee.toLocaleString('ko-KR')); //배송비
          $("#total").text(total.toLocaleString('ko-KR')); //총 주문금액
          $("#total2").text(total.toLocaleString('ko-KR')); //상단바 총 주문금액 
-      
          
-         $("#sum_money2").val(discounted);
+         $("#sum_money2").val(sum_money);
+         $("#discount2").val(discount);
+      	 $("#discounted").val(discounted);
          $("#fee2").val(fee);
          $("#total_price").val(total); 
-         console.log($("#sum_money2").val(),$("#fee2").val(),$("#total_price").val());
+       
       });
 
       //이메일 select
@@ -534,66 +513,23 @@
          $("#sample4_jibunAddress").val("");
       });//end fn
 
-<<<<<<< HEAD
-      $("form").on(
-            "submit",
-            function() {
-            
-               
-               var receiver_name = $("#receiver_name").val();
-               var email1 = $("#email1").val();
-               var email2 = $("#email2").val();
-               var receiver_phone = $("#receiver_phone").val();
-
-               /*    var address_name=$("#inputAddressName").val(); */
-
-               var post_num = $("#sample4_postcode").val();
-               var addr1 = $("#sample4_roadAddress").val();
-               var addr2 = $("#sample4_jibunAddress").val();
-               var numChk = /^[0-9]*.{11}$/;
-               //var check=$("#gridCheck").val();
-
-               if (receiver_name == "" || receiver_phone == ""
-                     || post_num == "" || addr1 == "" || addr2 == "") {//공백 불가  
-                  $("#modalBtn").trigger("click");
-                  $("#mesg").text("배송 정보를 입력해주세요.");
-                  event.preventDefault();
-               } else if (receiver_phone != ""
-                     && !numChk.test(receiver_phone)) {//연락처는 숫자 11자리만 가능
-                  $("#modalBtn").trigger("click");
-                  $("#mesg").text("11자리를  입력해주세요.");
-                  $("#receiver_phone").val("");
-                  $("#receiver_phone").focus();
-                  event.preventDefault();
-               } else if (receiver_name.length > 5) {
-                  $("#modalBtn").trigger("click");
-                  $("#mesg").text("수령인은 5글자 이내로 입력해주세요.");
-                  $("#receiver_name").val("");
-                  $("#receiver_name").focus();
-                  event.preventDefault();
-               }
-            });//end submit
-=======
->>>>>>> 2b1a2d07e563dbf8817652b36b2eb0a49777ad4a
 
       //다른배송지 선택
       $("button[name=selbtn]").on("click", function() {
-    	  	var addr_id=$(this).attr("data-addr_id");
-    	  	console.log(addr_id,"선택");
-    	  
-			
-			var otherPost = $("#otherPost"+addr_id).text();
-			var otherAddr1 = $("#otherAddr1"+addr_id).text();
-			var otherAddr2 = $("#otherAddr2"+addr_id).text()
-			
-			console.log(otherPost,otherAddr1,otherAddr2);
-			 $("#sample4_postcode").text(otherPost); 
-			 $("#sample4_roadAddress").text(otherAddr1);
-			 $("#sample4_jibunAddress").text(otherAddr2);
-			 
-			
-			
-		
+            var addr_id=$(this).attr("data-addr_id");
+            console.log(addr_id,"선택");
+         
+         
+         var otherPost = $("#otherPost"+addr_id).text();
+         var otherAddr1 = $("#otherAddr1"+addr_id).text();
+         var otherAddr2 = $("#otherAddr2"+addr_id).text()
+         
+         console.log(otherPost,otherAddr1,otherAddr2);
+          $("#sample4_postcode").val(otherPost); 
+          $("#sample4_roadAddress").val(otherAddr1);
+          $("#sample4_jibunAddress").val(otherAddr2);
+          
+      
       }); //end
 
    })//end

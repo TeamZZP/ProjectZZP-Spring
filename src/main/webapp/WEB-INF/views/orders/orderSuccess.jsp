@@ -25,6 +25,11 @@
 	
 	
 </style>
+
+
+
+
+
 <div class="container">
 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -39,7 +44,7 @@
                             			<table id="orderInfo">
                             				<tr>
                             					<th>주문일자</th>
-                            					<td>${prodList[0].order_date}</td>
+                            					<td>${formatedNow}</td>
                             				</tr>
                             				<tr>
                             					<th>주문번호</th>
@@ -58,14 +63,47 @@
                             		<span style="padding: 3px; 0px;"></span> 
                             		<div class="card" style="padding: 20px; 0px;">
                             			<table id="paymentTable">
-                            				<tr>
-                            					<th>결제방법</th>
-                            					<td>${payment}</td>
-                            				</tr>
+                            				<c:choose>
+                                         <c:when test="${payment eq '계좌이체'}">
+                                        <tr>
+                                           <th>결제방법</th>
+                                           <td>${payment}</td>
+                                        </tr>
+                                        <tr style="color: red;">
+                                           <th>입금은행</th>
+                                           <td>지구은행</td>
+                                        </tr>
+                                        <tr style="color: red;">
+                                           <th>계좌번호</th>
+                                           <td>110-111-300247</td>
+                                        </tr>
+                                        
+                                        </c:when>
+                                        <c:otherwise>
+                                           <tr>
+                                           <th>결제방법</th>
+                                           <td>${payment}</td>
+                                        </tr>
+                                        </c:otherwise>
+                                         </c:choose>
+                                         <c:choose>
+                                         	<c:when test="${!empty coupon_id}"> 	
                             				<tr>
                             					<th>상품금액</th>
                             					<td><fmt:formatNumber>${sum_money}</fmt:formatNumber>원</td>
                             				</tr>
+                            				<tr>
+                            					<th>할인금액</th>
+                            					<td>(-)<fmt:formatNumber>${discount}</fmt:formatNumber>원</td>
+                            				</tr>
+                            				</c:when>
+                            				<c:otherwise>
+                            					<tr>
+                            					<th>상품금액</th>
+                            					<td><fmt:formatNumber>${sum_money}</fmt:formatNumber>원</td>
+                            				</tr>
+                            				</c:otherwise>
+                            				</c:choose>
                             				<tr>
                             					<th>배송비</th>
                             					<td><fmt:formatNumber>${fee}</fmt:formatNumber>원</td>
@@ -75,6 +113,7 @@
                             					<td><fmt:formatNumber>${prodList[0].total_price}</fmt:formatNumber>원</td>
                             				</tr>
                             			</table>
+                            			
                             		</div>	
                             		<div style="font-weight: bold; font-size: 25px; border-bottom-color: f1f3f5; border-bottom-style: solid;  padding-top: 3px;">주문상품정보</div>
                             		<span style="padding: 3px; 0px;"></span> 
@@ -92,11 +131,12 @@
                             						 <th>상품명</th><td>${pList.p_name}</td> 
                             					</tr>
                             					<tr>
-                            						<th>판매가</th><td><fmt:formatNumber>${pList.p_selling_price*pList.p_amount}</fmt:formatNumber>원</td>
+                            						<th id="p_amount" style="border-bottom-color: gray;  border-bottom-style: solid;">수량</th><td>${order_quantity}개</td>
                             					</tr>
                             					<tr>
-                            						<th id="p_amount" style="border-bottom-color: gray;  border-bottom-style: solid;">수량</th><td>${pList.p_amount}개</td>
+                            						<th>판매가</th><td><fmt:formatNumber>${pList.p_selling_price*order_quantity}</fmt:formatNumber>원</td>
                             					</tr>
+                            					
                             				</table>
                             			</c:forEach>
                             		</div>	

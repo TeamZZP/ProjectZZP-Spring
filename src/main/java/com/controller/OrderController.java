@@ -1,16 +1,20 @@
 package com.controller;
 
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.AddressDTO;
@@ -19,6 +23,8 @@ import com.dto.MemberCouponDTO;
 import com.dto.MemberDTO;
 import com.dto.OrderDTO;
 import com.dto.ProductOrderImagesDTO;
+import com.service.CartService;
+import com.service.KakaoPayService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.StoreService;
@@ -31,10 +37,14 @@ public class OrderController {
 	MypageService myService;
 	@Autowired
 	StoreService sService;
+	@Autowired
+	CartService cService;
+	@Autowired
+    KakaoPayService kakaopay;
 	
 	
 		//주문하기페이지
-		 @RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
+		@RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
 		  public ModelAndView orders(HttpSession session,CartDTO cdto,@RequestParam HashMap<String, String> map) {
 			 
 			  System.out.println(cdto.toString());
@@ -60,8 +70,9 @@ public class OrderController {
 		 //주문추가
 		 @RequestMapping("/orders")
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
-			int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
-			System.out.println();
+			 int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
+			 System.out.println("sum_money :"+sum_money);
+			 System.out.println("fee :"+fee);
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
@@ -70,7 +81,7 @@ public class OrderController {
 			 HashMap<String,String> map =new HashMap<String, String>();
 			 
 			 System.out.println("payment: "+payment);
-			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기 //왜 따로만드는건지 궁금???
+			 int order_id = service.getOrderId();  //order_id 시퀀스 가져오기 
 			 System.out.println("order_id: "+order_id);
 			 
 			 int n=0;  //오더저장회수
@@ -132,26 +143,20 @@ public class OrderController {
 					}					
 				 }//end 쿠폰삭제
 
-				 //주문성공시 orderDTO저장(jsp보낼거)
-				/* List<OrderDTO> orderList= new ArrayList<OrderDTO>();
-				 orderList=service.getOrderInfo(order_id);
-				 System.out.println(orderList);
-				 mav.addObject("orderList", orderList);*/
-				 
+				 //주문성공시 orderDTO저장(jsp보낼거) 
 				 List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
 				 mav.addObject("prodList", prodList);
 				 
 				 System.out.println("prodList>>>"+prodList);
-			 }//end 오더저장 성공시 카트삭제
-
-			
+			 }//end 오더저장 성공시 카트삭제	
 			 
-			 System.out.println("olist>>>"+olist);
-			
+			 System.out.println("olist>>>"+olist);			
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
 			 mav.addObject("payment", payment);
+			 mav.addObject("sum_money", sum_money);
+			 mav.addObject("fee", fee);
 			 mav.setViewName("orderSuccess");
 			 mav.addObject("addrList", addrList);
 			 return mav;
@@ -159,10 +164,55 @@ public class OrderController {
 		 }
 		 
 		 
-		 //주문완료
-		 @RequestMapping("orders/{review_id}")
-		 public void orderSuccess() {
-			 
-		 }
-
+		/**
+		 * 카카오페이 요청
+		 */
+		@RequestMapping(value = "/pay/kakao", method = RequestMethod.POST)
+		@ResponseBody
+		public String kakaoPay(@RequestParam HashMap<String, String> map) {
+			return kakaopay.payReady(map);
+		}
+		/**
+		 * 카카오페이 승인
+		 */
+		@RequestMapping(value = "/pay/kakao/success", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpServletResponse response) throws Exception {
+			kakaopay.payApprove(pg_token);
+		    
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('orderForm').submit();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
+		/**
+		 * 카카오페이 취소
+		 */
+		@RequestMapping(value = "/pay/kakao/cancel", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPayCancel(HttpServletResponse response) throws Exception {
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('mesg').innerText='결제가 취소되었습니다.';"
+						  + "window.opener.document.getElementById('modalBtn').click();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
+		/**
+		 * 카카오페이 실패
+		 */
+		@RequestMapping(value = "/pay/kakao/fail", method = RequestMethod.GET)
+		@ResponseBody
+		public void kakaoPayFail(HttpServletResponse response) throws Exception {
+			PrintWriter out = response.getWriter();
+			String script = "<script>"
+						  + "window.opener.document.getElementById('mesg').innerText='문제가 발생해 결제가 진행되지 않았습니다.';"
+						  + "window.opener.document.getElementById('modalBtn').click();"
+						  + "window.close();"
+						  + "</script>";
+			out.println(script);
+		}
 }

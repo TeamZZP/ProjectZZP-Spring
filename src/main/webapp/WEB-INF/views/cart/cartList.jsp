@@ -112,7 +112,7 @@ a:hover {
 										<!-- 상품명  -->
 										<span name="p_name" style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
 									<!-- 수량  -->
-									<td style="padding-top: 35px;	">
+									<td style="padding-top: 35px;">
 									<input type="text" id="cartAmount${cart.cart_id}"
 										class="p_amount form-control" name="p_amount"
 										style="text-align: right; width: 80px; display: inline; "
@@ -158,7 +158,7 @@ a:hover {
 								<p>총 주문금액</p>
 							</div>
 						</div>
-						<div style="float: right;">
+						<div style="text-align: center;">
 							<input type="submit" id="order" class="orderBtn btn btn-success" value="주문하기" >
 							<input type="submit" id="chkdelCart" class="delAllCart btn btn-success"  value="상품삭제">
 						

@@ -19,9 +19,11 @@ public class ProductOrderImagesDTO {
 	private int sum_money;
 	private int fee;
 	private int total_price;
+	private int discounted;
 	private String delivery_address;
 	private String delivery_req;
 	private String order_date;
+	private int order_quantity;
 	private String order_state;
 	private int p_amount;
 	private String p_name;
@@ -35,6 +37,6 @@ public class ProductOrderImagesDTO {
 	private int image_rnk;
 	private String image_route;
 	private String update_date;
-
+	
 	
 }

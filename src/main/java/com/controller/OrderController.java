@@ -1,6 +1,8 @@
 package com.controller;
 
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,10 +71,10 @@ public class OrderController {
 		 
 		 //주문추가
 		 @RequestMapping("/orders")
-		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, 
-			 int order_quantity,String delivery_address,String delivery_req, int total_price, String payment, String coupon_id,int sum_money, int fee ) {
-			 System.out.println("sum_money :"+sum_money);
-			 System.out.println("fee :"+fee);
+		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, String discount,
+			 int order_quantity,String delivery_address,String delivery_req, 
+			 int total_price, String payment, String coupon_id,int sum_money, int fee) {
+			
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
@@ -140,12 +142,16 @@ public class OrderController {
 					}else if(sameCoupon==1) {//중복쿠폰이 없을 경우
 						int delCoupon =  service.deleteCoupon(couponMap);
 						System.out.println("쿠폰"+delCoupon+"개 삭제");
+						
+						 mav.addObject("coupon_id", coupon_id); 
+						 
 					}					
 				 }//end 쿠폰삭제
 
 				 //주문성공시 orderDTO저장(jsp보낼거) 
 				 List <ProductOrderImagesDTO> prodList = service.selectOrderProd(order_id);  //order_id로 상품정보 불러오기
 				 mav.addObject("prodList", prodList);
+				 
 				 
 				 System.out.println("prodList>>>"+prodList);
 			 }//end 오더저장 성공시 카트삭제	
@@ -154,6 +160,25 @@ public class OrderController {
 			 System.out.println("주문 상품 개수 : " +n );
 			 System.out.println("장바구니에서 삭제된 상품 개수: "+cartdel);
 			 
+			 if(discount != null) {
+				 mav.addObject("discount", discount);
+			 }
+			 
+			 
+			  // 현재 날짜/시간      
+			 LocalDateTime now = LocalDateTime.now();         
+			 // 현재 날짜/시간 출력        
+			 System.out.println(now);          
+			 // 포맷팅        
+			 String formatedNow = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));         
+			 // 포맷팅 현재 날짜/시간 출력       
+			 System.out.println(formatedNow);
+
+			
+			 
+			 mav.addObject("formatedNow", formatedNow);
+			 mav.addObject("coupon_id", coupon_id);
+			 mav.addObject("order_quantity", order_quantity); 
 			 mav.addObject("payment", payment);
 			 mav.addObject("sum_money", sum_money);
 			 mav.addObject("fee", fee);
@@ -163,7 +188,7 @@ public class OrderController {
 			  
 		 }
 		 
-		 
+
 		/**
 		 * 카카오페이 요청
 		 */
@@ -179,6 +204,7 @@ public class OrderController {
 		@ResponseBody
 		public void kakaoPaySuccess(@RequestParam("pg_token") String pg_token, Model model, HttpServletResponse response) throws Exception {
 			kakaopay.payApprove(pg_token);
+
 		    
 			PrintWriter out = response.getWriter();
 			String script = "<script>"

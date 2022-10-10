@@ -117,7 +117,7 @@
 					success: function(data) {
 						let new_window_width = 400;
 						let new_window_height = 650;
-						let positionX = (window.screen.width/2) - (new_window_width/2);
+						let positionX = (window.screen.width/2) - (new_window_width/2);  
 						let positionY = (window.screen.height/2) - (new_window_height/2);
 						window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
 					},

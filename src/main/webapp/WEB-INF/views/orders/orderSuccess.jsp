@@ -58,10 +58,29 @@
                             		<span style="padding: 3px; 0px;"></span> 
                             		<div class="card" style="padding: 20px; 0px;">
                             			<table id="paymentTable">
+                            				<c:choose>
+                            				 <c:when test="${payment eq '계좌이체'}">
                             				<tr>
                             					<th>결제방법</th>
                             					<td>${payment}</td>
                             				</tr>
+                            				<tr style="color: red;">
+                            					<th>입금은행</th>
+                            					<td>지구은행</td>
+                            				</tr>
+                            				<tr style="color: red;">
+                            					<th>계좌번호</th>
+                            					<td>110-111-300247</td>
+                            				</tr>
+                            				
+                            				</c:when>
+                            				<c:otherwise>
+                            					<tr>
+                            					<th>결제방법</th>
+                            					<td>${payment}</td>
+                            				</tr>
+                            				</c:otherwise>
+                            				 </c:choose>
                             				<tr>
                             					<th>상품금액</th>
                             					<td><fmt:formatNumber>${sum_money}</fmt:formatNumber>원</td>

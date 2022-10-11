@@ -84,12 +84,14 @@
          return true;
       }
 
+
       //주문하기 - 결제방식에 따라
       $("#addOrder").on("click", function () {
         event.preventDefault();
-        
+
 		if(checkValidity()) {
 			let payment = $(".payment:checked").val();
+
           
           if (payment=="계좌이체") {
             $("#orderForm").submit();
@@ -125,11 +127,11 @@
                error: function() {
                   alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
                }
-            })
+            })//end ajax
          }//end kakaopay
          }//end if 
       })//end addOrder
-=======
+
 	//주문하기 - 결제방식에 따라
 	$("#addOrder").on("click", function () {
 		event.preventDefault();
@@ -137,7 +139,7 @@
 		if(checkValidity()) {
 			let payment = $(".payment:checked").val();
           
->>>>>>> 59794a878ef29b8a4faf8daf867e9f36ea907e65
+
 			if (payment=="계좌이체") {
 				$("#orderForm").submit();
 			}
@@ -194,10 +196,7 @@
 			}//end kakaopay
 		}//end if 
 	})//end addOrder
-<<<<<<< HEAD
-=======
->>>>>>> a2c4134990608d1021588f8deafee2babba13c60
->>>>>>> 59794a878ef29b8a4faf8daf867e9f36ea907e65
+
       
    });
 </script>
@@ -246,6 +245,7 @@
                   <td style="line-height: 100px;"><div
                         style="font-weight: bold; font-size: 20px;">
                         <span id="item_price" class="item_price">${cList.money}</span>원
+                        <input type="hidden" id="item_price" name="item_price" value="${cList.money}">
                      </div></td>
 
                </tr>
@@ -289,7 +289,7 @@
                            <option value="" selected disabled hidden>이메일 선택</option>
                            <option value="daum.net">daum.net</option>
                            <option value="naver.com">naver.com</option>
-                           <option value="google.com">google.com</option>
+                           <option value="gmail.com">gmail.com</option>
                      </select></td>
                   </tr>
                   <tr>

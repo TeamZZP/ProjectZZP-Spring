@@ -9,11 +9,18 @@
 				$("#couponInsert").click(function() {
 					var coupon_name = $("#coupon_name").val();
 					var coupon_discount = $("#coupon_discount").val();
+					var regExp = /^[0-9]*$/;
 					if (coupon_name.length == 0) {
-						alert("쿠폰 이름을 입력하십시오");
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 이름을 입력하십시오.");
 						event.preventDefault();
 					} else if (coupon_discount.length == 0) {
-						alert("쿠폰 할인율을 입력하십시오");
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 할인율을 입력하십시오.");
+						event.preventDefault();
+					} else if (!regExp.test(coupon_discount)) {
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 할인율에 숫자만 입력해 주십시오.");
 						event.preventDefault();
 					} else {
 						$("#couponForm").attr("action", "/zzp/admin/coupon");
@@ -82,3 +89,24 @@
 </div>
 </div>
 </form>
+
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#couponModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

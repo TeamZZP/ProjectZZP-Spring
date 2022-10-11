@@ -10,11 +10,18 @@
 				$("#couponUpdate").click(function() {
 					var coupon_name = $("#coupon_name").val();
 					var coupon_discount = $("#coupon_discount").val();
+					var regExp = /^[0-9]*$/;
 					if (coupon_name.length == 0) {
-						alert("쿠폰 이름을 입력하십시오");
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 이름을 입력하십시오.");
 						event.preventDefault();
 					} else if (coupon_discount.length == 0) {
-						alert("쿠폰 할인율을 입력하십시오");
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 할인율을 입력하십시오.");
+						event.preventDefault();
+					} else if (!regExp.test(coupon_discount)) {
+						$("#modal").trigger("click");
+						$("#mesg").text("쿠폰 할인율에 숫자만 입력해 주십시오.");
 						event.preventDefault();
 					} else {
 						$("#couponUpdateForm").attr("action", "/zzp/admin/coupon");

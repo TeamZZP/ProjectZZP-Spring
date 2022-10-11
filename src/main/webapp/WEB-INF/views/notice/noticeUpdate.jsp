@@ -3,11 +3,25 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
-   <c:if test="${!empty mesg}">
-		<script>
-			alert("${mesg}");
-		</script>
-	</c:if>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+	$(document).ready(function () {
+		$("#nTittle").focus();
+		$("#noticeUpdate").click(function () {
+			var nTittle = $("#nTittle").val();
+			var nContent = $("#nContent").val();
+			if (nTittle.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("제목을 입력하십시오.");
+				event.preventDefault();
+			} else if (nContent.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("내용을 입력하십시오.");
+				event.preventDefault();
+			}
+		});
+	});;//end ready
+</script>
 	
 	<div style="text-align: center; display: flex; justify-content:center; height: 100px; margin-bottom: 10px;" >
 		<img src="/zzp/resources/images/notice/notice3.png" alt="..." style="width: auto;">
@@ -49,10 +63,30 @@
 			<tr>
 				<td><button type="button" onclick="location.href='/zzp/notice'" class="btn btn-success">목록보기</button></td>
 				<td style="text-align: right;">
-					<button type="submit" class="btn btn-success">수정 완료</button>
+					<button id="noticeUpdate" type="submit" class="btn btn-success">수정 완료</button>
 				</td>
 			</tr>
 		</table>
 	</div>
 	</div>
 	</form>
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#noticeModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="noticeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

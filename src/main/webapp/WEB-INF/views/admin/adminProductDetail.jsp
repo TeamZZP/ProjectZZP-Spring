@@ -68,10 +68,10 @@
 								<label class="visually-hidden" for="autoSizingSelect">category</label>
 						    	 <select name="c_id" id="c_id" class="form-select" aria-label="Default select example">
 							        <option value="none" selected disabled hidden>카테고리 선택</option>
-							        <option <c:if test="${pDTO.c_id==6}">selected</c:if> value="6">sale</option>
-							        <option <c:if test="${pDTO.c_id==8}">selected</c:if> value="8">bath</option>
-							        <option <c:if test="${pDTO.c_id==9}">selected</c:if> value="9">kitchen</option>
-							        <option <c:if test="${pDTO.c_id==10}">selected</c:if> value="10">life</option>
+							        <option <c:if test="${pDTO.c_id==6}">selected</c:if> value="6">세일</option>
+							        <option <c:if test="${pDTO.c_id==8}">selected</c:if> value="8">욕실용품</option>
+							        <option <c:if test="${pDTO.c_id==9}">selected</c:if> value="9">주방용품</option>
+							        <option <c:if test="${pDTO.c_id==10}">selected</c:if> value="10">생활용품</option>
 						         </select>
 							</div>
 						</div>

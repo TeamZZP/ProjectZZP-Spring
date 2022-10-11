@@ -110,7 +110,7 @@
                                         </tr>
                                         <tr>
                                            <th>최종 결제 금액 </th>
-                                           <td><fmt:formatNumber>${prodList[0].total_price}</fmt:formatNumber>원</td>
+                                           <td><fmt:formatNumber>${total_price}</fmt:formatNumber>원</td>
                                         </tr>
                                      </table>
                                      

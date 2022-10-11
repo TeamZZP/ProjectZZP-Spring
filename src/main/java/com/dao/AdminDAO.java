@@ -66,7 +66,6 @@ public class AdminDAO {
 	public int countVisitYesterday() {
 		return session.selectOne("AdminMapper.countVisitYesterday");
 	}
-	
 	//신규 주문
 	public List<ProductOrderImagesDTO> selectNewOrders() {
 		return session.selectList("AdminMapper.selectNewOrders");
@@ -79,7 +78,6 @@ public class AdminDAO {
 	public List<QuestionDTO> selectNewQuestion() {
 		return session.selectList("AdminMapper.selectNewQuestion");
 	}
-	
 	//월별 실적
 	public List<HashMap<String, Object>> getMonthlySales() {
 		return session.selectList("AdminMapper.getMonthlySales");
@@ -118,23 +116,19 @@ public class AdminDAO {
 	private int countTotalMember(HashMap<String, String> map) {
 		return session.selectOne("AdminMapper.countTotalMember", map);
 	}
-	
 	//회원 삭제
 	public void deleteMember(String userid) {
 		int n=session.delete("MypageMapper.deleteMember", userid);
 		System.out.println("회원 삭제 : "+n);
 	}
-	
 	//회원 정보 조회
 	public MemberDTO selectMember(String userid) {
 		return session.selectOne("MypageMapper.selectMember", userid);
 	}
-	
 	//회원 배송지 목록 조회
 	public List<AddressDTO> selectAllAddress(String userid) {
 		return session.selectList("MypageMapper.selectAllAddress", userid);
 	}
-	
 	//회원 정보 수정
 	public void updateMember(HashMap<String, String> map) {
 		int n=session.update("AdminMapper.updateMember", map);
@@ -147,10 +141,8 @@ public class AdminDAO {
 	 */
 	//전체 상품 목록
 	public PageDTO selectAllProduct(HashMap<String, String> map) {
-		int curPage = Integer.parseInt(
-					  Optional.ofNullable(map.get("page")) //현제 페이지 null이면
-					  .orElse(("1"))//1로 설정
-				);
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
+		
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(10);//한 페이지 당 record 10개 씩
 		int perPage = pDTO.getPerPage();
@@ -177,40 +169,33 @@ public class AdminDAO {
 		System.out.println("productDelete num : "+num);
 		return num;
 	}
-	
 	//상품 삭제(이미지)
 	public List<ImagesDTO> productImages(List<String> ids) {
 		return session.selectList("AdminMapper.productImages", ids);
 	}
-	
 	//상품 수정페이지(상품)
 	public ProductDTO productRetrieve(int p_id) {
 		return session.selectOne("AdminMapper.productRetrieve", p_id);
 	}
-	
 	//상품 수정페이지(이미지)
 	public List<ImagesDTO> ImagesRetrieve(int p_id) {
 		return session.selectList("AdminMapper.ImagesRetrieve",p_id);
 	}
-	
 	//상품 등록
 	public void insertProduct(HashMap<String, String> map) {
 		int num = session.insert("AdminMapper.insertProduct", map);
 		System.out.println("insertProduct num : "+num);
 	}
-	
 	//상품 수정
 	public void updateProduct(HashMap<String, String> map) {
 		int num = session.update("AdminMapper.updateProduct", map);
 		System.out.println("updateProduct num : "+num);
 	}
-	
 	//상품 수정(기존 이미지 삭제)
 	public void deleteImages(HashMap<String, String> map) {
 		int num = session.delete("AdminMapper.deleteImages", map);
 		System.out.println("deleteImages num : "+num);
 	}
-	
 	//상품 수정(새 이미지 등록)
 	public void insertImages(HashMap<String, String> map) {
 		int num = session.insert("AdminMapper.insertImages", map);

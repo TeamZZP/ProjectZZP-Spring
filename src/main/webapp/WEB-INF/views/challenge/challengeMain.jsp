@@ -65,6 +65,15 @@
 	.tooltip-inner {
   		max-width: 430px;
 	}
+	#modalBtn{
+	display: none;
+	}
+	.modal-body{
+		text-align: center;
+	}
+	#mesg{
+		margin: 0;
+	}
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -83,7 +92,8 @@
 		//좋아요 추가/삭제
 		$('.liked_area').on('click', '.liked', function () {
 			if ('${empty login}' == 'true') {
-				alert('로그인이 필요합니다.');
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				let cid = $(this).attr("data-cid");
 				$.ajax({
@@ -143,7 +153,7 @@
        <a href="challenge/${challThisMonth.chall_id}">${challThisMonth.chall_title}
         <span class="challThisMonth">참여하러가기</span> </a> 
         <a data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip"
-        		title="매달 바뀌는 챌린지 도전 과제에 참여해 보세요! '이 달의 챌린지' 카테고리를 선택해 챌린지 인증 사진을 올려주세요. 참여시 받을 수 있는 예쁜 도장을 모아보세요!">
+        		title="매달 바뀌는 챌린지 도전 과제에 참여해 보세요! '이 달의 챌린지' 카테고리를 선택해 챌린지 인증 사진을 올리면 예쁜 도장을 받을 수 있어요!">
         	<img src="resources/images/challenge/help.png" width="25" style="margin-top: -5px;">
         </a>
      </div>
@@ -261,3 +271,23 @@
 		 $('#stampBtn').trigger('click')
 	 }
 	</script>
+	
+	
+<!-- 모달 -->
+<div class="modal" id="checkVal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ZZP</h5>
+      </div>
+      <div class="modal-body">
+        <p id="mesg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+

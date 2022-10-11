@@ -2,6 +2,8 @@ package com.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +14,23 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Upload {
-	private static final String filePath = "C://eclipse//upload//";
+	//private static final String filePath = "C://eclipse//upload//";
+	private static String getPath() {
+		//String filePath = "C://eclipse//upload//";
+		String filePath = "/upload/";
+		
+//		try {
+//			String strIp = InetAddress.getLocalHost().getHostAddress();
+//			if (strIp.equals("152.67.194.190")) {
+//				filePath = "/upload/";
+//			}
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//			log.error(e.getMessage());
+//		}
+		
+		return filePath;
+	}
 	
 	/**
 	 * 파일 업로드
@@ -28,7 +46,7 @@ public class Upload {
 		System.out.println("originalFileName:  "+ originalFileName);
 		System.out.println("contentType:  "+ contentType);
 		
-		File f= new File(filePath+location, originalFileName);
+		File f= new File(getPath()+location, originalFileName);
 		try {
 			uploadFile.transferTo(f);
 		} catch (Exception e) {
@@ -40,7 +58,7 @@ public class Upload {
 	 * 파일 삭제
 	 */
 	public static void deleteFile(String location, String fileName) {
-		Path file = Paths.get(filePath+location+"//"+fileName);
+		Path file = Paths.get(getPath()+location+"//"+fileName);
 		try {
 			Files.deleteIfExists(file);
 		} catch (IOException e) {

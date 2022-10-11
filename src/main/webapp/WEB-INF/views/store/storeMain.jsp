@@ -134,7 +134,7 @@ a {
       
          <div class="hover-zoomin">
             <a href="/zzp/product/${pList.p_id}"> 
-            <img src="/zzp/resources/images/product/p_image/${pList.p_image}">
+            <img src="/zzp/resources/upload/product/${pList.p_image}">
             </a>
          </div>
          
@@ -374,6 +374,8 @@ a {
       //페이지 선택시
       $(".paging").on("click", function() {
          console.log("pageChange()실행");
+        
+         
          var sortBy = $("#sortBy").val();
          var curPage = $(this).attr("data-page");
          var c_id = '${c_id}';
@@ -401,6 +403,8 @@ a {
             $("#productContainer").append(data);
             
             
+            window.scrollTo(0, 0);
+            console.log("스크롤이동");
             
                                
            },

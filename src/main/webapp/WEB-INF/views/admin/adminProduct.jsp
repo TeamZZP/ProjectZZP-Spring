@@ -63,6 +63,7 @@
 		//상품 상세페이지(수정 페이지)
 		$(".productDetail").click(function() {
 			let p_id = $(this).attr("data-p_id");
+			console.log(p_id);
 			location.href="/zzp/admin/product/"+p_id;
 		});
 		//상품보기 버튼
@@ -169,15 +170,15 @@
 					<td><input type="checkbox" class="delCheck" name="p_id" value="${p.p_id}"></td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_id}</td>
 					<td class="productDetail" data-p_id="${p.p_id}">
-						<c:if test="${p.c_id==6}">sale</c:if>
-						<c:if test="${p.c_id==8}">bath</c:if>
-						<c:if test="${p.c_id==9}">kitchen</c:if>
-						<c:if test="${p.c_id==10}">life</c:if>
+						<c:if test="${p.c_id==6}">세일</c:if>
+						<c:if test="${p.c_id==8}">욕실용품</c:if>
+						<c:if test="${p.c_id==9}">주방용품</c:if>
+						<c:if test="${p.c_id==10}">생활용품</c:if>
 					</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_name}</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_selling_price}&nbsp;</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_discount}</td>
-					<td class="productDetail" data-p_id="${p.p_id}>">${p.p_stock}&nbsp;&nbsp;</td>
+					<td class="productDetail" data-p_id="${p.p_id}">${p.p_stock}&nbsp;&nbsp;</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_created}</td>
 					<td>
 						<!-- 모달버튼 -->

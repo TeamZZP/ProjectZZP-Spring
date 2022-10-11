@@ -324,8 +324,6 @@ public class AdminController {
 		return "redirect:../admin/product";
 	}
 	/**
-<<<<<<< HEAD
-=======
 	 * 주문관리 : 주문 상태 변경
 	 */
 	@RequestMapping(value = "/admin/order/{id}", method = RequestMethod.PUT)
@@ -334,7 +332,6 @@ public class AdminController {
 		service.updateOrder(map);
 	}
 	/**
->>>>>>> c5c2093513400dd441cf309f52d7ef34dca8cfea
 	 * 쿠폰 추가 페이지 가기
 	 */
 	@RequestMapping(value = "/admin/coupon/write", method = RequestMethod.GET)

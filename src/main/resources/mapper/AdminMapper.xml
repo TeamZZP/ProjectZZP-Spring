@@ -57,11 +57,13 @@
 <select id="selectNewOrders" resultType="ProductOrderImagesDTO">
 	select * from orders o join product p using(p_id)
 	where to_char(order_date, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+	order by order_id desc
 </select>
 <!-- 신규 회원 -->
 <select id="selectNewMembers" resultType="MemberDTO">
 	select * from member
 	where to_char(created_at, 'YY/MM/DD') = TO_CHAR(CURRENT_DATE,'YY/MM/DD')
+	order by created_at desc
 </select>
 <!-- 답변대기 문의 -->
 <select id="selectNewQuestion" resultType="QuestionDTO">

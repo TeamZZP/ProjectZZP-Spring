@@ -88,9 +88,10 @@
       //주문하기 - 결제방식에 따라
       $("#addOrder").on("click", function () {
         event.preventDefault();
-        
-        if(checkValidity()) {
-          let payment = $(".payment:checked").val();
+
+		if(checkValidity()) {
+			let payment = $(".payment:checked").val();
+
           
           if (payment=="계좌이체") {
             $("#orderForm").submit();
@@ -126,7 +127,7 @@
                error: function() {
                   alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
                }
-            })
+            })//end ajax
          }//end kakaopay
          }//end if 
       })//end addOrder
@@ -138,6 +139,7 @@
 		if(checkValidity()) {
 			let payment = $(".payment:checked").val();
           
+
 			if (payment=="계좌이체") {
 				$("#orderForm").submit();
 			}

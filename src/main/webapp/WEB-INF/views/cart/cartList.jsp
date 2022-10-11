@@ -24,6 +24,7 @@ a:hover {
 	display: flex;
 	text-align: center;
 	justify-content: space-evenly;
+	
 }
 
 	.tableTop {

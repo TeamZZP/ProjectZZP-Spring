@@ -115,6 +115,23 @@ $(document).ready(function() {
 		
 	 
 	//비번확인//키 이벤트 발생시 패스워드 일치여부 검사 
+	 $("#passwd").keyup(function() {
+		 var passwd = this.value;
+		 var passwd2 = $("#passwd2").val();
+		 var mesg = "";
+		 if (passwd2!=null && passwd2.length!=0) {
+			if (passwd==passwd2) {
+				mesg = "비밀번호 일치 :)";
+			} else {
+				mesg = "비밀번호 불일치 :(";
+			}
+		} else {
+			mesg=" ";
+		}
+		 $("#result3").text(mesg);
+	 });
+	 
+	//비번확인//키 이벤트 발생시 패스워드 일치여부 검사 
 	 $("#passwd2").keyup(function() {
 		 var mesg = "비밀번호 불일치 :(";
 		 if ($("#passwd").val()==this.value) {

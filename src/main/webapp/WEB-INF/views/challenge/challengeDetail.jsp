@@ -486,14 +486,14 @@ function displayedAt(createdAt) {
 		<tr>
 			<td colspan="2">
 			    <a href="/zzp/profile/${cDTO.userid}">
-				   <img src="/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3"></a>
+				   <img src="/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3" onerror="this.src='/zzp/resources/images/error/user.png'"></a>
 				<a href="/zzp/profile/${cDTO.userid}">${cDTO.userid}</a>
 			</td>
 		</tr>
 		<tr id="img_area">
 			<td colspan="3">
 				<img src="/upload/challenge/${cDTO.chall_img}" class="img"
-					onerror="this.src='/zzp/resources/images/challenge/uploadarea.png'" width="80%">
+					onerror="this.src='/zzp/resources/images/error/salad.jpg'" width="80%">
 				<c:if test="${!empty cDTO.stamp_img}">
 					<img src="/upload/challenge/${cDTO.stamp_img}" class="stamp" width="25%">
 				</c:if>

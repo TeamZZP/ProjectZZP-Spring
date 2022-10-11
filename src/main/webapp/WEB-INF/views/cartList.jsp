@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ZZP</title>
-<link rel="stylesheet" type="text/css" href="zzp/resources/css/cart/cartList.css">
+<link rel="stylesheet" type="text/css" href="resources/css/cart/cartList.css">
 
 <c:if test="${not empty mesg}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

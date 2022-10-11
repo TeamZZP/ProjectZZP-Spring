@@ -119,19 +119,19 @@ public class MainController {
 		  mav.setViewName("orders2");
 		  return mav;
     }
-    /**
-	 * 토스 페이먼츠 테스트 결제
-	 */
-    @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
-    public String toss_test_success(String orderId) {
-    	System.out.println(orderId);
-    	//1665309501015aaa
-    	
-    	
-    	
-    	//ordertable 결제완료
-		return "Toss_Test_success";
-    }
+//    /**
+//	 * 토스 페이먼츠 테스트 결제
+//	 */
+//    @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
+//    public String toss_test_success(String orderId) {
+//    	System.out.println(orderId);
+//    	//1665309501015aaa
+//    	
+//    	
+//    	
+//    	//ordertable 결제완료
+//		return "Toss_Test_success";
+//    }
     
     
 }

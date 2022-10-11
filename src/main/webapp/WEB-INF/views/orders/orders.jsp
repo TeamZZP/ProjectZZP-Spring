@@ -35,6 +35,7 @@
 </style>
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://js.tosspayments.com/v1"></script>
 <script type="text/javascript">
    $(function() {
       
@@ -83,51 +84,69 @@
          return true;
       }
 
-      //주문하기 - 결제방식에 따라
-      $("#addOrder").on("click", function () {
-        event.preventDefault();
+	//주문하기 - 결제방식에 따라
+	$("#addOrder").on("click", function () {
+		event.preventDefault();
         
-        if(checkValidity()) {
-          let payment = $(".payment:checked").val();
+		if(checkValidity()) {
+			let payment = $(".payment:checked").val();
           
-          if (payment=="계좌이체") {
-            $("#orderForm").submit();
-         }
-          
-          else if (payment=="카드결제") {
-             
-          }//end tosspay
-          
-          else if (payment=="카카오페이") {
-            let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
-            total_amount = parseInt(total_amount);
-
-            let quantity='${fn:length(cartList)}';
-            let item_name = $(".pName:first").text(); //상품명
-            item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
-         
-            $.ajax({
-               url:"/zzp/pay/kakao",
-               type:"POST",
-               data: {
-                  "total_amount":total_amount,
-                  "quantity":quantity,
-                  "item_name":item_name
-               },
-               success: function(data) {
-                  let new_window_width = 400;
-                  let new_window_height = 650;
-                  let positionX = (window.screen.width/2) - (new_window_width/2);  
-                  let positionY = (window.screen.height/2) - (new_window_height/2);
-                  window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
-               },
-               error: function() {
-                  alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
-               }
-            })
-         }//end kakaopay
-         }//end if 
-      })//end addOrder
+			if (payment=="계좌이체") {
+				$("#orderForm").submit();
+			}
+	          
+			else if (payment=="카드결제") {
+				var clientKey = 'test_ck_YyZqmkKeP8gk5150MmO8bQRxB9lG'
+				var tossPayments = TossPayments(clientKey);
+				
+				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
+				total_amount = parseInt(total_amount);
+	
+				let quantity='${fn:length(cartList)}';
+				let item_name = $(".pName:first").text(); //상품명
+				item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
+				
+				tossPayments.requestPayment('카드', {
+		              amount: total_amount,
+		              orderId: 'a5159c-f911-ag35',
+		              orderName: item_name,
+		              customerName: 'zzp',
+		              successUrl: window.location.origin+'/zzp/pay/toss/success',
+		              failUrl: window.location.origin+'/zzp/pay/toss/fail',
+		            })
+	         
+			}//end tosspay
+	          
+			else if (payment=="카카오페이") {
+				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
+				total_amount = parseInt(total_amount);
+	
+				let quantity='${fn:length(cartList)}';
+				let item_name = $(".pName:first").text(); //상품명
+				item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
+	         
+				$.ajax({
+					url:"/zzp/pay/kakao",
+					type:"POST",
+					data: {
+							"total_amount":total_amount,
+							"quantity":quantity,
+							"item_name":item_name
+					},
+					success: function(data) {
+						let new_window_width = 400;
+						let new_window_height = 650;
+						let positionX = (window.screen.width/2) - (new_window_width/2);  
+						let positionY = (window.screen.height/2) - (new_window_height/2);
+						window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
+	  				},
+					error: function() {
+	                  alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
+	  				}
+				})
+			}//end kakaopay
+		}//end if 
+	})//end addOrder
       
    });
 </script>

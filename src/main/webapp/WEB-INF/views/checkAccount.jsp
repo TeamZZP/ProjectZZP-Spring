@@ -22,7 +22,8 @@
 			$("input[name=_method]").val("delete");//method delete 요청
 		}
 		
-		$("#formConfirm").on("click", function() {
+		//폼 제출
+		$("form").on("submit", function() {
  			if ($("#passwd").val() != "${login.passwd}") {
 				event.preventDefault();
 				console.log("비밀번호 불일치");
@@ -31,8 +32,6 @@
 				$("#modalMesg").text("비밀번호를 확인하세요.");
 				$("#passwd").val("");
 				$("#passwd").focus();//작동 안 함
-			} else {
-				$("form").submit();
 			}
 		});//end fn
 		
@@ -57,7 +56,7 @@
 			<h4><b>${login.username}</b>님 비밀번호를 입력해 주십시오</h4>
 			<div style="padding-bottom: 45px"></div>
 				<input type="password" name="passwd" id="passwd" style="padding-bottom: 3px;">
-				<button type="button" id="formConfirm" class="btn btn-success" style="margin-left: 20px;">확인</button>
+				<button type="submit" class="btn btn-success" style="margin-left: 20px;">확인</button>
 				<button type="button" id="cancle" class="btn btn-outline-success">취소</button>
 			<div style="padding-bottom: 45px"></div>
 		</div>

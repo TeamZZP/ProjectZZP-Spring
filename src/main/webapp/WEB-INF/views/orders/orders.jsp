@@ -84,13 +84,12 @@
          return true;
       }
 
-<<<<<<< HEAD
       //주문하기 - 결제방식에 따라
       $("#addOrder").on("click", function () {
         event.preventDefault();
         
-        if(checkValidity()) {
-          let payment = $(".payment:checked").val();
+		if(checkValidity()) {
+			let payment = $(".payment:checked").val();
           
           if (payment=="계좌이체") {
             $("#orderForm").submit();
@@ -138,6 +137,7 @@
 		if(checkValidity()) {
 			let payment = $(".payment:checked").val();
           
+>>>>>>> 59794a878ef29b8a4faf8daf867e9f36ea907e65
 			if (payment=="계좌이체") {
 				$("#orderForm").submit();
 			}
@@ -194,7 +194,10 @@
 			}//end kakaopay
 		}//end if 
 	})//end addOrder
+<<<<<<< HEAD
+=======
 >>>>>>> a2c4134990608d1021588f8deafee2babba13c60
+>>>>>>> 59794a878ef29b8a4faf8daf867e9f36ea907e65
       
    });
 </script>

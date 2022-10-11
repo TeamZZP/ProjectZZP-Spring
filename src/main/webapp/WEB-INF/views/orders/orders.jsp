@@ -327,7 +327,7 @@
                   </tr>
 
 
-                  <!--  결제정보 -->
+                      <!--  결제정보 -->
                   <tr style="border-bottom-width: 5px; border-color: green;">
                      <th style="font-size: 20px; font-weight: bold;">결제 정보</th>
                   </tr>
@@ -340,6 +340,8 @@
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
                            value="카카오페이">카카오페이</label></td>
                   </tr>
+
+
 
 
                </table>

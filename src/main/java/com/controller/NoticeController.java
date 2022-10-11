@@ -36,7 +36,7 @@ public class NoticeController {
 	@RequestMapping(value = "/notice", method = RequestMethod.GET)
 	public String noticeList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		System.out.println(map);
 		

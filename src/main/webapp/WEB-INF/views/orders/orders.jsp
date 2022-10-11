@@ -84,6 +84,7 @@
          return true;
       }
 
+
 	//주문하기 - 결제방식에 따라
 	$("#addOrder").on("click", function () {
 		event.preventDefault();
@@ -91,6 +92,7 @@
 		if(checkValidity()) {
 			let payment = $(".payment:checked").val();
           
+
 			if (payment=="계좌이체") {
 				$("#orderForm").submit();
 			}
@@ -147,6 +149,7 @@
 			}//end kakaopay
 		}//end if 
 	})//end addOrder
+
       
    });
 </script>
@@ -195,6 +198,7 @@
                   <td style="line-height: 100px;"><div
                         style="font-weight: bold; font-size: 20px;">
                         <span id="item_price" class="item_price">${cList.money}</span>원
+                        <input type="hidden" id="item_price" name="item_price" value="${cList.money}">
                      </div></td>
 
                </tr>
@@ -238,7 +242,7 @@
                            <option value="" selected disabled hidden>이메일 선택</option>
                            <option value="daum.net">daum.net</option>
                            <option value="naver.com">naver.com</option>
-                           <option value="google.com">google.com</option>
+                           <option value="gmail.com">gmail.com</option>
                      </select></td>
                   </tr>
                   <tr>
@@ -327,7 +331,7 @@
                   </tr>
 
 
-                  <!--  결제정보 -->
+                      <!--  결제정보 -->
                   <tr style="border-bottom-width: 5px; border-color: green;">
                      <th style="font-size: 20px; font-weight: bold;">결제 정보</th>
                   </tr>
@@ -340,6 +344,8 @@
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
                            value="카카오페이">카카오페이</label></td>
                   </tr>
+
+
 
 
                </table>

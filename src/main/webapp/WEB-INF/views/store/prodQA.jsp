@@ -66,8 +66,8 @@
 		</tr>
 		<tr>
 			<td colspan="6" style="display: none;">
-				<input id="p_id" name="p_id" value="${pdto.p_id}">
-				<input id="p_name" name="p_name" value="${pdto.p_name}">
+				<input type="hidden" id="p_id" name="p_id" value="${pdto.p_id}">
+				<input type="hidden" id="p_name" name="p_name" value="${pdto.p_name}">
 			</td>
 		</tr>
 		<tr>

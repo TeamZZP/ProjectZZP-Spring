@@ -38,11 +38,8 @@
 			});//end ajax
 		}); //
 		$("#QuestionInsert").click(function () {
-			var qID = $("#pID").val();
-			var pName = $("#P_name").val();
-			console.log(qID + "\t" + pName);
-			location.href = "/zzp/qna/write?p_id="+qID+"&p_name="+pName; //controller에 추가하고 수정하기
-		});//
+			$("#prodQAForm").attr("action", "/zzp/qna/write");
+		});// 
 	}); //end ready
 </script>
 <style>
@@ -63,42 +60,44 @@
 </style>
 
 <div style="text-align: center; color: gray;"> Q&A </div>
-<table id="prodQATable" style="text-align: center;">
-	<tr>
-		<td colspan="6" style="background-color: #8FBC8F; padding: 10px;"></td>
-	</tr>
-	<tr>
-		<td colspan="6" style="display: none;">
-			<%-- <input type="hidden" id="P_name" name="p_name" value="${pdto.p_name}">
-			<input type="hidden" id="pID" name="p_id" value="${pdto.p_id}"> --%>
-		</td>
-	</tr>
-	<tr>
-		<td></td>
-		<td>답변상태</td>
-		<td>작성자</td>
-		<td>제목</td>
-		<td>작성일</td>
-		<td></td>
-	</tr>
-		<c:forEach var="qDTO" items="${prodQuestion}">
-	<tr class="questionDetail" data-qID="${qDTO.q_id}" title="더블클릭">
-		<td style="text-align: center;"><i class="fa-solid fa-q" style="font-size: 50px;"></i></td>
-		<td>${qDTO.q_status}</td>
-		<td>${qDTO.userid.substring(0,2)}****${qDTO.userid.substring(6)}</td>
-		<td>${qDTO.q_title}</td>
-		<td>${qDTO.q_created.substring(0, 10)}</td>
-		<td style="text-align: center;"> <img alt="문의 답변 보기" src="/zzp/resources/images/question/down.png" width="20px" height="20px"> </td>
-	</tr>
-	<tr>
-		<td colspan="6" style="border-bottom: none;">
-			<div style="text-align: right; margin: 0px 82px;" id="answer${qDTO.q_id}"> 
-				<span class="answer${qDTO.q_id}"> </span> 
-			</div> 
-		</td>
-	</tr>
-		</c:forEach>
-</table>
-	<div style="text-align: right; padding-right: 50px;" >
+<form id="prodQAForm" method="get">
+	<table id="prodQATable" style="text-align: center;">
+		<tr>
+			<td colspan="6" style="background-color: #8FBC8F; padding: 10px;"></td>
+		</tr>
+		<tr>
+			<td colspan="6" style="display: none;">
+				<input type="hidden" id="p_id" name="p_id" value="${pdto.p_id}">
+				<input type="hidden" id="p_name" name="p_name" value="${pdto.p_name}">
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>답변상태</td>
+			<td>작성자</td>
+			<td>제목</td>
+			<td>작성일</td>
+			<td></td>
+		</tr>
+			<c:forEach var="qDTO" items="${prodQuestion}">
+		<tr class="questionDetail" data-qID="${qDTO.q_id}" title="더블클릭">
+			<td style="text-align: center;"><i class="fa-solid fa-q" style="font-size: 50px;"></i></td>
+			<td>${qDTO.q_status}</td>
+			<td>${qDTO.userid.substring(0,2)}****${qDTO.userid.substring(6)}</td>
+			<td>${qDTO.q_title}</td>
+			<td>${qDTO.q_created.substring(0, 10)}</td>
+			<td style="text-align: center;"> <img alt="문의 답변 보기" src="/zzp/resources/images/question/down.png" width="20px" height="20px"> </td>
+		</tr>
+		<tr>
+			<td colspan="6" style="border-bottom: none;">
+				<div style="text-align: right; margin: 0px 82px;" id="answer${qDTO.q_id}"> 
+					<span class="answer${qDTO.q_id}"> </span> 
+				</div> 
+			</td>
+		</tr>
+			</c:forEach>
+	</table>
+	<div style="text-align: right; padding-right: 50px;">
 		<button type="submit" class="btn btn-outline-success" id="QuestionInsert">문의하기</button>
 	</div>
+</form>

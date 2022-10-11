@@ -23,7 +23,7 @@
 			event.preventDefault();
 		});//
 		$("#questionDelete").click(function () {
-			$("#detailForm").attr("action", "../qna/${qDTO.q_id}");
+			$("#detailForm").attr("action", "/zzp/qna/${qDTO.q_id}");
 		});//
 		$("#before").click(function () {
 			history.back();
@@ -35,13 +35,13 @@
 		$("#answerBtn").click(function() {
 			$.ajax({
 				type:"post",
-				url:"../qna/${qDTO.q_id}/answer",
+				url:"/zzp/qna/${qDTO.q_id}/answer",
 				data:{
 					answer : $("#answer").val()	
 				},
 		        dataType: "text",
 				success: function (data, status, xhr) {
-					alert("답변 성공");
+					alert("답변 완료");
 					$("#answerCheck").text($("#answer").val());
 					$("#answer").val("");
 				},
@@ -52,8 +52,7 @@
 		});//
 		$("#uploadBtu").click(function () {
 			var upload = $("#upload").attr("src");
-			var url = "/zzp/showImg"
-			window.open(url, "", "width=400px height=500px");
+			window.open("/zzp/showImg", "", "width=400px height=500px");
 		});
 	});//end ready
 </script>

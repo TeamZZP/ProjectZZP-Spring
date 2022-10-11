@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,6 +31,7 @@ import com.service.KakaoPayService;
 import com.service.MypageService;
 import com.service.OrderService;
 import com.service.StoreService;
+import com.service.TossPayService;
 
 @Controller
 public class OrderController {
@@ -43,6 +45,8 @@ public class OrderController {
 	CartService cService;
 	@Autowired
     KakaoPayService kakaopay;
+	@Autowired
+	TossPayService tosspay;
 	
 	
 		//주문하기페이지
@@ -188,6 +192,23 @@ public class OrderController {
 			  
 		 }
 		 
+
+		 /**
+		  * 토스 페이먼츠 승인
+		 * @throws IOException 
+		  */
+		 @RequestMapping(value = "/pay/toss/success" , method = RequestMethod.GET) 
+		 @ResponseBody
+		 public void tossSuccess(@RequestParam HashMap<String, String> map, HttpServletResponse response) throws IOException {
+			 //System.out.println(tosspay.payApprove(map));
+			 
+//			 PrintWriter out = response.getWriter();
+//			 String script = "<script>"
+//					  + "window.opener.document.getElementById('orderForm').submit();"
+//					  + "window.close();"
+//					  + "</script>"; 
+//			 out.println(script);
+		 }
 
 		/**
 		 * 카카오페이 요청

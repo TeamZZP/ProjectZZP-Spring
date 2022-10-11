@@ -134,15 +134,17 @@
 <br>
 <table id="addTable" class="table table-hover" style="text-align: center; vertical-align: middle;">
 	<tr class="tableTop">
-		<th width="25%">상품명</th>
+		<th width="10%">주문번호</th>
+		<th width="20%">상품명</th>
 		<th width="10%">가격</th>
 		<th width="10%">주문날짜</th>
-		<th width="35%">주소</th>
+		<th width="30%">주소</th>
 		<th width="10%">배송상태</th>
 		<th></th>
 	</tr>
 	<c:forEach var="list" items="${myOrder.list}">
 	<tr>
+		<td> ${list.order_id} </td>
 	    <td> 
 	    	<a href="/zzp/product/${list.p_id}"> 
 		   		<img alt="상품사진" src="/zzp/resources/images/product/p_image/${list.image_route}" width="100px" height="100px"> 

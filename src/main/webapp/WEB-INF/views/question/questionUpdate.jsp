@@ -10,12 +10,14 @@
 	$(document).ready(function () {
 		$("#questionUpdate").click(function() {
 			var q_title = $("#q_title").val();
-			var qContent = $("#q_content").val();
+			var q_content = $("#q_content").val();
 			if (q_title.length == 0) {
-				alert("제목을 입력하십시오");
+				$("#modal").trigger("click");
+				$("#mesg").text("제목을 입력하십시오.");
 				event.preventDefault();
 			} else if (q_content.length == 0) {
-				alert("내용을 입력하십시오");
+				$("#modal").trigger("click");
+				$("#mesg").text("내용을 입력하십시오.");
 				event.preventDefault();
 			}
 		});
@@ -30,7 +32,7 @@
  			window.open(url, "", "width=400px height=500px");
  		});
 		$("#QuestionList").click(function () {
-			$("#questionForm").attr("action", "/zzp/qna");
+			$("#questionForm").attr("method", "get").attr("action", "/zzp/qna");
 		});
 		$("#uploadBtu").click(function () {
 			var upload = $("#upload").attr("src");
@@ -153,3 +155,24 @@
 </div>
 </div>
 </form>
+
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#questionModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

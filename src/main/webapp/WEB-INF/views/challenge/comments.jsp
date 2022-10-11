@@ -17,7 +17,7 @@
                         <div class="w-100">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex flex-row align-items-center"> 
-                                	<a href="profile/${c.userid}">
+                                	<a href="/zzp/profile/${c.userid}">
                                 	<span class="mr-2">${c.userid}</span></a> 
                                 </div> 
                                 <small id="commentTime${c.comment_id}"></small>
@@ -33,11 +33,11 @@
                             	  <c:when test="${!empty login && login.userid==c.userid}">
 									<a class="ml-3 update" data-cid="${c.comment_id}" 
 											data-parent="${c.parent_userid}" data-content="${c.comment_content}">수정</a> &nbsp;&nbsp;
-									<a class="ml-3 commentDelBtn" data-cid="${c.comment_id}">삭제</a> 
+									<a class="ml-3" data-bs-toggle="modal" data-bs-target="#deleteCommentModal" data-bs-cid="${c.comment_id}">삭제</a> 
 								  </c:when>
 								  <%-- 관리자인 경우 --%>
 								  <c:when test="${!empty login && login.role==1}">
-									<a class="ml-3 commentDelBtn" data-cid="${c.comment_id}">삭제</a> 
+									<a class="ml-3" data-bs-toggle="modal" data-bs-target="#deleteCommentModal" data-bs-cid="${c.comment_id}">삭제</a> 
 								  </c:when>
 								  <%-- 그외의 경우 --%> 
 								  <c:otherwise>

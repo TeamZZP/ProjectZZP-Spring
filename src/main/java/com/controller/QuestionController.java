@@ -41,7 +41,7 @@ public class QuestionController {
 	@RequestMapping(value = "/qna", method = RequestMethod.GET)
 	public String questionList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		pDTO = qService.questionPage(curPage);
 		System.out.println("pDTO " + pDTO);
@@ -55,7 +55,7 @@ public class QuestionController {
 	 * 큐엔에이 글 쓰러가기
 	 */
 	@RequestMapping(value = "/qna/write", method = RequestMethod.GET)
-	public String questionInsert(HttpSession session, Model m, Map<String,String> map) {
+	public String questionInsert(HttpSession session, Model m, @RequestParam Map<String,String> map) {
 		System.out.println("상품상세보기에서 글쓰기 " + map);
 		
 		m.addAttribute("mDTO", session.getAttribute("login"));

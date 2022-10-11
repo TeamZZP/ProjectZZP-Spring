@@ -6,6 +6,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>ZZP</title>
+</head>
+<body>
 <c:if test="${not empty mesg}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -15,9 +17,6 @@
 	});
 </script>
 </c:if>	
-</head>
-<body>
-
 
 <div id="prodTop">
 	<jsp:include page="common/header.jsp" flush="true"></jsp:include><br>

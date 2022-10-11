@@ -89,4 +89,8 @@ public class MypageService {
 		dao.updateProfile(map);
 	}
 
+	public int countOrder(HashMap<String, String> m) {
+		return dao.countOrder(m);
+	}
+
 }

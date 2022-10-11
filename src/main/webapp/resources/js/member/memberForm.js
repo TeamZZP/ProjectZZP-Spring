@@ -112,9 +112,14 @@ $(document).ready(function() {
 			event.preventDefault();
 		};
 	 });
+	 
+	 //아이디 중복검사 Btn 클릭
+	 $("#idCheck").click(function() {
+		 $("#modalUserid").val($("#userid").val());
+	});
 		
 	 
-	//비번확인//키 이벤트 발생시 패스워드 일치여부 검사 
+	//비번확인1//키 이벤트 발생시 패스워드 일치여부 검사 
 	 $("#passwd").keyup(function() {
 		 var passwd = this.value;
 		 var passwd2 = $("#passwd2").val();
@@ -131,7 +136,7 @@ $(document).ready(function() {
 		 $("#result3").text(mesg);
 	 });
 	 
-	//비번확인//키 이벤트 발생시 패스워드 일치여부 검사 
+	//비번확인2//키 이벤트 발생시 패스워드 일치여부 검사 
 	 $("#passwd2").keyup(function() {
 		 var mesg = "비밀번호 불일치 :(";
 		 if ($("#passwd").val()==this.value) {

@@ -85,7 +85,6 @@
       }
 
 
-
 	//주문하기 - 결제방식에 따라
 	$("#addOrder").on("click", function () {
 		event.preventDefault();

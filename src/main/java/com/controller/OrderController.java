@@ -76,7 +76,7 @@ public class OrderController {
 		 //주문추가
 		 @RequestMapping("/orders")
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, String discount,
-			 int order_quantity,String delivery_address,String delivery_req, 
+			 int order_quantity,String delivery_address,String delivery_req, int item_price,
 			 int total_price, String payment, String coupon_id,int sum_money, int fee) {
 			
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
@@ -103,7 +103,7 @@ public class OrderController {
 				 odto.setDelivery_address(delivery_address);
 				 odto.setDelivery_req(delivery_req);
 				 odto.setOrder_quantity(order_quantity);
-				 odto.setTotal_price(total_price);
+				 odto.setTotal_price(item_price);
 				 n += service.addOrder(odto); //오더저장
 				 if(n!=0){//오더 저장 성공시 list add
 					 olist.add(odto);

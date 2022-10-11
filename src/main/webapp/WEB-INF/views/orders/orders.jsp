@@ -84,7 +84,7 @@
          return true;
       }
 
-<<<<<<< HEAD
+
       //주문하기 - 결제방식에 따라
       $("#addOrder").on("click", function () {
         event.preventDefault();
@@ -130,7 +130,7 @@
          }//end kakaopay
          }//end if 
       })//end addOrder
-=======
+
 	//주문하기 - 결제방식에 따라
 	$("#addOrder").on("click", function () {
 		event.preventDefault();
@@ -194,7 +194,7 @@
 			}//end kakaopay
 		}//end if 
 	})//end addOrder
->>>>>>> a2c4134990608d1021588f8deafee2babba13c60
+
       
    });
 </script>
@@ -243,6 +243,7 @@
                   <td style="line-height: 100px;"><div
                         style="font-weight: bold; font-size: 20px;">
                         <span id="item_price" class="item_price">${cList.money}</span>원
+                        <input type="hidden" id="item_price" name="item_price" value="${cList.money}">
                      </div></td>
 
                </tr>
@@ -286,7 +287,7 @@
                            <option value="" selected disabled hidden>이메일 선택</option>
                            <option value="daum.net">daum.net</option>
                            <option value="naver.com">naver.com</option>
-                           <option value="google.com">google.com</option>
+                           <option value="gmail.com">gmail.com</option>
                      </select></td>
                   </tr>
                   <tr>

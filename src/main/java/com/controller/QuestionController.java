@@ -41,7 +41,7 @@ public class QuestionController {
 	@RequestMapping(value = "/qna", method = RequestMethod.GET)
 	public String questionList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		pDTO = qService.questionPage(curPage);
 		System.out.println("pDTO " + pDTO);

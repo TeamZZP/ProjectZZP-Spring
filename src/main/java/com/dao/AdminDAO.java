@@ -93,10 +93,11 @@ public class AdminDAO {
 	 */
 	//전체 회원 목록
 	public PageDTO selectAllMember(HashMap<String, String> map) {
-		int curPage=Integer.parseInt(
+/*		int curPage=Integer.parseInt(
 				  Optional.ofNullable(map.get("page"))//현재 페이지 null이면
 				  .orElse(("1"))//1로 설정
-		);
+		);	*/
+		int curPage=Integer.parseInt(map.getOrDefault("page", "1"));
 		PageDTO pDTO=new PageDTO();
 		pDTO.setPerPage(5);//한 페이지 당 record 5개 씩
 		int perPage=pDTO.getPerPage();

@@ -63,6 +63,7 @@
 		//상품 상세페이지(수정 페이지)
 		$(".productDetail").click(function() {
 			let p_id = $(this).attr("data-p_id");
+			console.log(p_id);
 			location.href="/zzp/admin/product/"+p_id;
 		});
 		//상품보기 버튼
@@ -177,7 +178,7 @@
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_name}</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_selling_price}&nbsp;</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_discount}</td>
-					<td class="productDetail" data-p_id="${p.p_id}>">${p.p_stock}&nbsp;&nbsp;</td>
+					<td class="productDetail" data-p_id="${p.p_id}">${p.p_stock}&nbsp;&nbsp;</td>
 					<td class="productDetail" data-p_id="${p.p_id}">${p.p_created}</td>
 					<td>
 						<!-- 모달버튼 -->

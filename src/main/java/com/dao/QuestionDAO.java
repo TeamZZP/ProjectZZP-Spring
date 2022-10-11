@@ -42,7 +42,7 @@ public class QuestionDAO {
 	}
 	
 	public PageDTO prodSelect(Map<String, String> map, int prodNum) {
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(prodNum);
 		int perPage = pDTO.getPerPage();
@@ -87,7 +87,7 @@ public class QuestionDAO {
 	}
 	public PageDTO myQuestion(String userid, Map<String, String> map) {
 		PageDTO pDTO = new PageDTO();
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		pDTO.setPerPage(10);
 		int perPage = pDTO.getPerPage();
 		int offset = (curPage - 1) * perPage;

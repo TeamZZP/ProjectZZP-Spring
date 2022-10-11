@@ -94,7 +94,10 @@
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName != null and !searchName.equals('')">
+		<if test="searchName != null and !searchName.equals('') and searchName.equals('addr1')">
+			and	a.${searchName} like '%${searchValue}%'
+		</if>
+		<if test="searchName != null and !searchName.equals('') and !searchName.equals('addr1')">
 			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
 	</where>
@@ -112,7 +115,10 @@
 	on m.userid = a.userid
 	<where>
 		a.default_chk = 1
-		<if test="searchName != null and !searchName.equals('')">
+		<if test="searchName != null and !searchName.equals('') and searchName.equals('addr1')">
+			and	a.${searchName} like '%${searchValue}%'
+		</if>
+		<if test="searchName != null and !searchName.equals('') and !searchName.equals('addr1')">
 			and	upper(m.${searchName}) like upper('%${searchValue}%')
 		</if>
 	</where>

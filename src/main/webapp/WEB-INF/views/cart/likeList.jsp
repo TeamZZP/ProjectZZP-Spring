@@ -101,7 +101,7 @@ a {
 			<button type="button" class="btn btn-outline-success" id="cart"
 				onclick="location.href='${contextPath}/cart/${login.userid}';">
 				장바구니(${cartCount})</button>
-			<button type="button" class="btn btn-outline-success" id="like">
+			<button type="button" class="btn btn-success" id="like">
 				찜한상품(<span id="likeCount">${likeCount}</span>)</button>
 		</div>
 	</div>

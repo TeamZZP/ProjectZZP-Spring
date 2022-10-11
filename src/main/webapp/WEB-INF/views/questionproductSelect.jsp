@@ -49,6 +49,9 @@
 				   $('#page').val($(this).attr('data-page'));
 				   $('form').submit();
 			});
+			$("#prodNum").change(function () {
+				$("form").submit();
+			});
 		})//end ready
 	</script>
 </head>
@@ -115,7 +118,11 @@
 				        <c:forEach var="p" begin="${prodSelect.startPage}" end="${prodSelect.endPage}">
 				           <c:choose>
 				              <c:when test="${p==prodSelect.page}"><b>${p}</b>&nbsp;&nbsp;</c:when>
-				              <c:otherwise><a class="paging" data-page="${p}">${p}&nbsp;&nbsp;</a></c:otherwise>
+				              <c:otherwise>
+				              	<a class="paging" data-page="${p}">
+				              		<c:if test="${p != 0}">${p}&nbsp;&nbsp;</c:if>
+				              	</a>
+				              </c:otherwise>
 				             </c:choose>
 				        </c:forEach>
 				        <c:if test="${prodSelect.next}">

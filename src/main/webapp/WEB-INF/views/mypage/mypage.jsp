@@ -314,35 +314,35 @@
 		<div class="status">
 			<div class="item">
 				<div>
-					<div class="green number">77</div>
+					<div class="green number">${map.myOrder}</div>
 					<div class="text">주문 완료</div>
 				</div>
 				<div class="icon">></div>
 			</div>
 			<div class="item">
 				<div>
-					<div class="green number">6</div>
+					<div class="green number">${map.myPaid}</div>
 					<div class="text">결제 완료</div>
 				</div>
 				<div class="icon">></div>
 			</div>
 			<div class="item">
 				<div>
-					<div class="number">0</div>
+					<div class="number">${map.myDelivering}</div>
 					<div class="text">배송 중</div>
 				</div>
 				<div class="icon">></div>
 			</div>
 			<div class="item">
 				<div>
-					<div class="green number">109</div>
+					<div class="green number">${map.myDelivered}</div>
 					<div class="text">배송 완료</div>
 				</div>
 				<div class="icon">></div>
 			</div>
 			<div class="item">
 				<div>
-					<div class="green number">3</div>
+					<div class="green number">${map.myConfirmation}</div>
 					<div class="text">구매 확정</div>
 				</div>
 			</div>

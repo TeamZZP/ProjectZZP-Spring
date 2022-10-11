@@ -76,12 +76,39 @@ public class MypageController {
 		int myStamp=service.countStamp(userid);
 		int myChallenge=service.countChallenge(userid);
 		//System.out.println("리뷰:"+myReview+" 쿠폰:"+myCoupon+" 스탬프:"+myStamp+" 챌린지:"+myChallenge);
+		HashMap<String, String> m=new HashMap<String, String>();
+		m.put("userid", userid);
+		//주문완료
+		m.put("order_state", "주문완료");
+		int order=service.countOrder(m);
+		//결제완료
+		m.put("order_state", "결제완료");
+		int paid=service.countOrder(m);
+		//배송중
+		m.put("order_state", "배송중");
+		int delivering=service.countOrder(m);
+		//배송완료
+		m.put("order_state", "배송완료");
+		int delivered=service.countOrder(m);
+		//구매확정
+		m.put("order_state", "구매확정");
+		int confirmation=service.countOrder(m);
+		System.out.println("주문완료 : "+order+"\t"
+						  +"결제완료 : "+paid+"\t"
+						  +"배송중 : "+delivering+"\t"
+						  +"배송완료 : "+delivered+"\t"
+						  +"구매확정 : "+confirmation);
 		
 		HashMap<String, Integer> map=new HashMap<String, Integer>();
 		map.put("myReview", myReview);
 		map.put("myCoupon", myCoupon);
 		map.put("myStamp", myStamp);
 		map.put("myChallenge", myChallenge);
+		map.put("myOrder", order);
+		map.put("myPaid", paid);
+		map.put("myDelivering", delivering);
+		map.put("myDelivered", delivered);
+		map.put("myConfirmation", confirmation);
 		System.out.println("map>>>"+map);
 		
 		ModelAndView mav=new ModelAndView();

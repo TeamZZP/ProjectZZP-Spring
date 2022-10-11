@@ -50,7 +50,7 @@ public class OrderController {
 	
 	
 		//주문하기페이지
-		@RequestMapping(value = "orders/checkout", method = RequestMethod.POST)
+		@RequestMapping(value = "/orders/checkout", method = RequestMethod.POST)
 		  public ModelAndView orders(HttpSession session,CartDTO cdto,@RequestParam HashMap<String, String> map) {
 			 
 			  System.out.println(cdto.toString());
@@ -74,11 +74,11 @@ public class OrderController {
 		  }
 		 
 		 //주문추가
-		 @RequestMapping("/orders")
+		@RequestMapping(value = "/orders", method = RequestMethod.POST)
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, String discount,
-			 int order_quantity,String delivery_address,String delivery_req, int item_price,
+			 int order_quantity,String delivery_address,String delivery_req, @RequestParam("item_price")int[] item_price,
 			 int total_price, String payment, String coupon_id,int sum_money, int fee) {
-			
+			 System.out.println("개별상품 가격 : "+item_price);
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
@@ -103,7 +103,7 @@ public class OrderController {
 				 odto.setDelivery_address(delivery_address);
 				 odto.setDelivery_req(delivery_req);
 				 odto.setOrder_quantity(order_quantity);
-				 odto.setTotal_price(item_price);
+				 odto.setTotal_price(item_price[i]);
 				 n += service.addOrder(odto); //오더저장
 				 if(n!=0){//오더 저장 성공시 list add
 					 olist.add(odto);
@@ -185,6 +185,7 @@ public class OrderController {
 			 mav.addObject("order_quantity", order_quantity); 
 			 mav.addObject("payment", payment);
 			 mav.addObject("sum_money", sum_money);
+			 mav.addObject("total_price", total_price);
 			 mav.addObject("fee", fee);
 			 mav.setViewName("orderSuccess");
 			 mav.addObject("addrList", addrList);

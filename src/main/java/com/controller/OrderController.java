@@ -76,9 +76,12 @@ public class OrderController {
 		 //주문추가
 		 @RequestMapping("/orders")
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, String discount,
-			 int order_quantity,String delivery_address,String delivery_req, int item_price,
+			 int order_quantity,String delivery_address,String delivery_req, int item_price, String post_num, String addr1,  String addr2, 
 			 int total_price, String payment, String coupon_id,int sum_money, int fee) {
-			
+			System.out.println("delivery_address>>"+delivery_address);
+			System.out.println("post_num"+post_num+"addr1"+addr1+"addr2"+addr2);
+			 
+			 delivery_address = post_num+addr1+addr2;
 			 MemberDTO mdto = (MemberDTO) session.getAttribute("login");
 			 List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  //주소가져오기
 			 OrderDTO odto = new OrderDTO();
@@ -179,7 +182,7 @@ public class OrderController {
 			 System.out.println(formatedNow);
 
 			
-			 
+			 mav.addObject("delivery_address", delivery_address);
 			 mav.addObject("formatedNow", formatedNow);
 			 mav.addObject("coupon_id", coupon_id);
 			 mav.addObject("order_quantity", order_quantity); 

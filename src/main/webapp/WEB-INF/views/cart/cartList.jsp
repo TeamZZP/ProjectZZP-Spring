@@ -43,7 +43,7 @@ a:hover {
 <div class="container">
 	<div class="row">
 		<div class="btn-group" role="group" aria-label="Basic example">
-			<button type="button" class="btn btn-outline-success" id="cart">
+			<button type="button" class="btn btn-success" id="cart" >
 				장바구니(<span id="cartCount">${map.cartCount}</span>)</button>
 			<button type="button" class="btn btn-outline-success" id="like" onclick="location.href='${contextPath}/like/${login.userid}';">
 			 찜한상품(${map.likeCount})
@@ -168,25 +168,7 @@ a:hover {
 		</c:otherwise> 
 	</c:choose>
 </div>
-<!-- Modal 시간나면 삭제버튼 모달과 연결 -->
-<!-- <div id="deleteModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">ZZP</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        선택한 상품을 삭제하시겠습니까? 
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="delProdBtn btn btn-success">삭제</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-      </div>
-    </div> 
-  </div>
-</div> 
- -->
+
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>

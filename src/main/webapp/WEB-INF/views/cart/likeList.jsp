@@ -132,7 +132,7 @@ a {
 								
 								<div style="">
 								<!-- 찜 -->
-								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline; text-align: center;">
+								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline; text-align: center; cursor:pointer;">
 									<c:if test="${!empty zzimList}">
 								   	 	 <spring:eval var="zzim" expression="zzimList.contains(${like.p_id})" />
 								   	   </c:if>

@@ -2,7 +2,6 @@ package com.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -250,5 +249,16 @@ public class QuestionController {
 		System.out.println("이미지 주소 " + img);
 		m.addAttribute("img", img);
 		return "showImg";
+	}
+	/**
+	 * 상품 상세보기 Q&A 답변보기
+	 * @return 
+	 */
+	@RequestMapping(value = "/product/qna", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+	public @ResponseBody String prodQna(String q_id){
+		System.out.println("답변 볼 게시글 번호 " + q_id);
+		AnswerDTO aDTO = aService.answerSelect(q_id);
+		System.out.println(aDTO);
+		return aDTO.getAnswer_content();
 	}
 }

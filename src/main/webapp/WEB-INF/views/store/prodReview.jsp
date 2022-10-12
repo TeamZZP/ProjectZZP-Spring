@@ -33,7 +33,6 @@
 	});//end ready
 </script>
 
-
 <div style="text-align: center; color: gray;"> 구매후기 </div>
 	<table class="review" style="text-align: center;">
 		<tr>
@@ -62,7 +61,7 @@
 			<td>${rDTO.review_rate}</td>
 		</tr>
 		<tr id="hiden${rDTO.review_id}" style="display: none;">
-			<td colspan="6" style="text-align: right; padding-right: 50px;">${rDTO.review_content}</td>
+			<td colspan="6" style="text-align: right; padding-right: 50px;"> <b style="margin: 0px 82px;"> ${rDTO.review_content} </b> </td>
 		</tr>
 		</c:forEach>
 	</table>

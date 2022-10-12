@@ -308,7 +308,7 @@ $(document).ready(function() {
                             				<c:if test="${empty email2}">이메일선택</c:if><c:if test="${!empty email2}">${email2}</c:if></option>
 									        <option value="daum.net">daum.net</option>
 									        <option value="naver.com">naver.com</option>
-									        <option value="google.com">gmail.com</option>
+									        <option value="gmail.com">gmail.com</option>
 					            		</select>
 									  </div>
 									</div>

@@ -111,11 +111,11 @@ function zzimFunc(p_id) {
               <c:otherwise>
                <tr>
                
-                <table style="display: inline; ">
+                <table style="display: inline;">
                       <tr>
                         <td >
                            <img id="anotheImage" value="${image.image_route}"
-                              src="/zzp/resources/images/product/p_image/${image.image_route}"
+                              src="/upload/product/${image.image_route}"
                            	 class="anotheImage" style="width: 100px; height: 100px;"  > 
                         </td>
                     </tr>

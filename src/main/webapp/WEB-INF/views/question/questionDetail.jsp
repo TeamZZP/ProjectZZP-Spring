@@ -41,7 +41,8 @@
 				},
 		        dataType: "text",
 				success: function (data, status, xhr) {
-					alert("답변 완료");
+					$("#modal").trigger("click");
+					$("#mesg").text("답변이 작성되었습니다.");
 					$("#answerCheck").text($("#answer").val());
 					$("#answer").val("");
 				},
@@ -153,3 +154,24 @@
 	</div>
 	</div>
 	</form>
+	
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#questionModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

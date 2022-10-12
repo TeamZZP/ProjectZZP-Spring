@@ -25,7 +25,7 @@ $(document).ready(function () {
 	});
 	//회원 상세보기
 	$(".oneMember").on("click", function () {
-		location.href = "AccountManagementServlet?memberId="+$(this).attr("data-id");
+		location.href = "/zzp/admin/member/"+$(this).attr("data-id");
 	});
 	//문의 상세보기
 	$(".oneQuestion").on("click", function () {
@@ -146,8 +146,12 @@ $(document).ready(function () {
 	    	</tr>
 	    	
 	    <c:forEach var="m" items="${memberList}" end="${memberListSize}">
+	    		<c:choose>
+	      		  <c:when test="${fn:contains(m.userid,'@')}"><c:set var="userid" value="${fn:split(m.userid,'@')[0]}@..."/></c:when>
+	      		  <c:otherwise><c:set var="userid" value="${m.userid}"/></c:otherwise>
+	      		</c:choose>
 	    	<tr class="oneMember" data-id="${m.userid}">
-	    		<td>${m.userid}</td>
+	    		<td>${userid}</td>
 	    		<td>${m.username}</td>
 	    		<td>${m.email1}@${m.email2}</td>
 	    	</tr>

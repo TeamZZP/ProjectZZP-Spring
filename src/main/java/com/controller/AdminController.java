@@ -57,7 +57,7 @@ public class AdminController {
 	public String admin(Model model) {
 		//총 판매액
 		double sales = service.getTotalSales();
-		DecimalFormat df = new DecimalFormat("\u00A4 #,###");
+		DecimalFormat df = new DecimalFormat("###,###");
 		//판매액 증가율
 		double origin = sales - service.getTodaySales();
 		double salesIncrease = (sales-origin)/origin*100;

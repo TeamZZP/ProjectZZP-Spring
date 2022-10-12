@@ -82,6 +82,7 @@ public class StoreController {
 		if(c_id==6) {
 			banner = 
 					"<img style='position: relative; padding-left: 230px; padding-bottom:10px;' id='banner' alt=''src='/zzp/resources/images/main/banner_sale.png'>" ;
+
 		}
 		
 		mav.addObject("mdto", mdto);

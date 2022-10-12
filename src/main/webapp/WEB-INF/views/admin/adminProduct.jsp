@@ -120,7 +120,8 @@
 					<option value="p_selling_price" <c:if test="${searchName=='p_selling_price'}">selected</c:if>>판매가</option>
 					<option value="p_created" <c:if test="${searchName=='p_created'}">selected</c:if>>등록일</option>
 				</select> 
-				<input type="text" name="searchValue" class="form-control searchValue" <c:if test="${!empty searchName && searchValue!='null'}">selected</c:if>>
+				<input type="text" name="searchValue" class="form-control searchValue" <c:if test="${!empty searchValue && searchValue!='null'}">value="${searchValue}"</c:if>
+				placeholder="상품 검색">
 				<button type="button" class="btn btn-success" id="searchProd" style="margin-top: -5px;">검색</button>
 			</div>
 			<!-- 정렬 -->

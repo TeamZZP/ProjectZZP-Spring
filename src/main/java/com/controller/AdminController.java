@@ -430,7 +430,7 @@ public class AdminController {
 			@RequestParam("stamp_img") CommonsMultipartFile stamp_img) {
 		String challOriginalFileName= chall_img.getOriginalFilename();
 		String stampOriginalFileName= stamp_img.getOriginalFilename();
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		String location = "challenge";
 		
 		Upload.uploadFile(location, chall_img);
 		Upload.uploadFile(location, stamp_img);
@@ -462,7 +462,7 @@ public class AdminController {
 			@RequestParam("stamp_img") CommonsMultipartFile stamp_img) {
 		String challOriginalFileName= chall_img.getOriginalFilename();
 		String stampOriginalFileName= stamp_img.getOriginalFilename();
-		String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+		String location = "challenge";
 		
 		String old_file = map.get("old_file");
 		String old_stamp = map.get("old_stamp");
@@ -505,7 +505,7 @@ public class AdminController {
 		if (challNum == 1) {
 			rttr.addFlashAttribute("mesg", "다른 챌린지 게시글을 작성한 후 삭제 가능합니다.");
 		} else {
-			String location = "C://eclipse//spring_zzp//workspace//ProjectZZP-Spring//src//main//webapp//resources//upload//challenge";
+			String location = "challenge";
 			ChallengeDTO dto = chService.selectOneChallenge(chall_id);
 			Upload.deleteFile(location, dto.getChall_img());
 			Upload.deleteFile(location, dto.getStamp_img());

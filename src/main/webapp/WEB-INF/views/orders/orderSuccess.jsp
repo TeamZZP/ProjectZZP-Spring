@@ -153,8 +153,9 @@
                                            <td>${addrList[0].receiver_phone}</td>
                                         </tr>
                                         <tr>
+                                        
                                            <th>주소</th>
-                                           <td>${addrList[0].addr1}${addrList[0].addr2}</td>
+                                           <td>${delivery_address}</td>
                                         </tr>
                                      </table>
                                      

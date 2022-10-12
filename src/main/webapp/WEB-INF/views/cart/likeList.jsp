@@ -101,7 +101,7 @@ a {
 			<button type="button" class="btn btn-outline-success" id="cart"
 				onclick="location.href='${contextPath}/cart/${login.userid}';">
 				장바구니(${cartCount})</button>
-			<button type="button" class="btn btn-outline-success" id="like">
+			<button type="button" class="btn btn-success" id="like">
 				찜한상품(<span id="likeCount">${likeCount}</span>)</button>
 		</div>
 	</div>
@@ -132,7 +132,7 @@ a {
 								
 								<div style="">
 								<!-- 찜 -->
-								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline; text-align: center;">
+								<div class="zzim_area" id="zzim_area${ike.p_id}" style="display: inline; text-align: center; cursor:pointer;">
 									<c:if test="${!empty zzimList}">
 								   	 	 <spring:eval var="zzim" expression="zzimList.contains(${like.p_id})" />
 								   	   </c:if>

@@ -2,7 +2,6 @@ package com.controller;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -41,7 +40,7 @@ public class QuestionController {
 	@RequestMapping(value = "/qna", method = RequestMethod.GET)
 	public String questionList(@RequestParam Map<String, String> map, Model m, HttpSession session) {
 		PageDTO pDTO = new PageDTO();
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		
 		pDTO = qService.questionPage(curPage);
 		System.out.println("pDTO " + pDTO);
@@ -55,7 +54,7 @@ public class QuestionController {
 	 * 큐엔에이 글 쓰러가기
 	 */
 	@RequestMapping(value = "/qna/write", method = RequestMethod.GET)
-	public String questionInsert(HttpSession session, Model m, Map<String,String> map) {
+	public String questionInsert(HttpSession session, Model m, @RequestParam Map<String,String> map) {
 		System.out.println("상품상세보기에서 글쓰기 " + map);
 		
 		m.addAttribute("mDTO", session.getAttribute("login"));
@@ -250,5 +249,16 @@ public class QuestionController {
 		System.out.println("이미지 주소 " + img);
 		m.addAttribute("img", img);
 		return "showImg";
+	}
+	/**
+	 * 상품 상세보기 Q&A 답변보기
+	 * @return 
+	 */
+	@RequestMapping(value = "/product/qna", method = RequestMethod.GET, produces = "text/plain;charset=UTF-8")
+	public @ResponseBody String prodQna(String q_id){
+		System.out.println("답변 볼 게시글 번호 " + q_id);
+		AnswerDTO aDTO = aService.answerSelect(q_id);
+		System.out.println(aDTO);
+		return aDTO.getAnswer_content();
 	}
 }

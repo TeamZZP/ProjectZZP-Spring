@@ -33,7 +33,6 @@
 	});//end ready
 </script>
 
-<c:if test="${!empty pordReview}">
 <div style="text-align: center; color: gray;"> 구매후기 </div>
 	<table class="review" style="text-align: center;">
 		<tr>
@@ -52,8 +51,8 @@
 			<td><img alt="리뷰" src="/zzp/resources/images/review/review.png" width="45px" height="45px"></td>
 			<td>${rDTO.review_id}</td>
 			<td>
-				<a style="text-decoration: none; color: black;" href="ProfileMainServlet?userid=${rDTO.userid}"> 
-					<img alt="프로필" src="/zzp/resources/upload/profile/${rDTO.profile_img}" width="40px" height="40px">
+				<a style="text-decoration: none; color: black;" href="/zzp/profile/${rDTO.userid}"> 
+					<img alt="프로필" src="/upload/profile/${rDTO.profile_img}" width="40px" height="40px">
 					&nbsp;&nbsp; ${rDTO.userid} 
 				</a>
 			</td>
@@ -62,8 +61,7 @@
 			<td>${rDTO.review_rate}</td>
 		</tr>
 		<tr id="hiden${rDTO.review_id}" style="display: none;">
-			<td colspan="6" style="text-align: right; padding-right: 50px;">${rDTO.review_content}</td>
+			<td colspan="6" style="text-align: right; padding-right: 50px;"> <b style="margin: 0px 82px;"> ${rDTO.review_content} </b> </td>
 		</tr>
 		</c:forEach>
 	</table>
-</c:if>

@@ -86,6 +86,7 @@ $(document).ready(function () {
 		  <div class="col">
 			  <select name="searchName" class="form-select" data-style="btn-info" id="inputGroupSelect01">
 				   <option selected disabled hidden>검색 기준</option>
+				   <option value="order_id" <c:if test="${searchName=='order_id'}">selected</c:if>>주문 번호</option>
 				   <option value="o.userid" <c:if test="${searchName=='o.userid'}">selected</c:if>>주문자</option>
 				   <option value="p_name" <c:if test="${searchName=='p_name'}">selected</c:if>>상품명</option>
 				   <option value="order_date" <c:if test="${searchName=='order_date'}">selected</c:if>>주문일</option>

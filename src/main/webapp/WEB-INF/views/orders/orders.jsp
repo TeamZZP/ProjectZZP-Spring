@@ -39,85 +39,71 @@
 <script type="text/javascript">
    $(function() {
       
-      /* $("#AddOrder").on("click", function() {
-         $("form").attr("action", "addOrder");
-      }); */
- 
+      
       $("#delivery_req").on("change", function() {
          console.log($("#delivery_req").val());
       });
       
       //폼 제출 유효성 검사
       function checkValidity() {
+    	
          var receiver_name = $("#receiver_name").val();
-         var email1 = $("#email1").val();
-         var email2 = $("#email2").val();
          var receiver_phone = $("#receiver_phone").val();
-
-         /*    var address_name=$("#inputAddressName").val(); */
-
-         var post_num = $("#sample4_postcode").val();
-         var addr1 = $("#sample4_roadAddress").val();
-         var addr2 = $("#sample4_jibunAddress").val();
-         var numChk = /^[0-9]*.{11}$/;
-         //var check=$("#gridCheck").val();
-
-         if (receiver_name == "" || receiver_phone == ""
-               || post_num == "" || addr1 == "" || addr2 == "") {//공백 불가  
+   	
+         var numChk = /^01(0|1[6-9])(\d{3,4})(\d{4})$/; 
+        
+		 var post_num= $("#sample4_postcode").val(); 
+         var addr1= $("#sample4_roadAddress").val();
+         var addr2= $("#sample4_jibunAddress").val();
+         
+         event.preventDefault();
+         
+         if (receiver_name.length==0) {//공백 불가  
             $("#modalBtn").trigger("click");
-            $("#mesg").text("배송 정보를 입력해주세요.");
+            $("#mesg").text("이름을 입력해주세요.");
             return false;
-         } else if (receiver_phone != ""
-               && !numChk.test(receiver_phone)) {//연락처는 숫자 11자리만 가능
+            
+         }else if(post_num.length==0 || addr1.length==0 ||addr2.length==0){
+        	 $("#modalBtn").trigger("click");
+             $("#mesg").text("주소를 입력해주세요.");
+             return false;
+          
+      	}else if(receiver_phone.length==0){
+      		 $("#modalBtn").trigger("click");
+             $("#mesg").text("전화번호를 입력해주세요.");
+             return false;
+             
+      	} else if (!numChk.test(receiver_phone)){//연락처는 숫자 11자리만 가능
             $("#modalBtn").trigger("click");
-            $("#mesg").text("11자리를  입력해주세요.");
+            $("#mesg").text("전화번호를 형식에 맞게 입력해주세요");
             $("#receiver_phone").val("");
             $("#receiver_phone").focus();
             return false;
-         } else if (receiver_name.length > 5) {
+            
+         }else if (receiver_name.length > 5) {
             $("#modalBtn").trigger("click");
             $("#mesg").text("수령인은 5글자 이내로 입력해주세요.");
             $("#receiver_name").val("");
             $("#receiver_name").focus();
             return false;
          }
+         
          return true;
+       
       }
 
 
 	//주문하기 - 결제방식에 따라
 	$("#addOrder").on("click", function () {
-		event.preventDefault();
+		
         
-		if(checkValidity()) {
+		 if(checkValidity()) {
 			let payment = $(".payment:checked").val();
           
 
 			if (payment=="계좌이체") {
 				$("#orderForm").submit();
 			}
-	          
-			else if (payment=="카드결제") {
-				var clientKey = 'test_ck_YyZqmkKeP8gk5150MmO8bQRxB9lG'
-				var tossPayments = TossPayments(clientKey);
-				
-				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
-				total_amount = parseInt(total_amount);
-	
-				let quantity='${fn:length(cartList)}';
-				let item_name = $(".pName:first").text(); //상품명
-				item_name += (quantity > 1)? ' 외 '+(quantity-1)+'건' : '';
-				
-				tossPayments.requestPayment('카드', {
-		              amount: total_amount,
-		              orderId: 'a5159c-f911-ag35',
-		              orderName: item_name,
-		              customerName: 'zzp',
-		              successUrl: window.location.origin+'/zzp/pay/toss/success',
-		              failUrl: window.location.origin+'/zzp/pay/toss/fail',
-		            })
-	         
-			}//end tosspay
 	          
 			else if (payment=="카카오페이") {
 				let total_amount = $("#total").text().replace(/,/g, ""); //상품금액
@@ -143,11 +129,12 @@
 						window.open(data, "kakao", "width=" + new_window_width + ", height=" + new_window_height + ", top=" + positionY + ", left=" + positionX);
 	  				},
 					error: function() {
-	                  alert("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.")
+						 $("#modalBtn").trigger("click");
+				         $("#mesg").text("이용에 불편을 드려 죄송합니다. 다시 시도해 주세요.");
 	  				}
 				})
 			}//end kakaopay
-		}//end if 
+		}//end if  
 	})//end addOrder
 
       
@@ -257,12 +244,13 @@
                      <td>
                         <div class="input-group">
                            <span class="input-group-addon"><i
-                              class="fa fa-users fa" aria-hidden="true"></i></span> <input
-                              type="text" name="post_num" id="sample4_postcode"
+                              class="fa fa-users fa" aria-hidden="true"></i>
+                              </span> <input type="text" name="post_num" id="sample4_postcode"
                               value="${addr.post_num}" placeholder="우편번호"
-                              class="form-control"> <input type="button"
-                              onclick="sample4_execDaumPostcode()" value="우편번호 찾기"
+                              class="form-control"> <input type="button"  id="findPost"
+                              onclick="sample4_execDaumPostcode()" value="우편번호 찾기" 
                               class=" btn btn-outline-success"><br>
+                                 
                         </div>
                      </td>
                      <td></td>
@@ -274,8 +262,10 @@
                      <td><input type="text" name="addr2"
                         id="sample4_jibunAddress" placeholder="상세주소를 입력해주세요"
                         class="form-control" value="${addr.addr2}"></td>
-                        
-                  <input type="hidden" id="delivery_address" name="delivery_address" value="${addr.addr1}${addr.addr2}">
+                        <span id="guide" style="color:#999"></span> 
+                  <input type="hidden" id="delivery_address" name="delivery_address" value="${addr.post_num}${addr.addr1}${addr.addr2}">
+             
+                 
                         
                      <td><button type="button" class=" btn btn-outline-success" id="other"
                            data-bs-toggle="modal" data-bs-target="#otherAddr">다른배송지</button></td>
@@ -336,14 +326,11 @@
                      <th style="font-size: 20px; font-weight: bold;">결제 정보</th>
                   </tr>
                   <tr style="border-bottom-width: 1px; border-color: green; ">
-
-                     <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;"  
-                           value="카드결제" checked>카드결제</label></td>
+					<td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
+                           value="카카오페이" checked>카카오페이</label></td>
                      <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
                            value="계좌이체">계좌이체</label></td>
-                     <td><label><input type="radio" name="payment"  class="payment" style="accent-color:green;" 
-                           value="카카오페이">카카오페이</label></td>
-                  </tr>
+                    </tr>
 
 
 
@@ -443,7 +430,7 @@
 
 
 <!-- 모달 -->
-<div class="modal" id="modal" data-bs-backdrop="static">
+<!-- <div class="modal" id="modal" data-bs-backdrop="static">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -459,7 +446,7 @@
   </div>
 </div>
 <button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
-
+ -->
 
 <script type="text/javascript"
    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -536,6 +523,8 @@
       //우편번호 찾기 클릭시 기존 입력 데이터 초기화
       $("#findPost").on("click", function() {
          $("#sample4_jibunAddress").val("");
+        
+         
       });//end fn
 
 
@@ -553,7 +542,8 @@
           $("#sample4_postcode").val(otherPost); 
           $("#sample4_roadAddress").val(otherAddr1);
           $("#sample4_jibunAddress").val(otherAddr2);
-          
+         
+          $("#delivery_address").val(otherPost+otherAddr1+otherAddr2);
       
       }); //end
 

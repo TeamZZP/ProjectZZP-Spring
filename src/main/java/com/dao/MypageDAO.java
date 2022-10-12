@@ -97,4 +97,8 @@ public class MypageDAO {
 		System.out.println("프로필 업데이트 : "+n);
 	}
 
+	public int countOrder(HashMap<String, String> m) {
+		return session.selectOne("MypageMapper.countOrder", m);
+	}
+
 }

@@ -26,6 +26,15 @@
 	.challengeDetail {
 		cursor: pointer;
 	}
+	#modalBtn{
+		display: none;
+	}
+	.modal-body{
+		text-align: center;
+	}
+	#mesg{
+		margin: 0;
+	}
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -160,7 +169,7 @@ $(document).ready(function () {
 			  <div class="modal-dialog">
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h5 class="modal-title" id="staticBackdropLabel">게시글 삭제</h5>
+			        <h5 class="modal-title" id="staticBackdropLabel">ZZP</h5>
 			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			      </div>
 			      <div class="modal-body">

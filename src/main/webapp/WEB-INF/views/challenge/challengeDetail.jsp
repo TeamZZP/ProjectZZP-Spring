@@ -89,6 +89,15 @@ a {
 	left: 65%; 
 	top: -3%; 
 }
+#modalBtn{
+	display: none;
+}
+.modal-body:not(.report-body){
+	text-align: center;
+}
+#mesg{
+	margin: 0;
+}
 </style>
 
 
@@ -116,21 +125,32 @@ a {
 		}
 		//처음 페이지 로딩시 댓글 조회
 		getComments('${cDTO.chall_id}', 1);
-		//글 삭제
-		$('#deleteChallenge').on('click', function () {
-			let mesg = '정말 삭제하시겠습니까? 한번 삭제한 글은 되돌릴 수 없습니다.';
-			if (confirm(mesg)) {
-				$.ajax({
-					url: '/zzp/challenge/${cDTO.chall_id}',
-					type: 'DELETE',
-					success: function () {
-						location.href = '/zzp/challenge';
-					},
-					error: function () {
-						alert('문제가 발생했습니다. 다시 시도해 주세요.');
+		//챌린지 삭제 모달
+	 	$("#deleteModal").on("shown.bs.modal", function (e) {
+	 		let button = e.relatedTarget;
+			let cid = button.getAttribute("data-bs-cid")
+			$("#delchall_id").val(cid);
+		});
+		//챌린지 삭제
+		$(".delChallBtn").on("click", function (e) {
+			let chall_id = $("#delchall_id").val()
+			$.ajax({
+				url: '/zzp/challenge/${cDTO.chall_id}',
+				type: 'DELETE',
+				success: function () {
+					let preUrl = document.referrer;
+					if (preUrl.includes("mypage")) {
+						location.href = "/zzp/mypage/${login.userid}/challenge";
+					} else if (preUrl.includes("profile")) {
+						location.href = "/zzp/profile/${login.userid}";
+					} else {
+						location.href = "/zzp/challenge";
 					}
-				})
-			}
+				},
+				error: function () {
+					alert('문제가 발생했습니다. 다시 시도해 주세요.');
+				}
+			})
 		});
 		//댓글 페이징
  		$('#comment_area').on('click', '.paging', function() {
@@ -140,7 +160,8 @@ a {
 		$(".comment").on("click", ".commentAddBtn", function () {
 			let content = $(".comment_content");
 			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else if (content.val().length == 0) {
 				content.focus();
 			} else {
@@ -174,7 +195,8 @@ a {
 			let comment_content = content.val().substring(parent.length+3);
 			
 			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else if (comment_content.trim().length == 0) {
 				content.focus();
 			} else {
@@ -200,30 +222,34 @@ a {
 				});
 			}
 		});
-		//댓글 삭제 
-		$("#comment_area").on("click", ".commentDelBtn", function () { 
-			let mesg = "정말 삭제하시겠습니까?";
-			if (confirm(mesg)) {
-				let cid = $(this).attr("data-cid");
-				$.ajax({
-					type:"delete",
-					url:"/zzp/challenge/comment/"+cid,
-					headers: {
-						"Content-Type":"application/json"
-					},
-					data: JSON.stringify( 
-							{'chall_id':'${cDTO.chall_id}'} 
-					),
-					dataType:"text",
-					success: function (data) {
-						getComments('${cDTO.chall_id}', data);
-						countComments();
-					},
-					error: function () {
-						alert("문제가 발생했습니다. 다시 시도해 주세요.");
-					}
-				});
-			} 
+		//댓글 삭제 모달
+	 	$("#deleteCommentModal").on("shown.bs.modal", function (e) {
+	 		let button = e.relatedTarget;
+			let cid = button.getAttribute("data-bs-cid")
+			$("#delcomment_id").val(cid);
+		});
+		//댓글 삭제
+		$(".delCommentBtn").on("click", function (e) {
+			let cid = $("#delcomment_id").val()
+			$.ajax({
+				type:"delete",
+				url:"/zzp/challenge/comment/"+cid,
+				headers: {
+					"Content-Type":"application/json"
+				},
+				data: JSON.stringify( 
+						{'chall_id':'${cDTO.chall_id}'} 
+				),
+				dataType:"text",
+				success: function (data) {
+					getComments('${cDTO.chall_id}', data);
+					countComments();
+					$('#deleteCommentModal').modal('hide');
+				},
+				error: function () {
+					alert("문제가 발생했습니다. 다시 시도해 주세요.");
+				}
+			});
 		});
 		//댓글 수정 
 		$("#comment_area").on("click", ".commentUpdateBtn", function () { 
@@ -283,7 +309,8 @@ a {
 		//댓글 답글 창 보이기
 		$("#comment_area").on("click", ".reply", function () {
 			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				let comment_id = $(this).attr("data-cid");
 				let commentUserid = $(this).attr("data-user");
@@ -313,7 +340,8 @@ a {
 		//좋아요 추가/삭제
 		$("#liked_area").on("click", ".liked", function () {
 			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.");
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				$.ajax({
 					type:"post",
@@ -374,7 +402,8 @@ a {
 		//신고 버튼
 		$(".reportBtn").on("click", function () {
 			if ("${empty login}" == "true") {
-				alert("로그인이 필요합니다.")
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else if ($("input[type='radio']:checked").length == 0) {
 				alert("신고 사유를 선택해 주세요.")
 			} else {
@@ -394,9 +423,11 @@ a {
 					dataType:"text",
 					success: function (data) {
 						if (data=="true") {
-							alert("신고가 완료되었습니다.")
+							$("#modalBtn").trigger("click");
+							$("#mesg").text("신고가 완료되었습니다.");
 						} else {
-							alert("이미 신고한 글입니다.")
+							$("#modalBtn").trigger("click");
+							$("#mesg").text("이미 신고한 글입니다.");
 						}
 						$("#reportModal").modal("toggle")
 					},
@@ -458,18 +489,20 @@ function displayedAt(createdAt) {
 	 <div class="col-lg-7">
 	  <table class="table table-borderless" style="margin: 0 auto;">
 		<tr>
-			<td width="25%">${cDTO.chall_category}</td>
-			<td rowspan="2" class="fs-4 fw-bold">${cDTO.chall_title}</td>
+			<td width="25%" style="vertical-align: bottom;"><span class="fs-6 badge bg-success">${cDTO.chall_category}</span></td>
+			<td rowspan="2" class="fs-4 fw-bold text-center" style="vertical-align: bottom;">${cDTO.chall_title}</td>
 			<td class="text-end">
 				<c:choose>
 				<%-- 해당 게시글의 글쓴이인 경우 --%>
 					<c:when test="${!empty login && login.userid==cDTO.userid}">
 						<a href="/zzp/challenge/write/${cDTO.chall_id}" class="btn btn-outline-success">수정</a> 
-						<a href="#" id="deleteChallenge" class="btn btn-outline-success">삭제</a>
+						<button type="button" class="btn btn-outline-success" 
+								data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-cid="${cDTO.chall_id}">삭제</button>
 					</c:when>
 				<%-- 관리자인 경우 --%>
 					<c:when test="${!empty login && login.role==1}">
-						<a href="#" id="deleteChallenge" class="btn btn-outline-success">삭제</a>
+						<button type="button" class="btn btn-outline-success" 
+								data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-cid="${cDTO.chall_id}">삭제</button>
 					</c:when>
 				<%-- 그외의 경우 --%>
 					<c:otherwise>
@@ -486,7 +519,7 @@ function displayedAt(createdAt) {
 		<tr>
 			<td colspan="2">
 			    <a href="/zzp/profile/${cDTO.userid}">
-				   <img src="/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3" onerror="this.src='/zzp/resources/images/error/user.png'"></a>
+				   <img src="/upload/profile/${cDTO.profile_img}" width="50" height="50" class="ms-5 mx-3 rounded-circle" onerror="this.src='/zzp/resources/images/error/user.png'"></a>
 				<a href="/zzp/profile/${cDTO.userid}">${cDTO.userid}</a>
 			</td>
 		</tr>
@@ -562,7 +595,7 @@ function displayedAt(createdAt) {
 		  </div>
 		  <div class="col">
 		    <div class="float-end">
-		  	  <a href="ChallengeUIServlet" class="btn btn-outline-success">글쓰기</a>
+		  	  <a href="/zzp/challenge/write" class="btn btn-outline-success">글쓰기</a>
 		  	</div>
 		  </div>
 		</div>
@@ -586,7 +619,7 @@ function displayedAt(createdAt) {
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">신고 사유를 선택해 주세요</h5>
       </div>
-      <div class="modal-body">
+      <div class="modal-body report-body">
           <div class="mb-3">
             <div class="form-check mb-2">
   				<input class="form-check-input" type="radio" name="report_reason" value="1">
@@ -629,3 +662,63 @@ function displayedAt(createdAt) {
   
   </div>
 </div>
+
+
+<!-- 모달 -->
+<div class="modal" id="checkVal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ZZP</h5>
+      </div>
+      <div class="modal-body">
+        <p id="mesg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+
+
+			<!-- Modal -->
+			<div id="deleteModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="delete-title">ZZP</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        정말 삭제하시겠습니까?
+			      </div>
+			      <div class="modal-footer">
+			        <input type="hidden" id="delchall_id">
+			        <button type="button" class="delChallBtn btn btn-success">삭제</button>
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			      </div>
+			    </div> 
+			  </div>
+			</div>
+			
+			<!-- Modal -->
+			<div id="deleteCommentModal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+			  <div class="modal-dialog">
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h5 class="modal-title" id="delete-title">ZZP</h5>
+			        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			      </div>
+			      <div class="modal-body">
+			        정말 삭제하시겠습니까?
+			      </div>
+			      <div class="modal-footer">
+			        <input type="hidden" id="delcomment_id">
+			        <button type="button" class="delCommentBtn btn btn-success">삭제</button>
+			        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+			      </div>
+			    </div> 
+			  </div>
+			</div>

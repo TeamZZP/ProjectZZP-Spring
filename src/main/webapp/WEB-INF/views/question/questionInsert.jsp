@@ -4,27 +4,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!--  <script src="resources/js/question/questionInsert.js"></script> -->
  <script>
  	$(function () {
  		$("#qTittle").focus();
- 		$("#questionInsert").click(function() {
+ 		$("#questionInsert").click(function () {
  			var qtittle = $("#qTittle").val();
  			var qContent = $("#qContent").val();
- 			if (qtittle.length == 0) {
- 				alert("제목을 입력하십시오");
- 				event.preventDefault();
- 			} else if (qContent.length == 0) {
- 				alert("내용을 입력하십시오");
- 				event.preventDefault();
- 			}
- 		});
-
+			if (qtittle.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("제목을 입력하십시오.");
+				event.preventDefault();
+			} else if (qContent.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("내용을 입력하십시오.");
+				event.preventDefault();
+			} else {
+				$("#questionForm").attr("action", "../qna");
+			}
+		});
  		$("#questionList").click(function() {
  			$("#questionForm").attr("method", "/zzp/qna").attr("action", "/zzp/qna");
- 		})
- 		$("#questionInsert").click(function() {
- 			$("#questionForm").attr("action", "../qna");
  		})
  		$("#prodSel").click(function() {
  			var url = "/zzp/qna/pop"
@@ -141,3 +140,24 @@
 </div>
 </div>
 </form>
+
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#questionModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 //@ControllerAdvice
 public class CommonExceptionAdvice {
-	
+	 
 	@ExceptionHandler(value = NoHandlerFoundException.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String handle404Exception(NoHandlerFoundException e, Model model) {

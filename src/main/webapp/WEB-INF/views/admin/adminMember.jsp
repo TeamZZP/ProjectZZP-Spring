@@ -31,7 +31,7 @@
 					<option value="userid"<c:if test="${searchName eq 'userid'}">selected</c:if>>아이디</option>
 					<option value="username"<c:if test="${searchName eq 'username'}">selected</c:if>>이름</option>
 					<option value="phone"<c:if test="${searchName eq 'phone'}">selected</c:if>>전화번호</option>
-					<option value="address"<c:if test="${searchName eq 'address'}">selected</c:if>>주소</option>
+					<option value="addr1"<c:if test="${searchName eq 'addr1'}">selected</c:if>>주소</option>
 				</select>
 			  <input type="text" name="searchValue" class="form-control searchValue"
 			  	<c:if test="${not empty searchName && searchValue != 'null'}">value="${searchValue}"</c:if>>

@@ -10,7 +10,7 @@
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript">
-  var naver_id_login = new naver_id_login("_ZZF2h9wjuLwjIB5RUOO","http://localhost:8102/zzp/naver");
+  var naver_id_login = new naver_id_login("_ZZF2h9wjuLwjIB5RUOO","http://zzp.co.kr/zzp/naver");
   
   //접근 토큰 값 출력
   //alert(naver_id_login.oauthParams.access_token);

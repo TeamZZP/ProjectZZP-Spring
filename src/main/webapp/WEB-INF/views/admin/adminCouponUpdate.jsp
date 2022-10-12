@@ -43,7 +43,7 @@
 		<table style="text-align: left; vertical-align: middle;">
 			<tr>
 				<td colspan="3"> 
-					<b>쿠폰 등록</b> <hr> 
+					<b>쿠폰 수정</b> <hr> 
 					<input type="hidden" name="coupon_id" value="${coupon.coupon_id}">
 				</td>
 			</tr>

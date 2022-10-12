@@ -134,7 +134,7 @@ a {
       
          <div class="hover-zoomin">
             <a href="/zzp/product/${pList.p_id}"> 
-            <img src="/zzp/resources/upload/product/${pList.p_image}">
+            <img src="/upload/product/${pList.p_image}">
             </a>
          </div>
          

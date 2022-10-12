@@ -75,14 +75,8 @@ public class OrderController {
 		 
 		 //주문추가
 		@RequestMapping(value = "/orders", method = RequestMethod.POST)
-<<<<<<< HEAD
-		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id, HttpSession session, String discount,
-			 int order_quantity,String delivery_address,String delivery_req, @RequestParam("item_price")int[] item_price,
-=======
 		 public ModelAndView addOrders(@RequestParam("p_id") int[] p_id,@RequestParam("item_price")int[] item_price, HttpSession session, String discount,
-
 			 int order_quantity,String delivery_address,String delivery_req, String post_num, String addr1,  String addr2, 
->>>>>>> 65f77bde7066e0671d012434b92052d6d2d73aa2
 			 int total_price, String payment, String coupon_id,int sum_money, int fee) {
 			
 			 delivery_address = post_num+addr1+addr2;

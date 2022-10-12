@@ -64,7 +64,7 @@
     <div class="col-lg-3 p-5">
 		<div class="card" style="width: 100%; height: 22rem;">
 		  <div class="text-center">
-	      <img class="card-img-top w-50 pt-4" src="/upload/profile/${profile.profile_img}"><br>
+	      <img class="card-img-top w-50 pt-4 rounded-circle" src="/upload/profile/${profile.profile_img}"><br>
 	      </div>
 	        <div class="card-body mt-4">
 		      <h3 class="card-title text-center fw-bold">${profile.userid}</h3>

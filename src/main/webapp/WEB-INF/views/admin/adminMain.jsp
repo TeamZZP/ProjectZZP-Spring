@@ -58,7 +58,7 @@ $(document).ready(function () {
 	<div class="card">
 	  <div class="card-body text-center">
 	    <h5 class="card-title">총 판매액</h5>
-	    <h2 class="card-text">${sales}</h2>
+	    <h2 class="card-text">\ ${sales}</h2>
 	    <h6 class="card-text percent" data-n="${salesIncrease}">${salesIncrease}</h6>
 	  </div>
 	</div>

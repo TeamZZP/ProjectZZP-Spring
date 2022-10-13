@@ -138,21 +138,16 @@ public class QuestionController {
 		String location = "qna";
 		
 		String oldFile = map.get("oldFile");
+		System.out.println("있던 사진명 " + oldFile);
 		
-		if(oldFile == null || oldFile.length() == 0) { //사진을 업로드 하는 경우 : 추가
+		if(oldFile == null || oldFile.length() == 0) {
 			Upload.uploadFile(location, uploadFile);
 			map.put("qna_img", originalFileName); 
-		} else if (originalFileName != oldFile) { //사진을 업로드 했었고 수정하는 경우 : 수정
-			Upload.uploadFile(location, uploadFile);
-			Upload.uploadFile(location, uploadFile);
-			map.put("qna_img", originalFileName);
-		} else { //사진 첫 업로드
+		} else if (originalFileName == null || originalFileName.length() == 0) { 
 			map.put("qna_img", oldFile);
-		}
-		Upload.uploadFile(location, uploadFile);
-		map.put("qna_img", originalFileName);
+		} 
 		
-		qService.questionUPdate(map);
+		qService.questionUpdate(map);
 		
 		attr.addFlashAttribute("mesg", "게시글이 수정 되었습니다.");
 		

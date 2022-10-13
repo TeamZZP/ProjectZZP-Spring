@@ -24,7 +24,7 @@
 		$("#p_cost_price").keyup(function() {
 			let p_cost_price = $(this).val();
 			let p_discount = $("#p_discount").val();
-			if (p_cost_price - p_discount>=0) {
+			if (p_cost_price - p_discount!=0 && p_cost_price - p_discount>0) {
 				$("#p_selling_price").val(p_cost_price - p_discount);
 			} else {
 				$("#p_selling_price").val("금액을 확인하세요");
@@ -34,7 +34,7 @@
 		$("#p_discount").keyup(function() {
 			let p_cost_price = $("#p_cost_price").val();
 			let p_discount = $(this).val();
-			if (p_cost_price - p_discount>=0) {
+			if (p_cost_price - p_discount!=0 && p_cost_price - p_discount>0) {
 				$("#p_selling_price").val(p_cost_price - p_discount);
 			} else {
 				$("#p_selling_price").val("금액을 확인하세요");
@@ -52,7 +52,7 @@
 			let image_rnk_2 = $("#image_route_2").val();
 			let image_rnk_3 = $("#image_route_3").val();
 			let image_rnk_4 = $("#image_route_4").val();
-			var numChk = /[0-9]/; 
+			var numChk = /^[0-9]*$/;
 			
 			if (c_id=='none') {
 				$("#modalBtn").click();
@@ -87,12 +87,13 @@
 			} else if (!numChk.test(p_cost_price)) {
 				$("#modalBtn").click();
 				event.preventDefault();
+			} else if (!numChk.test(p_discount)) {
+				$("#modalBtn").click();
+				event.preventDefault();
 			} else if (!checkFileExtension()) {
 				event.preventDefault();
-			} else if (mesg=="중복된 아이디입니다 :(") {
-				$("#modalBtn").trigger("click");
-				$("#mesg").text("아이디를 확인해주세요 :(");
-				$("#userid").val("");
+			} else if (p_selling_price=="금액을 확인하세요") {
+				$("#modalBtn").click();
 				event.preventDefault();
 			}
 		});

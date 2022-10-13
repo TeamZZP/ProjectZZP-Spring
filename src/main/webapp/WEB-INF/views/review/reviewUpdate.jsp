@@ -30,9 +30,13 @@
 	</script>
 </c:if>
 
- <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
+			$("input").keydown(function () {
+				if(event.keyCode == 13){
+					return false;
+				}
+			});
 			$("#review_title").focus();
 			$("#reviewInsert").click(function() {
 				var REVIEW_TITLE = $("#review_title").val();

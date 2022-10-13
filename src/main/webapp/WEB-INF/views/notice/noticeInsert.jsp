@@ -17,6 +17,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
+		$("input").keydown(function () {
+			if(event.keyCode == 13){
+				return false;
+			}
+		});
 		$("#nTittle").focus();
 		$("#noticeInsert").click(function () {
 			var nTittle = $("#nTittle").val();

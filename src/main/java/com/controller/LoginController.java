@@ -106,11 +106,12 @@ public class LoginController {
 	 * 비밀번호 찾기
 	 */
 	@RequestMapping(value = "/passwd" , method = RequestMethod.POST)
-	public String findPw(@RequestParam HashMap<String, String> map, RedirectAttributes m) {
+	public String findPw(@RequestParam HashMap<String, String> map, RedirectAttributes m, HttpSession session) {
 		System.out.println("findPw map : "+map);
 		MemberDTO dto = service.findPw(map);
+		System.out.println("findPw dto : "+dto);
 		if (dto!=null) {
-			m.addFlashAttribute("pwDTO", dto);
+			session.setAttribute("pwDTO", dto);
 			return "redirect:/passwd/result";
 		} else {
 			m.addFlashAttribute("mesg", "해당 회원 정보가 없습니다:(");

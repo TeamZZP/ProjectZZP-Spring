@@ -155,7 +155,7 @@
 					        Q&A게시판으로 이동하시겠습니까?
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-success" onclick="location.href='QuestionListServlet'">확인</button>
+					        <button type="button" class="btn btn-success" onclick="location.href='/zzp/qna'">확인</button>
 					        <button type="button" class="btn btn-success" data-bs-dismiss="modal">취소</button>
 					      </div>
 					    </div>

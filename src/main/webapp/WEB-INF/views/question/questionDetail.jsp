@@ -113,17 +113,19 @@
 				</td>
 			</tr>
 			<tr>
-			<c:if test="${qDTO.q_img ==null or qDTO.q_img == null}">
-				<td></td>
-			</c:if>
-			<c:if test="${qDTO.q_img !=null}">
-				<td>
-					<div>
-					  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-					  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
-					</div>
-				</td>
-			</c:if> 
+			<c:choose>
+					<c:when test="${dto.q_img == null || dto.q_img eq 'null'}">
+						<td colspan="2"></td>
+					</c:when>
+					<c:otherwise>
+						<td colspan="2">
+							<div>
+							  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
+							  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+							</div>
+						</td>
+					</c:otherwise>
+			</c:choose>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -133,17 +135,17 @@
 					</div> 
 				</td>
 			</tr>
+			<c:if test="${mDTO.userid == qDTO.userid}">
 			<tr>
-				<c:if test="${mDTO.userid == qDTO.userid}">
-					<td>
-					 	<button id="questionList" class="btn btn-outline-success" >목록</button> 
-					</td>
+				<td>
+					<button id="questionList" class="btn btn-outline-success" >목록</button> 
+				</td>
 				<td style="text-align: right;">
 					<button id="questionUpdate" class="btn btn-outline-success" >수정</button> 
 				 	<button id="questionDelete" class="btn btn-outline-success" >삭제</button>
 				</td>
-				</c:if>
 			</tr>
+			</c:if>
 			<c:if test="${mDTO.role == 1}">
 			<tr>
 				<td colspan="2">

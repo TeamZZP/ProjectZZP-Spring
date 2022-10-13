@@ -42,7 +42,7 @@
 				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				$("#modal").trigger("click");
-				$("#mesg").text("다른 유저의 글 입니다.");
+				$("#mesg").text("다른 사용자의 글 입니다.");
 			}
 		}); //
 		$("#QuestionInsert").click(function () {
@@ -64,6 +64,15 @@
 	  vertical-align: top;
 	  border-bottom: 1px solid #8FBC8F;
 	  vertical-align: middle;
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
 	}
 </style>
 

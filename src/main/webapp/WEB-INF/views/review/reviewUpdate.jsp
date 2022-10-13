@@ -7,12 +7,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-    
+
+<style>
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
+</style>   
+        
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <c:if test="${!empty mesg}">
 	<script>
-		alert("${mesg}");
+		$(document).ready(function () {
+			$("#modal").trigger("click");
+			$("#mesg").text("${mesg}");
+		});
 	</script>
-</c:if>  
+</c:if>
 
  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">

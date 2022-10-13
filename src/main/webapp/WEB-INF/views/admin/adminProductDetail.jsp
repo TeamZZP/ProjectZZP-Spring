@@ -30,7 +30,7 @@
 		$("#p_cost_price").keyup(function() {
 			let p_cost_price = $(this).val();
 			let p_discount = $("#p_discount").val();
-			if (p_cost_price - p_discount!=0) {
+			if (p_cost_price - p_discount!=0 && p_cost_price - p_discount>0) {
 				$("#p_selling_price").val(p_cost_price - p_discount);
 			} else {
 				$("#p_selling_price").val("금액을 확인하세요");
@@ -40,12 +40,65 @@
 		$("#p_discount").keyup(function() {
 			let p_cost_price = $("#p_cost_price").val();
 			let p_discount = $(this).val();
-			if (p_cost_price - p_discount!=0) {
+			if (p_cost_price - p_discount!=0 && p_cost_price - p_discount>0) {
 				$("#p_selling_price").val(p_cost_price - p_discount);
 			} else {
 				$("#p_selling_price").val("금액을 확인하세요");
 			}
 		});
+		
+		//form submit
+		$("form").submit(function() {
+			let p_cost_price = $("#p_cost_price").val();
+			let p_discount = $("#p_discount").val();
+			let p_selling_price = $("#p_selling_price").val();
+			let image_rnk_1 = $("#image_route_1").val();
+			let image_rnk_2 = $("#image_route_2").val();
+			let image_rnk_3 = $("#image_route_3").val();
+			let image_rnk_4 = $("#image_route_4").val();
+			var numChk = /^[0-9]*$/;
+			
+			if (!numChk.test(p_cost_price)) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (!numChk.test(p_discount)) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (p_selling_price=="금액을 확인하세요") {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (image_rnk_1.length==0) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (image_rnk_2.length==0) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (image_rnk_3.length==0) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (image_rnk_4.length==0) {
+				$("#modalBtn").click();
+				event.preventDefault();
+			} else if (!checkFileExtension()) {
+				event.preventDefault();
+			}
+		});//end fn
+		
+		//이미지 확장자 검사
+		function checkFileExtension(){ 
+			let image_rnk_1 = $("#image_route_1").val();
+			let image_rnk_2 = $("#image_route_2").val();
+			let image_rnk_3 = $("#image_route_3").val();
+			let image_rnk_4 = $("#image_route_4").val();
+			let reg = /(.*?)\.(jpg|jpeg|png|gif|PNG)$/;
+			
+			if (image_rnk_1.match(reg) && image_rnk_2.match(reg) && image_rnk_3.match(reg) && image_rnk_4.match(reg)) {
+				return true;
+			} else {
+				$("#modalBtn").click();
+				return false;
+			}
+		}
  
 	})//end ready
 </script>
@@ -191,4 +244,25 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<!-- Modal button -->
+<button id="modalBtn" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" style="display: none;">modal</button>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <b>모든 항목을 입력하였는지 확인해 주세요.</b><br>
+        ( 파일 확장자 확인 : jpg, jpeg, png, gif 파일만 업로드 가능 )<br>
+        ( 금액은 숫자만 입력 가능 )
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="">확인</button>
+      </div>
+    </div>
+  </div>
 </div>

@@ -312,10 +312,10 @@
                      <td><select id="delivery_req" name="delivery_req"
                         class="form-select" aria-label="Default select example">
                            <option value="" selected disabled hidden>요청사항을 선택하세요</option>
-                           <option value="frontDoor">문앞</option>
-                           <option value="directly_or_frontDoor">직접받고 부재 시 문앞</option>
-                           <option value="security">경비실</option>
-                           <option value="delievery_box">택배함</option>
+                           <option value="문앞">문앞</option>
+                           <option value="직접 받고 부재 시 문앞">직접 받고 부재 시 문앞</option>
+                           <option value="경비실">경비실</option>
+                           <option value="택배함">택배함</option>
                      </select></td>
                      <td></td>
                   </tr>

@@ -20,6 +20,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
+		$("input").keydown(function () {
+			if(event.keyCode == 13){
+				return false;
+			}
+		});
 		$("#questionUpdate").click(function() {
 			var q_title = $("#q_title").val();
 			var q_content = $("#q_content").val();
@@ -151,7 +156,7 @@
 					        <h5 class="modal-title" id="staticBackdropLabel">취소</h5>
 					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					      </div>
-					      <div class="modal-body" style="text-align: left;">
+					      <div class="modal-body">
 					        Q&A게시판으로 이동하시겠습니까?
 					      </div>
 					      <div class="modal-footer">

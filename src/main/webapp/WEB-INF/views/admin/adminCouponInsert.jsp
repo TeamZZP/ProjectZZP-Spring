@@ -15,34 +15,38 @@
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-	$(document).ready(
-			function() {
-				$("#coupon_name").focus();
-				$("#couponInsert").click(function() {
-					var coupon_name = $("#coupon_name").val();
-					var coupon_discount = $("#coupon_discount").val();
-					var regExp = /^[0-9]*$/;
-					if (coupon_name.length == 0) {
-						$("#modal").trigger("click");
-						$("#mesg").text("쿠폰 이름을 입력하십시오.");
-						event.preventDefault();
-					} else if (coupon_discount.length == 0) {
-						$("#modal").trigger("click");
-						$("#mesg").text("쿠폰 할인율을 입력하십시오.");
-						event.preventDefault();
-					} else if (!regExp.test(coupon_discount)) {
-						$("#modal").trigger("click");
-						$("#mesg").text("쿠폰 할인율에 숫자만 입력해 주십시오.");
-						event.preventDefault();
-					} else {
-						$("#couponForm").attr("action", "/zzp/admin/coupon");
-					}
-				});
-				$("#couponList").click(function() {
-					history.back();
-					event.preventDefault();
-				});
-			});//end ready
+	$(document).ready(function() {
+		$("input").keydown(function () {
+			if(event.keyCode == 13){
+				return false;
+			}
+		});
+		$("#coupon_name").focus();
+		$("#couponInsert").click(function() {
+			var coupon_name = $("#coupon_name").val();
+			var coupon_discount = $("#coupon_discount").val();
+			var numChk = /^[0-9]*$/;
+			if (coupon_name.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("쿠폰 이름을 입력하십시오.");
+				event.preventDefault();
+			} else if (coupon_discount.length == 0) {
+				$("#modal").trigger("click");
+				$("#mesg").text("쿠폰 할인율을 입력하십시오.");
+				event.preventDefault();
+			} else if (!numChk.test(coupon_discount)) {
+				$("#modal").trigger("click");
+				$("#mesg").text("쿠폰 할인율에 숫자만 입력해 주십시오.");
+				event.preventDefault();
+			} else {
+				$("#couponForm").attr("action", "/zzp/admin/coupon");
+			}
+		});
+		$("#couponList").click(function() {
+			history.back();
+			event.preventDefault();
+		});
+	});//end ready
 </script>
 
 <form id="couponForm" method="post">

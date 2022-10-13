@@ -15,6 +15,13 @@
 	#modalBtn{
 		display: none;
 	}
+	.nextNotice {
+		cursor: pointer;
+	}
+	.nextNotice:hover {
+		color: green;
+		font: bold;
+	}
 </style>  
     
    <c:if test="${!empty mesg}">
@@ -90,9 +97,9 @@
 							  	onclick="location.href='../notice/${nextDTO.notice_id}?category=${nextDTO.notice_category}'">
 							  	다음글
 							  </button>
-							  <a class="col-md-8" href="../notice/${nextDTO.notice_id}?category=${nextDTO.notice_category}" 
+							  <a class="col-md-8 shadow-none" href="../notice/${nextDTO.notice_id}?category=${nextDTO.notice_category}" 
 							  	style="text-decoration: none;">
-								 <input style="text-align: center;" type="url" class="form-control shadow-none" 
+								 <input style="text-align: center;" type="url" class="form-control shadow-none nextNotice" 
 								 	value="${nextDTO.notice_tittle}" readonly="readonly">
 							  </a>
 						  </c:if>

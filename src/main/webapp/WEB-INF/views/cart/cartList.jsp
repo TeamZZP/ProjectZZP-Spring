@@ -81,8 +81,9 @@ a:hover {
 									checked="checked"></th>
 								<th scope="col">주문번호</th>
 								<th scope="col">상품정보</th>
-								<th scope="col">수량</th>
-								<th scope="col">상품가격</th>
+								<th scope="col" >상품금액</th>
+								<th scope="col" style="padding-left: 50px;">수량</th>
+								<th scope="col">총 상품금액</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -106,12 +107,15 @@ a:hover {
 									<!-- 주문번호  -->
 									<td style="padding-top: 35px; padding-left: 20px;"><span id="cart_id" data-p_id="${cart.p_id}">${cart.cart_id}</span></td>
 									<!-- 이미지사진  -->
-									<td><a href="${contextPath}/product/${cart.p_id}"> 
+									<td style="width: 350px;"><a href="${contextPath}/product/${cart.p_id}"> 
 										<img src="../resources/images/product/p_image/${cart.p_image}" width="100"
 											style="border: 10px;" height="100" name="p_image" ></a> <a
 										href="${contextPath}/product/${cart.p_id}"> 
 										<!-- 상품명  -->
-										<span name="p_name" style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
+										<span style="font-weight: bold; margin: 8px; display: line">${cart.p_name}</span></a></td>
+										<!-- 개별가격 -->
+									<td style="padding-top: 40px; font-size: 18px; font-weight: bold; width: 200px; text-align: right; padding-right: 100px;"><fmt:formatNumber>${cart.p_selling_price}</fmt:formatNumber>원</td>
+										
 									<!-- 수량  -->
 									<td style="padding-top: 35px;">
 									<input type="text" id="cartAmount${cart.cart_id}"
@@ -125,9 +129,9 @@ a:hover {
 										data-cart_id="${cart.cart_id}" data-price="${cart.p_selling_price}"
 										data-id="${cart.userid}" /> <br></td>
 									<!-- 개별 총 가격 -->
-									<td style="padding-top: 40px; font-size: 18px; font-weight: bold;">
+									<td style="padding-top: 40px; font-size: 18px; font-weight: bold; width: 200px; text-align: right; padding-right: 100px;">
 									<span id="item_price${cart.cart_id}" data-id="${cart.cart_id}"
-										 style="margin-bottom: 15px; " name="money"
+										 style="margin-bottom: 15px; "
 										class="item_price">${cart.money}</span>원
 									</td>
 										<!-- 개인삭제버튼  -->

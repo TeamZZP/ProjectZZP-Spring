@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>zzp</title>
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>

@@ -54,6 +54,10 @@
                                            <th>진행상태</th>
                                            <td>${prodList[0].order_state}</td>
                                         </tr>
+                                        <tr>
+                                           <th>요청사항</th>
+                                           <td>${prodList[0].delivery_req}</td>
+                                        </tr>
                                         
                                      </table>
                                      

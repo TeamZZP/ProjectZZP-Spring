@@ -66,7 +66,17 @@
    p.P_CREATED ,
    p.P_STOCK 
    from product p ) 
-   order by ${sortBy} asc 
+   order by ${sortBy}
+  <choose>
+  <when test='sortBy=="p_created"'>
+  desc
+  </when>
+  <otherwise>
+  asc
+  </otherwise>
+  </choose>
+   
+    
   </select>
   
   <!-- 카테고리별 상품(페이징용) -->
@@ -83,7 +93,17 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
-    order by ${sortBy} asc
+    order by ${sortBy} 
+    
+    <choose>
+  <when test='sortBy=="p_created"'>
+  desc
+  </when>
+  <otherwise>
+  asc
+  </otherwise>
+  </choose>
+    
   </select>
   
   <!-- 제품상세 -->

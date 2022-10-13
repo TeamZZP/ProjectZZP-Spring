@@ -354,23 +354,18 @@
 			<div class="text">주문 내역<span class="circle"></span></div>
 			<div class="right">></div>
 		</a>
-		<a href="#" class="item">
-			<div class="icon">2.</div>
-			<div class="text">반품/취소/교환 목록</div>
-			<div class="right">></div>
-		</a>
 		<a href="/zzp/mypage/${login.userid}/question" class="item">
-			<div class="icon">3.</div>
+			<div class="icon">2.</div>
 			<div class="text">내 문의 내역</div>
 			<div class="right">></div>
 		</a>
 		<a href="${contextPath}/mypage/${login.userid}/address" class="item">
-			<div class="icon">4.</div>
+			<div class="icon">3.</div>
 			<div class="text">배송지 관리</div>
 			<div class="right">></div>
 		</a>
 		<a href="${contextPath}/mypage/${login.userid}/check" class="item">
-			<div class="icon">5.</div>
+			<div class="icon">4.</div>
 			<div class="text">계정 관리</div>
 			<div class="right">></div>
 		</a>

@@ -107,9 +107,6 @@
 	   		<a href="/zzp/mypage/${login.userid}/order">주문 내역</a>
 	   </div>
 	   <div class="col">
-	  		<a href="/zzp/mypage/${login.userid}/cancel">반품/취소/교환 목록</a>
-	   </div>
-	   <div class="col">
 	   		<a href="/zzp/mypage/${login.userid}/review">내 구매후기</a>
 	   </div>
 	   <div class="col">

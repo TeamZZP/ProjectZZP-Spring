@@ -199,7 +199,7 @@
 							<div class="input-group">
 								<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
 								<input type="text" name="post_num" id="sample4_postcode" placeholder="우편번호" class="form-control" readonly="readonly" value="${address.post_num}">
-								<input type="button" id="findPost" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" class="btn btn-outline-success"><br>
+								<input type="button" id="findPost" onclick="sample4_execDaumPostcode()" value="주소 수정하기" class="btn btn-success"><br>
 							</div>
 							<div class="row g-3" style="margin-top: -10px;">
 								<div class="col-md-6">
@@ -214,8 +214,8 @@
 					</div>
 					<!--  -->
 					<div class="form-group" style="margin-top: 10px; text-align: center;">
-						<input type="submit" value="변경" class="btn btn-success">
-						<input type="reset" value="변경 취소" class="btn btn-success" id="cancle">
+						<input type="submit" value="변경" class="btn btn-outline-success">
+						<input type="reset" value="변경 취소" class="btn btn-outline-success" id="cancle">
 					</div>
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
 						<button class="btn btn-light btn-sm" type="button" id="delAccount">회원 탈퇴</button>

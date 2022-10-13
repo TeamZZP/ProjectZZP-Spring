@@ -14,6 +14,10 @@
 		color: green;
 		cursor: pointer;
 	}
+	a:hover {
+		color: green;
+		font: bold;
+	}
 	.paging {
    	 	cursor: pointer;
    	}
@@ -24,6 +28,15 @@
 	.userChk {
 		text-decoration: none; 
 		color: black;
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
 	}
 </style>
 
@@ -38,7 +51,6 @@
 	</script>
 </c:if>
 
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$(".userChk").click(function () {
@@ -49,7 +61,17 @@
 			if (writer == loginUser || manager == 1){
 				$(this).attr("href", "/zzp/qna/"+q_id);
 			} else {
-				alert("권한이 없습니다.");
+				$("#modal").trigger("click");
+				$("#mesg").text("다른 사용자의 글 입니다.");
+			}
+		});//
+		$("#questionInsert").click(function () {
+			var role = $(this).attr("data-role");
+			if(role != 1){
+				location.href='qna/write'
+			} else {
+				$("#modal").trigger("click");
+				$("#mesg").text("글쓰기 권한이 없습니다.");
 			}
 		});//
 	}); //end ready
@@ -90,7 +112,7 @@
 	</c:forEach>
 </table>
 <div style="text-align: right;">
-    <button class="btn btn-outline-success" onclick="location.href='qna/write'">글쓰기</button>
+    <button class="btn btn-outline-success" id="questionInsert" data-role="${mDTO.role}">글쓰기</button>
 </div>
 
 <div class="p-2 text-center">

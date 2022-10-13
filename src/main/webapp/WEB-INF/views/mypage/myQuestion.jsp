@@ -26,6 +26,15 @@
 	.paging {
 		cursor: pointer;
 	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
 </style>  
 
 <div id="addContainer">

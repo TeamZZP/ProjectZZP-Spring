@@ -38,9 +38,9 @@ public class KakaoPayService {
         params.add("quantity", map.get("quantity"));
         params.add("total_amount", map.get("total_amount"));
         params.add("tax_free_amount", "0");
-        params.add("approval_url", "http://localhost:8102/zzp/pay/kakao/success");
-        params.add("cancel_url", "http://localhost:8102/zzp/pay/kakao/cancel");
-        params.add("fail_url", "http://localhost:8102/zzp/pay/kakao/fail");
+        params.add("approval_url", "http://zzp.co.kr/zzp/pay/kakao/success");
+        params.add("cancel_url", "http://zzp.co.kr/zzp/pay/kakao/cancel");
+        params.add("fail_url", "http://zzp.co.kr/zzp/pay/kakao/fail");
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
  
         //외부 url 통신

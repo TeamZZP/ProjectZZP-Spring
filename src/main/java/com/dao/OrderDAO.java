@@ -22,7 +22,7 @@ public class OrderDAO {
 	SqlSessionTemplate template;
 
 	public PageDTO myOrder(Map<String, String> map) {
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(5);
 		int perPage = pDTO.getPerPage();

@@ -5,6 +5,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
+</style>   
+    
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -143,7 +155,7 @@
 					        Q&A게시판으로 이동하시겠습니까?
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-success" onclick="location.href='QuestionListServlet'">확인</button>
+					        <button type="button" class="btn btn-success" onclick="location.href='/zzp/qna'">확인</button>
 					        <button type="button" class="btn btn-success" data-bs-dismiss="modal">취소</button>
 					      </div>
 					    </div>

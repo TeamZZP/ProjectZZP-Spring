@@ -83,8 +83,8 @@
 		<!-- 검색창 -->
 		<div class="container-fluid" style="margin-top: 5px;">
 			<form class="d-flex" style="float: right; display: inline-block;" action="/zzp/home/search" method="get">
-				<input class="form-control me-2" type="search" placeholder="상품 검색" aria-label="Search" style="width:200px;" name="searchValue"
-				<c:if test="${!empty searchValue && searchValue!='null'}">value="${searchValue}"</c:if>>
+				<input class="form-control me-2" type="search" aria-label="Search" style="width:200px;" name="mainSearch"
+				<c:if test="${!empty mainSearch && mainSearch!='null'}">value="${mainSearch}"</c:if>>
 				<button class="btn btn-outline-success" type="submit">검색</button>
 			</form>
 		</div>

@@ -17,26 +17,34 @@
 </c:if>
     
 <style>
-a {
-	color: black;
-	text-decoration: none;
-}
-
-.currCategory {
-	color: green;
-	font-weight: bold;
-}
-
-.tableTop {
-	border-bottom-color: #24855B;
-	border-bottom-width: 2.5px;
-}
-
-.paging {
-	cursor: pointer;
-}
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	.currCategory {
+		color: green;
+		font-weight: bold;
+	}
+	
+	.tableTop {
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
+	.modal-body{
+			text-align: center;
+		}	
+		#mesg{
+			margin: 0;
+		}
+		#modalBtn{
+			display: none;
+		}
 </style>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
 		$(".reviewUpdate").click(function () {
@@ -56,9 +64,11 @@ a {
 					console.log(data);
 					if (data == 1) {
 						location.href= "/zzp/mypage/${mDTO.userid}/review";
-						alert("리뷰가 삭제되었습니다.");
+						$("#modal").trigger("click");
+						$("#mesg").text("리뷰가 삭제되었습니다.");
 					} else {
-						alret("리뷰 삭제를 실패했습니다. 다시 시도해주세요");
+						$("#modal").trigger("click");
+						$("#mesg").text("리뷰 삭제를 실패했습니다. 다시 시도해주세요.");
 					} 
 				},
 				error: function (xhr, status, error) {
@@ -127,9 +137,10 @@ a {
 	<tr>
 		<td style="padding:5 0 0 10px;" class="text-center">
 			<a href="/zzp/product/${list.p_id}"> 
-			<img src="/zzp/resources/images/product/p_image/${list.image_route}" border="0" align="middle" class="img pb-1"
-					 width="100px" height="100px" onerror="this.src='images/uploadarea.png'"><br>
-			${list.p_name}</a>
+				<img src="/zzp/resources/images/product/p_image/${list.image_route}" border="0" align="middle" class="img pb-1"
+						 width="100px" height="100px" onerror="this.src='images/uploadarea.png'"><br>
+				${list.p_name}
+			</a>
 		</td>
 		<td class="align-middle">
 			  <b>${list.review_title}</b><br><br>

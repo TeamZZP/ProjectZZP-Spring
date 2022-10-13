@@ -7,6 +7,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
+</style>   
+    
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 	$(document).ready(function () {
@@ -41,7 +53,8 @@
 				},
 		        dataType: "text",
 				success: function (data, status, xhr) {
-					alert("답변 완료");
+					$("#modal").trigger("click");
+					$("#mesg").text("답변이 작성되었습니다.");
 					$("#answerCheck").text($("#answer").val());
 					$("#answer").val("");
 				},
@@ -100,17 +113,19 @@
 				</td>
 			</tr>
 			<tr>
-			<c:if test="${qDTO.q_img ==null or qDTO.q_img == null}">
-				<td></td>
-			</c:if>
-			<c:if test="${qDTO.q_img !=null}">
-				<td>
-					<div>
-					  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
-					  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
-					</div>
-				</td>
-			</c:if> 
+			<c:choose>
+					<c:when test="${dto.q_img == null || dto.q_img eq 'null'}">
+						<td colspan="2"></td>
+					</c:when>
+					<c:otherwise>
+						<td colspan="2">
+							<div>
+							  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
+							  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
+							</div>
+						</td>
+					</c:otherwise>
+			</c:choose>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -120,17 +135,17 @@
 					</div> 
 				</td>
 			</tr>
+			<c:if test="${mDTO.userid == qDTO.userid}">
 			<tr>
-				<c:if test="${mDTO.userid == qDTO.userid}">
-					<td>
-					 	<button id="questionList" class="btn btn-outline-success" >목록</button> 
-					</td>
+				<td>
+					<button id="questionList" class="btn btn-outline-success" >목록</button> 
+				</td>
 				<td style="text-align: right;">
 					<button id="questionUpdate" class="btn btn-outline-success" >수정</button> 
 				 	<button id="questionDelete" class="btn btn-outline-success" >삭제</button>
 				</td>
-				</c:if>
 			</tr>
+			</c:if>
 			<c:if test="${mDTO.role == 1}">
 			<tr>
 				<td colspan="2">
@@ -153,3 +168,24 @@
 	</div>
 	</div>
 	</form>
+	
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#questionModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="questionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -85,7 +85,7 @@ a {
 			<td width="10%" style="vertical-align: bottom;"><span class="fs-6 badge bg-success">${dto.chall_category}</span></td>
 			<td rowspan="2" class="fs-4 fw-bold text-center" style="vertical-align: bottom;">${dto.chall_title}</td>
 			<td class="text-end">
-				<a href="/zzp/challenge/write/${dto.chall_id}" class="btn btn-outline-success">수정</a> 
+				<a href="/zzp/admin/challenge/write/${dto.chall_id}" class="btn btn-outline-success">수정</a> 
 				<button type="button" class="btn btn-outline-success" 
 						data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-cid="${dto.chall_id}">삭제</button>
 			</td>

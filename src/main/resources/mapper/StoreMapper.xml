@@ -39,6 +39,7 @@
   <select id="productByCategory" parameterType="int" resultType="ProductByCategoryDTO">
    select p.P_ID ,
    (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   (select count(*) from Orders where p_id = p.p_id ) as p_order ,
    p.P_NAME ,
    p.P_CONTENT ,
    p.C_ID ,
@@ -49,6 +50,7 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
+   order by p_order desc  
   </select>
   
   <!-- 베스트상품들 (페이징용)-->
@@ -71,6 +73,9 @@
   <when test='sortBy=="p_created"'>
   desc
   </when>
+  <when test='sortBy=="p_order"'>
+  desc
+  </when>
   <otherwise>
   asc
   </otherwise>
@@ -83,6 +88,7 @@
   <select id="paging" parameterType="hashmap" resultType="ProductByCategoryDTO">
    select p.P_ID ,
    (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+    (select count(*) from Orders where p_id = p.p_id ) as p_order ,
    p.P_NAME ,
    p.P_CONTENT ,
    p.C_ID ,
@@ -95,8 +101,11 @@
    where p.c_id = #{c_id} 
     order by ${sortBy} 
     
-    <choose>
+  <choose>
   <when test='sortBy=="p_created"'>
+  desc
+  </when>
+  <when test='sortBy=="p_order"'>
   desc
   </when>
   <otherwise>
@@ -137,35 +146,35 @@
   
   <!-- 관리자페이지 상품관리 : 전체 상품 목록 -->
   <select id="selectAllProduct" parameterType="hashmap" resultType="ProductByCategoryDTO">
-  	select (select C_NAME from category where c_id = p.c_id) as c_name, p.P_ID,(select IMAGE_ROUTE from images where p_id = p.p_id 
-	and IMAGE_RNK = 1) as p_image,p.P_NAME,p.P_CONTENT,p.C_ID,p.P_COST_PRICE
-	,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p
-	<where>
-		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
-		</if>
-		<if test='searchName!=null and !searchName.equals("null")'>
-			${searchName} like '%${searchValue}%'
-		</if>
-	</where>
-		order by
-		<if test='sortBy!=null and !sortBy.equals("")'>
-			${sortBy} desc,
-		</if>
-		 p_id desc
+     select (select C_NAME from category where c_id = p.c_id) as c_name, p.P_ID,(select IMAGE_ROUTE from images where p_id = p.p_id 
+   and IMAGE_RNK = 1) as p_image,p.P_NAME,p.P_CONTENT,p.C_ID,p.P_COST_PRICE
+   ,p.P_SELLING_PRICE,p.P_DISCOUNT,p.P_CREATED,p.P_STOCK from product p
+   <where>
+      <if test='searchName=="c_id"'>
+         upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
+      </if>
+      <if test='searchName!=null and !searchName.equals("null")'>
+         ${searchName} like '%${searchValue}%'
+      </if>
+   </where>
+      order by
+      <if test='sortBy!=null and !sortBy.equals("")'>
+         ${sortBy} desc,
+      </if>
+       p_id desc
   </select>
   
   <!-- 관관리자페이지 상품관리 : 전체 상품 목록 페이징 countTotal -->
   <select id="countTotalAdmin" resultType="int" parameterType="hashmap">
-	select count(*) from product 
-	<where>
-		<if test='searchName=="c_id"'>
-			upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
-		</if>
-		<if test='searchName!=null and !searchName.equals("null")'>
-			${searchName} like '%${searchValue}%'
-		</if>
-	</where>
+   select count(*) from product 
+   <where>
+      <if test='searchName=="c_id"'>
+         upper((select C_NAME from category where c_id = p.c_id)) like upper('%${searchValue}%')
+      </if>
+      <if test='searchName!=null and !searchName.equals("null")'>
+         ${searchName} like '%${searchValue}%'
+      </if>
+   </where>
 </select>
 
 <select id="selectAllCoupon" parameterType="String" resultType="MemberCouponDTO">

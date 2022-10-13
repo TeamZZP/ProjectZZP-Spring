@@ -145,7 +145,10 @@ public class QuestionController {
 			map.put("qna_img", originalFileName); 
 		} else if (originalFileName == null || originalFileName.length() == 0) { 
 			map.put("qna_img", oldFile);
-		} 
+		} else {
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName); 
+		}
 		
 		qService.questionUpdate(map);
 		

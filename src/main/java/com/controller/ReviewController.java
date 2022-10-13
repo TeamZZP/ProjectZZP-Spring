@@ -86,7 +86,10 @@ public class ReviewController {
 			map.put("review_img", originalFileName); 
 		} else if (originalFileName == null || originalFileName.length() == 0) { 
 			map.put("review_img", oldFile);
-		} 
+		} else {
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName); 
+		}
 		
 		rService.reviewUpate(map);
 		

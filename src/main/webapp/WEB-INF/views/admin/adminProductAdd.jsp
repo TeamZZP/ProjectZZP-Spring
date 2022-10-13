@@ -52,6 +52,7 @@
 			let image_rnk_2 = $("#image_route_2").val();
 			let image_rnk_3 = $("#image_route_3").val();
 			let image_rnk_4 = $("#image_route_4").val();
+			var numChk = /[0-9]/; 
 			
 			if (c_id=='none') {
 				$("#modalBtn").click();
@@ -83,7 +84,15 @@
 			} else if (image_rnk_4.length==0) {
 				$("#modalBtn").click();
 				event.preventDefault();
+			} else if (!numChk.test(p_cost_price)) {
+				$("#modalBtn").click();
+				event.preventDefault();
 			} else if (!checkFileExtension()) {
+				event.preventDefault();
+			} else if (mesg=="중복된 아이디입니다 :(") {
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("아이디를 확인해주세요 :(");
+				$("#userid").val("");
 				event.preventDefault();
 			}
 		});
@@ -162,7 +171,7 @@
 						    <label for="number" class="cols-sm-2 control-label" style="font-weight: bold;">판매가</label>
 						    <div class="cols-sm-10">
 						        <div class="input-group">
-						            <input type="text" class="form-control" name="p_selling_price" id="p_selling_price"  />
+						            <input type="text" class="form-control" name="p_selling_price" id="p_selling_price" readonly="readonly" />
 						        </div>
 						    </div>
 						</div>
@@ -245,7 +254,8 @@
       </div>
       <div class="modal-body text-center">
         <b>모든 항목을 입력하였는지 확인해 주세요.</b><br>
-        ( 파일 확장자 확인 : jpg, jpeg, png, gif 파일만 업로드 가능 )
+        ( 파일 확장자 확인 : jpg, jpeg, png, gif 파일만 업로드 가능 )<br>
+        ( 금액은 숫자만 입력 가능 )
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="">확인</button>

@@ -23,7 +23,20 @@
 	.tableTop {
 	border-bottom-color: #24855B;
 	border-bottom-width: 2.5px;
-}
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
+	a:hover {
+		color: green;
+		font: bold;
+	}
 </style>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

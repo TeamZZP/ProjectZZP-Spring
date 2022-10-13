@@ -11,7 +11,7 @@
 	<script>
 		$(document).ready(function () {
 			$("#modal").trigger("click");
-			$("#mesg").text("${mesg}");
+			$("#mesgs").text("${mesg}");
 		});
 	</script>
 </c:if>
@@ -83,17 +83,22 @@
 			var coupon_id = $(this).attr("data-couponId");
 			var del = $(this);
 			console.log(coupon_id);
-			$.ajax({
-				type:"delete",
-				url:"/zzp/admin/coupon/"+coupon_id,
-				datatype:"text",
-				success: function (data, status, xhr) { 
-					del.parents().filter("tr").remove();
-					alert("쿠폰 삭제 완료");
-				},
-				error: function (xhr, status, error) {
-					
-				}
+			$("#couponBtn").html("<button type='button' id='DelBtn' class='btn btn-success'>확인</button>"
+					+"<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>취소</button>")
+			$("#DelBtn").click(function () {
+				$.ajax({
+					type:"delete",
+					url:"/zzp/admin/coupon/"+coupon_id,
+					datatype:"text",
+					success: function (data, status, xhr) { 
+						del.parents().filter("tr").remove();
+						$("#modal").trigger("click");
+						$("#mesgs").text("쿠폰 삭제 되었습니다.");
+					},
+					error: function (xhr, status, error) {
+						
+					}
+				});
 			});
 		});
 		$(".couponUpdate").click(function () {
@@ -167,9 +172,26 @@
 					<button type="button" data-couponId="${list.coupon_id}" class="couponUpdate btn btn-outline-success btn-sm">
 						수정
 					</button>
-					<button type="button" data-couponId="${list.coupon_id}" class="delCoupon btn btn-outline-dark btn-sm"><!--  data-bs-toggle="modal" data-bs-target="#delCoupon" -->
+					<button type="button" data-couponId="${list.coupon_id}" class="delCoupon btn btn-outline-dark btn-sm" data-bs-toggle="modal" data-bs-target="#oneDel">
 						삭제
 					</button>
+					<!-- Modal -->
+					<div class="modal fade" id="oneDel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+					       	쿠폰을 삭제 하시겠습니까?
+					      </div>
+					      <div class="modal-footer">
+					        <span id="couponBtn"></span>
+					      </div>
+					    </div>
+					  </div>
+					</div>
 				</td>
 		</c:forEach>
 			</tr>
@@ -218,10 +240,10 @@
 </div>
 
 <!-- Button trigger modal -->
-<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#CouponModal" style="display: none;"></button>
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#couponModal" style="display: none;"></button>
 
 <!-- Modal -->
-<div class="modal fade" id="CouponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="couponModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -229,7 +251,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <span id="mesg"></span>
+        <span id="mesgs"></span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>

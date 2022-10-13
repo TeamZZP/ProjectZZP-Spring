@@ -73,13 +73,13 @@ public class MainController {
 	 * 메인 상품 검색
 	 */
     @RequestMapping(value = "/home/search" , method = RequestMethod.GET) 
-    public ModelAndView searchProduct(String searchValue, HttpSession session) {
-    	System.out.println("main searchValue : "+searchValue);
+    public ModelAndView searchProduct(String mainSearch, HttpSession session) {
+    	System.out.println("main mainSearch : "+mainSearch);
     	ModelAndView mav = new ModelAndView();
     	List<Integer> zzimList = new ArrayList<Integer>();
 		MemberDTO mdto = (MemberDTO) session.getAttribute("login");  //로그인세션
 		PageDTO pDTO = new PageDTO();
-    	pDTO = sService.searchProduct(searchValue); //검색 상품 리스트
+    	pDTO = sService.searchProduct(mainSearch); //검색 상품 리스트
     	System.out.println(pDTO.getList());
     	if(mdto !=null) {//로그인이 되었을 경우 찜 가져오기
 			zzimList=sService.zzimAllCheck(mdto.getUserid());
@@ -90,48 +90,9 @@ public class MainController {
 		mav.addObject("pDTO", pDTO);
 		mav.addObject("mdto", mdto);
 		mav.addObject("zzimList", zzimList);
+		mav.addObject("mainSearch", mainSearch);
 		mav.setViewName("storeMain");
 		
 		return mav;
     }
-    /**
-	 * 토스 페이먼츠 테스트 화면
-	 */
-    @RequestMapping(value = "/toss" , method = RequestMethod.GET) 
-    public ModelAndView toss_test(HttpSession session, ModelAndView mav) {
-    	MemberDTO mdto = (MemberDTO)session.getAttribute("login");
-    	   System.out.println(mdto);
-		  //주소가져오기	
-		  List<AddressDTO> addrList= myService.selectAllAddress(mdto.getUserid());  
-		  //쿠폰가져오기
-		  //List<MemberCouponDTO> couponList = service.selectAllCoupon1(mdto.getUserid()); 
-		  //System.out.println(couponList);
-		  //주문하기 리스트
-		  ArrayList<String> list = new ArrayList<String>();
-		  list.add("446");
-		  List<CartDTO> cartList = service.orderCart(list); 
-		  
-		  System.out.println(cartList);
-		  mav.addObject("cartList", cartList);
-		  mav.addObject("mdto", mdto);
-		  mav.addObject("addrList", addrList);
-		  //mav.addObject("couponList", couponList);
-		  mav.setViewName("orders2");
-		  return mav;
-    }
-//    /**
-//	 * 토스 페이먼츠 테스트 결제
-//	 */
-//    @RequestMapping(value = "/toss/success" , method = RequestMethod.GET) 
-//    public String toss_test_success(String orderId) {
-//    	System.out.println(orderId);
-//    	//1665309501015aaa
-//    	
-//    	
-//    	
-//    	//ordertable 결제완료
-//		return "Toss_Test_success";
-//    }
-    
-    
 }

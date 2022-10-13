@@ -52,5 +52,4 @@ public class ReviewService {
 		return num;
 	}
 
-	
 }

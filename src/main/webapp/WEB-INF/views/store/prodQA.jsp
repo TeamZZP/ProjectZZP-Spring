@@ -42,11 +42,17 @@
 				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				$("#modal").trigger("click");
-				$("#mesg").text("다른 유저의 글 입니다.");
+				$("#mesg").text("다른 사용자의 글 입니다.");
 			}
 		}); //
 		$("#QuestionInsert").click(function () {
-			$("#prodQAForm").attr("action", "/zzp/qna/write");
+			var role = $(this).attr("data-role");
+			if(role != 1) {
+				$("#prodQAForm").attr("action", "/zzp/qna/write");
+			} else {
+				$("#modal").trigger("click");
+				$("#mesg").text("글쓰기 권한이 없습니다.");
+			}
 		});// 
 	}); //end ready
 </script>
@@ -64,6 +70,15 @@
 	  vertical-align: top;
 	  border-bottom: 1px solid #8FBC8F;
 	  vertical-align: middle;
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
 	}
 </style>
 
@@ -106,7 +121,7 @@
 			</c:forEach>
 	</table>
 	<div style="text-align: right; padding-right: 50px;">
-		<button type="submit" class="btn btn-outline-success" id="QuestionInsert">문의하기</button>
+		<button type="submit" class="btn btn-outline-success" id="QuestionInsert" data-role="${mdto.role}">문의하기</button>
 	</div>
 </form>
 

@@ -20,7 +20,7 @@ public class CouponDAO {
 	SqlSessionTemplate session;
 
 	public PageDTO myCoupon(Map<String, String> map) {
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(10);
 		int perPage = pDTO.getPerPage();
@@ -43,7 +43,7 @@ public class CouponDAO {
 	}
 
 	public PageDTO couponSelect(Map<String, String> map) {
-		int curPage = Integer.parseInt(Optional.ofNullable(map.get("page")).orElse("1"));
+		int curPage = Integer.parseInt(map.getOrDefault("page", "1"));
 		PageDTO pDTO = new PageDTO();
 		pDTO.setPerPage(10);
 		int perPage = pDTO.getPerPage();

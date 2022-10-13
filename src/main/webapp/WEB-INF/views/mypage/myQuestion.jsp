@@ -12,12 +12,14 @@
 		color: black;
 		text-decoration: none;
 	}
-	
+	a:hover {
+		color: green;
+		font: bold;
+	}
 	.currCategory {
 		color: green;
 		font-weight: bold;
 	}
-	
 	.tableTop {
 		border-bottom-color: #24855B;
 		border-bottom-width: 2.5px;
@@ -25,6 +27,15 @@
 	
 	.paging {
 		cursor: pointer;
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
 	}
 </style>  
 

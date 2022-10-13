@@ -28,7 +28,7 @@
 			</c:choose>
 		</td>
 		<td width="15%" class="align-middle">
-			<div>${r.review_create.substring(0,10)}</div>
+			<div>${r.review_created.substring(0,10)}</div>
 		</td>
 	</tr>
 </c:forEach>

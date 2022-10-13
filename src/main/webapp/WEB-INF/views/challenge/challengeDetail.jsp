@@ -36,7 +36,7 @@ a {
 	text-decoration: none;
 	color: black;
 }
-.paging {
+.paging, .liked, .reply, .update, .delete, .report {
 	cursor: pointer;
 }
 

@@ -37,12 +37,6 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		
-		//글쓰기 취소
-		$(".cancelBtn").on("click", function () {
-			if (confirm("페이지를 나가시겠습니까?")) {
-				history.back();
-			}
-		});
 		//수정하기 클릭시 주소 변경
 		$('.update').on("click", function () {
 			$('form').attr('action', '/zzp/admin/challenge/${dto.chall_id}')
@@ -246,7 +240,7 @@
 	  
   <div class="row pt-5">
     <div class="col">
-	  <a class="cancelBtn btn btn-success">취소</a>
+	  <button id="cancelBtn" type="reset" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#cancelModal">취소</button>
 	</div>
 	<div class="col">
 	  <div class="float-end">
@@ -283,3 +277,23 @@
   </div>
 </div>
 <button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+
+
+				<!-- 취소 모달 -->
+					<div class="modal fade" id="cancelModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="staticBackdropLabel">취소</h5>
+					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					      </div>
+					      <div class="modal-body">
+					         	이전 페이지로 돌아가시겠습니까?
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-success" onclick="history.back()">확인</button>
+					        <button type="button" class="btn btn-success" data-bs-dismiss="modal">취소</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>

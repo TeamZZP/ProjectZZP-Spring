@@ -4,7 +4,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style>
-	.paging {
+	.paging, .liked {
 		cursor: pointer;
 	}
 	a {
@@ -165,7 +165,9 @@
 			<option value="chall_liked" <c:if test="${sortBy=='chall_liked'}">selected</c:if>>인기순</option>
 			<option value="chall_comments" <c:if test="${sortBy=='chall_comments'}">selected</c:if>>댓글 많은순</option>
 		</select> 
-		<a href="challenge/write" class="btn btn-outline-success" style="margin-bottom: 5px;">글쓰기</a>
+		<c:if test="${login.role != 1}">
+			<a href="challenge/write" class="btn btn-outline-success" style="margin-bottom: 5px;">글쓰기</a>
+		</c:if>
 	   </div>
 	 </div>
 	 <div style="height: 10px"></div>

@@ -135,17 +135,17 @@
 					</div> 
 				</td>
 			</tr>
+			<c:if test="${mDTO.userid == qDTO.userid}">
 			<tr>
-				<c:if test="${mDTO.userid == qDTO.userid}">
-					<td>
-					 	<button id="questionList" class="btn btn-outline-success" >목록</button> 
-					</td>
+				<td>
+					<button id="questionList" class="btn btn-outline-success" >목록</button> 
+				</td>
 				<td style="text-align: right;">
 					<button id="questionUpdate" class="btn btn-outline-success" >수정</button> 
 				 	<button id="questionDelete" class="btn btn-outline-success" >삭제</button>
 				</td>
-				</c:if>
 			</tr>
+			</c:if>
 			<c:if test="${mDTO.role == 1}">
 			<tr>
 				<td colspan="2">

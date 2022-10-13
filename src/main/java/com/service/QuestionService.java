@@ -50,7 +50,7 @@ public class QuestionService {
 		dao.questionInsert(map);
 	}
 
-	public void questionUPdate(Map<String, String> map) {
+	public void questionUpdate(Map<String, String> map) {
 		dao.questionUpdate(map);
 	}
 

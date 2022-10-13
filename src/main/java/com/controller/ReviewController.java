@@ -1,6 +1,5 @@
 package com.controller;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +17,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ProductOrderReviewDTO;
-import com.dto.ReviewDTO;
 import com.service.ReviewService;
 import com.util.Upload;
 
@@ -85,17 +83,13 @@ public class ReviewController {
 		
 		if(oldFile == null || oldFile.length() == 0) {
 			Upload.uploadFile(location, uploadFile);
-			map.put("review_img", originalFileName);
-		} else if (originalFileName != oldFile) {
-			Upload.uploadFile(location, uploadFile);
-			Upload.uploadFile(location, uploadFile);
-			map.put("qna_img", originalFileName);
-		} else {
+			map.put("review_img", originalFileName); 
+		} else if (originalFileName == null || originalFileName.length() == 0) { 
 			map.put("review_img", oldFile);
+		} else {
+			Upload.uploadFile(location, uploadFile);
+			map.put("qna_img", originalFileName); 
 		}
-		Upload.uploadFile(location, uploadFile);
-		map.put("review_img", originalFileName);
-		
 		rService.reviewUpate(map);
 		
 		attr.addFlashAttribute("mesg", "리뷰가 수정되었습니다.");

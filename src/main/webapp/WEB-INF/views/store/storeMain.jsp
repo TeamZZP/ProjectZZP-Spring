@@ -111,7 +111,7 @@ a {
                 <!-- 정렬 -->
               <select class="form-select sortBy" name="sortBy" id="sortBy" data-style="btn-info" 
                       style="width: 145px; margin-left: -24px; display: inline;">
-                   <option value="p_id" selected>정렬</option>
+                   <option value="p_order" selected>판매량순</option>
                    <option value="p_created" <% if("p_created".equals("${sortBy}")){%>selected<%}%>>최신상품순</option>
                    <option value="p_selling_price" <% if("p_selling_price".equals("${sortBy}")){%>selected<%}%>>판매가순</option>
                    <option value="p_name" <% if("p_name".equals("${sortBy}")){%>selected<%}%>>상품명순</option>

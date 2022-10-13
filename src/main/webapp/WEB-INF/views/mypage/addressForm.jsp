@@ -61,10 +61,11 @@
 		
 		//삭제
 		$("#delAddress").on("click", function() {
-			$("#confirm").removeAttr("data-bs-dismiss");
+			$("#canConfirm").css("display","none");//취소 확인 버튼 숨김
+			$("#delConfirm").css("display","");//삭제 확인 버튼 보이도록
 			$("#openModal").trigger("click");
 			$("#modalMesg").text("배송지를 삭제합니다.");
-			$("#confirm").on("click", function() {//배송지 삭제
+			$("#delConfirm").on("click", function() {//배송지 삭제
 				var id="${address.address_id}";
 				$.ajax({
 					type : "delete",
@@ -75,9 +76,10 @@
 					}),
 					success : function(data, status, xhr) {
 						//console.log(data);
-						$("#confirm").attr("data-bs-dismiss","modal");
+						$("#delConfirm").text("확인");
+						$("#delConfirm").attr("data-bs-dismiss","modal");
 						$("#modalMesg").text("배송지가 삭제되었습니다.");
-						$("#confirm").on("click", function() {
+						$("#delConfirm").on("click", function() {
 							location.href="${contextPath}/mypage/${login.userid}/address";
 						});//end fn
 					},
@@ -90,13 +92,15 @@
 		
 		//취소
 		$("#cancle").on("click", function() {
+			$("#delConfirm").css("display","none");//삭제 확인 버튼 숨김
+			$("#canConfirm").css("display","");//취소 확인 버튼 보이도록
 			$("#openModal").trigger("click");
 			if ("${address}".length != 0) {//배송지 수정 폼
 				$("#modalMesg").text("배송지 수정을 취소합니다.");
 			} else {
 				$("#modalMesg").text("배송지 추가를 취소합니다.");
 			}
-			$("#confirm").on("click", function() {
+			$("#canConfirm").on("click", function() {
 				location.href="${contextPath}/mypage/${login.userid}/address";
 			});//end fn
 		});
@@ -184,7 +188,8 @@
         <span id="modalMesg"></span>
       </div>
       <div class="modal-footer">
-        <button type="button" id="confirm" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+        <button type="button" id="canConfirm" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+        <button type="button" id="delConfirm" class="btn btn-outline-success" style="display: none;">삭제 확인</button>
       </div>
     </div>
   </div>

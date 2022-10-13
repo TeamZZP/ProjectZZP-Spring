@@ -136,8 +136,8 @@
 					        <h5 class="modal-title" id="staticBackdropLabel">취소</h5>
 					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					      </div>
-					      <div class="modal-body" style="text-align: left;">
-					        	이전 페이지로 돌아가시겠습니까?
+					      <div class="modal-body">
+					         	이전 페이지로 돌아가시겠습니까?
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-success" onclick="history.back()">확인</button>

@@ -14,6 +14,10 @@
 		color: green;
 		cursor: pointer;
 	}
+	a:hover {
+		color: green;
+		font: bold;
+	}
 	.paging {
    	 	cursor: pointer;
    	}

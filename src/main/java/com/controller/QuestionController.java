@@ -149,7 +149,6 @@ public class QuestionController {
 			Upload.uploadFile(location, uploadFile);
 			map.put("qna_img", originalFileName); 
 		}
-		
 		qService.questionUpdate(map);
 		
 		attr.addFlashAttribute("mesg", "게시글이 수정 되었습니다.");

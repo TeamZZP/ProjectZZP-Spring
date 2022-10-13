@@ -18,6 +18,12 @@
 	display:block;
 	clear:both;
 }
+.modal-body{
+	text-align: center;
+}
+#mesg{
+	margin: 0;
+}
 </style>
 </head>
 <body>

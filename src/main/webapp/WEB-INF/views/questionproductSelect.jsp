@@ -102,7 +102,7 @@
 		</tr>
 		<c:forEach var="list" items="${prodSelect.list}">
 		<tr>
-			<td> <img alt="상품사진" src="${contextPath}/resources/images/product/p_image/${list.image_route}" width="100px" height="100px"></td>
+			<td> <img alt="상품사진" src="/upload/product/${list.image_route}" width="100px" height="100px"></td>
 			<td style="text-align: left;"> ${list.p_name} <br> ${list.p_content} <br> ${list.p_cost_price}원 </td>
 			<td> <button class="btn btn-outline-success check" data-pID="${list.p_id}" data-pName="${list.p_name}" >선택</button> </td>
 		</tr>

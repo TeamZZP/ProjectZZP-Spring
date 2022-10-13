@@ -174,7 +174,7 @@
 				<a data-orderID="${list.order_id}" data-pNAME="${list.p_name}" 
 					data-pID="${list.p_id}"
 					data-userid="${list.userid}"
-					class="btn btn-outline-success chk" role="button">
+					class="btn btn-outline-success chk">
 					리뷰작성
 				 </a>
 				<input type="hidden" class="order_id" value="${list.order_id}">

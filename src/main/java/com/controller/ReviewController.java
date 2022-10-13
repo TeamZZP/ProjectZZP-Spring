@@ -89,7 +89,7 @@ public class ReviewController {
 		} else if (originalFileName != oldFile) {
 			Upload.uploadFile(location, uploadFile);
 			Upload.uploadFile(location, uploadFile);
-			map.put("qna_img", originalFileName);
+			map.put("review_img", originalFileName);
 		} else {
 			map.put("review_img", oldFile);
 		}

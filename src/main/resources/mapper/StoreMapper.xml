@@ -39,6 +39,7 @@
   <select id="productByCategory" parameterType="int" resultType="ProductByCategoryDTO">
    select p.P_ID ,
    (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+   (select count(*) from Orders where p_id = p.p_id ) as p_order ,
    p.P_NAME ,
    p.P_CONTENT ,
    p.C_ID ,
@@ -49,6 +50,7 @@
    p.P_STOCK 
    from product p 
    where p.c_id = #{c_id} 
+   order by p_order desc  
   </select>
   
   <!-- 베스트상품들 (페이징용)-->
@@ -71,6 +73,9 @@
   <when test='sortBy=="p_created"'>
   desc
   </when>
+  <when test='sortBy=="p_order"'>
+  desc
+  </when>
   <otherwise>
   asc
   </otherwise>
@@ -83,6 +88,7 @@
   <select id="paging" parameterType="hashmap" resultType="ProductByCategoryDTO">
    select p.P_ID ,
    (select IMAGE_ROUTE from images where p_id = p.p_id and IMAGE_RNK = 1) as p_image ,
+    (select count(*) from Orders where p_id = p.p_id ) as p_order ,
    p.P_NAME ,
    p.P_CONTENT ,
    p.C_ID ,
@@ -95,8 +101,11 @@
    where p.c_id = #{c_id} 
     order by ${sortBy} 
     
-    <choose>
+  <choose>
   <when test='sortBy=="p_created"'>
+  desc
+  </when>
+  <when test='sortBy=="p_order"'>
   desc
   </when>
   <otherwise>

@@ -113,17 +113,20 @@
 				</td>
 			</tr>
 			<tr>
-			<c:if test="${qDTO.q_img ==null or qDTO.q_img == null}">
-				<td></td>
-			</c:if>
-			<c:if test="${qDTO.q_img !=null}">
-				<td>
-					<div>
+			<c:choose>
+					<c:when test="${dto.q_img == null || dto.q_img eq 'null'}">
+						<td colspan="2">
+						</td>
+					</c:when>
+					<c:otherwise>
+						<td colspan="2">
+							<div>
 					  	<button type="button" class="btn btn-secondary" id="uploadBtu" style="padding: 2rem;">첨부파일</button>
 					  	<img id="upload" alt="" src="/upload/qna/${qDTO.q_img}" width="100px" height="100px" style="border: 1px solid gray;">
 					</div>
-				</td>
-			</c:if> 
+						</td>
+					</c:otherwise>
+				</c:choose>
 			</tr>
 			<tr>
 				<td colspan="2">

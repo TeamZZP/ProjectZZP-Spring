@@ -58,7 +58,8 @@
 			if (writer == loginUser || manager == 1){
 				$(this).attr("href", "/zzp/qna/"+q_id);
 			} else {
-				alert("권한이 없습니다.");
+				$("#modal").trigger("click");
+				$("#mesg").text("다른 사용자의 글 입니다.");
 			}
 		});//
 	}); //end ready

@@ -45,6 +45,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		$("input").keydown(function () {
+			if(event.keyCode == 13){
+				return false;
+			}
+		});
 		$("#searchCoupon").click(function() {
 			$("#couponForm").attr("method","get").attr("action", "/zzp/admin/coupon").submit();
 		});
@@ -67,7 +72,7 @@
 				$("#modalBtn").trigger("click");
 				$("#mesg").html("선택한 쿠폰을 삭제하시겠습니까?");
 				$("#okBtn").html("<button type='button' id='allDelBtn' class='btn btn-success'>확인</button>"
-						+"<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>취소</button>");
+						+"&nbsp;<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>취소</button>");
 				$("#allDelBtn").click(function () {
 					var allDel = $(".delCheck:checked");
 					console.log(allDel)
@@ -84,7 +89,7 @@
 			var del = $(this);
 			console.log(coupon_id);
 			$("#couponBtn").html("<button type='button' id='DelBtn' class='btn btn-success'>확인</button>"
-					+"<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>취소</button>")
+					+"&nbsp;<button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>취소</button>")
 			$("#DelBtn").click(function () {
 				$.ajax({
 					type:"delete",
@@ -127,7 +132,7 @@
 							 할인율
 						</option>
 					</select> 
-					<input type="text" name="searchValue" class="form-control searchValue" 
+					<input type="text" name="searchValue" class="form-control searchValue"  
 						<c:if test="${search != null && search.searchValue != null}"> ${search.searchValue}</c:if>>
 		  			<button type="button" class="btn btn-success" id="searchCoupon" style="margin-top: -5px;">검색</button>
 		  			<a href="/zzp/admin/coupon" class="btn btn-success" style="margin-top: -5px;">쿠폰전체보기</a>

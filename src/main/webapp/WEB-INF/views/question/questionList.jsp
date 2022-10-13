@@ -25,6 +25,15 @@
 		text-decoration: none; 
 		color: black;
 	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
 </style>
 
 

@@ -17,24 +17,33 @@
 </c:if>
     
 <style>
-a {
-	color: black;
-	text-decoration: none;
-}
-
-.currCategory {
-	color: green;
-	font-weight: bold;
-}
-
-.tableTop {
-	border-bottom-color: #24855B;
-	border-bottom-width: 2.5px;
-}
-
-.paging {
-	cursor: pointer;
-}
+	a {
+		color: black;
+		text-decoration: none;
+	}
+	
+	.currCategory {
+		color: green;
+		font-weight: bold;
+	}
+	
+	.tableTop {
+		border-bottom-color: #24855B;
+		border-bottom-width: 2.5px;
+	}
+	
+	.paging {
+		cursor: pointer;
+	}
+	.modal-body{
+			text-align: center;
+		}	
+		#mesg{
+			margin: 0;
+		}
+		#modalBtn{
+			display: none;
+		}
 </style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>

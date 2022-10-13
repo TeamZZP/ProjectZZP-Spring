@@ -8,11 +8,15 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <c:if test="${!empty mesg}">
 	<script>
-		alert("${mesg}");
+		$(document).ready(function () {
+			$("#modal").trigger("click");
+			$("#mesg").text("${mesg}");
+		});
 	</script>
-</c:if>  
+</c:if>
 <style>
 	a {
 		color: black;
@@ -31,6 +35,15 @@
 	
 	.paging {
 		cursor: pointer;
+	}
+	.modal-body{
+		text-align: center;
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
 	}
 </style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -195,4 +208,25 @@
 </div>
 </div>
 </div>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" id="modal" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#orderModal" style="display: none;"></button>
+
+<!-- Modal -->
+<div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">ZZP</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <span id="mesg"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>
+      </div>
+    </div>
+  </div>
 </div>

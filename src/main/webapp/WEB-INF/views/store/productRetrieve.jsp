@@ -103,7 +103,7 @@ function zzimFunc(p_id) {
                      src="/upload/product/${image.image_route}"
                      class="img-thumbnail" style="height: 500px; width: 600px; "  >
                       <input type="hidden" name="p_image" id="p_image" value="${image.image_route}">
-                      <input type="hidden" id="img" value="/zzp/resources/images/product/p_image/${image.image_route}">
+                      <input type="hidden" id="img" value="/upload/product/${image.image_route}">
                      </td>
                   </tr>
               </c:when>
@@ -111,11 +111,11 @@ function zzimFunc(p_id) {
               <c:otherwise>
                <tr>
                
-                <table style="display: inline; ">
+                <table style="display: inline;">
                       <tr>
                         <td >
                            <img id="anotheImage" value="${image.image_route}"
-                              src="/zzp/resources/images/product/p_image/${image.image_route}"
+                              src="/upload/product/${image.image_route}"
                            	 class="anotheImage" style="width: 100px; height: 100px;"  > 
                         </td>
                     </tr>

@@ -155,7 +155,7 @@
 		<c:forEach var="c" items="${callenge_list}" begin="0" end="${idx}" >
 			<div class="col-lg-3 col-md-6" style="margin-bottom: 5px;">
 				<a href="challenge/${c.chall_id}">
-					<img src="resources/upload/challenge/${c.chall_img}" width="250" height="250" class=" mx-auto d-block" alt="챌린지" onerror="this.src='/zzp/resources/images/error/salad.jpg'">
+					<img src="/upload/challenge/${c.chall_img}" width="250" height="250" class=" mx-auto d-block" alt="챌린지" onerror="this.src='/zzp/resources/images/error/salad.jpg'">
 				</a>
 			</div>
 		</c:forEach>

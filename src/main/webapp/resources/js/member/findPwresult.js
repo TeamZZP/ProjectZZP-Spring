@@ -2,17 +2,34 @@ $(document).ready(function() {
 	
 	//reset 시 pw focus
 	$("#btn2").click(function() {
-		$("#userid").focus();
+		$("#passwd").focus();
 	});
 	
-	//비밀번호 재확인-키 이벤트 발생시 패스워드 일치여부 검사 
-	$("#changedPasswd").keyup(function() {
-		var mesg = "비밀번호가 일치하지 않습니다:(";
-		if ($("#passwd").val()==this.value) {
-			mesg = "비밀번호가 확인되었습니다:)";
+	//비번확인1//키 이벤트 발생시 패스워드 일치여부 검사 
+	 $("#passwd").keyup(function() {
+		 var passwd = this.value;
+		 var changedPasswd = $("#changedPasswd").val();
+		 var mesg = "";
+		 if (changedPasswd!=null && changedPasswd.length!=0) {
+			if (passwd==changedPasswd) {
+				mesg = "비밀번호 일치 :)";
+			} else {
+				mesg = "비밀번호 불일치 :(";
+			}
+		} else {
+			mesg=" ";
 		}
-		$("#check").text(mesg);
-	});
+		 $("#check").text(mesg);
+	 });
+	 
+	//비번확인2//키 이벤트 발생시 패스워드 일치여부 검사 
+	 $("#changedPasswd").keyup(function() {
+		 var mesg = "비밀번호 불일치 :(";
+		 if ($("#passwd").val()==this.value) {
+			mesg = "비밀번호 일치 :)";
+		}
+		 $("#check").text(mesg);
+	 });
 
 	//유효성 검사 및 미입력 값 확인
 	$("#btn").click(function() {

@@ -6,7 +6,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- <script type="text/javascript" src="resources/js/member/memberForm.js"> -->
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -123,13 +122,6 @@ $(document).ready(function() {
 		};
 	 });
 	 
-	 //아이디 중복검사 Btn 클릭
-	 $("#idCheck").click(function() {
-		 console.log($("#userid").val())
-		 $("#modalUserid").val($("#userid").val());
-	});
-		
-	 
 	//비번확인1//키 이벤트 발생시 패스워드 일치여부 검사 
 	 $("#passwd").keyup(function() {
 		 var passwd = this.value;
@@ -161,6 +153,12 @@ $(document).ready(function() {
 		$("#email2").val(this.value);
 	});
 
+	 //아이디 중복검사 Btn 클릭
+	 $("#idCheck").click(function() {
+		 console.log($("#userid").val())
+		 $("#modalUserid").val($("#userid").val());
+	});
+	 
 	//아이디 중복 검사
 	$("#useridBtn").click(function() {
 		console.log($("#modalUserid").val());
@@ -331,12 +329,12 @@ $(document).ready(function() {
                                         <div class="cols-sm-10">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-                                            	<input type="text" name="post_num" id="sample4_postcode" placeholder="우편번호" class="form-control">
+                                            	<input type="text" name="post_num" id="sample4_postcode" placeholder="우편번호" class="form-control" readonly="readonly">
 												<input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기" class="btn btn-outline-success"><br>
                                             </div>
                                             <div class="row g-3" style="margin-top: -10px;">
                                             	<div class="col-md-6">
-                      								<input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control">
+                      								<input type="text" name="addr1" id="sample4_roadAddress" placeholder="도로명주소" class="form-control" readonly="readonly">
                       						 	</div>
                       						 	<div class="col-md-6">
 													<input type="text" name="addr2" id="sample4_jibunAddress" placeholder="상세주소를 입력해주세요" class="form-control">

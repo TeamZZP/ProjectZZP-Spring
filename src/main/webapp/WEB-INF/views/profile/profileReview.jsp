@@ -26,7 +26,7 @@
 			var img = $(this).children(img).attr("src");
 			console.log(img);
 			
-			window.open('showImgReview.jsp?img='+img , '', 'status=no, height=500, width=400, left='+ popupX + ', top='+ popupY);
+			window.open('/zzp/showImg?img='+img , '', 'status=no, height=500, width=400, left='+ popupX + ', top='+ popupY);
 		});
 		
 		//무한 스크롤
@@ -121,7 +121,7 @@
 			</c:choose>
 		</td>
 		<td width="15%" class="align-middle">
-			<div>${r.review_create.substring(0,10)}</div>
+			<div>${r.review_created.substring(0,10)}</div>
 		</td>
 	</tr>
 </c:forEach>

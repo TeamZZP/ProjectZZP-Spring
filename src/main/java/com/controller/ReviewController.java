@@ -90,7 +90,6 @@ public class ReviewController {
 			Upload.uploadFile(location, uploadFile);
 			map.put("qna_img", originalFileName); 
 		}
-		
 		rService.reviewUpate(map);
 		
 		attr.addFlashAttribute("mesg", "리뷰가 수정되었습니다.");

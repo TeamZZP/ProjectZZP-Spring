@@ -54,21 +54,13 @@
 	<div class="justify-content-center">
 		<div class="col-md-12" style="text-align: center;">
 			<h4><b>${login.username}</b>님 비밀번호를 입력해 주십시오</h4>
-			<div class="form-group" style="margin-top: 10px; text-align: center;">
-						<input type="password" name="passwd" id="passwd" class="form-control" style="padding-bottom: 3px;">
-				<button type="submit" class="btn btn-success" style="margin-left: 20px;">확인</button>
-				<button type="button" id="cancle" class="btn btn-outline-success">취소</button>
+			<div class="container-fluid" style="margin-top: 20px;">
+			<div class="d-flex" style="justify-content : center; display: inline-block;" action="/zzp/home/search" method="get">
+				<input class="form-control me-2" type="password" style="width:200px;" name="passwd" id="passwd">
+				<button class="btn btn-success" type="submit" style="margin-right: 5px;">확인</button>
+				<button class="btn btn-outline-success" id="cancle" type="button">취소</button>
 			</div>
-			<div style="padding-bottom: 45px">
-				<input type="password" name="passwd" id="passwd" class="form-control" style="padding-bottom: 3px;">
-				<button type="submit" class="btn btn-success" style="margin-left: 20px;">확인</button>
-				<button type="button" id="cancle" class="btn btn-outline-success">취소</button>
-			</div>
-			<div class="input-group">
-				<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
-				<input type="text" name="post_num" id="sample4_postcode" placeholder="우편번호" class="form-control" readonly="readonly" value="${address.post_num}">
-				<input type="button" id="findPost" onclick="sample4_execDaumPostcode()" value="주소 수정하기" class="btn btn-success"><br>
-			</div>
+		</div>
 		</div>
 	</div>
 </div>

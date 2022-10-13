@@ -67,18 +67,6 @@
 			} else if (p_selling_price=="금액을 확인하세요") {
 				$("#modalBtn").click();
 				event.preventDefault();
-			} else if (image_rnk_1.length==0) {
-				$("#modalBtn").click();
-				event.preventDefault();
-			} else if (image_rnk_2.length==0) {
-				$("#modalBtn").click();
-				event.preventDefault();
-			} else if (image_rnk_3.length==0) {
-				$("#modalBtn").click();
-				event.preventDefault();
-			} else if (image_rnk_4.length==0) {
-				$("#modalBtn").click();
-				event.preventDefault();
 			} else if (!checkFileExtension()) {
 				event.preventDefault();
 			}
@@ -92,7 +80,13 @@
 			let image_rnk_4 = $("#image_route_4").val();
 			let reg = /(.*?)\.(jpg|jpeg|png|gif|PNG)$/;
 			
-			if (image_rnk_1.match(reg) && image_rnk_2.match(reg) && image_rnk_3.match(reg) && image_rnk_4.match(reg)) {
+			if (image_rnk_1.match(reg)) {
+				return true;
+			} else if (image_rnk_2.match(reg)) {
+				return true;
+			} else if (image_rnk_3.match(reg)) {
+				return true;
+			} else if (image_rnk_4.match(reg)) {
 				return true;
 			} else {
 				$("#modalBtn").click();

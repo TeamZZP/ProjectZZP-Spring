@@ -113,8 +113,8 @@
 				</td>
 			</tr>
 			<tr>
-			<c:choose>
-					<c:when test="${dto.q_img == null || dto.q_img eq 'null'}">
+				<c:choose>
+					<c:when test="${qDTO.q_img == null || qDTO.q_img eq 'null'}">
 						<td colspan="2"></td>
 					</c:when>
 					<c:otherwise>
@@ -125,7 +125,7 @@
 							</div>
 						</td>
 					</c:otherwise>
-			</c:choose>
+				</c:choose>
 			</tr>
 			<tr>
 				<td colspan="2">

@@ -288,7 +288,7 @@
 			    </h2>
 			    <div id="OrderCollapse1" class="accordion-collapse collapse" aria-labelledby="OrderHeading1" data-bs-parent="#accordionOrder">
 			      <div class="accordion-body">
-			        한번 발급 받은 계좌번호는 변경이 불가능합니다. 
+			      		 한번 발급 받은 계좌번호는 변경이 불가능합니다. 
 			        <br>재주문을 통해 새로운 계좌를 발급 받으신 후 입금 부탁드립니다.
 				  </div>
 			    </div>
@@ -301,7 +301,7 @@
 			    </h2>
 			    <div id="OrderCollapse2" class="accordion-collapse collapse" aria-labelledby="OrderHeading2" data-bs-parent="#accordionOrder">
 			      <div class="accordion-body">
-			        상품상세페이지에서 배송비를 확인하실 수 있습니다.
+			     	   상품상세페이지에서 배송비를 확인하실 수 있습니다.
 				  </div>
 			    </div>
 			  </div> 
@@ -357,7 +357,7 @@
 			  </div> 
 			   <div class="accordion-item">
 			    <h2 class="accordion-header" id="CancelHeading3">
-			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#"CancelCollapse3"" aria-expanded="false" aria-controls=""CancelCollapse3"">
+			      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#CancelCollapse3" aria-expanded="false" aria-controls=""CancelCollapse3"">
 			        Q. 주문한 상품과 다른 상품이 왔어요. 어떻게 해야하나요?
 			      </button>
 			    </h2>

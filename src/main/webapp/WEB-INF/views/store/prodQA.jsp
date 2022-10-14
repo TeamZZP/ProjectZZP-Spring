@@ -34,15 +34,15 @@
 					},
 					error: function (xhr, status, error) {
 						$("#modal").trigger("click");
-						$("#mesg").text("문제가 발생했습니다. 다시 시도해 주세요.");
+						$("#mesgs").text("문제가 발생했습니다. 다시 시도해 주세요.");
 					}
 				});//end ajax
 			} else if (user == "") {
 				$("#modal").trigger("click");
-				$("#mesg").text("로그인이 필요합니다.");
+				$("#mesgs").text("로그인이 필요합니다.");
 			} else {
 				$("#modal").trigger("click");
-				$("#mesg").text("다른 사용자의 글 입니다.");
+				$("#mesgs").text("다른 사용자의 글 입니다.");
 			}
 		}); //
 		$("#QuestionInsert").click(function () {
@@ -51,7 +51,7 @@
 				$("#prodQAForm").attr("action", "/zzp/qna/write");
 			} else {
 				$("#modal").trigger("click");
-				$("#mesg").text("글쓰기 권한이 없습니다.");
+				$("#mesgs").text("글쓰기 권한이 없습니다.");
 			}
 		});// 
 	}); //end ready
@@ -137,7 +137,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <span id="mesg"></span>
+        <span id="mesgs"></span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>

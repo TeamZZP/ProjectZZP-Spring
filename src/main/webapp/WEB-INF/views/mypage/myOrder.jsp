@@ -136,7 +136,7 @@
 			</select>
 		</div>
 		<div class="col-md-5">
-			<input type="text" id="search" name="search" class="form-control" placeholder=" ex) 상품명:칫솔   ex) 날짜:YY/MM/DD 혹은 MM/DD"
+			<input type="text" id="search" name="search" class="form-control" placeholder="ex) 칫솔 , ex) 22/10/13"
 			<c:if test="${search != null && search.search != null}">value="${search.search}"</c:if>>
 		</div>
 		<div class="col-md-2">

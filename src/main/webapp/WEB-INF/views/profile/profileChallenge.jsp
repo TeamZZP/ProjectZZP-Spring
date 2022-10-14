@@ -40,6 +40,15 @@
     .img {
     	border-radius: 15px;
     }
+    #modalBtn{
+		display: none;
+	}
+	.modal-body{
+		text-align: center;
+	}
+	#mesg{
+		margin: 0;
+	}
 </style>
 
 <script type="text/javascript"
@@ -106,7 +115,8 @@
 		//좋아요 추가/삭제
 		$('.challengeAll').on('click', '.liked', function () {
 			if ('${empty login}' == 'true') {
-				alert('로그인이 필요합니다.');
+				$("#modalBtn").trigger("click");
+				$("#mesg").text("로그인이 필요합니다.");
 			} else {
 				let cid = $(this).attr("data-cid");
 				$.ajax({
@@ -198,3 +208,26 @@
   <div class="col-xl-4 col-md-6"><img class="img" src="/zzp/resources/images/challenge/none.png"></div>
   <div class="col-xl-4 col-md-6"><img class="img" src="/zzp/resources/images/challenge/none.png"></div>
 </div>
+
+
+
+
+	
+<!-- 모달 -->
+<div class="modal" id="checkVal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">ZZP</h5>
+      </div>
+      <div class="modal-body">
+        <p id="mesg"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
+<button type="button" id="modalBtn" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#checkVal">modal</button>
+

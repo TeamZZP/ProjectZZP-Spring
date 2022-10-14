@@ -17,7 +17,14 @@
 	});
 </script>
 </c:if>
-
+<style type="text/css">
+.modal-body{
+	text-align: center;
+}
+#mesg{
+	margin: 0;
+}
+</style>
 </head>
 <body>
 <jsp:include page="common/header.jsp" flush="true"></jsp:include><br>
@@ -31,8 +38,8 @@
       <div class="modal-header">
         <h5 class="modal-title">ZZP</h5>
       </div>
-      <div class="modal-body">
-        <p id="mesg"></p>
+      <div class="modal-body" >
+        <p id="mesg" style="text-align: center;"></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success" data-bs-dismiss="modal">닫기</button>

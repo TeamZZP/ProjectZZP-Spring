@@ -66,7 +66,7 @@
   		max-width: 430px;
 	}
 	#modalBtn{
-	display: none;
+		display: none;
 	}
 	.modal-body{
 		text-align: center;

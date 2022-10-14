@@ -30,16 +30,17 @@
 				var REVIEW_CONTENT = $("#review_content").val();
 				if (review_title.length == 0) {
 					$("#modal").trigger("click");
-					$("#mesg").text("제목을 입력하십시오.");
+					$("#mesgs").text("제목을 입력하십시오.");
 					event.preventDefault();
 				} else if (review_content.length == 0) {
 					$("#modal").trigger("click");
-					$("#mesg").text("내용을 입력하십시오.");
+					$("#mesgs").text("내용을 입력하십시오.");
 					event.preventDefault();
 				}
 			});//
 			$("#reviewList").click(function () {
-				$("#reviewForm").attr("action", "/zzp/mypage/{userid}/review");
+				var userid = $(this).attr("data-userid");
+				$("#reviewForm").attr("method", "get").attr("action", "/zzp/mypage/"+userid+"/order");
 			});//
 			$("#reviewInsert").click(function () {
 				var userid = $(this).attr("data-userid");
@@ -109,7 +110,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td> <button id="reviewList" class="btn btn-success">목록</button> </td>
+				<td> <button id="reviewList" class="btn btn-success" data-userid="${mDTO.userid}">목록</button> </td>
 				<td style="text-align: right;">
 					<button id="reviewInsert" data-userid="${mDTO.userid}" class="btn btn-success">등록</button>
 					<button id="reviewCancel" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bb">취소</button>
@@ -121,8 +122,8 @@
 					        <h5 class="modal-title" id="staticBackdropLabel">취소</h5>
 					        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 					      </div>
-					      <div class="modal-body" style="text-align: left;">
-					        이전 페이지로 돌아가시겠습니까?
+					      <div class="modal-body">
+					    	    이전 페이지로 돌아가시겠습니까?
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-success" onclick="history.back()">확인</button>
@@ -150,7 +151,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <span id="mesg"></span>
+        <span id="mesgs"></span>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">확인</button>

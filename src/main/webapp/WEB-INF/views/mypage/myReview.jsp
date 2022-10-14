@@ -37,13 +37,13 @@
 	}
 	.modal-body{
 			text-align: center;
-		}	
-		#mesg{
-			margin: 0;
-		}
-		#modalBtn{
-			display: none;
-		}
+	}	
+	#mesg{
+		margin: 0;
+	}
+	#modalBtn{
+		display: none;
+	}
 </style>
 <script>
 	$(document).ready(function () {

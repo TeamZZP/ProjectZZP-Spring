@@ -168,9 +168,16 @@
 			</tr>
 			<c:forEach var="list" items="${coupon.list}">
 			<tr id="list">
-				<td><input type="checkbox" class="delCheck" name="COUPON_ID" value="${list.coupon_id}"></td>
+				<td> <input type="checkbox" class="delCheck" name="COUPON_ID" value="${list.coupon_id}"></td>
 				<td> ${list.coupon_id} </td>
-				<td> <img alt="쿠폰" src="/zzp/resources/images/coupon/${list.coupon_img}" width="50px" height="50px"> </td>
+				<td>
+					<c:if test="${list.coupon_img != null }">
+				 		<img alt="쿠폰" src="/zzp/resources/images/coupon/${list.coupon_img}" width="50px" height="50px"> 
+				 	</c:if>
+				 	<c:if test="${list.coupon_img == null }">
+				 		<img alt="쿠폰" src="/zzp/resources/images/coupon/coupon10.png" width="50px" height="50px"> 
+				 	</c:if>
+				</td>
 				<td> ${list.coupon_name} </td>
 				<td> ${list.coupon_discount} </td>
 				<td>

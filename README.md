@@ -17,7 +17,7 @@
 + 2022.09.19 ~ 2022.10.14
 + 팀프로젝트 (6명)
   - [✨Cho Yeram](https://github.com/yeramcho) : 팀장, DB 설계, 챌린지 사진게시판, 프로필 페이지, 관리자 페이지, 서버 배포
-  - [🐢YeonEy](https://github.com/YeonEy) : DB 설계, 소개 페이지, 공지사항 게시판, 문의 게시판, 마이페이지 주문내역, 구매후기, 관리자 쿠폰관리
+  - [🐢YeonEy](https://github.com/YeonEy) : DB 설계, 소개 페이지, 공지사항, 문의, 마이페이지 주문내역, 구매후기, 관리자 쿠폰관리
   - [🚀youngin](https://github.com/uyoungin) : 회원가입, 로그인, 메인 뷰 페이지, 관리자 상품관리
   - [😼Who-Are-YOU-Who](https://github.com/Who-Are-YOU-Who) : DB 설계, 스토어 메인, 스토어 상품 상세, 찜 기능, 주문
   - [🐧binsucha](https://github.com/binsucha) : 마이페이지 메인, 마이페이지 배송지 관리, 마이페이지 계정 관리, 관리자 회원관리
